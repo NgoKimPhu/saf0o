@@ -121,7 +121,15 @@ function snapshotTransaction(
   }) as Readonly<TransactionData>
 }
 
-function verifySignedTransaction(rawTransaction: unknown, expected: Readonly<TransactionData>) {
+function accessListKey(accessList: unknown) {
+  if (accessList === undefined) return '[]'
+  if (!Array.isArray(accessList)) throw new Error('mismatch')
+  return JSON.stringify(
+    accessList.map((e) => [e.address.toLowerCase(), e.storageKeys.map((k: string) => k.toLowerCase())])
+  )
+}
+
+export function verifySignedTransaction(rawTransaction: unknown, expected: Readonly<TransactionData>) {
   hashSignedTransaction(rawTransaction)
 
   try {
@@ -152,7 +160,7 @@ function verifySignedTransaction(rawTransaction: unknown, expected: Readonly<Tra
       decodedTo !== expectedTo ||
       decoded.data !== expected.data ||
       decoded.value !== expected.value ||
-      ('accessList' in decoded && (!Array.isArray(decoded.accessList) || decoded.accessList.length > 0)) ||
+      accessListKey(decoded.accessList) !== accessListKey(expected.accessList) ||
       !sameFees
     ) {
       throw new Error('mismatch')

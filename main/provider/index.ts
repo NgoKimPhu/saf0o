@@ -33,7 +33,11 @@ import reveal from '../reveal'
 import { getSignerType, isWatchOnlyAccountType, Type as SignerType } from '../../resources/domain/signer'
 import { getSignerCapabilities } from '../signers/capabilities'
 import { TransactionData } from '../../resources/domain/transaction'
-import { parseRpcQuantity, toRpcQuantity } from '../../resources/domain/transaction/quantity'
+import {
+  normalizeTransactionQuantities,
+  parseRpcQuantity,
+  toRpcQuantity
+} from '../../resources/domain/transaction/quantity'
 import {
   assertTransactionFunding,
   isWalletCallFundingError,
@@ -44,7 +48,7 @@ import {
   WALLET_CALL_FUNDING_ERROR,
   WALLET_CALL_FUNDING_UNAVAILABLE
 } from '../../resources/domain/transaction/funding'
-import { populate as populateTransaction, maxFee, classifyTransaction } from '../transaction'
+import { populate as populateTransaction, maxFee, classifyTransaction, londonToLegacy } from '../transaction'
 import { capitalize } from '../../resources/utils'
 import { ApprovalType } from '../../resources/constants'
 import { createObserver as AssetsObserver, loadAssets } from './assets'
@@ -65,7 +69,10 @@ import { getOriginAccess, hasOriginCapability, requestOriginAccess } from '../ap
 import { parseCallsStatus, parseGetCapabilities, parseSendCalls, parseShowCallsStatus } from './walletCalls'
 import { WalletCallLifecycleController } from './walletCallLifecycle'
 import { prepareWalletCallBatch } from './walletCallPreparation'
-import { snapshotPreparedWalletCallExecutionInput } from './walletCallPreparedExecution'
+import {
+  snapshotPreparedWalletCallExecutionInput,
+  verifySignedTransaction
+} from './walletCallPreparedExecution'
 import walletCallBatchLedger from './walletCallLedger'
 import { executeWalletCallRuntime } from './walletCallRuntime'
 import walletCallEvidenceRuntime from './walletCallEvidenceRuntime'
@@ -177,6 +184,23 @@ const TOKEN_METADATA_TIMEOUT_MS = 15_000
 const TRANSACTION_HASH = /^0x[0-9a-fA-F]{64}$/
 const BROADCAST_CALLBACK_TIMEOUT_MS = 15_000
 const SUBMISSION_UNCONFIRMED = 'submission-unconfirmed'
+
+// Reject signer output that differs from the reviewed transaction. A signer without
+// native EIP-1559 support may legitimately return the legacy form (see londonToLegacy).
+function verifySignedReviewedTransaction(signedTx: string, rawTx: TransactionData) {
+  const reviewed = normalizeTransactionQuantities({
+    ...rawTx,
+    from: (rawTx.from ?? '').toLowerCase(),
+    data: (rawTx.data || '0x').toLowerCase(),
+    value: rawTx.value ?? '0x0'
+  })
+  try {
+    return verifySignedTransaction(signedTx, reviewed)
+  } catch (error) {
+    if (reviewed.type !== '0x2' || reviewed.accessList !== undefined) throw error
+    return verifySignedTransaction(signedTx, londonToLegacy(reviewed))
+  }
+}
 
 function submissionUnconfirmedError(message: string, hash: string) {
   return Object.assign(new Error(message), {
@@ -709,6 +733,7 @@ export class Provider extends EventEmitter {
             let signedHash: string
             try {
               if (typeof signedTx !== 'string') throw new Error('Missing signed transaction')
+              verifySignedReviewedTransaction(signedTx, rawTx)
               signedHash = keccak256(signedTx).toLowerCase()
             } catch {
               const error = new Error('Signer returned an invalid signed transaction')
