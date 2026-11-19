@@ -312,7 +312,7 @@ async function chainBalanceScan(address: string, chains: { chainId: number; deci
 
 function disconnect() {
   rpcProvider.close()
-  if (process.connected) process.disconnect()
+  if (process.connected) process.disconnect?.()
   process.kill(process.pid, 'SIGHUP')
 }
 

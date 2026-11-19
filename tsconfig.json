@@ -18,6 +18,7 @@
     "allowJs": true,
 
     "outDir": "./compiled",
+    "paths": { "getos": ["./@types/getos"] },
     "typeRoots": ["./node_modules/@types", "./@types"],
     "types": ["node", "jest", "w3c-web-usb", "web", "frame", "eth-ens-namehash", "getos"]
   },

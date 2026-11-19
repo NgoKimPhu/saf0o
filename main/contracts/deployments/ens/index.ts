@@ -13,7 +13,7 @@ import type {
 import type { JsonFragment } from 'ethers'
 import type { DecodableContract } from '../../../transaction/actions'
 
-declare module ENS {
+declare namespace ENS {
   export type Register = {
     name: string
     owner: string
