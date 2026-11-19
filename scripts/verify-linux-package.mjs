@@ -7,6 +7,7 @@ import { setTimeout as delay } from 'node:timers/promises'
 import { pathToFileURL } from 'node:url'
 import { assertReleaseBuildIdentity } from './build-identity.mjs'
 import { assertNativeHost, getPackageTarget, verifyNativePackage } from './package-verification.mjs'
+import { lockedVersion, readPnpmLock } from './pnpm-lock.mjs'
 import { readSourceIdentity } from './source-identity.mjs'
 
 const dist = path.resolve('dist')
@@ -14,7 +15,7 @@ assertNativeHost(getPackageTarget('linux-x64'))
 const artifactWaitTimeout = 30_000
 const artifactPollInterval = 250
 const packageJson = JSON.parse(await readFile(path.resolve('package.json'), 'utf8'))
-const packageLock = JSON.parse(await readFile(path.resolve('package-lock.json'), 'utf8'))
+const lock = readPnpmLock(path.resolve('.'))
 const sourceIdentity = readSourceIdentity()
 
 const findArtifact = async (suffix) => {
@@ -352,9 +353,7 @@ assert.equal(probeResult.ethersBrowserProvider, 'function')
 assert.equal(probeResult.signatureVersion, packageJson.dependencies['@metamask/eth-sig-util'])
 assert.deepEqual(probeResult.archiveVersions, {
   'tar-fs': packageJson.dependencies['tar-fs'],
-  'tar-stream':
-    packageLock.packages['node_modules/tar-fs/node_modules/tar-stream']?.version ??
-    packageLock.packages['node_modules/tar-stream'].version
+  'tar-stream': lockedVersion(lock, 'tar-stream', 'tar-fs')
 })
 assert.deepEqual(probeResult.archiveApis, ['function', 'function'])
 assert.equal(probeResult.electronLogVersion, packageJson.dependencies['electron-log'])

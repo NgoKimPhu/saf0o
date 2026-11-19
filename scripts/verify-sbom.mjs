@@ -1,15 +1,16 @@
 import { readFile } from 'node:fs/promises'
-import { execFileSync } from 'node:child_process'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
+import { lockedVersion, parsePnpmLock, productionGraph } from './pnpm-lock.mjs'
 import { releaseSbomSerial } from './sbom-identity.mjs'
 import { readSourceIdentity } from './source-identity.mjs'
 
 const path = process.argv[2]
 if (!path) throw new Error('Usage: node scripts/verify-sbom.mjs <sbom.json>')
-if (!process.env.npm_execpath) throw new Error('SBOM verification must run through npm')
 
 const packageJson = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
-const packageLock = JSON.parse(await readFile(new URL('../package-lock.json', import.meta.url), 'utf8'))
+const lockText = await readFile(new URL('../pnpm-lock.yaml', import.meta.url), 'utf8')
+const lock = parsePnpmLock(lockText, fileURLToPath(new URL('..', import.meta.url)))
 const sbom = JSON.parse(await readFile(path, 'utf8'))
 
 if (sbom.bomFormat !== 'CycloneDX' || typeof sbom.specVersion !== 'string') {
@@ -30,7 +31,7 @@ const expectedSerial = releaseSbomSerial({
   name: packageJson.name,
   version: packageJson.version,
   sourceCommit,
-  packageLock
+  packageLock: lockText
 })
 const sourceProperty = sbom.metadata.component.properties?.find(
   (property) => property?.name === 'wren:source-commit'
@@ -52,10 +53,11 @@ for (const component of sbom.components) {
   references.add(component['bom-ref'])
   componentsByReference.set(component['bom-ref'], component)
 
-  const development = component.properties?.some(
-    (property) => property?.name === 'cdx:npm:package:development' && property.value === 'true'
-  )
-  if (development) throw new Error(`SBOM contains development dependency ${component.name || ''}`.trim())
+  const lockedIntegrity = lock.integrity.get(component['bom-ref'])
+  const sha512 = component.hashes?.find((hash) => hash?.alg === 'SHA-512')?.content
+  if (lockedIntegrity && sha512 !== Buffer.from(lockedIntegrity.slice(7), 'base64').toString('hex')) {
+    throw new Error(`SBOM hash does not match lockfile integrity for ${component['bom-ref']}`)
+  }
 }
 
 const rootReference = sbom.metadata.component['bom-ref']
@@ -66,11 +68,7 @@ if (!rootDependency || !Array.isArray(rootDependency.dependsOn)) {
 const rootDependencies = new Set(rootDependency.dependsOn)
 
 for (const dependency of Object.keys(packageJson.dependencies || {})) {
-  let lockEntry = packageLock.packages?.[`node_modules/${dependency}`]
-  if (lockEntry?.link && typeof lockEntry.resolved === 'string') {
-    lockEntry = packageLock.packages?.[lockEntry.resolved]
-  }
-  const version = lockEntry?.version
+  const version = lockedVersion(lock, dependency)
   const reference = version && `${dependency}@${version}`
   if (!reference || !componentsByReference.has(reference) || !rootDependencies.has(reference)) {
     throw new Error(`SBOM is missing direct production dependency ${dependency}`)
@@ -87,29 +85,9 @@ if (electron?.version !== electronVersion || !packagedRuntime || !rootDependenci
   throw new Error('SBOM is missing the packaged Electron runtime')
 }
 
-const productionTree = JSON.parse(
-  execFileSync(
-    process.execPath,
-    [process.env.npm_execpath, 'ls', '--package-lock-only', '--omit=dev', '--all', '--json'],
-    {
-      encoding: 'utf8',
-      maxBuffer: 128 * 1024 * 1024
-    }
-  )
-)
-const expectedGraph = new Map([[rootReference, new Set([electronReference])]])
+const expectedGraph = productionGraph(lock, rootReference)
+expectedGraph.get(rootReference).add(electronReference)
 expectedGraph.set(electronReference, new Set())
-function collectExpectedGraph(dependencies, parentReference) {
-  for (const [name, dependency] of Object.entries(dependencies || {})) {
-    if (typeof dependency?.version !== 'string') continue
-
-    const reference = `${name}@${dependency.version}`
-    expectedGraph.get(parentReference).add(reference)
-    if (!expectedGraph.has(reference)) expectedGraph.set(reference, new Set())
-    collectExpectedGraph(dependency.dependencies, reference)
-  }
-}
-collectExpectedGraph(productionTree.dependencies, rootReference)
 
 const expectedComponents = new Set(expectedGraph.keys())
 expectedComponents.delete(rootReference)

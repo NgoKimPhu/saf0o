@@ -18,7 +18,8 @@
     "allowJs": true,
 
     "outDir": "./compiled",
-    "typeRoots": ["./node_modules/@types", "./@types"]
+    "typeRoots": ["./node_modules/@types", "./@types"],
+    "types": ["node", "jest", "w3c-web-usb", "web", "frame", "eth-ens-namehash", "getos"]
   },
   "include": [
     "package.json",

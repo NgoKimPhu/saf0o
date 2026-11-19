@@ -62,7 +62,7 @@ for (const sourceRoot of sourceRoots) {
   }
 }
 
-for (const packageFile of ['package.json', 'package-lock.json']) {
+for (const packageFile of ['package.json', 'pnpm-lock.yaml']) {
   const source = fs.readFileSync(path.join(root, packageFile), 'utf8')
   for (const rule of forbidden) {
     if (rule.pattern.test(source)) failures.push(`${packageFile}: ${rule.label}`)

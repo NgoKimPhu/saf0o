@@ -38,7 +38,7 @@ const environment = {
 
 const run = (command, args, cwd, stdio = 'inherit') =>
   execFileSync(command, args, { cwd, env: environment, stdio })
-const runNpm = (cwd, script) => run('npm', ['run', script], cwd)
+const runPnpm = (cwd, script) => run('pnpm', ['run', script], cwd)
 
 async function selectOne(directory, predicate, description) {
   const matches = (await readdir(directory)).filter(predicate)
@@ -50,7 +50,7 @@ async function build(index) {
   const worktree = worktrees[index]
   const extraction = extracted[index]
   run('git', ['worktree', 'add', '--detach', worktree, source.commit], process.cwd(), 'ignore')
-  runNpm(worktree, 'setup:ci')
+  runPnpm(worktree, 'setup:ci')
   for (const script of [
     'compile',
     'bundle',
@@ -61,7 +61,7 @@ async function build(index) {
     'checksums:linux',
     'release:verify:linux'
   ]) {
-    runNpm(worktree, script)
+    runPnpm(worktree, script)
   }
 
   await mkdir(extraction)

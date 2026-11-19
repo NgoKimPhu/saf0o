@@ -24,7 +24,7 @@ function fail(message) {
   throw new Error(`E2E isolation violation: ${message}`)
 }
 
-if (!profile || !runRoot || !namespace) fail('use npm run test:e2e to create a disposable profile')
+if (!profile || !runRoot || !namespace) fail('use pnpm run test:e2e to create a disposable profile')
 
 const resolvedProfile = path.resolve(profile)
 const resolvedRoot = path.resolve(runRoot)

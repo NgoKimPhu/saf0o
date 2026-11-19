@@ -1,65 +1,45 @@
-import { execFileSync } from 'node:child_process'
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
+import { componentFor, parsePnpmLock, productionGraph as collectProductionGraph } from './pnpm-lock.mjs'
 import { releaseSbomSerial } from './sbom-identity.mjs'
 import { readSourceIdentity } from './source-identity.mjs'
 
 const output = process.argv[2]
 if (!output) throw new Error('Usage: node scripts/generate-sbom.mjs <output.json>')
-if (!process.env.npm_execpath) throw new Error('SBOM generation must run through npm')
 
 const packageJson = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
-const packageLock = JSON.parse(await readFile(new URL('../package-lock.json', import.meta.url), 'utf8'))
-const runNpm = (args) =>
-  execFileSync(process.execPath, [process.env.npm_execpath, ...args], {
-    encoding: 'utf8',
-    maxBuffer: 128 * 1024 * 1024
-  })
-const sbom = JSON.parse(runNpm(['sbom', '--package-lock-only', '--sbom-format', 'cyclonedx']))
-const productionTree = JSON.parse(
-  runNpm(['ls', '--package-lock-only', '--omit=dev', '--all', '--json'])
-)
+const lockText = await readFile(new URL('../pnpm-lock.yaml', import.meta.url), 'utf8')
+const lock = parsePnpmLock(lockText, fileURLToPath(new URL('..', import.meta.url)))
 
-const rootRef = sbom.metadata?.component?.['bom-ref']
-if (typeof rootRef !== 'string') throw new Error('npm SBOM is missing its root component')
+const rootRef = `${packageJson.name}@${packageJson.version}`
+const productionGraph = collectProductionGraph(lock, rootRef)
 const { commit: sourceCommit, timestamp: sourceTimestamp } = readSourceIdentity()
-sbom.serialNumber = releaseSbomSerial({
-  name: packageJson.name,
-  version: packageJson.version,
-  sourceCommit,
-  packageLock
-})
-sbom.metadata.timestamp = new Date(sourceTimestamp).toISOString()
-sbom.metadata.component.name = packageJson.name
-sbom.metadata.component.version = packageJson.version
-sbom.metadata.component.properties = [
-  ...(sbom.metadata.component.properties || []).filter((property) => property?.name !== 'wren:source-commit'),
-  { name: 'wren:source-commit', value: sourceCommit }
-].sort((left, right) => left.name.localeCompare(right.name))
-const productionReferences = new Set()
-const productionGraph = new Map([[rootRef, new Set()]])
-function collectProductionReferences(dependencies, parentReference) {
-  for (const [name, dependency] of Object.entries(dependencies || {})) {
-    if (typeof dependency?.version !== 'string') continue
-
-    const reference = `${name}@${dependency.version}`
-    productionReferences.add(reference)
-    productionGraph.get(parentReference).add(reference)
-    if (!productionGraph.has(reference)) productionGraph.set(reference, new Set())
-    collectProductionReferences(dependency.dependencies, reference)
-  }
+const sbom = {
+  bomFormat: 'CycloneDX',
+  specVersion: '1.5',
+  version: 1,
+  serialNumber: releaseSbomSerial({
+    name: packageJson.name,
+    version: packageJson.version,
+    sourceCommit,
+    packageLock: lockText
+  }),
+  metadata: {
+    timestamp: new Date(sourceTimestamp).toISOString(),
+    component: {
+      'bom-ref': rootRef,
+      type: 'application',
+      name: packageJson.name,
+      version: packageJson.version,
+      properties: [{ name: 'wren:source-commit', value: sourceCommit }]
+    }
+  },
+  components: [...productionGraph.keys()]
+    .filter((reference) => reference !== rootRef)
+    .map((reference) => componentFor(lock, reference))
 }
-collectProductionReferences(productionTree.dependencies, rootRef)
-
-sbom.components = (Array.isArray(sbom.components) ? sbom.components : [])
-  .filter((component) => productionReferences.has(component['bom-ref']))
-  .map((component) => ({
-    ...component,
-    properties: (component.properties || []).filter(
-      (property) => property?.name !== 'cdx:npm:package:development'
-    )
-  }))
 
 const electronVersion = packageJson.devDependencies?.electron
 if (typeof electronVersion !== 'string' || !/^\d+\.\d+\.\d+$/.test(electronVersion)) {

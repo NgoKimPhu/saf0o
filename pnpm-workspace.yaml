@@ -1,0 +1,4 @@
+# Refuse any package version published in the last 3 days (minutes).
+minimumReleaseAge: 4320
+# No dependency may run install scripts.
+onlyBuiltDependencies: []

@@ -6,7 +6,7 @@ const isWindows = process.platform === 'win32'
 
 async function waitForTask(taskName) {
   return new Promise((resolve, reject) => {
-    const ps = spawn('npm', ['run', taskName], { stdio: 'inherit', shell: isWindows })
+    const ps = spawn('pnpm', ['run', taskName], { stdio: 'inherit', shell: isWindows })
 
     ps.once('close', (exitCode) =>
       exitCode === 0 ? resolve() : reject(`${taskName} failed with exit code: ${exitCode}`)
@@ -35,7 +35,7 @@ async function launchDevServer() {
 }
 
 function launchWren({ shutdown }) {
-  const npmProcess = spawn('npm', ['run', 'launch:dev'], { stdio: 'inherit', shell: isWindows })
+  const npmProcess = spawn('pnpm', ['run', 'launch:dev'], { stdio: 'inherit', shell: isWindows })
 
   npmProcess.once('exit', () => {
     console.log('Wren exited')

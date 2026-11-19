@@ -4,6 +4,7 @@ import { lstat, mkdir, mkdtemp, readFile, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { assertReleaseBuildIdentity } from './build-identity.mjs'
+import { lockedVersion, readPnpmLock } from './pnpm-lock.mjs'
 import { readSourceIdentity } from './source-identity.mjs'
 
 const platformNames = { darwin: 'macOS', linux: 'Linux', win32: 'Windows' }
@@ -245,7 +246,7 @@ export async function verifyNativePackage(targetName, options = {}) {
   assertNativeHost(target, options.host)
 
   const packageJson = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'))
-  const packageLock = JSON.parse(await readFile(path.join(root, 'package-lock.json'), 'utf8'))
+  const lock = readPnpmLock(root)
   const sourceIdentity = options.sourceIdentity ?? readSourceIdentity()
   const entries = await readdir(dist)
   const artifacts = selectPackageArtifacts(entries, target, packageJson.version)
@@ -283,7 +284,7 @@ export async function verifyNativePackage(targetName, options = {}) {
   })
   assert.deepEqual(result.versions, {
     nodeHid: packageJson.dependencies['node-hid'],
-    usb: packageLock.packages['node_modules/usb'].version,
+    usb: lockedVersion(lock, 'usb', '@trezor/transport'),
     ledger: {
       '@ledgerhq/hw-app-eth': packageJson.dependencies['@ledgerhq/hw-app-eth'],
       '@ledgerhq/hw-transport': packageJson.dependencies['@ledgerhq/hw-transport'],
