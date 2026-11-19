@@ -9,7 +9,7 @@
   },
   "transform": {
     "\\.[jt]sx?$": [
-      "babel-jest",
+      "<rootDir>/test/jest.babelTransform.cjs",
       {
         "configFile": "./.babelrc.json",
         "overrides": [
@@ -29,5 +29,6 @@
     "enableGlobally": true
   },
   "clearMocks": true,
+  "setupFiles": ["<rootDir>/test/jest.textEncoder.js"],
   "setupFilesAfterEnv": ["<rootDir>/test/toMatchPath.js"]
 }

@@ -8,12 +8,19 @@
         }
       }
     ],
-    [
-      "@babel/preset-react",
-      {
-        "runtime": "automatic"
-      }
-    ],
-    "@babel/preset-typescript"
+    ["@babel/preset-typescript", { "onlyRemoveTypeImports": false }]
+  ],
+  "overrides": [
+    {
+      "exclude": "./**/*.ts",
+      "presets": [
+        [
+          "@babel/preset-react",
+          {
+            "runtime": "automatic"
+          }
+        ]
+      ]
+    }
   ]
 }
