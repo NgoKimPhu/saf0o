@@ -245,37 +245,38 @@ describe('openExternal', () => {
   })
 
   it('opens only the fork companion release path', () => {
-    openExternal('https://github.com/jorphex/wren-companion/releases/tag/v0.12.1')
-    openExternal('https://github.com/jorphex/wren-companion/security')
-    openExternal('https://github.com/jorphex/wren-companion.evil.example/releases')
+    openExternal('https://github.com/saf0o/wren-companion/releases/tag/v0.12.1')
+    openExternal('https://github.com/saf0o/wren-companion/security')
+    openExternal('https://github.com/saf0o/wren-companion.evil.example/releases')
 
     expect(shell.openExternal).toHaveBeenCalledTimes(1)
     expect(shell.openExternal).toHaveBeenCalledWith(
-      'https://github.com/jorphex/wren-companion/releases/tag/v0.12.1'
+      'https://github.com/saf0o/wren-companion/releases/tag/v0.12.1'
     )
   })
 
   it('opens fork update releases but rejects upstream and lookalike pages', () => {
-    openExternal('https://github.com/jorphex/wren/releases/tag/v0.7.0-rc.1')
+    openExternal('https://github.com/saf0o/wren/releases/tag/v0.7.0-rc.1')
     openExternal('https://github.com/floating/frame/releases/tag/v0.7.0-rc.1')
-    openExternal('https://github.com.evil.example/jorphex/wren/releases/tag/v0.7.0-rc.1')
+    openExternal('https://github.com/jorphex/wren/releases/tag/v0.7.0-rc.1')
+    openExternal('https://github.com.evil.example/saf0o/wren/releases/tag/v0.7.0-rc.1')
 
     expect(shell.openExternal).toHaveBeenCalledTimes(1)
     expect(shell.openExternal).toHaveBeenCalledWith(
-      'https://github.com/jorphex/wren/releases/tag/v0.7.0-rc.1'
+      'https://github.com/saf0o/wren/releases/tag/v0.7.0-rc.1'
     )
   })
 
   it('allows current community support links and rejects abandoned upstream channels', () => {
-    openExternal('https://github.com/jorphex/wren/blob/main/LICENSE')
-    openExternal('https://github.com/jorphex/wren/issues/new')
+    openExternal('https://github.com/saf0o/wren/blob/main/LICENSE')
+    openExternal('https://github.com/saf0o/wren/issues/new')
     openExternal('https://github.com/floating/frame/blob/master/LICENSE')
     openExternal('https://feedback.frame.sh')
     openExternal('https://discord.gg/UH7NGqY')
 
     expect(shell.openExternal.mock.calls).toEqual([
-      ['https://github.com/jorphex/wren/blob/main/LICENSE'],
-      ['https://github.com/jorphex/wren/issues/new']
+      ['https://github.com/saf0o/wren/blob/main/LICENSE'],
+      ['https://github.com/saf0o/wren/issues/new']
     ])
   })
 

@@ -243,7 +243,7 @@
       "distDir": "./bundle"
     }
   },
-  "repository": "github:jorphex/wren",
+  "repository": "github:saf0o/wren",
   "pnpm": {
     "overrides": {
       "ws@>=7.0.0 <7.5.11": "7.5.11",

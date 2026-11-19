@@ -9,6 +9,7 @@ import {
 import log from 'electron-log'
 import path from 'path'
 
+import packageInfo from '../../package.json'
 import store from '../store'
 
 import type { ChainId } from '../store/state'
@@ -258,7 +259,8 @@ const externalWhitelist = [
   'https://opensea.io'
 ]
 
-const isValidReleasePage = (url: string) => url.startsWith('https://github.com/jorphex/wren/releases/tag/')
+const isValidReleasePage = (url: string) =>
+  url.startsWith(`https://github.com/${packageInfo.repository.split(':')[1]}/releases/tag/`)
 const isWhitelistedHost = (url: string) =>
   externalWhitelist.some((entry) => url === entry || url.startsWith(entry + '/'))
 
