@@ -28,8 +28,6 @@ overrides:
   '@trezor/transport>usb': 2.18.0
   usb@2.18.0>node-addon-api: 8.5.0
   elliptic@<=6.6.0: 6.6.1
-  toml@<4.2.0: 4.2.0
-  protobufjs@<=7.6.4: 7.6.5
   axios@>=1.0.0 <1.20.0: 1.20.0
   eth-provider>uuid: 11.1.1
   '@metamask/utils>uuid': 11.1.1
@@ -229,9 +227,6 @@ importers:
       '@types/node':
         specifier: 26.6.6
         version: 26.6.6
-      '@types/node-hid':
-        specifier: 3.0.0
-        version: 3.0.0
       '@types/pngjs':
         specifier: 6.0.5
         version: 6.0.5
@@ -2944,10 +2939,6 @@ packages:
 
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
-
-  '@types/node-hid@3.0.0':
-    resolution: {integrity: sha512-noBHxnNuRtrCFLDcjuoVAUGF/m9roZY4jSGgbjlwQJp3dh543YehdeiwHYGeO9oF1ts3umlmTZ2DInwrmqKS8Q==}
-    deprecated: This is a stub types definition. node-hid provides its own type definitions, so you do not need this installed.
 
   '@types/node@22.7.5':
     resolution: {integrity: sha512-jML7s2NAzMWc//QSJ1a3prpk78cOPchGvXJsC3C6R6PSMoooztvRVQEz89gmBTBY1SPMaqo5teB4uNHPdetShQ==}
@@ -10242,10 +10233,6 @@ snapshots:
   '@types/lodash@4.17.27': {}
 
   '@types/ms@2.1.0': {}
-
-  '@types/node-hid@3.0.0':
-    dependencies:
-      node-hid: 3.4.0
 
   '@types/node@22.7.5':
     dependencies:
