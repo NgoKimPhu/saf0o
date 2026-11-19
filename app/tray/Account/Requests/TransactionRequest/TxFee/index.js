@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 
 import { DisplayCoinBalance, DisplayValue } from '../../../../../../resources/Components/DisplayValue'
 import { isRequestInteractionLocked } from '../../../../../../resources/domain/request'
-import { usesBaseFee } from '../../../../../../resources/domain/transaction'
+import { GasFeesSource, usesBaseFee } from '../../../../../../resources/domain/transaction'
 import { displayValueData } from '../../../../../../resources/utils/displayValue'
 import { chainUsesOptimismFees } from '../../../../../../resources/utils/chains'
 import { safeNetworkMetadata } from '../../../../../../resources/domain/networkMetadata'
@@ -181,6 +181,10 @@ export class TxFee extends React.Component {
         {req.feesUpdatedByUser ? (
           <div className='transactionReviewFeeNotice' style={{ color: 'var(--good)' }}>
             {'Gas values set by user'}
+          </div>
+        ) : req.data.gasFeesSource !== GasFeesSource.Frame ? (
+          <div className='transactionReviewFeeNotice' style={{ color: 'var(--wren-danger)' }}>
+            {`Gas values set by ${req.data.gasFeesSource}`}
           </div>
         ) : null}
         {this.state.expanded && !adjustmentLocked ? <AdjustFee inline={true} req={req} /> : null}

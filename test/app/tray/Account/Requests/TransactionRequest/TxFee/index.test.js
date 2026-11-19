@@ -134,3 +134,29 @@ it('keeps fee adjustment inert in a queued read-only review', () => {
   expect(screen.queryByRole('button', { name: 'Adjust' })).toBeNull()
   expect(screen.queryByLabelText('Base Fee (GWEI)')).toBeNull()
 })
+
+describe('gas values source warning', () => {
+  it('warns when the dapp set the gas values', () => {
+    req.data.gasFeesSource = GasFeesSource.Dapp
+
+    render(<TxFee req={req} />)
+
+    expect(screen.getByText('Gas values set by Dapp')).toBeTruthy()
+  })
+
+  it('does not warn when the wallet set the gas values', () => {
+    render(<TxFee req={req} />)
+
+    expect(screen.queryByText(/Gas values set by/)).toBeNull()
+  })
+
+  it('shows the user notice instead of the dapp warning after a user adjustment', () => {
+    req.data.gasFeesSource = GasFeesSource.Dapp
+    req.feesUpdatedByUser = true
+
+    render(<TxFee req={req} />)
+
+    expect(screen.getByText('Gas values set by user')).toBeTruthy()
+    expect(screen.queryByText('Gas values set by Dapp')).toBeNull()
+  })
+})
