@@ -4,8 +4,8 @@ export const SECRET_CLIPBOARD_TTL_MS = 60_000
 
 type ClipboardAccess = {
   clear: () => void
-  readText: () => string
-  writeText: (value: string) => void
+  readText: () => string | Promise<string>
+  writeText: (value: string) => void | Promise<void>
 }
 
 type TimerHandle = ReturnType<typeof setTimeout>
@@ -33,12 +33,22 @@ export function createSecretClipboard(
     const expected = pendingFingerprint
     pendingFingerprint = undefined
     if (!expected) return
+    // Electron 45 made clipboard.readText/writeText async; plain strings stay supported.
+    const clearIfMatches = (text: string) => {
+      if (crypto.timingSafeEqual(fingerprint(text), expected)) clipboard.clear()
+    }
     try {
-      const current = fingerprint(clipboard.readText())
-      if (crypto.timingSafeEqual(current, expected)) clipboard.clear()
+      const text = clipboard.readText()
+      if (typeof text === 'string') clearIfMatches(text)
+      else text.then(clearIfMatches).catch(onError)
     } catch (error) {
       onError(error)
     }
+  }
+
+  const write = (value: string) => {
+    const written = clipboard.writeText(value)
+    if (written) written.catch(onError)
   }
 
   const cancel = () => {
@@ -48,13 +58,13 @@ export function createSecretClipboard(
   }
 
   const writePublic = (value: string) => {
-    clipboard.writeText(value)
+    write(value)
     cancel()
   }
 
   const writeSecret = (secret: string) => {
     const secretFingerprint = fingerprint(secret)
-    clipboard.writeText(secret)
+    write(secret)
     cancel()
     pendingFingerprint = secretFingerprint
     try {
