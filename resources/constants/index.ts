@@ -14,7 +14,6 @@ export enum ApprovalType {
 export const WREN_REPOSITORY_URL = 'https://github.com/saf0o/wren'
 export const WREN_LICENSE_URL = `${WREN_REPOSITORY_URL}/blob/main/LICENSE`
 export const WREN_SUPPORT_URL = `${WREN_REPOSITORY_URL}/issues`
-export const WREN_SUPPORT_ADDRESS = '0x6ac7F5A89E2eC6c30Aa687F9f2117bA1E31D0D97'
 export const WREN_COMPANION_CHROME_WEB_STORE_URL =
   'https://chromewebstore.google.com/detail/wren-companion/ifimccfajfbgligbhcgfapdagpnfkbhn'
 export const WREN_COMPANION_FIREFOX_ADDONS_URL =

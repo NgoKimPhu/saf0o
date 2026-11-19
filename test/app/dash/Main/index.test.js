@@ -4,7 +4,6 @@ import { Main } from '../../../../app/dash/Main'
 import {
   WREN_COMPANION_CHROME_WEB_STORE_URL,
   WREN_COMPANION_FIREFOX_ADDONS_URL,
-  WREN_SUPPORT_ADDRESS,
   WREN_SUPPORT_URL
 } from '../../../../resources/constants'
 import link from '../../../../resources/link'
@@ -91,50 +90,11 @@ it('routes support, tutorial, and quit actions', () => {
   ])
 })
 
-it('copies the exact checksummed support address without another IPC action', () => {
+it('has no support-address copy or QR control', () => {
   renderMain()
 
-  expect(screen.queryByText(/Sending funds is optional/i)).toBeNull()
-  expect(screen.queryByText(/Optional\. Verify this EVM address/i)).toBeNull()
-
-  fireEvent.click(screen.getByRole('button', { name: 'Support Wren' }))
-
-  expect(WREN_SUPPORT_ADDRESS).toBe('0x6ac7F5A89E2eC6c30Aa687F9f2117bA1E31D0D97')
-  expect(link.send.mock.calls).toEqual([['tray:clipboardData', WREN_SUPPORT_ADDRESS]])
-  expect(screen.getByRole('status').textContent).toBe('Address copied')
-  expect(screen.getByRole('button', { name: 'Support Wren' })).toBeTruthy()
-})
-
-it('reveals a local QR preview with the exact support address on hover', () => {
-  renderMain()
-  const button = screen.getByRole('button', { name: 'Support Wren' })
-
-  fireEvent.mouseEnter(button.closest('.dashSupportWrenDisclosure'))
-
-  expect(button.getAttribute('aria-expanded')).toBe('true')
-  const qr = screen.getByRole('img', { name: 'QR code for the support address' })
-  expect(qr.getAttribute('data-qr-payload')).toBe(WREN_SUPPORT_ADDRESS)
-  expect(screen.getByText(WREN_SUPPORT_ADDRESS)).toBeTruthy()
-
-  fireEvent.mouseLeave(button.closest('.dashSupportWrenDisclosure'))
+  expect(screen.queryByRole('button', { name: 'Support Wren' })).toBeNull()
   expect(screen.queryByRole('img', { name: 'QR code for the support address' })).toBeNull()
-})
-
-it('reveals the support QR preview on keyboard focus', () => {
-  renderMain()
-  const button = screen.getByRole('button', { name: 'Support Wren' })
-
-  fireEvent.focus(button)
-
-  expect(button.getAttribute('aria-expanded')).toBe('true')
-  expect(screen.getByRole('img', { name: 'QR code for the support address' })).toBeTruthy()
-  expect(button.getAttribute('aria-describedby')).toBe('dash-support-wren-status')
-
-  fireEvent.mouseLeave(button.closest('.dashSupportWrenDisclosure'))
-  expect(button.getAttribute('aria-expanded')).toBe('true')
-
-  fireEvent.blur(button)
-  expect(button.getAttribute('aria-expanded')).toBe('false')
 })
 
 it('returns the workspace home to its top-level navigation', () => {
