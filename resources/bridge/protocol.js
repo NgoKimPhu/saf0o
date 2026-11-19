@@ -82,14 +82,7 @@ export const requestInvokeChannels = new Set([
   'tray:refreshWalletCallsStatus',
   'tray:getTokenDetails',
   'tray:revokeAccess',
-  'tray:writeClipboard',
-  'yearn:getCatalog',
-  'yearn:getPositions',
-  'yearn:getWorkflows',
-  'yearn:startWorkflow',
-  'yearn:resumeWorkflow',
-  'yearn:cancelWorkflow',
-  'yearn:revokeWorkflow'
+  'tray:writeClipboard'
 ])
 export const responseEventChannels = new Set(['action', 'flex'])
 const methods = new Set(['event', 'invoke', 'rpc'])

@@ -3,14 +3,6 @@ import { z } from 'zod'
 import type { BridgeMethod } from '../../resources/bridge/roles'
 import { ShortcutSchema as StoredShortcutSchema } from '../store/state/types/shortcuts'
 import {
-  YearnCatalogResultSchema,
-  YearnPositionsResultSchema,
-  YearnWorkflowIdRequestSchema,
-  YearnWorkflowListResultSchema,
-  YearnWorkflowMutationResultSchema,
-  YearnWorkflowRequestSchema
-} from '../../resources/domain/yearn'
-import {
   AddressBookAddressInputSchema,
   AddressBookEntrySchema,
   AddressBookSaveRequestSchema
@@ -914,13 +906,6 @@ const invokeSchemas = {
   'send:queueSweep': z.tuple([SweepQueueRequestSchema]),
   'send:resolveRecipient': z.tuple([z.string().trim().min(1).max(255)]),
   'tokens:save': z.tuple([TokenSchema, AssetSuggestionReferenceSchema.optional()]),
-  'yearn:getCatalog': z.tuple([z.object({ force: z.boolean(), cacheOnly: z.boolean().optional() }).strict()]),
-  'yearn:getPositions': z.tuple([]),
-  'yearn:getWorkflows': z.tuple([]),
-  'yearn:startWorkflow': z.tuple([YearnWorkflowRequestSchema]),
-  'yearn:resumeWorkflow': z.tuple([YearnWorkflowIdRequestSchema]),
-  'yearn:cancelWorkflow': z.tuple([YearnWorkflowIdRequestSchema]),
-  'yearn:revokeWorkflow': z.tuple([YearnWorkflowIdRequestSchema]),
   'tray:addChain': z.tuple([AddChainSchema, AddChainRequestReferenceSchema.nullish()]),
   'tray:continueContractVerification': z.tuple([ContractVerificationRequestReferenceSchema]),
   'tray:getTokenDetails': z.tuple([AddressSchema, ChainNumberSchema]),
@@ -1134,13 +1119,6 @@ const invokeResultSchemas = {
     z.object({ success: z.literal(true) }).strict(),
     z.object({ success: z.literal(false), error: z.string().min(1).max(240) }).strict()
   ]),
-  'yearn:getCatalog': YearnCatalogResultSchema,
-  'yearn:getPositions': YearnPositionsResultSchema,
-  'yearn:getWorkflows': YearnWorkflowListResultSchema,
-  'yearn:startWorkflow': YearnWorkflowMutationResultSchema,
-  'yearn:resumeWorkflow': YearnWorkflowMutationResultSchema,
-  'yearn:cancelWorkflow': YearnWorkflowMutationResultSchema,
-  'yearn:revokeWorkflow': YearnWorkflowMutationResultSchema,
   'tray:addChain': z.union([
     z.object({ success: z.literal(true) }).strict(),
     z.object({ success: z.literal(false), error: z.string().min(1).max(1024).optional() }).strict()

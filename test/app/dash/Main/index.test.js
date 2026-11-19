@@ -34,7 +34,6 @@ const renderMain = () => {
 }
 
 it.each([
-  ['Earn', 'earn'],
   ['Contacts', 'addressBook'],
   ['Read-only inspector', 'inspector'],
   ['Contracts', 'contracts'],

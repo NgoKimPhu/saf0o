@@ -405,7 +405,7 @@ const auditPage = async ({
   }
 
   return {
-    horizontalGeometry: [...document.querySelectorAll('.dashMainScroll, .addAccountItem, .addAccountItemOptionSetupFrame, .addAccountItemOptionTitle, .addAccountItemOptionInput, .earnDetailsContent, .earnDetailActionShelf, .networkEditorBody, .sendComposer, .permissionsLedgerView, .dappGuardrailEditor')]
+    horizontalGeometry: [...document.querySelectorAll('.dashMainScroll, .addAccountItem, .addAccountItemOptionSetupFrame, .addAccountItemOptionTitle, .addAccountItemOptionInput, .networkEditorBody, .sendComposer, .permissionsLedgerView, .dappGuardrailEditor')]
       .filter((element) => visible(element) && element.getBoundingClientRect().left < viewport.width && element.getBoundingClientRect().right > 0)
       .map((element) => {
         const rect = element.getBoundingClientRect()

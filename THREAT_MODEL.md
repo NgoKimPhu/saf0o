@@ -23,7 +23,7 @@ available.
 - [Local clients and Companion](#local-clients-and-companion)
 - [Local state and signers](#local-state-and-signers)
 - [Renderer and IPC](#renderer-and-ipc)
-- [Networks, content, and Earn](#networks-content-and-earn)
+- [Networks and content](#networks-and-content)
 - [Builds and updates](#builds-and-updates)
 - [Invariants for new work](#invariants-for-new-work)
 
@@ -320,7 +320,7 @@ The parent allows 12 seconds per RPC request. The worker waits five more seconds
 for the parent's reply over IPC. Wren discards late replies. An unresponsive RPC
 can still prevent discovery.
 
-### Networks, content, and Earn
+### Networks and content
 
 #### RPC and execution evidence
 
@@ -571,25 +571,6 @@ and persists only public hash/nonce plus UUID relationship evidence. Cancel is a
 zero-value self-transfer that succeeds only if it confirms first. Linked lifecycle
 rows can recover an older transaction from `replaced` after a replacement reorg;
 Wren never treats the button or a mempool observation as proof of cancellation.
-
-#### Earn
-
-Earn promotes only its versioned local `(chainId, vaultAddress)` catalog. Kong
-cannot add targets; Wren pins assets and decimals, while Kong supplies display
-metadata and eligibility. Only fresh eligible metadata enables a deposit;
-cached or failed data can show positions/exits, never new deposit. The local
-catalog also supplies a hidden balance scanner: only nonzero configured-RPC
-`balanceOf` enters known tokens; zero removes it, and remote omit metadata
-cannot suppress it.
-
-Cooldown state can be Earn-only. Transactions are limited to documented
-[`YEARN_EARN.md`](YEARN_EARN.md) allowlisted vault, companion, and first-party
-periphery contracts. The main process rebuilds calldata, verifies
-relationships and decimals, re-recognizes persisted steps, ignores
-renderer-provided target, metadata, calldata, and labels, and uses exact
-approvals (resetting mismatched ones). Contracts/strategies can still be
-buggy, governed, upgraded, malicious, or lose funds; Wren makes no safety or
-yield guarantee.
 
 Wren ships no hosted crash client: uncaught main errors stay local and are not
 sent to upstream Sentry.

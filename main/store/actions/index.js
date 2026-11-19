@@ -367,12 +367,6 @@ module.exports = {
     ])
     u('windows.panel.showing', () => true)
   },
-  setYearnCatalogCache: (u, catalogCache) => {
-    u('main.yearn.catalogCache', () => catalogCache)
-  },
-  setYearnWorkflows: (u, workflows) => {
-    u('main.yearn.workflows', () => workflows)
-  },
   saveAddressBookEntry: (u, request) => {
     let saved
     u('main.addressBook', (addressBook = {}) => {

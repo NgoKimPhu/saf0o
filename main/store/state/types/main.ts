@@ -20,7 +20,6 @@ import { NativePeerCredentialsSchema } from './peerCredential'
 import { PermissionSchema } from './permission'
 import { ShortcutSchema } from './shortcuts'
 import { WalletCallBatchesSchema } from './walletCallBatch'
-import { YearnStateSchema } from './yearn'
 import { SIGNER_ID_PATTERN } from '../../../../resources/domain/signerId'
 import { pruneObservedTokenApprovals } from '../../../../resources/domain/tokenApprovals'
 
@@ -128,7 +127,6 @@ export const MainSchema = z.object({
   shortcuts: ShortcutsSchema,
   updater: UpdaterPreferencesSchema,
   walletCallBatches: WalletCallBatchesSchema,
-  yearn: YearnStateSchema,
   ...PreferencesSchema
 })
 

@@ -11,12 +11,6 @@ import {
 
 const toolDashboardItems = [
   {
-    view: 'earn',
-    title: 'Earn',
-    description: 'Review selected Yearn vaults by network.',
-    icon: 'earn'
-  },
-  {
     view: 'addressBook',
     title: 'Contacts',
     description: 'Save labels for addresses. Compare the full address before signing.',

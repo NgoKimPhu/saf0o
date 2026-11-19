@@ -47,10 +47,6 @@ const createPixelGlyph = ({ compact, regular }) => {
 // sparse so the aliased construction reads as intentional at native UI sizes instead of as a
 // low-resolution illustration enlarged inside a control.
 const pixelGlyphs = Object.freeze({
-  earn: createPixelGlyph({
-    compact: <path d='M1 14h14v1H1v-1Zm3-4h1v4H4v-4Zm3-3h1v7H7V7Zm3-4h1v11h-1V3Z' />,
-    regular: <path d='M2 18h16v1H2v-1Zm3-5h2v5H5v-5Zm4-4h2v9H9V9Zm4-5h2v14h-2V4Z' />
-  }),
   network: createPixelGlyph({
     compact: <path d='M1 6h3v3H1V6Zm12-4h2v3h-2V2Zm0 10h2v3h-2v-3ZM4 7h3V4h6v1H8v3H4V7Zm3 1h1v5h5v1H7V8Z' />,
     regular: (
@@ -142,7 +138,6 @@ const wrenGlyphs = Object.freeze({
       <path d='M15 6.2a2.5 2.5 0 0 1 0 4.8M16.5 13.2c2.7.4 4 1.8 4 4.3V19' />
     </>
   ),
-  earn: pixelGlyphs.earn,
   network: pixelGlyphs.network,
   tokens: pixelGlyphs.tokens,
   apps: createWrenGlyph(
@@ -367,7 +362,6 @@ const icons = Object.freeze({
   contacts: wrenGlyphs.contacts,
   copy: wrenGlyphs.copy,
   details: wrenGlyphs.details,
-  earn: wrenGlyphs.earn,
   ellipsis: wrenGlyphs.ellipsis,
   eye: wrenGlyphs.eye,
   external: wrenGlyphs.external,

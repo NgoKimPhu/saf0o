@@ -250,7 +250,6 @@ export function createViewInstance(
 }
 
 const externalWhitelist = [
-  'https://yearn.fi',
   WREN_COMPANION_RELEASES_URL,
   WREN_LICENSE_URL,
   WREN_SUPPORT_URL,

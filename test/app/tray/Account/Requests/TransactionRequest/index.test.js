@@ -11,7 +11,6 @@ import {
 import TxRecipientComponent from '../../../../../../app/tray/Account/Requests/TransactionRequest/TxRecipient'
 import { TxFee } from '../../../../../../app/tray/Account/Requests/TransactionRequest/TxFee'
 import {
-  getYearnIntentLines,
   TxSending as TxAction
 } from '../../../../../../app/tray/Account/Requests/TransactionRequest/TxAction'
 import {
@@ -30,8 +29,7 @@ import {
   BalanceChanges,
   ReplacementAssessment,
   ReplacementNotice,
-  TransactionDataRow,
-  YearnOverview
+  TransactionDataRow
 } from '../../../../../../app/tray/Account/Requests/TransactionRequest/TxMainNew/overview'
 import {
   SimulationAllowance,
@@ -378,31 +376,6 @@ describe('confirm', () => {
     expect(screen.getByText('Wren account')).toBeTruthy()
     expect(screen.getAllByText(recipient)).toHaveLength(2)
     store.removeAccount(recipient)
-  })
-
-  it('identifies an allowlisted Yearn recipient without an external ABI', () => {
-    const recipient = '0x1111111111111111111111111111111111111111'
-
-    render(
-      <TxRecipient
-        i={0}
-        req={{
-          data: { to: recipient, value: '0x0' },
-          recipientType: 'contract',
-          recognizedActions: [
-            {
-              id: 'yearn:deposit',
-              data: { action: 'deposit', vaultName: 'USDC Horizon yVault' }
-            }
-          ]
-        }}
-      />
-    )
-
-    expect(screen.getByText('Calling Yearn Contract')).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Copy transaction recipient address' })).toBeTruthy()
-    expect(screen.queryByText('Allowlisted vault: USDC Horizon yVault')).toBeNull()
-    expect(screen.queryByText(/unknown action/i)).toBeNull()
   })
 
   it('renders a confirming transaction', () => {
@@ -847,62 +820,6 @@ describe('simulation review', () => {
       className: '_txMainTagBad',
       label: 'RPC reports broad token approval'
     })
-  })
-
-  it('renders a trusted Yearn action summary with its decoded amount', () => {
-    render(
-      <YearnOverview
-        action='withdraw'
-        asset={{
-          address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-          chainId: 8453,
-          symbol: 'USDC'
-        }}
-        vaultName='USDC Horizon yVault'
-        amountRaw='12500000'
-        symbol='USDC'
-        decimals={6}
-      />
-    )
-
-    expect(screen.getByText('Withdraw from Yearn')).toBeTruthy()
-    expect(screen.getByText(/12.5/)).toBeTruthy()
-    expect(screen.getByText(/USDC/)).toBeTruthy()
-    expect(screen.getByRole('img', { name: 'USDC asset' })).toBeTruthy()
-  })
-
-  it('derives Yearn intent changes from recognized calldata without calling them simulation', () => {
-    expect(
-      getYearnIntentLines('deposit', {
-        amountRaw: '12500000',
-        decimals: 6,
-        symbol: 'USDC',
-        vaultName: 'USDC Horizon yVault'
-      })
-    ).toEqual(['Send 12.5 USDC', 'Receive USDC Horizon yVault shares at execution rate'])
-    expect(
-      getYearnIntentLines('withdraw', {
-        amountRaw: '2500000',
-        amountType: 'assets',
-        decimals: 6,
-        symbol: 'USDC'
-      })
-    ).toEqual(['Receive 2.5 USDC', 'Burn the shares required at execution'])
-  })
-
-  it('does not describe an unlimited Yearn approval as exact', () => {
-    render(
-      <YearnOverview
-        action='approve'
-        vaultName='USDC Horizon yVault'
-        amountRaw='115792089237316195423570985008687907853269984665640564039457584007913129639935'
-        symbol='USDC'
-        decimals={6}
-      />
-    )
-
-    expect(screen.getByText('Unlimited Yearn approval')).toBeTruthy()
-    expect(screen.queryByText('Approve Yearn vault')).toBeNull()
   })
 
   it('handles watch-only compatibility failures as missing signers', () => {

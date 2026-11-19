@@ -4,8 +4,7 @@ Use this checklist for a paired Wren desktop and Companion release candidate.
 Complete the manual checks as well as the automated tests.
 
 Use disposable accounts and Ethereum
-Sepolia (`0xaa36a7`) or Base Sepolia (`0x14a34`) unless testing Earn, which uses
-minimal live-fund flows. Never publish seeds, keys, PINs, passphrases, pairing
+Sepolia (`0xaa36a7`) or Base Sepolia (`0x14a34`). Never publish seeds, keys, PINs, passphrases, pairing
 responses, full addresses, signatures, transaction hashes, device IDs, or profile
 contents. Use the [release procedure](RELEASE.md) for packaging and publication;
 use the [signer and platform support reference](HARDWARE_SUPPORT.md) for current
@@ -72,8 +71,7 @@ Current device testing is recorded in [signer support](HARDWARE_SUPPORT.md).
 - [2. Run the required operator checks](#2-run-the-required-operator-checks)
 - [3. Qualify EIP-5792 and EIP-7702 boundaries](#3-qualify-eip-5792-and-eip-7702-boundaries)
 - [4. Qualify contract source verification](#4-qualify-contract-source-verification)
-- [5. Run Earn-only qualification](#5-run-earn-only-qualification)
-- [6. Decide pass or fail and retain evidence](#6-decide-pass-or-fail-and-retain-evidence)
+- [5. Decide pass or fail and retain evidence](#5-decide-pass-or-fail-and-retain-evidence)
 - [Historical 0.8.0 Linux x64 evidence](#historical-080-linux-x64-evidence)
 
 ## 1. Record the candidate and automated evidence
@@ -135,8 +133,6 @@ For the current UI, also verify the following in the disposable profile:
   then use Revoke to review `approve(spender, 0)`. Test rejection and confirmation.
   Forgetting the local list must not change the on-chain allowance.
 - Exact funding values replace rounded rows, and privacy mode hides both forms.
-- Earn positions and guardrail identity remain visible. Active cooldown actions
-  are reachable before opening Deposit; the opened form still supports Max.
 
 Record full and short-window evidence and the tested interface scales. Native
 renderer checks establish layout and synthetic interaction behavior, not live
@@ -193,7 +189,7 @@ archive and active-desktop checks below.
    Confirm the source is byte-identical; target is `0700`; copied files are
    `0600`; cache, logs, Chromium data, and secrets are absent from
    `frame-profile-import.json`; and a restart preserves accounts/names, custom chains/RPCs,
-   permissions, contacts, tokens, Earn activity, and encrypted signers. A locked
+   permissions, contacts, tokens, and encrypted signers. A locked
    source or existing target must fail without partial data. Install the deb next
    to the separately named Frame package and repeat startup/port checks. Profile
    migration failures block release.
@@ -361,59 +357,7 @@ profile backup excludes the key and source, and restore requires re-entry. Scan
 state, backup, Activity, logs, and rendered navigation for source text, file paths,
 API keys, and credential-bearing URLs without printing those fixtures.
 
-## 5. Run Earn-only qualification
-
-Run this only when [`YEARN_EARN.md`](YEARN_EARN.md) is present. Use an isolated
-`0700` profile, four disposable accounts (private key, seed, Safe 7, Model One),
-minimum funds, independently verified Ethereum/Base/Katana RPC chain IDs, and
-independently verify each displayed product/route and on-chain `asset()` before
-continuing. Stop on a mismatch.
-
-Check these states:
-
-- With no account selected, Earn shows three chain sections and eight products.
-  Transaction controls are inactive.
-- Watch-only positions appear before opportunities and cannot transact.
-- A disconnected chain affects only its own section and offers a settings action.
-- Stale Kong data keeps products and exits visible but disables deposits.
-  Missing APY must not appear as zero.
-- Malformed Kong data, altered decimals, or mismatched `asset()` or `decimals()`
-  must block the request before it enters the account queue.
-
-For each transaction, compare chain, account, target, asset, amount/share meaning,
-exact approval, receiver/owner, zero native value, simulation, and device display.
-Use the minimum practical amount and withdraw after the required transition:
-
-| Account     | Required flow                                                                                                       |
-| ----------- | ------------------------------------------------------------------------------------------------------------------- |
-| Private key | Base yvUSDC-H exact deposit, partial underlying withdrawal, Max redeem                                              |
-| Seed        | Katana direct-vault exact deposit and Max redeem; read-only discovery of the other two Katana assets                |
-| Safe 7      | Ethereum flexible yvUSD deposit and Max redeem; clear-signing and reconnect                                         |
-| Model One   | Ethereum yBOLD pinned-zap deposit, Stake with an existing yBOLD position when available, then zero-loss staked exit |
-
-Test a mismatched nonzero allowance: reset-to-zero, exact approval, and deposit
-must be separate reviews; reject each once and ensure retry has no duplicate hash.
-After approval, restart and test Resume plus separate Revoke cleanup. Interrupt a
-pre-hash request and an approval-cleanup request: recovery must report unknown,
-never requeue automatically, recheck allowance first, queue nothing at zero, and
-require a new explicit Revoke for nonzero allowance. For locked yvUSD, test
-deposit, persisted cooldown timestamps, Cancel during cooldown, partial and Max
-window exits using separate locked-to-yvUSD and yvUSD-to-USDC reviews and exact
-`redeem`, expired-window failure, and no leftover approval. Any yBOLD
-`maxLoss = 0` failure must stop without raising tolerance; no preference may alter
-Yearn loss tolerance.
-
-For every flow, require normal review/simulation/sign/broadcast/monitor evidence
-and matching explorer link; compare receipt amounts with independently decoded
-allowlisted Transfer logs and never guess missing evidence. Controlled changes to
-target, chain, native value, receiver, owner, spender, token, method, or loss
-tolerance must remove Yearn labels; a changed decoded amount may remain shown,
-but a changed persisted step amount must not queue. A hidden-confirmation
-notification may contain only Wren's shortened hash. Restart after completed
-flows: positions refresh, terminal workflows stay bounded, broadcasts do not
-duplicate, and approvals never exceed the request.
-
-## 6. Decide pass or fail and retain evidence
+## 5. Decide pass or fail and retain evidence
 
 After each signer run, relock/disconnect/quit, ensure no pending request after
 restart, scan the isolated profile/logs for exact disposable fixtures without
@@ -464,10 +408,7 @@ fixture scanning. Safe 7 `2.12.0` had prior pairing, address, personal-signing, 
 evidence. At `3963a014`, it passed address verification, two Base Sepolia funding
 transfers, and USB recovery. Model One `1.13.1` passed address, personal-signing,
 hash-only EIP-712, and USB checks. It rejected Base Sepolia because the signed
-network coin type was 1 while Ethereum derivation used 60. Eight
-Yearn products, watch-only gating, and allowlisted review were observed; the
-earlier packaged Base yvUSDC-H deposit/partial-withdraw/Max-redeem physical Trezor
-evidence remains in [`YEARN_EARN.md`](YEARN_EARN.md), not evidence for all flows.
+network coin type was 1 while Ethereum derivation used 60.
 
 Post-record commit `8fe2ed17` restored per-origin omnichain switching: authorized
 Ethereum Mainnet/Sepolia switches took 1–3 ms without approval; untouched prior-
@@ -483,4 +424,4 @@ artifact sets; rebuilt candidates need their own identity and `SHA256SUMS` check
 That historical run did not assess reproducibility; its evidence is embedded
 clean-source identity, SHA-256, SBOM, and GitHub provenance. It qualifies Linux
 x64 only—not macOS, Windows, Linux arm64, native-Wayland Glide, Bluetooth,
-unlisted hardware, or unexercised Yearn product/signer combinations.
+unlisted hardware, or unexercised signer combinations.

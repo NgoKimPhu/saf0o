@@ -29,11 +29,10 @@ The latest release is [**0.1.12**](release-notes/v0.1.12.md).
   nonces, and compact transaction progress.
 - Encrypted software signers, supported hardware wallets, watch-only accounts,
   and per-app permissions.
-- Local contacts, Send, multi-asset Sweep, and an allowlisted Yearn Earn catalog.
+- Local contacts, Send, and multi-asset Sweep.
 
 See [supported standards](SUPPORTED_EIPS.md),
-[execution boundaries](EXECUTION_BOUNDARIES.md), and
-[Yearn Earn](YEARN_EARN.md) for exact behavior.
+[execution boundaries](EXECUTION_BOUNDARIES.md) for exact behavior.
 
 ## Account activity
 
@@ -158,7 +157,6 @@ Wren has no hosted wallet backend. Common network requests use these services:
 | EVM RPC                 | PublicNode               | IP address, queries, calldata, and submitted transactions                   |
 | USD prices              | DefiLlama; GeckoTerminal | IP address, network and token IDs; no wallet address                        |
 | App content             | IPFS.io                  | IP address and the requested content ID and path                            |
-| Earn catalog            | Yearn Kong               | A fixed catalog request; no account data                                    |
 | Token artwork           | Reviewed CoinGecko host  | Recognized artwork requests only                                            |
 | Contract names and ABIs | Sourcify; Etherscan      | IP address, network and contract address                                    |
 | Trezor definitions      | Trezor SDK service       | IP address, network, target/token address and sometimes a function selector |

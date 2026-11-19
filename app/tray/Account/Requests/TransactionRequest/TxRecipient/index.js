@@ -18,15 +18,6 @@ import AddressSafetyStatus, {
 import { resolveLocalAddressIdentity } from '../../../../../../resources/domain/addressBook/identity'
 import { getAddress } from '../../../../../../resources/utils'
 
-const YEARN_ACTION_LABELS = {
-  approve: 'Yearn token approval',
-  deposit: 'Yearn vault deposit',
-  withdraw: 'Yearn vault withdrawal',
-  stake: 'Yearn vault stake',
-  'start-cooldown': 'Start Yearn cooldown',
-  'cancel-cooldown': 'Cancel Yearn cooldown'
-}
-
 class TxRecipient extends React.Component {
   constructor(...args) {
     super(...args)
@@ -55,17 +46,11 @@ class TxRecipient extends React.Component {
     const localIdentity = address
       ? resolveLocalAddressIdentity(this.store('main.addressBook'), this.store('main.accounts'), address)
       : undefined
-    const yearnAction = (req.recognizedActions || []).find(({ id }) => id?.startsWith('yearn:'))
-    const yearnData = yearnAction?.data || {}
     const addressSafety = addressSafetyTarget(req.addressSafety, address)
     const tokenAction = (req.recognizedActions || []).some(
       (action) => action.id === 'erc20:approve' || action.id === 'erc20:transfer'
     )
-    const title = yearnAction
-      ? 'Calling Yearn Contract'
-      : req.recipientType === 'contract'
-        ? 'Calling Contract'
-        : 'Recipient Account'
+    const title = req.recipientType === 'contract' ? 'Calling Contract' : 'Recipient Account'
     return (
       <ClusterBox className='transactionReviewRecipient' title={title} animationSlot={this.props.i}>
         <Cluster>
@@ -115,14 +100,6 @@ class TxRecipient extends React.Component {
                 </span>
               </ClusterValue>
             </ClusterRow>
-          ) : this.props.technical && yearnAction ? (
-            <ClusterRow>
-              <ClusterValue>
-                <div className='clusterTag' style={{ color: 'var(--good)' }}>
-                  {YEARN_ACTION_LABELS[yearnData.action] || 'Allowlisted Yearn action'}
-                </div>
-              </ClusterValue>
-            </ClusterRow>
           ) : this.props.technical && req.recipientType === 'contract' ? (
             <ClusterRow>
               <ClusterValue>
@@ -131,13 +108,6 @@ class TxRecipient extends React.Component {
                     ? 'Identifying contract method…'
                     : 'Contract method not decoded'}
                 </div>
-              </ClusterValue>
-            </ClusterRow>
-          ) : null}
-          {this.props.technical && yearnAction ? (
-            <ClusterRow>
-              <ClusterValue>
-                <div className='clusterTag'>Allowlisted vault: {yearnData.vaultName}</div>
               </ClusterValue>
             </ClusterRow>
           ) : null}

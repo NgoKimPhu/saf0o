@@ -87,7 +87,7 @@ it.each(
   'loads version %s with cached latency %s and preserves configuration through restart',
   async (version, latency) => {
     const state = await restart(version, latency)
-    expect(state.main._version).toBe(76)
+    expect(state.main._version).toBe(77)
     expect(state.main.accounts[accountId]).toMatchObject(savedMain.accounts[accountId])
     expect(state.main.ledger).toEqual(savedMain.ledger)
     expect(state.main.hardwareDerivation).toBe(savedMain.hardwareDerivation)

@@ -746,8 +746,7 @@ const main = async () => {
   for (const channel of QUALIFICATION_INVOKE_CHANNELS) {
     ipcMain.handle(channel, (event, ...args) => {
       const scenario = scenarioByWebContents.get(event.sender.id)
-      const cacheOnlyCatalog = channel === 'yearn:getCatalog' && args[0]?.cacheOnly === true
-      if (scenario?.deferInvokes?.includes(channel) && !cacheOnlyCatalog) {
+      if (scenario?.deferInvokes?.includes(channel)) {
         return new Promise(() => {})
       }
       const reply = scenario ? invokeReplyFor(scenario, channel, args) : undefined

@@ -22,7 +22,6 @@ import {
   parseBalancesWorkerCommand,
   parseBalancesWorkerEvent
 } from './protocol'
-import { isYearnSystemToken } from '../../yearn/catalog'
 
 import type { Token } from '../../store/state'
 import type EthereumProvider from 'ethereum-provider'
@@ -294,9 +293,7 @@ async function tokenBalanceScan(address: Address, tokensToOmit: Token[] = [], ch
 async function fetchTokenBalances(address: Address, tokens: Token[]) {
   try {
     const blacklistSet = new Set(tokenLoader.getBlacklist().map(toTokenId))
-    const filteredTokens = tokens.filter(
-      (token) => isYearnSystemToken(token) || !blacklistSet.has(toTokenId(token))
-    )
+    const filteredTokens = tokens.filter((token) => !blacklistSet.has(toTokenId(token)))
     await loadTokenBalances(address, filteredTokens, 'tracked')
   } catch (e) {
     log.error('error fetching token balances', e)

@@ -937,77 +937,6 @@ const reviewScenarios = () => [
       { kind: 'text-unclipped', selector: '.contractVerificationRecentMeta' }
     ]
   })),
-  ...INTERFACE_SCALES.flatMap((scale) =>
-    ['unlocked', 'locked'].flatMap((variant) =>
-      [
-        ['full', FULL_SHELL_HEIGHT],
-        ['short', SHORT_SHELL_HEIGHT]
-      ].map(([geometry, logicalHeight]) => ({
-        id: `dash-earn-yvusd-${variant}-${geometry}-${scale}`,
-        renderer: 'dash',
-        state: 'earn-yvusd',
-        variant,
-        scale,
-        logicalWidth: 620,
-        logicalHeight,
-        ready: '.earnDetails',
-        requiredControls:
-          variant === 'locked'
-            ? ['Flexible', 'Locked', 'Deposit', 'Start locked cooldown']
-            : ['Flexible', 'Locked', 'Deposit', 'Withdraw'],
-        requiredText: ['yvUSD', 'Est. APY', 'VAULT TVL', 'Withdrawal terms']
-      }))
-    )
-  ),
-  ...[
-    ['full', FULL_SHELL_HEIGHT],
-    ['short', SHORT_SHELL_HEIGHT]
-  ].map(([geometry, logicalHeight]) => ({
-    id: `dash-earn-loading-${geometry}-1`,
-    renderer: 'dash',
-    state: 'earn-loading',
-    scale: 1,
-    logicalWidth: 620,
-    logicalHeight,
-    ready: '.earnPositionsLoading',
-    deferInvokes: ['yearn:getCatalog', 'yearn:getPositions', 'yearn:getWorkflows'],
-    requiredControls: ['View yvUSD on Ethereum'],
-    requiredText: [
-      'Earn',
-      'Loading current Yearn metrics…',
-      'Loading account positions…',
-      'Ethereum',
-      'yvUSD'
-    ],
-    layoutExpectations: [
-      {
-        kind: 'scroll-fits',
-        selector: '.dashMainScroll'
-      }
-    ]
-  })),
-  {
-    id: 'dash-earn-list-full-1',
-    renderer: 'dash',
-    state: 'earn-list',
-    scale: 1,
-    logicalWidth: 620,
-    logicalHeight: FULL_SHELL_HEIGHT,
-    ready: '.earnPositionList',
-    requiredControls: ['Refresh', 'Manage yvUSD position', 'View yvUSD on Ethereum'],
-    requiredText: ['Earn', 'Your positions', '1.5 USDC', '5.12%', '$1.5M TVL']
-  },
-  {
-    id: 'dash-earn-privacy-short-1',
-    renderer: 'dash',
-    state: 'earn-privacy',
-    scale: 1,
-    logicalWidth: 620,
-    logicalHeight: SHORT_SHELL_HEIGHT,
-    ready: '.earnPositionList',
-    requiredControls: ['Manage yvUSD position', 'View yvUSD on Ethereum'],
-    requiredText: ['Your positions', '•••• USDC', '•••• USDC available', '5.12%', '$1.5M TVL']
-  },
   ...[
     ['full', FULL_SHELL_HEIGHT],
     ['short', SHORT_SHELL_HEIGHT]
@@ -4431,34 +4360,8 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
           privacy: ['$••••']
         }[variant]
       })
-    for (const product of ['direct', 'activity', 'cooldown']) {
-      for (const geometry of ['full', 'short'])
-        selected.push({
-          id: `dash-earn-${product}-${geometry}-1`,
-          renderer: 'dash',
-          state: 'earn-extended',
-          product,
-          variant: product === 'direct' ? 'direct' : product === 'cooldown' ? 'locked' : 'unlocked',
-          scale: 1,
-          logicalWidth: 620,
-          logicalHeight: geometry === 'full' ? FULL_SHELL_HEIGHT : SHORT_SHELL_HEIGHT,
-          ready: product === 'activity' ? '.earnWorkflow' : '.earnDetails',
-          requiredText:
-            product === 'activity'
-              ? ['Earn activity', 'Deposit into yvUSD']
-              : product === 'direct'
-                ? ['USDC vault', 'TVL']
-                : ['Cooldown active'],
-          requiredControls: product === 'activity' ? ['View transaction'] : product === 'cooldown' ? ['Deposit', 'Cancel cooldown'] : ['Deposit', 'Max'],
-          layoutExpectations: product === 'activity' ? [] : [{ kind: 'viewport-bottom', selector: '.earnDetailActionShelf' }]
-        })
-    }
   }
   if (includeReview) {
-    const cooldown = selected.find(({ id }) => id === 'dash-earn-cooldown-short-1')
-    selected.push({ ...cooldown, id: 'dash-earn-cooldown-deposit-short-1',
-      action: { type: 'clickText', text: 'Deposit' },
-      requiredControls: ['Deposit', 'Cancel cooldown', 'Max'] })
     const contact = selected.find(({ id }) => id === 'dash-address-book-editor-short-1')
     selected.push({
       ...contact,
@@ -4616,12 +4519,6 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
           ['Calldata', 'Evidence sources']
         ],
         [
-          'dash-earn-yvusd-unlocked-full-1',
-          ['Vault details'],
-          ['Deposit'],
-          ['Variable APY', 'Yearn risk rating']
-        ],
-        [
           'dash-contract-verification-evidence-full-1',
           ['Runtime identity'],
           ['Edit and recheck'],
@@ -4725,9 +4622,6 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
       layout.push({ kind: 'computed-style', selector: '.dashMainScroll', property: 'overflowY', value: 'hidden' })
       layout.push({ kind: 'viewport-bottom', selector: '.addressBookActionShelf' })
       layout.push({ kind: 'stacked', selector: '.addressBookEditorScroll, .addressBookActionShelf' })
-    }
-    if (scenario.product === 'cooldown') {
-      layout.push({ kind: 'contained', selector: '.earnCooldownActions', container: '.earnDetailActionShelf' })
     }
     if (scenario.id.includes('notify-remove-network')) {
       layout.push({

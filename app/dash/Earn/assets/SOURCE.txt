@@ -1,5 +1,0 @@
-Brand attribution asset: yearn-logo-white.svg
-Source: https://presskit.yearn.fi/downloads/YEARN_LOGO_WHITE_RGB.svg
-Downloaded: 2026-08-07
-Usage: official white landscape logo, unmodified, on the dark Earn hero at the
-press kit's recommended minimum screen width of 85 pixels.

@@ -9,7 +9,6 @@ import Chains from './Chains'
 import Notify from './Notify'
 import Tokens from './Tokens'
 import Settings from './Settings'
-import Earn from './Earn'
 import Send from './Send'
 import AddressBook from './AddressBook'
 import Dapps from './Dapps'
@@ -130,7 +129,6 @@ export class Dash extends React.Component {
 
   renderPanel(view, data, hardwarePrompt) {
     if (view === 'accounts') return <Accounts data={data} />
-    if (view === 'earn') return <Earn data={data} />
     if (view === 'addressBook') return <AddressBook data={data} />
     if (view === 'dapps') return <Dapps data={data} />
     if (view === 'inspector') return <Inspector />

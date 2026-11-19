@@ -172,8 +172,7 @@
         }
       ],
       "walletCallBatches": {},
-      "tokens": { "custom": [], "known": {} },
-      "yearn": { "catalogCache": null, "workflows": {} }
+      "tokens": { "custom": [], "known": {} }
     }
   }
 }

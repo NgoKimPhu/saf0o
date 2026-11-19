@@ -3,7 +3,6 @@ import BigNumber from 'bignumber.js'
 
 import { NATIVE_CURRENCY } from '../../../resources/constants'
 import { toTokenId } from '../../../resources/domain/balance'
-import { isYearnSystemTokenId, YEARN_SYSTEM_TOKENS } from '../../yearn/catalog'
 import BalancesWorkerController from './controller'
 import { CurrencyBalance, TokenBalance } from './scan'
 
@@ -191,7 +190,7 @@ export default function (store: Store) {
     const customTokens = storeApi.getCustomTokens()
     const knownTokens = storeApi.getKnownTokens(address)
     const seenTokens = new Set<string>()
-    const trackedTokens = [...customTokens, ...knownTokens, ...YEARN_SYSTEM_TOKENS].filter((token) => {
+    const trackedTokens = [...customTokens, ...knownTokens].filter((token) => {
       const tokenId = toTokenId(token)
       if (!chains.includes(token.chainId) || seenTokens.has(tokenId)) return false
       seenTokens.add(tokenId)
@@ -301,7 +300,7 @@ export default function (store: Store) {
   }
 
   function handleTokenBlacklistUpdate(tokensToRemove: Set<string>) {
-    const removableTokens = new Set([...tokensToRemove].filter((tokenId) => !isYearnSystemTokenId(tokenId)))
+    const removableTokens = new Set(tokensToRemove)
     const includesBlacklistedTokens = (arr: WithTokenId[]) =>
       arr.some((val) => removableTokens.has(toTokenId(val)))
 

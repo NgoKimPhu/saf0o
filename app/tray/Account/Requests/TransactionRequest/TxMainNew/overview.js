@@ -228,46 +228,6 @@ const SendOverview = ({ req, symbol, decimals, amount: ammt, currencyRate, isTes
   )
 }
 
-export const YearnOverview = ({ action, vaultName, amountRaw, symbol, decimals, asset }) => {
-  const unlimitedApproval =
-    action === 'approve' &&
-    amountRaw === '115792089237316195423570985008687907853269984665640564039457584007913129639935'
-  const labels = {
-    approve:
-      amountRaw === '0'
-        ? 'Revoke Yearn approval'
-        : unlimitedApproval
-          ? 'Unlimited Yearn approval'
-          : 'Approve Yearn vault',
-    deposit: 'Deposit into Yearn',
-    withdraw: 'Withdraw from Yearn',
-    stake: 'Stake Yearn position',
-    'start-cooldown': 'Start Yearn cooldown',
-    'cancel-cooldown': 'Cancel Yearn cooldown'
-  }
-  return (
-    <div>
-      <span>{labels[action] || 'Yearn vault action'}</span>
-      {amountRaw !== undefined && decimals !== undefined ? (
-        <div className='transactionReviewAmountLine'>
-          {asset && ['deposit', 'withdraw'].includes(action) ? (
-            <AssetMark asset={asset} className='transactionReviewAssetMark' showChain={false} />
-          ) : null}
-          <DisplayValue
-            type='ether'
-            value={amountRaw}
-            valueDataParams={{ decimals }}
-            currencySymbol={symbol || ''}
-            currencySymbolPosition='last'
-          />
-        </div>
-      ) : (
-        <span>{vaultName}</span>
-      )}
-    </div>
-  )
-}
-
 const DeployContractOverview = () => <div>Deploy contract</div>
 const DataOverview = () => <div>Send contract data</div>
 
@@ -317,7 +277,6 @@ const ContractCallOverview = ({ req, assetContext = {} }) => {
 const actionOverviews = {
   'erc20:transfer': SendOverview,
   'erc20:approve': ApproveOverview,
-  yearn: YearnOverview,
   ens: EnsOverview
 }
 
@@ -330,15 +289,7 @@ const renderActionOverview = (action, index, req, assetContext) => {
   const asset =
     id === 'erc20:transfer'
       ? { ...assetContext, address: req.data.to, symbol: data.symbol }
-      : _actionClass === 'yearn'
-        ? {
-            ...assetContext,
-            address: data.token,
-            artworkKey: data.vaultId,
-            chainId: data.chainId || assetContext.chainId,
-            symbol: data.symbol
-          }
-        : undefined
+      : undefined
 
   return <ActionOverview asset={asset} key={key} type={actionType} {...{ ...data }} />
 }

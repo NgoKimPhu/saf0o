@@ -73,7 +73,6 @@ export class Command extends React.Component {
       contractVerification: 'Contracts',
       dapps: 'Connected apps',
       deployment: 'Contracts',
-      earn: 'Earn',
       notify: 'Notice',
       default: 'Wren',
       settings: 'Settings',

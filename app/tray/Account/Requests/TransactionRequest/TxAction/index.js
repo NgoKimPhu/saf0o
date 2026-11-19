@@ -21,50 +21,6 @@ import { isUnlimited } from '../../../../../../resources/utils/numbers'
 import { DisplayValue, DisplayCoinBalance } from '../../../../../../resources/Components/DisplayValue'
 import { getAddress } from '../../../../../../resources/utils'
 
-const MAX_UINT256_DECIMAL = '115792089237316195423570985008687907853269984665640564039457584007913129639935'
-
-const formatYearnAmount = (amountRaw, decimals) => new BigNumber(amountRaw).shiftedBy(-decimals).toFixed()
-
-export const getYearnIntentLines = (actionType, data = {}) => {
-  const { amountRaw, amountType, decimals, outputSymbol, symbol, vaultName } = data
-  const amount =
-    amountRaw !== undefined && decimals !== undefined
-      ? `${formatYearnAmount(amountRaw, decimals)} ${symbol || ''}`.trim()
-      : ''
-  const vaultShares = outputSymbol || (vaultName ? `${vaultName} shares` : 'vault shares')
-
-  if (actionType === 'deposit') {
-    return [
-      amount ? `Send ${amount}` : 'Send the selected assets',
-      `Receive ${vaultShares} at execution rate`
-    ]
-  }
-  if (actionType === 'withdraw') {
-    return amountType === 'shares'
-      ? [amount ? `Redeem ${amount}` : 'Redeem vault shares', 'Receive underlying assets at execution rate']
-      : [amount ? `Receive ${amount}` : 'Receive underlying assets', 'Burn the shares required at execution']
-  }
-  if (actionType === 'stake') {
-    return [
-      amount ? `Stake ${amount}` : 'Stake the selected vault shares',
-      `Receive ${outputSymbol || 'staked vault shares'}`
-    ]
-  }
-  if (actionType === 'start-cooldown') {
-    return [
-      amount ? `Move ${amount} into cooldown` : 'Move locked shares into cooldown',
-      'No assets are withdrawn yet'
-    ]
-  }
-  if (actionType === 'cancel-cooldown') return ['Return cooling shares to the locked position']
-  if (actionType === 'approve') {
-    if (amountRaw === '0') return [`Revoke ${symbol || 'token'} allowance`]
-    if (amountRaw === MAX_UINT256_DECIMAL) return [`Grant unlimited ${symbol || 'token'} allowance`]
-    return [amount ? `Set allowance to ${amount}` : 'Set the requested token allowance']
-  }
-  return []
-}
-
 export class TxSending extends React.Component {
   constructor(...args) {
     super(...args)
@@ -89,140 +45,6 @@ export class TxSending extends React.Component {
 
     const { action } = this.props
     const [actionClass, actionType] = action.id.split(':')
-
-    if (actionClass === 'yearn') {
-      const {
-        amountRaw,
-        amountType,
-        decimals,
-        owner,
-        receiver,
-        symbol,
-        spender,
-        token,
-        vaultName,
-        maxLossBps
-      } = action.data || {}
-      const unlimitedApproval = actionType === 'approve' && amountRaw === MAX_UINT256_DECIMAL
-      const labels = {
-        approve:
-          amountRaw === '0'
-            ? 'Revoke Yearn Approval'
-            : unlimitedApproval
-              ? 'Unlimited Yearn Approval'
-              : 'Exact Yearn Approval',
-        deposit: 'Yearn Vault Deposit',
-        withdraw: 'Yearn Vault Withdrawal',
-        stake: 'Stake Yearn Position',
-        'start-cooldown': 'Start Yearn Cooldown',
-        'cancel-cooldown': 'Cancel Yearn Cooldown'
-      }
-      const displayAmount =
-        amountRaw !== undefined && decimals !== undefined
-          ? unlimitedApproval
-            ? `Unlimited ${symbol || ''}`.trim()
-            : `${formatYearnAmount(amountRaw, decimals)} ${symbol || ''}`.trim()
-          : amountRaw
-      const amountLabel =
-        actionType === 'approve'
-          ? 'Allowance'
-          : amountType === 'shares'
-            ? 'Vault shares'
-            : actionType === 'withdraw'
-              ? 'Vault assets'
-              : 'Input assets'
-      const intentLines = getYearnIntentLines(actionType, action.data)
-
-      return (
-        <ClusterBox
-          title={labels[actionType] || 'Yearn Vault Action'}
-          subtitle={vaultName}
-          animationSlot={this.props.i}
-        >
-          <Cluster>
-            {displayAmount ? (
-              <ClusterRow>
-                <ClusterValue>
-                  <div className='clusterFocus'>
-                    <div>{amountLabel}</div>
-                    <div className='clusterFocusHighlight'>{displayAmount}</div>
-                  </div>
-                </ClusterValue>
-              </ClusterRow>
-            ) : null}
-            <ClusterRow>
-              <ClusterValue>
-                <div className='clusterTag'>
-                  {actionType === 'approve'
-                    ? 'Token approval for allowlisted Yearn spender'
-                    : 'Allowlisted Yearn contract'}{' '}
-                  on {chainName || 'unknown network'} (chain {chainId})
-                </div>
-              </ClusterValue>
-            </ClusterRow>
-            {spender ? (
-              <ClusterRow>
-                <ClusterValue>
-                  <div className='clusterTag' style={unlimitedApproval ? { color: 'var(--bad)' } : {}}>
-                    {unlimitedApproval
-                      ? 'Unlimited approval'
-                      : amountRaw === '0'
-                        ? 'Revoke spender'
-                        : 'Exact approval'}
-                    : {spender}
-                  </div>
-                </ClusterValue>
-              </ClusterRow>
-            ) : null}
-            {token ? (
-              <ClusterRow>
-                <ClusterValue>
-                  <div className='clusterTag'>Token contract: {token}</div>
-                </ClusterValue>
-              </ClusterRow>
-            ) : null}
-            {receiver ? (
-              <ClusterRow>
-                <ClusterValue>
-                  <div className='clusterTag'>Receiver: {receiver}</div>
-                </ClusterValue>
-              </ClusterRow>
-            ) : null}
-            {owner ? (
-              <ClusterRow>
-                <ClusterValue>
-                  <div className='clusterTag'>Share owner: {owner}</div>
-                </ClusterValue>
-              </ClusterRow>
-            ) : null}
-            {intentLines.length ? (
-              <ClusterRow>
-                <ClusterValue>
-                  <div className='clusterFocus'>
-                    <div>Expected from verified calldata</div>
-                    {intentLines.map((line) => (
-                      <div className='clusterFocusHighlight' key={line}>
-                        {line}
-                      </div>
-                    ))}
-                    <div className='clusterTag'>
-                      Intent only; RPC-reported effects appear separately when supported.
-                    </div>
-                  </div>
-                </ClusterValue>
-              </ClusterRow>
-            ) : null}
-            {maxLossBps === 0 ? (
-              <ClusterRow>
-                <ClusterValue>
-                  <div className='clusterTag'>Vault loss tolerance: 0%</div>
-                </ClusterValue>
-              </ClusterRow>
-            ) : null}
-          </Cluster>
-        </ClusterBox>
-      )
-    }
 
     if (actionClass === 'erc20') {
       if (actionType === 'transfer') {
@@ -329,7 +151,7 @@ export class TxSending extends React.Component {
         )
         const value = new BigNumber(amount)
         const revoke = value.eq(0)
-        const displayAmount = isUnlimited(amount) ? 'Unlimited' : formatYearnAmount(amount, decimals)
+        const displayAmount = isUnlimited(amount) ? 'Unlimited' : value.shiftedBy(-decimals).toFixed()
         const isSubmitted = req.status !== undefined || this.props.readOnly
 
         return (

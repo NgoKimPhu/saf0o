@@ -46,7 +46,6 @@ import {
 import { handleRenderer, onRenderer, onceRenderer } from './ipc/renderer'
 import { isPathInsideRoot } from './security/fileAccess'
 import { assertSandboxEnabled } from './security/sandbox'
-import yearn from './yearn'
 import send, { revalidateNativeMaxBeforeSign } from './send'
 import addressBookFiles from './addressBook/files'
 import { installShutdownHandlers } from './lifecycle/shutdown'
@@ -647,25 +646,6 @@ handleRenderer('profile:stageRestore', async (e, restoreToken, password, confirm
     return { success: true as const, restore }
   })
 )
-
-handleRenderer('yearn:getCatalog', async (e, options) => yearn.getCatalog(options))
-handleRenderer('yearn:getPositions', async () => yearn.getPositions())
-handleRenderer('yearn:getWorkflows', async () => yearn.list())
-
-const yearnMutation = async (operation: () => Promise<unknown> | unknown) => {
-  try {
-    return { success: true as const, workflow: await operation() }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Yearn workflow failed'
-    log.warn('Yearn workflow operation failed', { reason: message.slice(0, 240) })
-    return { success: false as const, error: message.trim().slice(0, 240) || 'Yearn workflow failed' }
-  }
-}
-
-handleRenderer('yearn:startWorkflow', async (e, request) => yearnMutation(() => yearn.start(request)))
-handleRenderer('yearn:resumeWorkflow', async (e, request) => yearnMutation(() => yearn.resume(request)))
-handleRenderer('yearn:cancelWorkflow', async (e, request) => yearnMutation(() => yearn.cancel(request)))
-handleRenderer('yearn:revokeWorkflow', async (e, request) => yearnMutation(() => yearn.revoke(request)))
 
 handleRenderer('send:resolveRecipient', async (e, value) => send.resolveRecipient(value))
 handleRenderer('send:maxAmount', async (e, request) => send.maxAmount(request))

@@ -42,7 +42,6 @@ export type { Gas, GasFees } from './types/gas'
 export type { Rate } from './types/rate'
 export type { ColorwayPalette } from './types/colors'
 export type { WalletCallBatch, WalletCallBatches, WalletCallReceipt } from './types/walletCallBatch'
-export type { YearnState } from './types/yearn'
 
 const StateSchema = z
   .object({
@@ -251,7 +250,6 @@ const mainState = {
     dontRemind: main('updater.dontRemind', [])
   },
   walletCallBatches: main('walletCallBatches', {}),
-  yearn: main('yearn', { catalogCache: null, workflows: {} }),
   networks: main('networks', {
     ethereum: {
       1: {
