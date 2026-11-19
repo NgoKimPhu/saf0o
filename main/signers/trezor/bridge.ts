@@ -39,7 +39,7 @@ type DeviceReference = {
 }
 
 const manifest = {
-  email: 'jorphex@users.noreply.github.com',
+  email: 'saf0o@users.noreply.github.com',
   appName: 'Wren',
   appUrl: WREN_REPOSITORY_URL
 }

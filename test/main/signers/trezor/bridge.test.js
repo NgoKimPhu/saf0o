@@ -47,8 +47,8 @@ describe('connect events', () => {
       expect.objectContaining({
         manifest: {
           appName: 'Wren',
-          appUrl: 'https://github.com/jorphex/wren',
-          email: 'jorphex@users.noreply.github.com'
+          appUrl: 'https://github.com/saf0o/wren',
+          email: 'saf0o@users.noreply.github.com'
         },
         transports: [expect.any(FrameNodeUsbTransport)]
       })
