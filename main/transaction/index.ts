@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { addHexPrefix, intToHex } from '@ethereumjs/util'
-import { TransactionFactory, TypedTransaction } from '@ethereumjs/tx'
+import { createTx, type TypedTransaction, type TypedTxData } from '@ethereumjs/tx'
 import { Common } from '@ethereumjs/common'
 
 import type { SignerSummary } from '../signers/Signer'
@@ -154,16 +154,16 @@ async function sign(rawTx: TransactionData, signingFn: (tx: TypedTransaction) =>
     parseInt(rawTx.type, 16) === 2 ? 'london' : 'berlin'
   )
 
-  const tx = TransactionFactory.fromTxData(rawTx, { common })
+  const tx = createTx(rawTx as TypedTxData, { common })
 
   return signingFn(tx).then((sig) => {
     const signature = hexifySignature(sig)
 
-    return TransactionFactory.fromTxData(
+    return createTx(
       {
         ...rawTx,
         ...signature
-      },
+      } as TypedTxData,
       { common }
     )
   })

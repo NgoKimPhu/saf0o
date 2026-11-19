@@ -1,6 +1,6 @@
 import log from 'electron-log'
 import { encode } from 'rlp'
-import { addHexPrefix, stripHexPrefix, padToEven } from '@ethereumjs/util'
+import { addHexPrefix, bytesToHex, bytesToUnprefixedHex, stripHexPrefix, padToEven } from '@ethereumjs/util'
 import { SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
 import Transport from '@ledgerhq/hw-transport'
 import Eth from '@ledgerhq/hw-app-eth'
@@ -57,18 +57,22 @@ export default class LedgerEthereumApp {
 
     try {
       const { domain, types, primaryType, message } = TypedDataUtils.sanitizeData(typedData)
-      domainSeparatorHex = TypedDataUtils.hashStruct(
-        'EIP712Domain',
-        domain,
-        types,
-        SignTypedDataVersion.V4
-      ).toString('hex')
-      hashStructMessageHex = TypedDataUtils.hashStruct(
-        primaryType as string,
-        message,
-        types,
-        SignTypedDataVersion.V4
-      ).toString('hex')
+      domainSeparatorHex = bytesToUnprefixedHex(
+        TypedDataUtils.hashStruct(
+          'EIP712Domain',
+          domain,
+          types,
+          SignTypedDataVersion.V4
+        )
+      )
+      hashStructMessageHex = bytesToUnprefixedHex(
+        TypedDataUtils.hashStruct(
+          primaryType as string,
+          message,
+          types,
+          SignTypedDataVersion.V4
+        )
+      )
     } catch (e) {
       throw new DeviceError('Invalid typed data', 99901)
     }
@@ -82,14 +86,13 @@ export default class LedgerEthereumApp {
   async signTransaction(path: string, ledgerTx: TransactionData) {
     const signedTx = await sign(ledgerTx, (tx) => {
       // legacy transactions aren't RLP encoded before they're returned
-      const message = tx.getMessageToSign(false)
-      const legacyMessage = message[0] !== tx.type
-      const rawTxHex = legacyMessage ? Buffer.from(encode(message)).toString('hex') : message.toString('hex')
+      const message = tx.getMessageToSign()
+      const rawTxHex = Buffer.from(Array.isArray(message) ? encode(message) : message).toString('hex')
 
       return this.eth.signTransaction(path, rawTxHex, null)
     })
 
-    return addHexPrefix(signedTx.serialize().toString('hex'))
+    return bytesToHex(signedTx.serialize())
   }
 
   async getAddress(path: string, display: boolean, chainCode: boolean) {

@@ -1,10 +1,11 @@
 import {
   padToEven,
-  unpadHexString,
+  unpadHex,
   addHexPrefix,
   stripHexPrefix,
   intToHex,
-  toBuffer,
+  toBytes,
+  bytesToHex,
   pubToAddress,
   ecrecover,
   hashPersonalMessage
@@ -142,7 +143,7 @@ export function feeTotalOverMax(rawTx: TransactionData, maxTotalFee: bigint) {
 
 function parseValue(value = '') {
   const parsedHex = parseInt(value, 16)
-  return (!!parsedHex && addHexPrefix(unpadHexString(value))) || '0x0'
+  return (!!parsedHex && addHexPrefix(unpadHex(value as `0x${string}`))) || '0x0'
 }
 
 export function getRawTx(newTx: RPC.SendTransaction.TxParams): TransactionData {
@@ -221,10 +222,10 @@ export function getSignedAddress(signed: string, message: string, cb: Callback<s
   let v = signature[64]
   if (v === undefined) return cb(new Error('Wren verifySignature: Signature recovery byte is missing'))
   v = v === 0 || v === 1 ? v + 27 : v
-  const r = toBuffer(signature.slice(0, 32))
-  const s = toBuffer(signature.slice(32, 64))
-  const hash = hashPersonalMessage(toBuffer(message))
-  const verifiedAddress = '0x' + pubToAddress(ecrecover(hash, BigInt(v), r, s)).toString('hex')
+  const r = toBytes(signature.subarray(0, 32))
+  const s = toBytes(signature.subarray(32, 64))
+  const hash = hashPersonalMessage(toBytes(message as `0x${string}`))
+  const verifiedAddress = bytesToHex(pubToAddress(ecrecover(hash, BigInt(v), r, s)))
   cb(null, verifiedAddress)
 }
 

@@ -1,12 +1,11 @@
 const crypto = require('crypto')
-const { signTypedData } = require('@metamask/eth-sig-util')
-const { TransactionFactory } = require('@ethereumjs/tx')
-const { Common } = require('@ethereumjs/common')
+const { signTypedData, personalSign } = require('@metamask/eth-sig-util')
+const { createTx } = require('@ethereumjs/tx')
+const { Common, Mainnet, createCustomCommon, getPresetChainConfig } = require('@ethereumjs/common')
 const {
   hashPersonalMessage,
-  toBuffer,
-  ecsign,
-  addHexPrefix,
+  toBytes,
+  bytesToHex,
   pubToAddress,
   ecrecover
 } = require('@ethereumjs/util')
@@ -14,10 +13,11 @@ const { encryptSecret } = require('../crypto')
 
 function chainConfig(chain, hardfork) {
   const chainId = BigInt(chain)
+  const preset = getPresetChainConfig(chain)
 
-  return Common.isSupportedChainId(chainId)
-    ? new Common({ chain: chainId, hardfork })
-    : Common.custom({ chainId: chainId }, { baseChain: 'mainnet', hardfork })
+  return BigInt(preset.chainId) === chainId
+    ? new Common({ chain: preset, hardfork })
+    : createCustomCommon({ chainId: chain }, Mainnet, { hardfork })
 }
 
 class HotSignerWorker {
@@ -78,16 +78,8 @@ class HotSignerWorker {
   }
 
   signMessage(key, message, pseudoCallback) {
-    // Hash message
-    const hash = hashPersonalMessage(toBuffer(message))
-
-    // Sign message
-    const signed = ecsign(hash, key)
-
-    // Return serialized signed message
-    const hex = Buffer.concat([signed.r, signed.s, Buffer.from([Number(signed.v)])]).toString('hex')
-
-    pseudoCallback(null, addHexPrefix(hex))
+    // Hash and sign the message as r || s || v
+    pseudoCallback(null, personalSign({ privateKey: key, data: toBytes(message) }))
   }
 
   signTypedData(key, typedMessage, pseudoCallback) {
@@ -110,11 +102,11 @@ class HotSignerWorker {
     const hardfork = parseInt(rawTx.type) === 2 ? 'london' : 'berlin'
     const common = chainConfig(chainId, hardfork)
 
-    const tx = TransactionFactory.fromTxData(rawTx, { common })
+    const tx = createTx(rawTx, { common })
     const signedTx = tx.sign(key)
-    const serialized = signedTx.serialize().toString('hex')
+    const serialized = bytesToHex(signedTx.serialize())
 
-    pseudoCallback(null, addHexPrefix(serialized))
+    pseudoCallback(null, serialized)
   }
 
   signEip7702Revoke(key, request, pseudoCallback) {
@@ -141,10 +133,10 @@ class HotSignerWorker {
       // Verify address
       let v = signature[64]
       v = BigInt(v === 0 || v === 1 ? v + 27 : v)
-      const r = toBuffer(signature.slice(0, 32))
-      const s = toBuffer(signature.slice(32, 64))
-      const hash = hashPersonalMessage(toBuffer(message))
-      const verifiedAddress = '0x' + pubToAddress(ecrecover(hash, v, r, s)).toString('hex')
+      const r = toBytes(signature.subarray(0, 32))
+      const s = toBytes(signature.subarray(32, 64))
+      const hash = hashPersonalMessage(toBytes(message))
+      const verifiedAddress = bytesToHex(pubToAddress(ecrecover(hash, v, r, s)))
       // Return result
       pseudoCallback(null, verifiedAddress.toLowerCase() === address.toLowerCase())
     })

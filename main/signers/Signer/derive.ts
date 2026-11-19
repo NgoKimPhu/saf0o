@@ -1,6 +1,6 @@
 import { HDKey } from '@scure/bip32'
 
-import { publicToAddress, toChecksumAddress } from '@ethereumjs/util'
+import { bytesToHex, publicToAddress, toChecksumAddress } from '@ethereumjs/util'
 
 export enum Derivation {
   live = 'live',
@@ -18,8 +18,8 @@ export function deriveHDAccounts(publicKey: string, chainCode: string, cb: Callb
     const derive = (index: number) => {
       const derivedKey = hdk.derive(`m/${index}`)
       if (!derivedKey.publicKey) throw new Error(`Unable to derive public key at index ${index}`)
-      const address = publicToAddress(Buffer.from(derivedKey.publicKey), true)
-      return toChecksumAddress(`0x${address.toString('hex')}`)
+      const address = publicToAddress(derivedKey.publicKey, true)
+      return toChecksumAddress(bytesToHex(address))
     }
     const accounts = []
     for (let i = 0; i < 100; i++) {

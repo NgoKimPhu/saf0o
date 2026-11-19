@@ -1,11 +1,12 @@
-import { Common } from '@ethereumjs/common'
+import { Common, Mainnet, createCustomCommon, getPresetChainConfig } from '@ethereumjs/common'
 
 function chainConfig(chain: number, hardfork: string) {
   const chainId = BigInt(chain)
+  const preset = getPresetChainConfig(chain)
 
-  return Common.isSupportedChainId(chainId)
-    ? new Common({ chain: chainId, hardfork })
-    : Common.custom({ chainId }, { baseChain: 'mainnet', hardfork })
+  return BigInt(preset.chainId) === chainId
+    ? new Common({ chain: preset, hardfork })
+    : createCustomCommon({ chainId: chain }, Mainnet, { hardfork })
 }
 
 export default chainConfig

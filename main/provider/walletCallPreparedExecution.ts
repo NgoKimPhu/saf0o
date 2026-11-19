@@ -1,4 +1,4 @@
-import { Capability, TransactionFactory } from '@ethereumjs/tx'
+import { Capability, createTxFromRLP } from '@ethereumjs/tx'
 
 import { GasFeesSource, type TransactionData } from '../../resources/domain/transaction'
 import { snapshotSweepEvidence, type SweepEvidence } from '../../resources/domain/sweep'
@@ -135,10 +135,7 @@ export function verifySignedTransaction(rawTransaction: unknown, expected: Reado
   try {
     const type = parseRpcQuantity(expected.type) as bigint
     const common = chainConfig(Number(parseRpcQuantity(expected.chainId)), type === 2n ? 'london' : 'berlin')
-    const signed = TransactionFactory.fromSerializedData(
-      Buffer.from((rawTransaction as string).slice(2), 'hex'),
-      { common }
-    )
+    const signed = createTxFromRLP(Buffer.from((rawTransaction as string).slice(2), 'hex'), { common })
     const decoded = signed.toJSON()
     const decodedChainId = signed.common.chainId()
     const expectedTo = expected.to?.toLowerCase()

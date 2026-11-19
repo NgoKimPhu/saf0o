@@ -198,7 +198,7 @@ class ChainConnection extends EventEmitter {
           if (!isCurrent()) return
           feeMarket = this.gasCalculator.calculateGas(feeHistory)
 
-          this.chainConfig.setHardforkByBlockNumber(block.number)
+          this.chainConfig.setHardforkBy({ blockNumber: block.number })
 
           if (!this.chainConfig.gteHardfork(Hardfork.London)) {
             // if baseFeePerGas is present in the block header, the hardfork

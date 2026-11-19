@@ -1,7 +1,7 @@
 import log from 'electron-log'
 import { encode } from 'rlp'
 import { Client, Calldata, Constants } from 'gridplus-sdk'
-import { padToEven, addHexPrefix, stripHexPrefix } from '@ethereumjs/util'
+import { bytesToHex, padToEven, addHexPrefix, stripHexPrefix } from '@ethereumjs/util'
 import { TypedTransaction } from '@ethereumjs/tx'
 import { SignTypedDataVersion } from '@metamask/eth-sig-util'
 
@@ -502,7 +502,7 @@ export default class Lattice extends Signer {
         return normalizeSignature(signedTx?.sig)
       })
 
-      settle(null, addHexPrefix(signedTx.serialize().toString('hex')))
+      settle(null, bytesToHex(signedTx.serialize()))
     } catch (err) {
       log.error('error signing transaction with Lattice', err)
       return settle(toSignerError(err))
@@ -588,11 +588,11 @@ export default class Lattice extends Signer {
     const fwVersion = connection.getFwVersion()
 
     if (fwVersion && (fwVersion.major > 0 || fwVersion.minor >= 15)) {
-      const payload = tx.type ? tx.getMessageToSign(false) : encode(tx.getMessageToSign(false))
+      const payload = tx.type ? tx.getMessageToSign() : encode(tx.getMessageToSign())
 
       let decoder: Buffer | undefined
       if (tx.to && tx.data.length >= 4) {
-        const decoded = decodeLocalCalldata(addHexPrefix(tx.data.toString('hex')))
+        const decoded = decodeLocalCalldata(bytesToHex(tx.data))
         if (decoded.status === 'decoded') {
           try {
             const { def } = Calldata.EVM.parsers.parseSolidityJSONABI(decoded.selector.slice(2), [

@@ -1,5 +1,5 @@
 import log from 'electron-log'
-import { padToEven, stripHexPrefix, addHexPrefix } from '@ethereumjs/util'
+import { bytesToHex, padToEven, stripHexPrefix, addHexPrefix } from '@ethereumjs/util'
 import { SignTypedDataVersion, TypedDataUtils } from '@metamask/eth-sig-util'
 import type { Device as TrezorDevice } from '@trezor/connect'
 
@@ -426,8 +426,8 @@ export default class Trezor extends Signer {
               this.device!,
               path,
               typedMessage.data,
-              domainSeparatorHash.toString('hex'),
-              messageHash.toString('hex')
+              Buffer.from(domainSeparatorHash).toString('hex'),
+              Buffer.from(messageHash).toString('hex')
             ),
           this.lifecycleGeneration,
           this.status
@@ -495,7 +495,7 @@ export default class Trezor extends Signer {
         }
       })
 
-      done(null, addHexPrefix(signedTx.serialize().toString('hex')))
+      done(null, bytesToHex(signedTx.serialize()))
     } catch (e: unknown) {
       const err = e as DeviceError
       done(err)
