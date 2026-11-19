@@ -35,3 +35,17 @@ describe('#getBlacklist', () => {
     expect(blacklistedTokens).toStrictEqual(['Minereum'])
   })
 })
+
+describe('spoofed tokens in the default list', () => {
+  const spoofed = [
+    [1, '0x88c7385a403008b63dc028ba5acbad3edb1d1fa9'], // fake WBTC
+    [1, '0xdfe66b14d37c77f4e9b180ceb433d1b164f0281d'], // fake stETH
+    [59144, '0x6807857ab19c24e1a8f4b73453c477e1b59a5854'] // homoglyph LINEA
+  ]
+
+  it.each(spoofed)('omits %s %s from balance scanning', (chainId, address) => {
+    const listed = (t) => t.chainId === chainId && t.address.toLowerCase() === address
+    expect(tokenLoader.getTokens([chainId]).some(listed)).toBe(false)
+    expect(tokenLoader.getBlacklist([chainId]).some(listed)).toBe(true)
+  })
+})
