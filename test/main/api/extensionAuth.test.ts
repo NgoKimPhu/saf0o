@@ -181,7 +181,7 @@ it('accepts privacy-minimized hellos, validates legacy transport evidence, and r
     legacy.auth.receive(response(legacyChallenge, legacyKeys.control.privateKey))
   ).resolves.toMatchObject({ step: 'authenticated' })
   expect(legacy.authorize).toHaveBeenCalledWith(
-    expect.not.objectContaining({ browser: expect.anything(), extensionId: expect.anything() }),
+    expect.objectContaining({ browser: 'chrome', extensionId: 'a'.repeat(32) }),
     undefined
   )
   await expect(
@@ -216,7 +216,7 @@ it('requires a signed desktop challenge, channel-specific response, and signed f
   const acknowledgement = await auth.receive(response(challenge, keys.control.privateKey))
   expect(acknowledgement).toMatchObject({ step: 'authenticated', challengeId, channelRole: 'control' })
   expect(authorize).toHaveBeenCalledWith(
-    expect.not.objectContaining({ browser: expect.anything(), extensionId: expect.anything() }),
+    expect.objectContaining({ browser: 'chrome', extensionId: 'a'.repeat(32) }),
     undefined
   )
   expect(authorize).toHaveBeenCalledWith(

@@ -3,7 +3,14 @@ import { useEffect, useRef, useState } from 'react'
 import link from '../../../../resources/link'
 import svg from '../../../../resources/svg'
 
-const ExtensionConnectNotification = ({ fingerprint, pairingCode, requestId, onClose }) => {
+const ExtensionConnectNotification = ({
+  browser,
+  extensionId,
+  fingerprint,
+  pairingCode,
+  requestId,
+  onClose
+}) => {
   const [copyFingerprint, setCopyFingerprint] = useState(false)
   const [responding, setResponding] = useState(false)
   const [responseError, setResponseError] = useState(false)
@@ -88,6 +95,11 @@ const ExtensionConnectNotification = ({ fingerprint, pairingCode, requestId, onC
           <div className='notifyBody'>
             <div className='notifyBodyLine'>Compare with the code in Wren Companion.</div>
             <div className='extensionPairingCode'>{pairingCode}</div>
+            {extensionId && (
+              <div className='notifyBodyLine'>
+                {browser}: {extensionId}
+              </div>
+            )}
             <button
               type='button'
               className='extensionOriginButton wrenControl wrenControlSecondary'

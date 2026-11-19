@@ -249,7 +249,7 @@ describe('#parseFrameExtension', () => {
   ])('rejects ambiguous or malformed extension fields: %s', (query) => {
     expect(
       parseFrameExtension({
-        headers: { origin: 'chrome-extension://ldcoohedfbjoobcadoglnnmmfbdlmmhf' },
+        headers: { origin: 'chrome-extension://ifimccfajfbgligbhcgfapdagpnfkbhn' },
         url: `/?${query}`
       })
     ).toBeUndefined()
@@ -258,25 +258,25 @@ describe('#parseFrameExtension', () => {
   it('accepts encoded extension fields and ignores unrelated repeated parameters', () => {
     expect(
       parseFrameExtension({
-        headers: { origin: 'chrome-extension://ldcoohedfbjoobcadoglnnmmfbdlmmhf' },
+        headers: { origin: 'chrome-extension://ifimccfajfbgligbhcgfapdagpnfkbhn' },
         url: '/?%69dentity=frame%2Dextension&role=%63ontrol&extra=1&extra=2'
       })
-    ).toEqual({ browser: 'chrome', id: 'ldcoohedfbjoobcadoglnnmmfbdlmmhf', role: 'control' })
+    ).toEqual({ browser: 'chrome', id: 'ifimccfajfbgligbhcgfapdagpnfkbhn', role: 'control' })
   })
 
   it('correctly identifies the Chrome extension', () => {
-    const origin = 'chrome-extension://ldcoohedfbjoobcadoglnnmmfbdlmmhf'
+    const origin = 'chrome-extension://ifimccfajfbgligbhcgfapdagpnfkbhn'
     const req = { headers: { origin }, url: '/?identity=frame-extension&role=control' }
 
     expect(parseFrameExtension(req)).toStrictEqual({
       browser: 'chrome',
-      id: 'ldcoohedfbjoobcadoglnnmmfbdlmmhf',
+      id: 'ifimccfajfbgligbhcgfapdagpnfkbhn',
       role: 'control'
     })
   })
 
   it('does not recognize the Chrome extension without the identity query parameter', () => {
-    const origin = 'chrome-extension://ldcoohedfbjoobcadoglnnmmfbdlmmhf'
+    const origin = 'chrome-extension://ifimccfajfbgligbhcgfapdagpnfkbhn'
     const req = { headers: { origin }, url: '/' }
 
     expect(parseFrameExtension(req)).toBeUndefined()
@@ -285,6 +285,13 @@ describe('#parseFrameExtension', () => {
   it('does not recognize a Chrome extension with the wrong id', () => {
     const origin = 'chrome-extension://somebogusid'
     const req = { headers: { origin } }
+
+    expect(parseFrameExtension(req)).toBeUndefined()
+  })
+
+  it('rejects a well-formed Chrome extension id that is not on the allowlist', () => {
+    const origin = 'chrome-extension://' + 'a'.repeat(32)
+    const req = { headers: { origin }, url: '/?identity=frame-extension&role=control' }
 
     expect(parseFrameExtension(req)).toBeUndefined()
   })
@@ -352,7 +359,7 @@ describe('#parseFrameExtension', () => {
   })
 
   it('requires a bounded companion connection role', () => {
-    const origin = 'chrome-extension://ldcoohedfbjoobcadoglnnmmfbdlmmhf'
+    const origin = 'chrome-extension://ifimccfajfbgligbhcgfapdagpnfkbhn'
     expect(parseFrameExtension({ headers: { origin }, url: '/?identity=frame-extension' })).toBeUndefined()
     expect(
       parseFrameExtension({

@@ -30,7 +30,7 @@ let socketConnection, mockSocket, authenticatedResponse
 
 const extensionRequestFor = (role = 'control') => ({
   headers: {
-    origin: 'chrome-extension://ldcoohedfbjoobcadoglnnmmfbdlmmhf'
+    origin: 'chrome-extension://ifimccfajfbgligbhcgfapdagpnfkbhn'
   },
   url: `/?identity=frame-extension&role=${role}`
 })
@@ -213,7 +213,7 @@ beforeEach(async () => {
       req: {
         headers: {
           host: '127.0.0.1:1248',
-          origin: 'chrome-extension://ldcoohedfbjoobcadoglnnmmfbdlmmhf'
+          origin: 'chrome-extension://ifimccfajfbgligbhcgfapdagpnfkbhn'
         },
         url: '/?identity=frame-extension&role=control&extra=true',
         socket: { localPort: 1248 }
@@ -225,7 +225,7 @@ beforeEach(async () => {
       req: {
         headers: {
           host: '127.0.0.1:1248',
-          origin: 'chrome-extension://ldcoohedfbjoobcadoglnnmmfbdlmmhf'
+          origin: 'chrome-extension://ifimccfajfbgligbhcgfapdagpnfkbhn'
         },
         url: '/?identity=frame-extension',
         socket: { localPort: 1248 }

@@ -110,7 +110,12 @@ export async function authorizeExtension(
   signal?: AbortSignal,
   allowPairing = true
 ): Promise<boolean> {
-  const { pairingCode: _pairingCode, ...candidateCredential } = candidate
+  const {
+    pairingCode: _pairingCode,
+    browser: _browser,
+    extensionId: _extensionId,
+    ...candidateCredential
+  } = candidate
   const parsedCandidate = ExtensionCredentialSchema.safeParse(candidateCredential)
   if (!parsedCandidate.success || signal?.aborted) return false
 
@@ -182,7 +187,7 @@ export function commitExtensionPairing(
   candidate: ExtensionPairingCandidate,
   revokeCredential = revokeExtensionCredential
 ) {
-  const { pairingCode: _pairingCode, ...credential } = candidate
+  const { pairingCode: _pairingCode, browser: _browser, extensionId: _extensionId, ...credential } = candidate
   const parsed = ExtensionCredentialSchema.safeParse(credential)
   if (!parsed.success) return false
 

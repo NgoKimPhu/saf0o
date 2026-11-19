@@ -689,11 +689,13 @@ export class Notify extends React.Component {
     } else if (notify === 'openExplorer') {
       return this.renderDialog(this.openExplorer(this.store('view.notifyData')))
     } else if (notify === 'extensionConnect') {
-      const { fingerprint, pairingCode, requestId } = this.store('view.notifyData')
+      const { browser, extensionId, fingerprint, pairingCode, requestId } = this.store('view.notifyData')
       const notificationId = this.activeNotificationId()
 
       return this.renderDialog(
         <ExtensionConnectNotification
+          browser={browser}
+          extensionId={extensionId}
           fingerprint={fingerprint}
           pairingCode={pairingCode}
           requestId={requestId}

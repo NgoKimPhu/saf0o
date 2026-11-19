@@ -9,6 +9,7 @@ import type { Permission } from '../store/state'
 import type { ExtensionBrowser } from '../store/state/types/extensionCredential'
 import { originIdForInvoker, type InvokerContext } from '../../resources/domain/origin'
 import { createAccountPermission, permissionCovers } from '../provider/permissions'
+import { chromiumExtensionIds } from './extensionIds'
 
 const dev = process.env.NODE_ENV === 'development'
 
@@ -361,7 +362,11 @@ export function parseFrameExtension(req: IncomingMessage): FrameExtension | unde
   if (!scheme || !rawId) return
   const id = rawId.toLowerCase()
 
-  if (scheme.toLowerCase() === 'chrome-extension' && /^[a-p]{32}$/u.test(id)) {
+  if (
+    scheme.toLowerCase() === 'chrome-extension' &&
+    /^[a-p]{32}$/u.test(id) &&
+    chromiumExtensionIds.includes(id)
+  ) {
     return { browser: 'chrome', id, role }
   }
   if (

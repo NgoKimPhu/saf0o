@@ -97,6 +97,9 @@ export interface ExtensionIdentity {
 
 export interface ExtensionPairingCandidate extends ExtensionCredential {
   pairingCode: string
+  // Shown in the pairing dialog only; not part of the stored credential.
+  browser?: ExtensionBrowser
+  extensionId?: string
 }
 
 type DesktopWireIdentity = {
@@ -405,7 +408,9 @@ export class ExtensionAuthSession {
       })
       const candidate: ExtensionPairingCandidate = {
         ...credential,
-        pairingCode: extensionPairingCode(challenge)
+        pairingCode: extensionPairingCode(challenge),
+        browser: extension.browser,
+        extensionId: extension.id
       }
       this.pending = { candidate, challenge, transcript, rolePublicKey }
       return challenge

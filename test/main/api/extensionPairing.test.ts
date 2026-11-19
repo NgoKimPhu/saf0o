@@ -75,6 +75,15 @@ beforeEach(() => {
   provider.accountsChanged.mockClear()
 })
 
+it('passes browser and extension id to the dialog without breaking credential validation', async () => {
+  const pairing = candidate('b', { browser: 'chrome', extensionId: 'ifimccfajfbgligbhcgfapdagpnfkbhn' })
+  const waiting = authorizeExtension(pairing)
+  const request = store.notify.mock.calls[0][1]
+  expect(request).toMatchObject({ browser: 'chrome', extensionId: 'ifimccfajfbgligbhcgfapdagpnfkbhn' })
+  expect(respondToExtensionPairing(request.requestId, false)).toBe(true)
+  await expect(waiting).resolves.toBe(false)
+})
+
 it('stores one atomic control and page key bundle only after consent and final acknowledgement', async () => {
   const pairing = candidate('a')
   const waiting = authorizeExtension(pairing)

@@ -47,6 +47,8 @@ it('shows the pairing identity and submits the opaque pairing request', async ()
   const onClose = jest.fn()
   const { user } = render(
     <ExtensionConnectNotification
+      browser='chrome'
+      extensionId='ifimccfajfbgligbhcgfapdagpnfkbhn'
       fingerprint='pairing-fingerprint'
       pairingCode='123456'
       requestId='pairing-request'
@@ -55,6 +57,7 @@ it('shows the pairing identity and submits the opaque pairing request', async ()
   )
 
   expect(screen.getByText('123456')).toBeTruthy()
+  expect(screen.getByText('chrome: ifimccfajfbgligbhcgfapdagpnfkbhn')).toBeTruthy()
   expect(screen.getByText('pairing-fingerprint')).toBeTruthy()
 
   const accept = screen.getByRole('button', { name: 'Codes match, connect' })
