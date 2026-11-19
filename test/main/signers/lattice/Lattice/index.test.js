@@ -361,7 +361,7 @@ describe('#deriveAddresses', () => {
       getAddresses: jest.fn(async (opts) => {
         return Array(opts.n)
           .fill()
-          .map((_, i) => `addr${opts.startPath[4] + i}`)
+          .map((_, i) => `add${opts.startPath[4] + i}`)
       })
     }
   })
@@ -383,7 +383,7 @@ describe('#deriveAddresses', () => {
     // 44'/60'/0'/<index>
     lattice.derivation = Derivation.legacy
     lattice.accountLimit = 10
-    lattice.addresses = ['addr1', 'addr2', 'addr3', 'addr4', 'addr5']
+    lattice.addresses = ['add1', 'add2', 'add3', 'add4', 'add5']
 
     await lattice.deriveAddresses()
 
@@ -431,34 +431,34 @@ describe('#deriveAddresses', () => {
     await lattice.deriveAddresses()
 
     expect(lattice.status).toBe(Status.OK)
-    expect(lattice.addresses).toStrictEqual(['0xaddr0', '0xaddr1', '0xaddr2', '0xaddr3', '0xaddr4'])
+    expect(lattice.addresses).toStrictEqual(['0xadd0', '0xadd1', '0xadd2', '0xadd3', '0xadd4'])
   })
 
   it('derives addresses when the limit has increased', async () => {
-    lattice.addresses = [0, 1, 2, 3, 4].map((l) => `addr${l}`)
+    lattice.addresses = [0, 1, 2, 3, 4].map((l) => `add${l}`)
     lattice.accountLimit = 10
 
     await lattice.deriveAddresses()
 
     expect(lattice.status).toBe(Status.OK)
     expect(lattice.addresses).toStrictEqual([
-      '0xaddr0',
-      '0xaddr1',
-      '0xaddr2',
-      '0xaddr3',
-      '0xaddr4',
-      '0xaddr5',
-      '0xaddr6',
-      '0xaddr7',
-      '0xaddr8',
-      '0xaddr9'
+      '0xadd0',
+      '0xadd1',
+      '0xadd2',
+      '0xadd3',
+      '0xadd4',
+      '0xadd5',
+      '0xadd6',
+      '0xadd7',
+      '0xadd8',
+      '0xadd9'
     ])
   })
 
   it('derives no addresses when enough have already been derived', async () => {
     lattice.addresses = Array(10)
       .fill()
-      .map((_, i) => `addr${i + 10}`)
+      .map((_, i) => `add${i + 10}`)
     lattice.accountLimit = 5
 
     await lattice.deriveAddresses()
@@ -474,7 +474,7 @@ describe('#deriveAddresses', () => {
       if ((requestNum += 1) === 1) {
         throw new Error('Error from device: Getting addresses failed')
       }
-      return ['addr1', 'addr2', 'addr3', 'addr4', 'addr5']
+      return ['add1', 'add2', 'add3', 'add4', 'add5']
     })
 
     const errorHandler = jest.fn()
@@ -517,7 +517,7 @@ describe('#deriveAddresses', () => {
       .mockImplementationOnce(async (opts) =>
         Array(opts.n)
           .fill()
-          .map((_, i) => `legacy${opts.startPath[3] + i}`)
+          .map((_, i) => `bee${opts.startPath[3] + i}`)
       )
 
     const standard = lattice.deriveAddresses(Derivation.standard, 0)
@@ -530,7 +530,7 @@ describe('#deriveAddresses', () => {
     await legacy
 
     expect(lattice.derivation).toBe(Derivation.legacy)
-    expect(lattice.addresses).toEqual(['0xlegacy0', '0xlegacy1', '0xlegacy2', '0xlegacy3', '0xlegacy4'])
+    expect(lattice.addresses).toEqual(['0xbee0', '0xbee1', '0xbee2', '0xbee3', '0xbee4'])
   })
 
   it('uses the derivation and account limit captured before awaiting the device', async () => {
@@ -542,7 +542,7 @@ describe('#deriveAddresses', () => {
     await Promise.resolve()
     lattice.derivation = Derivation.legacy
     lattice.accountLimit = 10
-    addresses.resolve(['addr0', 'addr1', 'addr2', 'addr3', 'addr4'])
+    addresses.resolve(['add0', 'add1', 'add2', 'add3', 'add4'])
     await deriving
 
     expect(lattice.connection.getAddresses).toHaveBeenCalledTimes(1)
@@ -574,13 +574,13 @@ describe('#deriveAddresses', () => {
 
 describe('#verifyAddress', () => {
   beforeEach(() => {
-    lattice.addresses = ['addr1', 'addr2', 'addr3', 'addr4', 'addr5']
+    lattice.addresses = ['add1', 'add2', 'add3', 'add4', 'add5']
     lattice.accountLimit = 5
     lattice.connection = { getAddresses: jest.fn(), getAppName: () => 'frame-test' }
   })
 
   it('verifies a matching address', (done) => {
-    lattice.verifyAddress(2, 'addr3', false, (err, result) => {
+    lattice.verifyAddress(2, 'add3', false, (err, result) => {
       try {
         expect(err).toBe(null)
         expect(result).toBe(true)
@@ -609,7 +609,7 @@ describe('#verifyAddress', () => {
       throw new Error('error!')
     }
 
-    lattice.verifyAddress(2, 'addr3', false, (err, result) => {
+    lattice.verifyAddress(2, 'add3', false, (err, result) => {
       try {
         expect(err.message.toLowerCase()).toContain('could not derive addresses: error!')
         expect(result).toBe(undefined)
@@ -945,7 +945,7 @@ describe('#disconnect', () => {
   })
 
   it('clears addresses', () => {
-    lattice.addresses = ['addr1', 'addr2', 'etc']
+    lattice.addresses = ['add1', 'add2', 'etc']
 
     lattice.disconnect()
 
