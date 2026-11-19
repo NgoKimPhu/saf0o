@@ -1,4 +1,4 @@
-import { TransactionFactory } from '@ethereumjs/tx'
+import { createTx } from '@ethereumjs/tx'
 import { privateToAddress } from '@ethereumjs/util'
 
 import { GasFeesSource } from '../../../resources/domain/transaction'
@@ -7,7 +7,7 @@ import { hashSignedTransaction } from '../../../main/provider/walletCallExecutio
 import { executeWalletCallRuntime } from '../../../main/provider/walletCallRuntime'
 
 const privateKey = Buffer.from('1'.padStart(64, '0'), 'hex')
-const account = `0x${privateToAddress(privateKey).toString('hex')}`
+const account = `0x${Buffer.from(privateToAddress(privateKey)).toString('hex')}`
 const target = '0x2222222222222222222222222222222222222222'
 const calls = [
   { to: target, data: '0xabcd', value: '0x0' },
@@ -32,8 +32,8 @@ function transaction(index, call) {
 
 function sign(prepared, key = privateKey) {
   const { from: _from, gasFeesSource: _source, ...data } = prepared
-  const signed = TransactionFactory.fromTxData(data, { common: chainConfig(10, 'london') }).sign(key)
-  return `0x${signed.serialize().toString('hex')}`
+  const signed = createTx(data, { common: chainConfig(10, 'london') }).sign(key)
+  return `0x${Buffer.from(signed.serialize()).toString('hex')}`
 }
 
 function input() {

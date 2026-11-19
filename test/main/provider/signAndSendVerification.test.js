@@ -1,5 +1,5 @@
 import log from 'electron-log'
-import { TransactionFactory } from '@ethereumjs/tx'
+import { createTx } from '@ethereumjs/tx'
 import { privateToAddress } from '@ethereumjs/util'
 
 import provider from '../../../main/provider'
@@ -28,7 +28,7 @@ jest.mock('../../../main/provider/walletCallEvidenceRuntime', () => ({
 jest.mock('../../../main/provider/walletCallStatusView', () => ({ showWalletCallStatus: jest.fn() }))
 
 const privateKey = Buffer.from('1'.padStart(64, '0'), 'hex')
-const from = `0x${privateToAddress(privateKey).toString('hex')}`
+const from = `0x${Buffer.from(privateToAddress(privateKey)).toString('hex')}`
 const to = '0x2222222222222222222222222222222222222222'
 const attacker = '0x3333333333333333333333333333333333333333'
 
@@ -48,7 +48,7 @@ const reviewed = {
 
 const sign = (overrides = {}) => {
   const fields = { ...reviewed, ...overrides }
-  const tx = TransactionFactory.fromTxData(
+  const tx = createTx(
     { ...fields, gasLimit: fields.gasLimit },
     { common: chainConfig(1, 'london') }
   )
@@ -94,7 +94,7 @@ describe('signAndSend signed-bytes verification', () => {
   })
 
   it('accepts the legacy form from a signer without native EIP-1559 support', () => {
-    const legacy = TransactionFactory.fromTxData(
+    const legacy = createTx(
       { ...reviewed, type: '0x0', gasPrice: reviewed.maxFeePerGas },
       { common: chainConfig(1, 'berlin') }
     )

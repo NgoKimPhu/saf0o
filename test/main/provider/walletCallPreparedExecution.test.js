@@ -1,4 +1,4 @@
-import { TransactionFactory } from '@ethereumjs/tx'
+import { createTx } from '@ethereumjs/tx'
 import { privateToAddress } from '@ethereumjs/util'
 
 import { GasFeesSource } from '../../../resources/domain/transaction'
@@ -10,7 +10,7 @@ import {
 import { hashSignedTransaction } from '../../../main/provider/walletCallExecution'
 
 const privateKey = Buffer.from('1'.padStart(64, '0'), 'hex')
-const account = `0x${privateToAddress(privateKey).toString('hex')}`
+const account = `0x${Buffer.from(privateToAddress(privateKey)).toString('hex')}`
 const target = '0x2222222222222222222222222222222222222222'
 
 function transaction(index, call, overrides = {}) {
@@ -33,16 +33,16 @@ function transaction(index, call, overrides = {}) {
 function signPrepared(prepared, key = privateKey) {
   const { from: _from, gasFeesSource: _gasFeesSource, ...txData } = prepared
   const common = chainConfig(parseInt(prepared.chainId, 16), prepared.type === '0x2' ? 'london' : 'berlin')
-  const signed = TransactionFactory.fromTxData(txData, { common }).sign(key)
-  return `0x${signed.serialize().toString('hex')}`
+  const signed = createTx(txData, { common }).sign(key)
+  return `0x${Buffer.from(signed.serialize()).toString('hex')}`
 }
 
 function signUnprotectedLegacy(prepared) {
   const { from: _from, gasFeesSource: _gasFeesSource, chainId: _chainId, ...txData } = prepared
-  const signed = TransactionFactory.fromTxData(txData, { common: chainConfig(1, 'chainstart') }).sign(
+  const signed = createTx(txData, { common: chainConfig(1, 'chainstart') }).sign(
     privateKey
   )
-  return `0x${signed.serialize().toString('hex')}`
+  return `0x${Buffer.from(signed.serialize()).toString('hex')}`
 }
 
 function singleCallInput(type) {

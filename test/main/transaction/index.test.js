@@ -1,5 +1,5 @@
 import { addHexPrefix, stripHexPrefix } from '@ethereumjs/util'
-import { Common } from '@ethereumjs/common'
+import { Common, Mainnet } from '@ethereumjs/common'
 
 import {
   maxFee,
@@ -303,7 +303,7 @@ describe('#populate', () => {
   })
 
   describe('legacy transactions', () => {
-    const chainConfig = new Common({ chain: 'mainnet', hardfork: 'istanbul' })
+    const chainConfig = new Common({ chain: Mainnet, hardfork: 'istanbul' })
 
     it('sets the transaction type', () => {
       const tx = populate(rawTx, chainConfig, gas)
@@ -339,7 +339,7 @@ describe('#populate', () => {
   })
 
   describe('eip-1559 transactions', () => {
-    const chainConfig = new Common({ chain: 'mainnet', hardfork: 'london' })
+    const chainConfig = new Common({ chain: Mainnet, hardfork: 'london' })
 
     beforeEach(() => {
       gas = {
@@ -436,7 +436,7 @@ describe('#populate', () => {
   })
 
   describe('eip-2930 transactions', () => {
-    const chainConfig = new Common({ chain: 'mainnet', hardfork: 'berlin' })
+    const chainConfig = new Common({ chain: Mainnet, hardfork: 'berlin' })
     const accessList = [
       {
         address: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
@@ -451,7 +451,7 @@ describe('#populate', () => {
     })
 
     it('rejects an access list before EIP-2930 activation', () => {
-      const preBerlin = new Common({ chain: 'mainnet', hardfork: 'istanbul' })
+      const preBerlin = new Common({ chain: Mainnet, hardfork: 'istanbul' })
 
       expect(() => populate({ ...rawTx, accessList }, preBerlin, gas)).toThrow(
         /access lists are not supported on this chain/i
@@ -491,10 +491,14 @@ describe('#sign', () => {
     const { type, chainId, ...expectedFields } = rawTx
     const signedTx = await sign(rawTx, jest.fn().mockResolvedValueOnce(sig))
 
+    // @ethereumjs/tx 10 includes chainId, type and yParity in toJSON()
     expect(signedTx.toJSON()).toStrictEqual({
       ...expectedFields,
       ...signature,
-      v: '0x1b'
+      v: '0x1b',
+      chainId: '0x1',
+      type: '0x0',
+      yParity: undefined
     })
   })
 

@@ -1,5 +1,5 @@
-import { Common } from '@ethereumjs/common'
-import { TransactionFactory } from '@ethereumjs/tx'
+import { Common, Mainnet } from '@ethereumjs/common'
+import { createTx } from '@ethereumjs/tx'
 
 import { normalizeTrezorTransaction } from '../../../../main/signers/trezor/transaction'
 
@@ -7,8 +7,8 @@ const address = '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 const storageKey = `0x${'bb'.repeat(32)}`
 
 function transaction(type, overrides = {}) {
-  const common = new Common({ chain: 'mainnet', hardfork: type === '0x2' ? 'london' : 'berlin' })
-  return TransactionFactory.fromTxData(
+  const common = new Common({ chain: Mainnet, hardfork: type === '0x2' ? 'london' : 'berlin' })
+  return createTx(
     {
       type,
       chainId: '0x1',
