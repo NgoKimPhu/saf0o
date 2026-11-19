@@ -1,9 +1,9 @@
 import { AddHotAccount } from '../Components'
-import { addHexPrefix, isHexString, isValidPrivate } from '@ethereumjs/util'
+import { addHexPrefix, hexToBytes, isHexString, isValidPrivate } from '@ethereumjs/util'
 
 const validatePrivateKey = (privateKeyStr) => {
   const prefixed = addHexPrefix(privateKeyStr)
-  if (!isHexString(prefixed) || !isValidPrivate(prefixed.slice(2))) {
+  if (!isHexString(prefixed) || !isValidPrivate(hexToBytes(prefixed))) {
     return 'Enter a valid private key'
   }
 }
