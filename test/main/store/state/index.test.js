@@ -1,6 +1,10 @@
+import os from 'os'
+import path from 'path'
+
 jest.mock('electron-log', () => ({ info: console.log, warn: jest.fn(), error: jest.fn() }))
-jest.mock('electron', () => ({ app: { on: jest.fn(), getPath: jest.fn() } }))
-jest.mock('fs')
+// conf 16 is ESM and uses the real fs, so the persisted file is seeded and read from a temp dir.
+let mockUserData
+jest.mock('electron', () => ({ app: { on: jest.fn(), getPath: jest.fn(() => mockUserData) } }))
 
 let mockLatestVersion = 0
 let mockInterfaceScale = 2
@@ -163,13 +167,18 @@ it('preserves an older version of the state after creating a newer state entry',
   mockLatestVersion = 2
 
   jest.dontMock('../../../../main/store/persist')
-  const { default: fs } = await import('fs')
+  const fs = jest.requireActual('fs')
+  mockUserData = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-state-'))
+  fs.writeFileSync(
+    path.join(mockUserData, 'config.json'),
+    JSON.stringify({ main: { __: { 1: { main: { _version: 1, instanceId: 'test-frame' } } } } })
+  )
   const { default: persist } = await import('../../../../main/store/persist')
   const { default: state } = await import('../../../../main/store/state')
 
   persist.set('main', state().main)
 
-  const writtenState = JSON.parse(fs.__getWrittenData())
+  const writtenState = JSON.parse(fs.readFileSync(path.join(mockUserData, 'config.json'), 'utf8'))
 
   expect(writtenState.main.__['1'].main.instanceId).toBe('test-frame')
   expect(writtenState.main.__['2'].main.instanceId).toBe(currentInstanceId)
