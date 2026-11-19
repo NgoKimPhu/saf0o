@@ -199,7 +199,8 @@
     "querystring": false,
     "stream": false,
     "string_decoder": false,
-    "url": false
+    "url": false,
+    "uuid": "./node_modules/uuid/dist/index.js"
   },
   "engines": {
     "electron": "42",
