@@ -14,7 +14,7 @@ export type ShellLayout = {
   workspaceOverlaysMain: boolean
 }
 
-export const shellMainTargetWidth = 620
+export const shellMainTargetWidth = 500
 export const shellWorkspaceTargetWidth = 620
 export const shellTargetHeight = 900
 const workspaceMinimumWidth = 400
