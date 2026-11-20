@@ -97,5 +97,7 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 - One topic per commit, subject prefix `saf0o: `. Each commit carries a test that fails without the change and encodes why.
 - Keep diffs surgical. Prefer new files or data entries over edits to upstream logic, because they rebase more easily.
 - Push only `main`, and only with the owner's approval. Never push `upstream` or other branches.
+- Local builds for the owner replace the previous one in place: the unpacked Windows app goes to `%USERPROFILE%\Saf0o`.
+  Keep an old build only when asked. Windows locks a running exe, so the app must be closed before the copy.
 - Destructive or rare user actions (disable signer protection, profile restore) go through the native confirmation in
   `main/windows/dialog`.
