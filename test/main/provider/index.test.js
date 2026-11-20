@@ -69,6 +69,12 @@ jest.mock('../../../main/provider/walletCallEvidenceRuntime', () => ({
   default: { wake: jest.fn() }
 }))
 jest.mock('../../../main/provider/walletCallStatusView', () => ({ showWalletCallStatus: jest.fn() }))
+// These tests use opaque fake signed bytes to exercise broadcast/lifecycle handling.
+// Signed-vs-reviewed verification is covered in signAndSendVerification.test.js.
+jest.mock('../../../main/provider/walletCallPreparedExecution', () => ({
+  ...jest.requireActual('../../../main/provider/walletCallPreparedExecution'),
+  verifySignedTransaction: jest.fn()
+}))
 
 jest.mock('../../../main/provider/subscriptions', () => {
   const { SubscriptionType } = jest.requireActual('../../../main/provider/subscriptions')
