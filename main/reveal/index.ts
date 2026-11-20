@@ -21,7 +21,6 @@ import type {
 import { updateErc20ApprovalAmount } from '../transaction/actions/erc20'
 import type { Action, DecodableContract, EntityType } from '../transaction/actions'
 import type { TransactionRequest } from '../accounts'
-import store from '../store'
 
 const knownContracts: DecodableContract[] = [...ensContracts]
 
