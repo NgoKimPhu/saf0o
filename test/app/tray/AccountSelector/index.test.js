@@ -182,3 +182,39 @@ it('moves focus into the chooser and restores the account trigger after Escape',
     expect(document.activeElement).toBe(screen.getByRole('button', { name: /Watch Account/i }))
   })
 })
+
+describe('workspace toggle position', () => {
+  const renderBar = (glideSide) => {
+    const store = (...path) => {
+      const key = path.join('.')
+      if (key === 'main.glideSide') return glideSide
+      if (key === 'selected.showAccounts') return false
+    }
+    store.toggleHideBalances = jest.fn()
+    store.toggleShowAccounts = jest.fn()
+    const selector = new AccountSelector({}, { store })
+    selector.store = store
+    render(
+      selector.renderCurrentAccount({
+        id: '0x000000000000000000000000000000000000dead',
+        address: '0x000000000000000000000000000000000000dead',
+        name: 'Watch Account'
+      })
+    )
+    const toggle = screen.getByRole('button', { name: 'Open dashboard' })
+    return { bar: toggle.closest('.accountSwitcherBar'), toggle }
+  }
+
+  // The pane opens on the side opposite the dock edge; the toggle sits next to that edge.
+  it('leads the header, before the account selector, when docked right (pane opens left)', () => {
+    const { bar, toggle } = renderBar('right')
+    expect(bar.firstElementChild).toBe(toggle)
+    expect(toggle.nextElementSibling.className).toContain('accountSwitcherTrigger')
+  })
+
+  it('ends the header, after copy, when docked left (pane opens right)', () => {
+    const { bar, toggle } = renderBar('left')
+    expect(bar.firstElementChild.className).toContain('accountSwitcherTrigger')
+    expect(toggle.parentElement.lastElementChild).toBe(toggle)
+  })
+})

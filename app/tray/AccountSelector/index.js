@@ -164,8 +164,23 @@ export class AccountSelector extends React.Component {
     const identity = accountDisplayIdentity(currentAccount, showLocalNameWithENS)
     const displayName = identity.primary
     const shortAddress = `${address.substring(0, 6)}…${address.slice(-4)}`
+    // The toggle sits on the side where the dashboard opens: left of the account
+    // selector when docked right (pane opens left), after the controls when docked left.
+    const dockedLeft = this.store('main.glideSide') === 'left'
+    const workspaceToggle = (
+      <button
+        type='button'
+        className='accountWorkspaceToggle saf0oControl saf0oControlGhost saf0oControlIcon saf0oShellNav'
+        aria-label={workspaceOpen ? 'Close dashboard' : 'Open dashboard'}
+        aria-pressed={workspaceOpen}
+        onClick={() => link.send('tray:action', 'setDash', { showing: !workspaceOpen })}
+      >
+        <Icon name={workspaceOpen ? 'panelSplit' : 'panelSingle'} size={19} />
+      </button>
+    )
     return (
       <div className='accountSwitcherBar'>
+        {dockedLeft ? null : workspaceToggle}
         <button
           type='button'
           ref={this.accountTriggerRef}
@@ -205,15 +220,7 @@ export class AccountSelector extends React.Component {
           >
             <Icon name='copy' size={17} />
           </button>
-          <button
-            type='button'
-            className='accountWorkspaceToggle saf0oControl saf0oControlGhost saf0oControlIcon saf0oShellNav'
-            aria-label={workspaceOpen ? 'Close dashboard' : 'Open dashboard'}
-            aria-pressed={workspaceOpen}
-            onClick={() => link.send('tray:action', 'setDash', { showing: !workspaceOpen })}
-          >
-            <Icon name={workspaceOpen ? 'panelSplit' : 'panelSingle'} size={19} />
-          </button>
+          {dockedLeft ? workspaceToggle : null}
         </div>
       </div>
     )
