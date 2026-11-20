@@ -1,25 +1,30 @@
 import log from 'electron-log'
 import { EventEmitter } from 'events'
 import type { ThpPairingMethod } from '@trezor/protocol'
-import TrezorConnect, {
+import type TrezorConnectType from '@trezor/connect'
+import type {
   CommonParams,
   Device,
   DeviceEvent,
   UiEventMessage,
   PopupEventMessage,
   UiRequestMessage,
-  Response,
-  DEVICE,
-  DEVICE_EVENT,
-  UI_EVENTS,
-  UI_REQUEST,
-  UI_REQUESTS,
-  UI_RESPONSE,
-  UI_EVENT
+  Response
 } from '@trezor/connect'
-import { closeFrameNodeUsbTransports, FrameNodeUsbTransport } from './nodeUsbTransport'
 import { trezorSignerId } from './deviceId'
 import { SAF0O_REPOSITORY_URL } from '../../../resources/constants'
+
+// @trezor/* costs ~25% of the startup require, so load it on first use (Trezor init runs after the first window).
+type TrezorConnectModule = typeof import('@trezor/connect')
+let connectModule: TrezorConnectModule | undefined
+const connect = () => (connectModule ??= require('@trezor/connect') as TrezorConnectModule)
+const lazy = <T extends object>(get: () => T) =>
+  new Proxy({} as T, { get: (_, key) => Reflect.get(get(), key) })
+const TrezorConnect = lazy(() => connect().default) as typeof TrezorConnectType
+const DEVICE = lazy(() => connect().DEVICE)
+const UI_REQUESTS = lazy(() => connect().UI_REQUESTS)
+const UI_RESPONSE = lazy(() => connect().UI_RESPONSE)
+const UI_EVENTS = lazy(() => connect().UI_EVENTS)
 
 export class DeviceError extends Error {
   readonly code: string | undefined
@@ -83,6 +88,9 @@ class TrezorBridge extends EventEmitter {
   async open() {
     const generation = ++this.lifecycleGeneration
 
+    const { DEVICE_EVENT, UI_EVENT, UI_REQUEST } = connect()
+    const { FrameNodeUsbTransport } = require('./nodeUsbTransport') as typeof import('./nodeUsbTransport')
+
     TrezorConnect.on(DEVICE_EVENT, this.handleDeviceEvent.bind(this))
     TrezorConnect.on(UI_EVENT, this.handleUiEvent.bind(this))
     TrezorConnect.on(UI_REQUEST, this.handleUiRequest.bind(this))
@@ -116,10 +124,14 @@ class TrezorBridge extends EventEmitter {
     this.requestQueue = Promise.resolve()
     this.removeAllListeners()
 
+    if (!connectModule) return // never opened
+
     TrezorConnect.removeAllListeners()
 
     try {
-      await closeFrameNodeUsbTransports()
+      await (
+        require('./nodeUsbTransport') as typeof import('./nodeUsbTransport')
+      ).closeFrameNodeUsbTransports()
     } finally {
       await TrezorConnect.dispose()
     }

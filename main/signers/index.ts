@@ -6,6 +6,7 @@ import { SignerAdapter } from './adapters'
 
 import LedgerAdapter from './ledger/adapter'
 import TrezorAdapter from './trezor/adapter'
+import afterFirstWindow from './trezor/afterFirstWindow'
 import LatticeAdapter from './lattice/adapter'
 import HotSignerAdapter from './hot/adapter'
 
@@ -61,7 +62,7 @@ export class Signers extends EventEmitter {
         (reason) => this.unloadHotSigners(reason)
       ),
       new LedgerAdapter(),
-      new TrezorAdapter(),
+      new TrezorAdapter(afterFirstWindow),
       new LatticeAdapter()
     ]
 

@@ -402,3 +402,26 @@ describe('Trezor adapter lifecycle', () => {
     expect(adapter.knownSigners).toEqual({})
   })
 })
+
+describe('Trezor adapter deferred start', () => {
+  it('opens the bridge only when the scheduler fires', async () => {
+    jest.clearAllMocks()
+    let fire
+    const deferred = new TrezorSignerAdapter((start) => (fire = start))
+    deferred.open()
+    expect(TrezorBridge.open).not.toHaveBeenCalled()
+    fire()
+    expect(TrezorBridge.open).toHaveBeenCalledTimes(1)
+    await deferred.close()
+  })
+
+  it('does not open the bridge when closed before the scheduler fires', async () => {
+    jest.clearAllMocks()
+    let fire
+    const deferred = new TrezorSignerAdapter((start) => (fire = start))
+    deferred.open()
+    await deferred.close()
+    fire()
+    expect(TrezorBridge.open).not.toHaveBeenCalled()
+  })
+})

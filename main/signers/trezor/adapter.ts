@@ -36,7 +36,8 @@ export default class TrezorSignerAdapter extends SignerAdapter {
   private closed = true
   private onboardingComplete = false
 
-  constructor() {
+  // schedule runs the bridge start; Signers passes a deferral so @trezor/* loads after the first window.
+  constructor(private schedule: (start: () => void) => void = (start) => start()) {
     super('trezor')
   }
 
@@ -248,7 +249,9 @@ export default class TrezorSignerAdapter extends SignerAdapter {
       })
     })
 
-    TrezorBridge.open()
+    this.schedule(() => {
+      if (this.isCurrent(generation)) TrezorBridge.open()
+    })
     super.open()
   }
 
