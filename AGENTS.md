@@ -41,16 +41,17 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 
 ## Build and test
 
-| What                                                            | Command                                                                                         |
-| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Compile `main/` to `compiled/`                                  | `pnpm run compile`                                                                              |
-| Renderer bundles (Parcel) plus verification                     | `pnpm run bundle`                                                                               |
-| Main-process jest                                               | `node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --env=node <paths>` |
-| Renderer jest (`test/app`, `test/resources/{Components,Hooks}`) | the same, with `--env=jsdom --testTimeout=1500`                                                 |
-| Resources jest                                                  | `--env=node --roots=test/resources --testPathIgnorePatterns /Components/ /Hooks/`               |
-| Script tests                                                    | `node --test test/scripts/*.mjs`. Node 24 rejects a directory argument, so pass globs.          |
-| Lint and format                                                 | `node_modules/.bin/eslint <files>`, `node_modules/.bin/prettier --check <files>`                |
-| Windows build, unpacked, from any host                          | `pnpm run package:windows:dir:x64`                                                              |
+| What                                                              | Command                                                                                                                                                              |
+| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Compile `main/` to `compiled/`                                    | `pnpm run compile`                                                                                                                                                   |
+| Renderer bundles (Parcel) plus verification                       | `pnpm run bundle`                                                                                                                                                    |
+| Main-process jest                                                 | `node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --env=node <paths>`                                                                      |
+| Renderer jest (`test/app`, `test/resources/{Components,Hooks}`)   | the same, with `--env=jsdom --testTimeout=1500`                                                                                                                      |
+| Resources jest                                                    | `--env=node --roots=test/resources --testPathIgnorePatterns /Components/ /Hooks/`                                                                                    |
+| Script tests                                                      | `node --test test/scripts/*.mjs`. Node 24 rejects a directory argument, so pass globs.                                                                               |
+| Lint and format                                                   | `node_modules/.bin/eslint <files>`, `node_modules/.bin/prettier --check <files>`                                                                                     |
+| Windows build, unpacked, from any host                            | `pnpm run package:windows:dir:x64`                                                                                                                                   |
+| Main-process bundle (Parcel, `compiled/main` → `compiled-bundle`) | `pnpm run bundle:main`. Only Windows packaging uses it. Externals and path-loaded entries: `scripts/bundle-main.mjs`, guarded by `test/scripts/main-bundle.test.mjs` |
 
 - App icons: replace `asset/brand/saf0o-app-icon-master.png`, then run `pnpm run brand:generate` (it needs Electron). In the sandbox the
   brand sheet and X header render blank, so `git restore` those two files.
