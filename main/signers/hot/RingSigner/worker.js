@@ -1,6 +1,6 @@
 const HotSignerWorker = require('../HotSigner/worker')
 const { decryptSecret } = require('../crypto')
-const { privateToAddress } = require('@ethereumjs/util')
+const { bytesToHex, privateToAddress } = require('@ethereumjs/util')
 
 class RingSignerWorker extends HotSignerWorker {
   constructor() {
@@ -12,9 +12,7 @@ class RingSignerWorker extends HotSignerWorker {
   unlock({ encryptedKeys, password, addresses }, pseudoCallback) {
     try {
       const { keys, version } = this._decryptKeys(encryptedKeys, password)
-      const derivedAddresses = keys.map(
-        (key) => `0x${privateToAddress(Buffer.from(key, 'hex')).toString('hex')}`
-      )
+      const derivedAddresses = keys.map((key) => bytesToHex(privateToAddress(Buffer.from(key, 'hex'))))
       if (
         !Array.isArray(addresses) ||
         addresses.length !== derivedAddresses.length ||

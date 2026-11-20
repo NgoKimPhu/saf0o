@@ -84,6 +84,21 @@ describe('staged hot signers', () => {
     expect(fs.existsSync(signerFile)).toBe(false)
   }, 10_000)
 
+  test('persists an encrypted private-key import to disk', async () => {
+    // Regression: the ring worker compared Uint8Array addresses as text, so unlock failed with
+    // "Invalid password" and the import was rolled back without ever writing the file.
+    const signer = await waitForCallback((cb) =>
+      hot.createFromPrivateKey(signers, PRIVATE_KEY, PASSWORD, PASSWORD_OPTIONS, cb)
+    )
+    const signerFile = path.join(SIGNER_PATH, `${signer.id}.json`)
+    const stored = fs.readFileSync(signerFile, 'utf8')
+
+    expect(JSON.parse(stored).encryptedKeys).toEqual(signer.encryptedKeys)
+    expect(stored).not.toContain(PRIVATE_KEY.slice(2))
+    signer.close()
+    fs.rmSync(signerFile) // later tests reuse this key and expect no file
+  }, 10_000)
+
   test('does not persist a direct import rejected by the signer-removal fence', async () => {
     let rejectedSigner
     const rejectingSigners = {
