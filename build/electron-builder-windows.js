@@ -1,10 +1,12 @@
 const baseConfig = require('./electron-builder-base.js')
+const { mainBundleFiles } = require('./main-bundle.js')
 const { readSigningMode } = require('./signing-mode.js')
 
 const signingMode = readSigningMode('SAF0O_WINDOWS_SIGNING')
 
 module.exports = {
   ...baseConfig,
+  files: mainBundleFiles(),
   artifactName:
     signingMode === 'required'
       ? 'Saf0o-Setup-${version}-x64.${ext}'

@@ -8,6 +8,7 @@ nohot.json
 config.json
 dist
 compiled
+compiled-bundle
 release
 test/**/.userData
 .vscode
