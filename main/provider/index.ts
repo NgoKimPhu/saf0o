@@ -2731,6 +2731,8 @@ export class Provider extends EventEmitter {
   }
 
   private addEthereumChain(payload: RPCRequestPayload, res: RPCRequestCallback) {
+    // Ignore extra trailing params, as MetaMask does: chainlist.org sends [chain, address].
+    if (Array.isArray(payload.params)) payload = { ...payload, params: payload.params.slice(0, 1) }
     try {
       const id = parseChainRequestId(payload.params)
       const type = 'ethereum'

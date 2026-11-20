@@ -1998,6 +1998,17 @@ describe('#send', () => {
       blockExplorerUrls: ['https://explorer.pylon.link']
     }
 
+    it('ignores extra trailing params, as chainlist.org sends [chain, address]', (done) => {
+      // Rejecting the extra param made chainlist's "Add to MetaMask" button do nothing.
+      // A configured but disabled chain makes the delegated switch answer 4901, not -32602.
+      store.set('main.networks.ethereum', 5, { id: 5, on: false })
+      const params = [{ chainId: '0x5' }, '0x0000000000000000000000000000000000000001']
+      send({ method: 'wallet_addEthereumChain', params }, (response) => {
+        expect(response.error).toEqual({ code: 4901, message: 'Saf0o is not connected to chain 5' })
+        done()
+      })
+    })
+
     it('rejects a request with no chain id', (done) => {
       const cb = (response) => {
         expect(response.error.message).toMatch(/invalid params/i)

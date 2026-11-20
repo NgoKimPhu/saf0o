@@ -21,31 +21,26 @@ const httpsUrlSchema = z
     }
   })
 
-// Extra trailing params are ignored, as MetaMask does: chainlist.org sends [chain, address].
-const requestParamsSchema = z
-  .tuple([
-    z.object({
-      chainId: z.unknown()
-    })
-  ])
-  .rest(z.unknown())
+const requestParamsSchema = z.tuple([
+  z.object({
+    chainId: z.unknown()
+  })
+])
 
-const addChainParamsSchema = z
-  .tuple([
-    z.object({
-      chainId: z.unknown(),
-      chainName: z.string().trim().min(1),
-      nativeCurrency: z.object({
-        name: z.string().trim().min(1),
-        symbol: z.string().trim().min(1),
-        decimals: z.number().int().nonnegative()
-      }),
-      rpcUrls: z.array(httpsUrlSchema).min(1).max(5),
-      blockExplorerUrls: z.array(httpsUrlSchema).optional().default([]),
-      iconUrls: z.array(httpsUrlSchema).optional().default([])
-    })
-  ])
-  .rest(z.unknown())
+const addChainParamsSchema = z.tuple([
+  z.object({
+    chainId: z.unknown(),
+    chainName: z.string().trim().min(1),
+    nativeCurrency: z.object({
+      name: z.string().trim().min(1),
+      symbol: z.string().trim().min(1),
+      decimals: z.number().int().nonnegative()
+    }),
+    rpcUrls: z.array(httpsUrlSchema).min(1).max(5),
+    blockExplorerUrls: z.array(httpsUrlSchema).optional().default([]),
+    iconUrls: z.array(httpsUrlSchema).optional().default([])
+  })
+])
 
 export interface NormalizedAddChainRequest {
   id: number
