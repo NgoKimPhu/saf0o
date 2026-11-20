@@ -75,7 +75,9 @@
   color var(--saf0o-text-tertiary)
   font-size var(--saf0o-type-small)
 
-@media (max-width: 560px)
+// Narrow layout: dash queries its viewport; the tray window is wider than #panel
+// while the workspace is open, so the tray queries #panel (@container panel).
+narrowEmptyState()
   .saf0oEmptyState
     min-height 84px
     padding-right 164px
@@ -91,3 +93,9 @@
     .saf0oEmptyStateImage
       right 0
       width 190px
+
+@media (max-width: 560px)
+  narrowEmptyState()
+
+@container panel (max-width: 560px)
+  narrowEmptyState()

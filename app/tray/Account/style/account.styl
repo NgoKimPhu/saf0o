@@ -1287,8 +1287,9 @@
   --saf0o-window-mode-blend var(--saf0o-window-atmosphere-focus-blend)
   --saf0o-window-mode-shadow var(--saf0o-window-atmosphere-focus-shadow)
 
-@media (max-width: 560px)
-  #panel:has(.requestNoticeTransactionReview)
+// A container query cannot style the container itself, so the variable goes on #panel's children.
+@container panel (max-width: 560px)
+  #panel:has(.requestNoticeTransactionReview) > *
     --saf0o-request-review-shelf-height 132px
 
 .accountMain.accountMainPerch
@@ -1999,7 +2000,7 @@ button.accountHomeRename.saf0oControl
     min-height 44px
     padding 0 12px
 
-@media (max-width: 550px)
+@container panel (max-width: 550px)
   .accountPortfolioCard
     height auto
     min-height 144px

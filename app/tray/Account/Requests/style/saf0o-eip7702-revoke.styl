@@ -308,7 +308,7 @@
     min-width 156px
     max-width 156px
 
-@media (max-width: 600px)
+@container panel (max-width: 600px)
   .eip7702RevokeFacts > div
     grid-template-columns 1fr
     gap var(--saf0o-space-1)
@@ -335,7 +335,7 @@
       grid-row 3
       width 100%
 
-@media (max-width: 560px)
+@container panel (max-width: 560px)
   .eip7702StopMonitoringDialog
     .requestDecline,
     .requestSign

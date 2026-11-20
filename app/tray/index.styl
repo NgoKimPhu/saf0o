@@ -170,6 +170,10 @@ div
   --saf0o-window-mode-shadow var(--saf0o-window-atmosphere-wallet-shadow)
   width shellWidth
   max-width 100vw
+  // The tray window is wider than #panel while the workspace is open, so width
+  // breakpoints must query #panel (@container panel), not the viewport (@media).
+  container-name panel
+  container-type inline-size
   left auto
   right 0
   border 0
@@ -245,6 +249,11 @@ div
 .cardShow
   animation-duration var(--saf0o-motion-slow)
   animation-timing-function var(--saf0o-ease)
+
+// resources/base.styl's 540px gutter rule is an @media (shared with dash); mirror it for #panel.
+@container panel (max-width: 540px)
+  #panel > *
+    --saf0o-page-gutter var(--saf0o-space-3)
 
 @import '../../resources/Components/Button'
 @import '../../resources/Components/Input'

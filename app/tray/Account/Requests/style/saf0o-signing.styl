@@ -1197,7 +1197,7 @@
   ._txActionButtonBad
     color var(--saf0o-danger)
 
-@media (max-width: 560px)
+@container panel (max-width: 560px)
   .requestNoticeTransactionReview
     height 132px
 
@@ -1615,7 +1615,7 @@
   grid-row 1
   margin 0
 
-@media (max-width: 610px)
+@container panel (max-width: 610px)
   .txLifecycle
     grid-template-columns 1fr
     gap 14px
@@ -1632,7 +1632,7 @@
     .txLifecycleAction
       flex 1
 
-@media (max-width: 560px)
+@container panel (max-width: 560px)
   .approveTransaction .transactionReviewMain
     ._txDescription
       grid-template-columns minmax(0, 1fr)
@@ -1753,7 +1753,7 @@
     margin 0
     white-space pre-wrap
 
-@media (max-width: 560px)
+@container panel (max-width: 560px)
   .transactionEvidenceView .simpleJsonChild
     grid-template-columns 104px minmax(0, 1fr)
 
@@ -1931,7 +1931,7 @@
     width auto
     padding 0 14px
 
-@media (max-width: 560px)
+@container panel (max-width: 560px)
   .requestApproveTransaction.requestApproveRecoveryStatus
     grid-template-columns minmax(0, 1fr)
 
