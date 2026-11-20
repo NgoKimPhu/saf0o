@@ -200,6 +200,7 @@
     "stream": false,
     "string_decoder": false,
     "url": false,
+    "hotkeys-js": "./node_modules/hotkeys-js/dist/hotkeys-js.js",
     "uuid": "./node_modules/uuid/dist/index.js"
   },
   "engines": {
