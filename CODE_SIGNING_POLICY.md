@@ -1,7 +1,7 @@
 # Code signing policy
 
 Windows release signing requires reviewed source in the public
-[`jorphex/wren`](https://github.com/jorphex/wren) repository. Requests must come
+[`NgoKimPhu/saf0o`](https://github.com/NgoKimPhu/saf0o) repository. Requests must come
 from Wren's release workflow, match an immutable release tag, pass release checks
 and receive manual approval.
 
@@ -10,8 +10,8 @@ Free code signing provided by [SignPath.io](https://signpath.io/), certificate b
 
 ## Roles
 
-- Committer and reviewer: [`@jorphex`](https://github.com/jorphex)
-- Release signing approver: [`@jorphex`](https://github.com/jorphex)
+- Committer and reviewer: [`@NgoKimPhu`](https://github.com/NgoKimPhu)
+- Release signing approver: [`@NgoKimPhu`](https://github.com/NgoKimPhu)
 
 Contributions from anyone without commit access require review before merge.
 Signed release requests use the separate approval step required by SignPath.

@@ -11,7 +11,7 @@ import { assertAdHocSignatureDetails } from '../../scripts/verify-macos-preview.
 test('accepts only an ad-hoc macOS application identity without an Apple authority', () => {
   const details = [
     'Executable=/Volumes/Wren/Wren.app/Contents/MacOS/Wren',
-    'Identifier=io.github.jorphex.wren',
+    'Identifier=io.github.ngokimphu.saf0o',
     'Signature=adhoc',
     'TeamIdentifier=not set'
   ].join('\n')

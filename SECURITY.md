@@ -5,7 +5,7 @@ This policy covers vulnerability reports and security updates for Wren.
 ## Policy scope
 
 Only the latest release published by
-[`jorphex/wren`](https://github.com/jorphex/wren/releases) receives security
+[`NgoKimPhu/saf0o`](https://github.com/NgoKimPhu/saf0o/releases) receives security
 fixes. Wren has not had an independent security audit. Wren is maintained
 separately from Frame Labs.
 
@@ -14,7 +14,7 @@ For implementation details and limits, see
 for physical-device claims. See [`SUPPORTED_EIPS.md`](SUPPORTED_EIPS.md) and
 [`RPC_COMPATIBILITY.md`](RPC_COMPATIBILITY.md) for the standards and local-provider
 surface. Wren Companion is released separately and has its own
-[security boundary](https://github.com/jorphex/wren-companion/blob/main/SECURITY.md).
+[security boundary](https://github.com/NgoKimPhu/saf0o-companion/blob/main/SECURITY.md).
 
 Frame-profile import is opt-in. It works only before the Wren destination exists.
 It uses a private staging directory and a bounded allowlist. It never changes

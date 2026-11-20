@@ -23,7 +23,7 @@ Upstream-PR candidate: no.
 ## 2. Release and updater links
 Commit: b868885a
 
-Intent: Point the updater and release links at saf0o/wren, not jorphex/wren.
+Intent: Point the updater and release links at NgoKimPhu/saf0o (companion: NgoKimPhu/saf0o-companion), not jorphex/wren. App id io.github.ngokimphu.saf0o.
 
 Files: `package.json` (`repository`), `main/windows/window.ts` (release allowlist), `resources/constants/index.ts`, tests for both.
 

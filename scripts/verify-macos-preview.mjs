@@ -5,7 +5,7 @@ import { pathToFileURL } from 'node:url'
 import { verifyNativePackage } from './package-verification.mjs'
 
 export function assertAdHocSignatureDetails(details) {
-  assert.match(details, /^Identifier=io\.github\.jorphex\.wren$/m, 'Unexpected macOS application identifier')
+  assert.match(details, /^Identifier=io\.github\.ngokimphu\.saf0o$/m, 'Unexpected macOS application identifier')
   assert.match(details, /^Signature=adhoc$/m, 'macOS preview must use an ad-hoc signature')
   assert.match(details, /^TeamIdentifier=not set$/m, 'macOS preview must not contain an Apple Team ID')
   assert.doesNotMatch(details, /^Authority=/m, 'macOS preview must not contain a signing authority')

@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 export const APPLICATION_NAME = 'Wren'
-export const APPLICATION_ID = 'io.github.jorphex.wren'
+export const APPLICATION_ID = 'io.github.ngokimphu.saf0o'
 export const PROFILE_DIRECTORY = 'wren'
 export const LEGACY_PROFILE_DIRECTORY = 'frame'
 export const INSTANCE_LOCK_DIRECTORY = '.wren-instance'

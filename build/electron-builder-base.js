@@ -1,5 +1,5 @@
 const config = {
-  appId: 'io.github.jorphex.wren',
+  appId: 'io.github.ngokimphu.saf0o',
   productName: 'Wren',
   npmRebuild: false,
   files: [

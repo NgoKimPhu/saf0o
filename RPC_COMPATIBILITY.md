@@ -1,7 +1,7 @@
 # RPC Compatibility Reference
 
 This reference describes Wren’s local JSON-RPC and EIP-1193 provider for app
-developers. The [browser companion](https://github.com/jorphex/wren-companion)
+developers. The [browser companion](https://github.com/NgoKimPhu/saf0o-companion)
 is documented separately.
 
 ## Navigation
@@ -297,7 +297,7 @@ The poll token is not process authentication.
   source-bound grants, requests, subscriptions, and transports. Protocol-v2
   clients must upgrade and cannot downgrade.
 
-The [browser companion](https://github.com/jorphex/wren-companion) is a separate
+The [browser companion](https://github.com/NgoKimPhu/saf0o-companion) is a separate
 project with its own compatibility artifact. Browser-wide injection and EIP-6963
 discovery are qualified there. Wren's embedded-dapp injector announces EIP-6963
 and keeps the same object as legacy `window.ethereum`.

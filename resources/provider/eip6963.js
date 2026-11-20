@@ -75,7 +75,7 @@ const WREN_ICON = [
 export const WREN_PROVIDER_METADATA = Object.freeze({
   name: 'Wren',
   icon: WREN_ICON,
-  rdns: 'io.github.jorphex.wren'
+  rdns: 'io.github.ngokimphu.saf0o'
 })
 
 export function installEip6963Provider(target, provider) {

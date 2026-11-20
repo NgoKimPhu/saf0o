@@ -19,7 +19,7 @@ Terminal, from the download directory, verify the selected file:
 ```bash
 file='Wren-<version>-macos-arm64-unnotarized.dmg'
 grep "  $file$" SHA256SUMS | shasum -a 256 --check
-gh attestation verify "$file" -R jorphex/wren
+gh attestation verify "$file" -R NgoKimPhu/saf0o
 ```
 
 Replace the filename with the Intel DMG when applicable. Do not install if the

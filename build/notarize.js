@@ -10,7 +10,7 @@ module.exports = async function (params) {
 
   requireEnvironment(['APPLE_ID', 'APPLE_APP_SPECIFIC_PASSWORD', 'APPLE_TEAM_ID'])
   const { notarize } = await import('@electron/notarize')
-  const appId = 'io.github.jorphex.wren' // Same appId in electron-builder
+  const appId = 'io.github.ngokimphu.saf0o' // Same appId in electron-builder
   const appPath = path.join(params.appOutDir, `${params.packager.appInfo.productFilename}.app`)
   if (!fs.existsSync(appPath)) throw new Error(`Cannot find application at: ${appPath}`)
 

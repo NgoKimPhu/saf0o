@@ -198,7 +198,7 @@ archive and active-desktop checks below.
    archives (never interchange them). Run `npm run qualify:serve` in the
    Companion repository, open `http://127.0.0.1:8765/` (a local page that stores
    nothing and makes no network request itself), and require EIP-6963
-   discovery as Wren / `io.github.jorphex.wren` even if another provider owns
+   discovery as Wren / `io.github.ngokimphu.saf0o` even if another provider owns
    `window.ethereum`. In each browser, compare and approve the initial six-digit code. Reject, then
    approve, one account. Check that account and chain events occur once in all
    tabs. Request results and signing payloads must stay in their source tab.

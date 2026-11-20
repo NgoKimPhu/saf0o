@@ -21,7 +21,7 @@ image, DMG SHA-256, and build/SBOM attestation result. The exact-tag workflow mu
 - execute the packaged runtime from the unpacked app, DMG, and ZIP;
 - verify safe archives, matching payloads, source/application identity,
   architecture, native modules, and runtime invariants;
-- require valid ad-hoc code seals with identifier `io.github.jorphex.wren`, no
+- require valid ad-hoc code seals with identifier `io.github.ngokimphu.saf0o`, no
   Apple authority or Team ID, and a rejected Gatekeeper assessment;
 - compare each source-bound CycloneDX SBOM with the Linux and Windows build;
 - attest each public DMG and include it in the combined `SHA256SUMS`;
@@ -37,7 +37,7 @@ Run these checks before creating a Gatekeeper exception:
 ```bash
 file='Wren-<version>-macos-arm64-unnotarized.dmg'
 grep "  $file$" SHA256SUMS | shasum -a 256 --check
-gh attestation verify "$file" -R jorphex/wren
+gh attestation verify "$file" -R NgoKimPhu/saf0o
 mountpoint=$(mktemp -d)
 hdiutil attach "$file" -readonly -nobrowse -mountpoint "$mountpoint"
 app="$mountpoint/Wren.app"
@@ -52,7 +52,7 @@ rmdir "$mountpoint"
 ```
 
 The signature details must report `Signature=adhoc`,
-`Identifier=io.github.jorphex.wren`, `TeamIdentifier=not set`, and no `Authority`
+`Identifier=io.github.ngokimphu.saf0o`, `TeamIdentifier=not set`, and no `Authority`
 line. Gatekeeper assessment must reject the app. Stop qualification if
 Gatekeeper accepts the app or its signature reports a
 Developer ID, Team ID, or unexpected notarization state.
