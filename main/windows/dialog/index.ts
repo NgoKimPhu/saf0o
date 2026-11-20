@@ -78,3 +78,20 @@ export const saveProfileBackupDialog = async (now = new Date()) => {
   })
   return result.canceled ? undefined : result.filePath
 }
+
+// Native confirmation shown by main, so a compromised renderer cannot approve it.
+// Cancel is the default and the Escape action; only an explicit click on `confirmLabel` returns true.
+export const confirmSensitiveAction = async (message: string, detail: string, confirmLabel: string) => {
+  const browserWindow = BrowserWindow.getFocusedWindow() as BrowserWindow
+  const { response } = await dialog.showMessageBox(browserWindow, {
+    type: 'warning',
+    title: 'Confirm',
+    message,
+    detail,
+    buttons: ['Cancel', confirmLabel],
+    defaultId: 0,
+    cancelId: 0,
+    noLink: true
+  })
+  return response === 1
+}

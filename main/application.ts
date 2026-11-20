@@ -25,6 +25,7 @@ import signers from './signers'
 import persist, { commitMainState } from './store/persist'
 import {
   openProfileBackupDialog,
+  confirmSensitiveAction,
   saveProfileBackupDialog,
   showUnhandledExceptionDialog
 } from './windows/dialog'
@@ -587,7 +588,14 @@ handleRenderer('signers:enableProtection', async (e, confirmation) => {
 })
 
 handleRenderer('signers:disableProtection', async (e, confirmation) => {
-  if (confirmation !== 'DISABLE_OS_SIGNER_PROTECTION') {
+  if (
+    confirmation !== 'DISABLE_OS_SIGNER_PROTECTION' ||
+    !(await confirmSensitiveAction(
+      'Turn off OS signer protection?',
+      'Hot signer keys will no longer be protected by your operating system.',
+      'Turn off'
+    ))
+  ) {
     return { success: false as const, error: 'Software signer protection was not confirmed' }
   }
   return signerProtectionMutation(() => osSignerStorage.disable())
@@ -622,6 +630,15 @@ handleRenderer('profile:inspectBackup', async (e, password) =>
 handleRenderer('profile:stageRestore', async (e, restoreToken, password, confirmation) =>
   profileBackupMutation('Encrypted backup could not be staged for restore', async () => {
     if (confirmation !== 'REPLACE_PROFILE_ON_RESTART') {
+      throw new Error('Profile replacement was not explicitly confirmed')
+    }
+    if (
+      !(await confirmSensitiveAction(
+        'Replace your Wren profile?',
+        'Your current profile will be replaced by the selected backup when Wren restarts.',
+        'Replace profile'
+      ))
+    ) {
       throw new Error('Profile replacement was not explicitly confirmed')
     }
     const inspection = profileInspectionTokens.get(restoreToken)

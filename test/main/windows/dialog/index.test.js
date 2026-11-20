@@ -1,5 +1,6 @@
 import { app, dialog } from 'electron'
 import {
+  confirmSensitiveAction,
   openProfileBackupDialog,
   saveProfileBackupDialog,
   showUnhandledExceptionDialog
@@ -8,6 +9,7 @@ import {
 jest.mock('electron', () => ({
   dialog: {
     showMessageBoxSync: jest.fn(),
+    showMessageBox: jest.fn(),
     showErrorBox: jest.fn(),
     showOpenDialog: jest.fn(),
     showSaveDialog: jest.fn()
@@ -97,5 +99,30 @@ describe('profile backup dialogs', () => {
 
     dialog.showSaveDialog.mockResolvedValueOnce({ canceled: true })
     await expect(saveProfileBackupDialog()).resolves.toBeUndefined()
+  })
+})
+
+// Main-side gate for disabling OS signer protection and replacing the profile:
+// anything but an explicit click on the confirm button must refuse.
+describe('#confirmSensitiveAction', () => {
+  const ask = () => confirmSensitiveAction('Turn off?', 'details', 'Turn off')
+
+  it('confirms only when the user clicks the confirm button', async () => {
+    dialog.showMessageBox.mockResolvedValueOnce({ response: 1 })
+    await expect(ask()).resolves.toBe(true)
+  })
+
+  it('refuses on Cancel, Escape or window close', async () => {
+    dialog.showMessageBox.mockResolvedValueOnce({ response: 0 })
+    await expect(ask()).resolves.toBe(false)
+  })
+
+  it('makes Cancel the default and the Escape action', async () => {
+    dialog.showMessageBox.mockResolvedValueOnce({ response: 0 })
+    await ask()
+    expect(dialog.showMessageBox).toHaveBeenLastCalledWith(
+      'focused window',
+      expect.objectContaining({ buttons: ['Cancel', 'Turn off'], defaultId: 0, cancelId: 0 })
+    )
   })
 })
