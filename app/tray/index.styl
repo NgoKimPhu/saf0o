@@ -204,6 +204,32 @@ div
   border-top-right-radius 0
   border-bottom-right-radius 0
 
+// Slide in from the docked edge each time the wallet opens (body loses .suspend).
+// The short delay holds the start state until the window is on screen; 'backwards'
+// keeps no end transform, so #panel never becomes a containing block for fixed children.
+@keyframes shellSlideInRight
+  from
+    transform translateX(100%)
+
+@keyframes shellSlideInLeft
+  from
+    transform translateX(-100%)
+
+.workspace-edge-right:not(.suspend) #panel,
+.workspace-edge-right:not(.suspend)::before
+  animation shellSlideInRight 180ms ease-out 40ms backwards
+
+.workspace-edge-left:not(.suspend) #panel,
+.workspace-edge-left:not(.suspend)::before
+  animation shellSlideInLeft 180ms ease-out 40ms backwards
+
+@media (prefers-reduced-motion: reduce)
+  .workspace-edge-right:not(.suspend) #panel,
+  .workspace-edge-right:not(.suspend)::before,
+  .workspace-edge-left:not(.suspend) #panel,
+  .workspace-edge-left:not(.suspend)::before
+    animation none !important
+
 .backdrop,
 .overlay
   right 0
