@@ -85,13 +85,26 @@ const stageSigner = (signers, signer, addSecret, cb, { lockBeforeReady = true } 
   return { cancel, signer }
 }
 
+// Name and code identify the failure. Only code-less errors (our own fixed messages) add a short
+// message, because system errors embed file paths. Never log passwords, keys or addresses.
+const logStagingFailure = (stage, error) =>
+  log.error(
+    `Hot signer ${stage} failed`,
+    error?.name || typeof error,
+    error?.code || '',
+    error?.code ? '' : String(error?.message ?? error).slice(0, 80)
+  )
+
 const createStagedSigner = (signers, signer, addSecret, cb) =>
   stageSigner(
     signers,
     signer,
     addSecret,
     (error, stagedSigner) => {
-      if (error) return cb(error)
+      if (error) {
+        logStagingFailure('staging', error)
+        return cb(error)
+      }
 
       let admitted = false
       try {
@@ -101,6 +114,7 @@ const createStagedSigner = (signers, signer, addSecret, cb) =>
         stagedSigner.commitStaged()
         untrackSigner(signers, stagedSigner)
       } catch (admissionError) {
+        logStagingFailure('admission', admissionError)
         try {
           if (admitted) {
             const store = require('../../store').default

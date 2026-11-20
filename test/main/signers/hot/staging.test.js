@@ -124,6 +124,7 @@ describe('staged hot signers', () => {
 
   test('detaches an admitted import when protected storage cannot be committed', async () => {
     let rejectedSigner
+    const errorLog = jest.spyOn(log, 'error').mockImplementation(() => {})
     const rollbackAdmission = jest.fn((signer) => signer.close())
     const failingSigners = {
       add: (signer) => {
@@ -144,6 +145,14 @@ describe('staged hot signers', () => {
         hot.createFromPrivateKey(failingSigners, PRIVATE_KEY, PASSWORD, PASSWORD_OPTIONS, cb)
       )
     ).rejects.toThrow('protected storage unavailable')
+
+    // A silent rollback hid the real failure from the owner's log; the entry must name the stage
+    // and error, and must not carry the password or key.
+    const logged = JSON.stringify(errorLog.mock.calls)
+    expect(logged).toContain('Hot signer admission failed')
+    expect(logged).toContain('protected storage unavailable')
+    expect(logged).not.toContain(PASSWORD)
+    expect(logged).not.toContain(PRIVATE_KEY.slice(2))
 
     expect(rollbackAdmission).toHaveBeenCalledWith(rejectedSigner)
     expect(rejectedSigner._closed).toBe(true)
