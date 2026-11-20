@@ -1,6 +1,10 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
-import { getShellLayout, shellMainTargetWidth, shouldJoinWorkspace } from '../../../main/windows/shellGeometry'
+import {
+  getShellLayout,
+  shellMainTargetWidth,
+  shouldJoinWorkspace
+} from '../../../main/windows/shellGeometry'
 
 describe('getShellLayout', () => {
   it('anchors a compact wallet to the right edge', () => {
