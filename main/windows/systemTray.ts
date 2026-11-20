@@ -38,6 +38,7 @@ export type SystemTrayEventHandlers = {
   click: () => void
   clickShow: () => void
   clickHide: () => void
+  clickReloadUI: () => void
 }
 
 export class SystemTray {
@@ -84,6 +85,10 @@ export class SystemTray {
       click: () => this.clickHandlers[eventName as keyof typeof this.clickHandlers](),
       toolTip: label === 'Show Saf0o' ? label : `${label} Saf0o`
     }
+    const reloadUIMenuItem = {
+      label: 'Reload UI',
+      click: () => this.clickHandlers.clickReloadUI()
+    }
     const quitMenuItem = {
       label: 'Quit',
       click: () => app.quit()
@@ -94,7 +99,7 @@ export class SystemTray {
       actionMenuItem.registerAccelerator = false
     }
 
-    const menu = Menu.buildFromTemplate([actionMenuItem, separatorMenuItem, quitMenuItem])
+    const menu = Menu.buildFromTemplate([actionMenuItem, separatorMenuItem, reloadUIMenuItem, quitMenuItem])
 
     if (switchScreen) {
       this.electronTray?.setContextMenu(menu)

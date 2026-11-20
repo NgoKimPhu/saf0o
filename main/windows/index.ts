@@ -123,7 +123,14 @@ const systemTrayEventHandlers: SystemTrayEventHandlers = {
     }
   },
   clickHide: () => app.hide(),
-  clickShow: () => app.show()
+  clickShow: () => app.show(),
+  // Renderer-only reset. Unlock state lives in main, so it survives.
+  clickReloadUI: () => {
+    for (const window of Object.values(windows)) {
+      if (window && !window.isDestroyed()) window.webContents.reloadIgnoringCache()
+    }
+    dash?.reloadNow()
+  }
 }
 const systemTray = new SystemTray(systemTrayEventHandlers)
 const getDisplaySummonShortcut = () => store('main.shortcuts.summon.enabled')
@@ -555,6 +562,11 @@ class Dash {
   reload() {
     this.workspaceLoaded = false
     this.workspace.reload()
+  }
+
+  reloadNow() {
+    this.workspaceLoaded = false
+    this.workspace.reloadNow()
   }
 }
 

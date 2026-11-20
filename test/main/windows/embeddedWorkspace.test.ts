@@ -241,6 +241,15 @@ it('forwards state updates and reloads while active', () => {
   expect(webContents.reload).toHaveBeenCalledTimes(1)
 })
 
+it('reloads a visible workspace immediately for the tray Reload UI action', () => {
+  const { webContents, workspace } = createSetup()
+  workspace.applyLayout(visibleBounds, true)
+
+  workspace.reloadNow()
+
+  expect(webContents.reload).toHaveBeenCalledTimes(1)
+})
+
 it('defers an explicit reload until a visible workspace closes', () => {
   const { webContents, workspace } = createSetup()
 

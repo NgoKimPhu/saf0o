@@ -225,6 +225,11 @@ export class EmbeddedWorkspace {
     this.requestRecovery('reload-requested')
   }
 
+  // Reload now, even while visible. reload() defers until the workspace is hidden.
+  reloadNow() {
+    if (!this.destroyed && !this.view.webContents.isDestroyed()) this.view.webContents.reload()
+  }
+
   openDevTools() {
     if (!this.destroyed && !this.view.webContents.isDestroyed()) {
       this.view.webContents.openDevTools({ mode: 'detach' })
