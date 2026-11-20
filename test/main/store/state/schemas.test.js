@@ -60,6 +60,13 @@ describe('persisted state schema compatibility', () => {
     expect(() => MainSchema.shape.interfaceScale.parse(2)).toThrow()
   })
 
+  it('defaults window transparency to 30 and rejects out-of-range values', () => {
+    expect(MainSchema.shape.windowTransparency.parse(undefined)).toBe(30)
+    expect(MainSchema.shape.windowTransparency.parse(0)).toBe(0)
+    expect(() => MainSchema.shape.windowTransparency.parse(61)).toThrow()
+    expect(() => MainSchema.shape.windowTransparency.parse(12.5)).toThrow()
+  })
+
   it('accepts cached dapps without a manifest or lifecycle fields', () => {
     expect(
       DappSchema.parse({

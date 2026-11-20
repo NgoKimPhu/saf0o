@@ -98,6 +98,23 @@ describe('createWindow', () => {
     }
   })
 
+  it('asks Windows for acrylic behind the tray unless transparency is 0', () => {
+    const platform = Object.getOwnPropertyDescriptor(process, 'platform')
+    Object.defineProperty(process, 'platform', { value: 'win32' })
+    try {
+      createWindow('tray')
+      expect(BrowserWindow.mock.calls[0][0].backgroundMaterial).toBe('acrylic')
+
+      BrowserWindow.mockClear()
+      store.mockImplementation((path) => (path === 'main.windowTransparency' ? 0 : undefined))
+      createWindow('tray')
+      expect(BrowserWindow.mock.calls[0][0].backgroundMaterial).toBe('none')
+    } finally {
+      store.mockReset()
+      Object.defineProperty(process, 'platform', platform)
+    }
+  })
+
   it.each([
     ['dash', 'dash'],
     ['onboard', 'onboard'],

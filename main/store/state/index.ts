@@ -11,6 +11,10 @@ import migrations from '../migrate'
 import { MainSchema } from './types/main'
 import { clearSessionOnlyOrigins } from './session'
 import { normalizeInterfaceScale } from '../../windows/uiScale'
+import {
+  DEFAULT_WINDOW_TRANSPARENCY,
+  normalizeWindowTransparency
+} from '../../../resources/domain/windowTransparency'
 import { createDesktopAuthIdentity, DesktopAuthIdentitySchema } from '../../api/desktopAuthIdentity'
 import { pruneOutboundAddressMemory } from './types/outboundAddressMemory'
 import { pruneActivityTransactionReferences } from './types/activityTransactionReference'
@@ -184,6 +188,7 @@ const mainState = {
   reveal: main('reveal', false),
   glideSide: main('glideSide', 'right'),
   interfaceScale: normalizeInterfaceScale(main('interfaceScale', 1)),
+  windowTransparency: normalizeWindowTransparency(main('windowTransparency', DEFAULT_WINDOW_TRANSPARENCY)),
   showLocalNameWithENS: main('showLocalNameWithENS', false),
   autohide: main('autohide', false),
   transactionNotifications: main('transactionNotifications', true),

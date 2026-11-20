@@ -277,6 +277,16 @@ it('shows requested and effective interface scale and routes scale changes', () 
   expect(link.send).toHaveBeenCalledWith('tray:action', 'setInterfaceScale', 1.25)
 })
 
+it('shows window transparency at the 30% default and routes changes', () => {
+  renderSettings()
+
+  const transparency = setting('Window transparency')
+  expect(within(transparency).getByRole('button', { name: '30%' }).getAttribute('aria-pressed')).toBe('true')
+
+  fireEvent.click(within(transparency).getByRole('button', { name: '45%' }))
+  expect(link.send).toHaveBeenCalledWith('tray:action', 'setWindowTransparency', 45)
+})
+
 it('keeps app identity, license, and reset actions in About', async () => {
   const { user } = renderSettings()
   const about = screen.getByRole('region', { name: 'About' })

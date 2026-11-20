@@ -6,6 +6,7 @@ import RecoveryBoundary, { RecoveryView } from './RecoveryBoundary'
 
 import link from '../../resources/link'
 import appStore from '../store'
+import { applyWindowTransparencyCss } from '../../resources/domain/windowTransparency'
 
 document.addEventListener('dragover', (e) => e.preventDefault())
 document.addEventListener('drop', (e) => e.preventDefault())
@@ -60,6 +61,9 @@ function startWallet() {
           document.body.classList.remove('clip')
         }, 100)
       })
+      store.observer(() =>
+        applyWindowTransparencyCss(document.documentElement, store('main.windowTransparency'))
+      )
       store.observer(() => {
         if (store('tray.open')) {
           document.body.classList.remove('suspend')

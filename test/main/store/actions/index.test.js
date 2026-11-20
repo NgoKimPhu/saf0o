@@ -33,6 +33,7 @@ import {
   setGlideSide as setGlideSideAction,
   setInterfaceScale as setInterfaceScaleAction,
   setInterfaceScaleEffective as setInterfaceScaleEffectiveAction,
+  setWindowTransparency as setWindowTransparencyAction,
   showAccountActivity as showAccountActivityAction
 } from '../../../../main/store/actions'
 import { toTokenId } from '../../../../resources/domain/balance'
@@ -434,6 +435,21 @@ describe('#setInterfaceScale', () => {
     expect(update).toHaveBeenCalledTimes(1)
     expect(update).toHaveBeenCalledWith('view.interfaceScaleEffective', expect.any(Function))
     expect(update.mock.calls[0][1]()).toBe(1.5)
+  })
+})
+
+describe('#setWindowTransparency', () => {
+  it('persists only whole percentages within the readable range', () => {
+    const update = jest.fn()
+
+    setWindowTransparencyAction(update, 45)
+    setWindowTransparencyAction(update, 61)
+    setWindowTransparencyAction(update, -5)
+    setWindowTransparencyAction(update, 'x')
+
+    expect(update).toHaveBeenCalledTimes(1)
+    expect(update).toHaveBeenCalledWith('main.windowTransparency', expect.any(Function))
+    expect(update.mock.calls[0][1]()).toBe(45)
   })
 })
 

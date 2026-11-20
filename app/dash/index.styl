@@ -346,7 +346,7 @@ button,
   --saf0o-window-mode-size var(--saf0o-window-atmosphere-workspace-size)
   --saf0o-window-mode-blend var(--saf0o-window-atmosphere-blend)
   --saf0o-window-mode-shadow var(--saf0o-window-atmosphere-workspace-shadow)
-  background-color var(--saf0o-window-mode-canvas)
+  background-color unquote("color-mix(in srgb, var(--saf0o-window-mode-canvas) calc(var(--saf0o-window-alpha, .7) * 100%), transparent)")
   background-image var(--saf0o-window-mode-image)
   background-repeat var(--saf0o-window-mode-repeat)
   background-size var(--saf0o-window-mode-size)

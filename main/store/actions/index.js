@@ -2,6 +2,7 @@ import log from 'electron-log'
 import { v5 as uuidv5 } from 'uuid'
 import { accountNS, isDefaultAccountName } from '../../../resources/domain/account'
 import { toTokenId } from '../../../resources/domain/balance'
+import { MAX_WINDOW_TRANSPARENCY } from '../../../resources/domain/windowTransparency'
 import {
   importAddressBookExport,
   removeAddressBookEntry,
@@ -157,6 +158,10 @@ module.exports = {
   },
   setInterfaceScale: (u, scale) => {
     if ([1, 1.25, 1.5].includes(scale)) u('main.interfaceScale', () => scale)
+  },
+  setWindowTransparency: (u, percent) => {
+    if (Number.isInteger(percent) && percent >= 0 && percent <= MAX_WINDOW_TRANSPARENCY)
+      u('main.windowTransparency', () => percent)
   },
   setInterfaceScaleEffective: (u, scale) => {
     if ([1, 1.25, 1.5].includes(scale)) u('view.interfaceScaleEffective', () => scale)

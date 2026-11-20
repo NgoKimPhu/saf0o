@@ -31,7 +31,7 @@ body::before
   width shellWidth
   max-width 100%
   border-radius var(--saf0o-radius-xl)
-  background var(--saf0o-bg-canvas)
+  background unquote("color-mix(in srgb, var(--saf0o-bg-canvas) calc(var(--saf0o-window-alpha, .7) * 100%), transparent)")
   box-shadow var(--saf0o-shadow-lg), var(--saf0o-shadow-inset)
   pointer-events none
 
@@ -175,7 +175,7 @@ div
   border 0
   border-radius var(--saf0o-radius-xl)
   color var(--saf0o-text-primary)
-  background-color var(--saf0o-window-mode-canvas)
+  background-color unquote("color-mix(in srgb, var(--saf0o-window-mode-canvas) calc(var(--saf0o-window-alpha, .7) * 100%), transparent)")
   background-image var(--saf0o-window-mode-image)
   background-repeat var(--saf0o-window-mode-repeat)
   background-size var(--saf0o-window-mode-size)

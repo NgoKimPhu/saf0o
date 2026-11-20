@@ -56,6 +56,13 @@ const PreferencesSchema = {
     .union([z.literal(1), z.literal(1.25), z.literal(1.5)])
     .default(1)
     .describe('Requested interface scale'),
+  windowTransparency: z
+    .number()
+    .int()
+    .min(0)
+    .max(60)
+    .default(30)
+    .describe('Window background transparency in percent'),
   autohide: z.boolean().default(false).describe('Automatically hide Saf0o when it loses focus'),
   transactionNotifications: z
     .boolean()

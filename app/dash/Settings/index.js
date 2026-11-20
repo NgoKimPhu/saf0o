@@ -13,6 +13,7 @@ import SignerProtection from './SignerProtection'
 import ContractVerificationCredential from './ContractVerificationCredential'
 
 import styled from 'styled-components'
+import { normalizeWindowTransparency } from '../../../resources/domain/windowTransparency'
 
 const EditShortcut = styled.button`
   flex: none;
@@ -423,6 +424,7 @@ export class Settings extends Component {
     const summonShortcut = this.store('main.shortcuts.summon')
     const platform = this.store('platform')
     const requestedInterfaceScale = this.store('main.interfaceScale') || 1
+    const windowTransparency = normalizeWindowTransparency(this.store('main.windowTransparency'))
     const effectiveInterfaceScale = this.store('view.interfaceScaleEffective') || requestedInterfaceScale
     const requestedInterfaceScalePercent = Math.round(requestedInterfaceScale * 100)
     const effectiveInterfaceScalePercent = Math.round(effectiveInterfaceScale * 100)
@@ -554,6 +556,35 @@ export class Settings extends Component {
               ) : null}
               <div className='interfaceScaleAnnouncement' role='status' aria-live='polite' aria-atomic='true'>
                 {interfaceScaleAnnouncement}
+              </div>
+            </div>
+            <div className='signerPermission localSetting interfaceScaleSetting' style={{ zIndex: 212 }}>
+              <div className='interfaceScaleHeader'>
+                <div className='interfaceScaleCopy'>
+                  <div id='window-transparency-label' className='signerPermissionSetting'>
+                    Window transparency
+                  </div>
+                  <div className='interfaceScaleDescription'>
+                    Fades the window background so your desktop shows through. Text stays solid.
+                  </div>
+                </div>
+                <div
+                  className='interfaceScaleOptions'
+                  role='group'
+                  aria-labelledby='window-transparency-label'
+                >
+                  {[0, 15, 30, 45, 60].map((value) => (
+                    <button
+                      key={value}
+                      type='button'
+                      className='saf0oControl saf0oControlGhost interfaceScaleOption'
+                      aria-pressed={windowTransparency === value}
+                      onClick={() => link.send('tray:action', 'setWindowTransparency', value)}
+                    >
+                      {`${value}%`}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
             <div className='signerPermission localSetting' style={{ zIndex: 213 }}>

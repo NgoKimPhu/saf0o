@@ -5,6 +5,7 @@ import App from './App'
 
 import link from '../../resources/link'
 import appStore from '../store'
+import { applyWindowTransparencyCss } from '../../resources/domain/windowTransparency'
 
 document.addEventListener('dragover', (e) => e.preventDefault())
 document.addEventListener('drop', (e) => e.preventDefault())
@@ -74,6 +75,7 @@ link.rpc('getState', (err, state) => {
       document.body.classList.remove('clip')
     }, 100)
   })
+  store.observer(() => applyWindowTransparencyCss(document.documentElement, store('main.windowTransparency')))
   store.observer(() => {
     const glideSide = store('main.glideSide') === 'left' ? 'left' : 'right'
     document.body.classList.toggle('workspace-edge-left', glideSide === 'left')
