@@ -53,11 +53,14 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 | Windows build, unpacked, from any host                          | `pnpm run package:windows:dir:x64`                                                              |
 
 - Main-process tests write under `$HOME`. Set `HOME` to a scratch directory in a sandbox.
-- With no Electron binary or no network, 13 `test/main` suites fail for environment reasons only:
+- With no Electron binary or no network, up to 13 `test/main` suites fail for environment reasons only. Compare against
+  this list before you call a failure yours:
   - `ipc/schemas`, `ipc/inventory`, `worker`
   - `signers/*`, `trezor/bridge`
   - `dapps/cache`, `contractVerification/artifactIntake`, `windows/glideSentinel`
-    Compare against this list before you call a failure yours.
+- Any other failing suite is real. `provider/index` once looked like noise and turned out to be a regression.
+- Tests that touch `document` under `test/resources` (outside `Components/` and `Hooks/`) need a
+  `/** @jest-environment jsdom */` docblock, because that suite runs with `--env=node`.
 - `scripts/prepare-package.mjs` records a build identity and requires a clean tree. Commit first, then package.
 - Offline packaging needs `COREPACK_HOME` pointing at a populated corepack cache. Add
   `-- -c.electronDist=<dir holding electron-v45.3.3-win32-x64.zip>` to the Windows script.
