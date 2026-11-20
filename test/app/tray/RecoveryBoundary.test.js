@@ -1,5 +1,9 @@
+import React from 'react'
 import RecoveryBoundary from '../../../app/tray/RecoveryBoundary'
+import link from '../../../resources/link'
 import { render, screen } from '../../componentSetup'
+
+jest.mock('../../../resources/link', () => ({ send: jest.fn() }))
 
 it('contains a rendering failure and recovers the view without replaying an action', async () => {
   const log = jest.spyOn(console, 'error').mockImplementation(() => {})
@@ -21,6 +25,30 @@ it('contains a rendering failure and recovers the view without replaying an acti
     expect(screen.getByRole('button', { name: 'Sign transaction' })).toBeTruthy()
     expect(approve).not.toHaveBeenCalled()
     expect(log).toHaveBeenCalledWith('Wallet view failed to render')
+    view.unmount()
+  } finally {
+    log.mockRestore()
+  }
+})
+
+it('reloads only the renderer from the Reload UI button when a hook effect throws', async () => {
+  const log = jest.spyOn(console, 'error').mockImplementation(() => {})
+  function Broken() {
+    React.useEffect(() => {
+      // Mirrors the shortcut Edit crash: a TypeError thrown from an effect, not from render.
+      const hotkeys = {}
+      hotkeys('*')
+    }, [])
+    return null
+  }
+  try {
+    const view = render(
+      <RecoveryBoundary>
+        <Broken />
+      </RecoveryBoundary>
+    )
+    await view.user.click(screen.getByRole('button', { name: 'Reload UI' }))
+    expect(link.send).toHaveBeenCalledWith('tray:reload')
     view.unmount()
   } finally {
     log.mockRestore()

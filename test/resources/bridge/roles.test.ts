@@ -83,3 +83,10 @@ test('allows acknowledged public copies in trusted windows but keeps secret copi
   expect(hasRendererCapability('tray', 'invoke', secretCopy)).toBe(false)
   expect(hasRendererCapability('dapp', 'invoke', secretCopy)).toBe(false)
 })
+
+test('lets only the tray and dashboard renderers reload themselves', () => {
+  expect(hasRendererCapability('tray', 'event', ['tray:reload'])).toBe(true)
+  expect(hasRendererCapability('dash', 'event', ['tray:reload'])).toBe(true)
+  expect(hasRendererCapability('dapp', 'event', ['tray:reload'])).toBe(false)
+  expect(hasRendererCapability('onboard', 'event', ['tray:reload'])).toBe(false)
+})

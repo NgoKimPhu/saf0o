@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client'
 import Restore from 'react-restore'
 
 import App from './App'
+import RecoveryBoundary from '../tray/RecoveryBoundary'
 
 import link from '../../resources/link'
 import appStore from '../store'
@@ -81,9 +82,14 @@ link.rpc('getState', (err, state) => {
     document.body.classList.toggle('workspace-edge-left', glideSide === 'left')
     document.body.classList.toggle('workspace-edge-right', glideSide === 'right')
   })
-  const root = createRoot(document.getElementById('dash'))
+  // RecoveryBoundary reports only the category, without the error payload.
+  const root = createRoot(document.getElementById('dash'), { onCaughtError: () => {} })
   const Dash = Restore.connect(AppComponent, store)
-  root.render(<Dash />)
+  root.render(
+    <RecoveryBoundary>
+      <Dash />
+    </RecoveryBoundary>
+  )
 })
 
 document.addEventListener('contextmenu', (e) => link.send('*:contextmenu', e.clientX, e.clientY))

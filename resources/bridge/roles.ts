@@ -73,7 +73,8 @@ export const hasRendererCapability = (
 ) => {
   if (!rendererRole) return false
   const channel = args[0]
-  if (method === 'event' && channel === 'tray:reload') return rendererRole === 'tray'
+  if (method === 'event' && channel === 'tray:reload')
+    return rendererRole === 'tray' || rendererRole === 'dash'
   if (method === 'invoke' && typeof channel === 'string') {
     if (
       channel === 'tray:writeClipboard' &&

@@ -908,3 +908,45 @@ button,
 @import '../../resources/Components/Input'
 @import './Send/style/index'
 @import './Contracts/style/index'
+
+.walletRecovery
+  position absolute
+  right 0
+  top 0
+  width 100%
+  max-width 620px
+  height 100%
+  box-sizing border-box
+  padding var(--saf0o-space-6)
+  display flex
+  flex-direction column
+  align-items center
+  justify-content center
+  gap var(--saf0o-space-5)
+  background var(--saf0o-bg-canvas)
+  color var(--saf0o-text-primary)
+  border-radius var(--saf0o-radius-xl)
+
+.walletRecoveryActions
+  display flex
+  gap var(--saf0o-space-3)
+
+  button
+    font inherit
+    color var(--saf0o-text-primary)
+    padding 12px 18px
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-md)
+    background var(--saf0o-bg-elevated)
+    box-shadow var(--saf0o-control-shadow)
+    cursor pointer
+
+    &:hover
+      box-shadow var(--saf0o-control-shadow-hover)
+
+    &:active
+      box-shadow var(--saf0o-control-shadow-pressed)
+
+    &:focus-visible
+      outline 2px solid var(--saf0o-text-muted)
+      outline-offset 3px

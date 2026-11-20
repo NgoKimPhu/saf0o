@@ -10,7 +10,7 @@ export function RecoveryView({ onRetry, pending = false }) {
           Try again
         </button>
         <button type='button' onClick={() => link.send('tray:reload')}>
-          Reload wallet
+          Reload UI
         </button>
       </div>
     </div>
