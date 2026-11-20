@@ -37,7 +37,7 @@ it('uses an independent Wren profile by default', () => {
   configureApplicationIdentity(app)
 
   expect(app.setName).toHaveBeenCalledWith(APPLICATION_NAME)
-  expect(app.setPath).toHaveBeenCalledWith('userData', path.join(app.getPath('appData'), 'wren'))
+  expect(app.setPath).toHaveBeenCalledWith('userData', path.join(app.getPath('appData'), 'saf0o'))
 })
 
 it('preserves an explicit isolated profile', () => {

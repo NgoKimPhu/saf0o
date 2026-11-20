@@ -19,7 +19,7 @@ function fixture() {
   const appDataPath = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-profile-import-'))
   roots.push(appDataPath)
   const source = path.join(appDataPath, 'frame')
-  const target = path.join(appDataPath, 'wren')
+  const target = path.join(appDataPath, 'saf0o')
   fs.mkdirSync(path.join(source, 'signers'), { recursive: true })
   const migrationFixture = JSON.parse(
     fs.readFileSync(path.join(__dirname, 'store/migrate/fixtures/v41-current-state.json'), 'utf8')
@@ -278,14 +278,14 @@ test('rejects relative, empty, and nested import paths', () => {
     runRequestedProfileMigration({
       appDataPath,
       argv: ['electron', '--import-frame-profile', '--import-frame-profile-from=relative'],
-      userDataPath: path.join(appDataPath, 'wren')
+      userDataPath: path.join(appDataPath, 'saf0o')
     })
   ).toThrow('Frame profile import source must be an absolute path')
   expect(() =>
     runRequestedProfileMigration({
       appDataPath,
       argv: ['electron', '--import-frame-profile', '--import-frame-profile-from='],
-      userDataPath: path.join(appDataPath, 'wren')
+      userDataPath: path.join(appDataPath, 'saf0o')
     })
   ).toThrow('Frame profile import source cannot be empty')
   expect(() => importFrameProfile(source, path.join(source, 'wren'))).toThrow(

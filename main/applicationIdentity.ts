@@ -3,9 +3,9 @@ import path from 'path'
 
 export const APPLICATION_NAME = 'Wren'
 export const APPLICATION_ID = 'io.github.ngokimphu.saf0o'
-export const PROFILE_DIRECTORY = 'wren'
+export const PROFILE_DIRECTORY = 'saf0o'
 export const LEGACY_PROFILE_DIRECTORY = 'frame'
-export const INSTANCE_LOCK_DIRECTORY = '.wren-instance'
+export const INSTANCE_LOCK_DIRECTORY = '.saf0o-instance'
 
 type ApplicationIdentityTarget = {
   commandLine: { hasSwitch(name: string): boolean }
