@@ -104,5 +104,9 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 - Local builds for the owner replace the previous one in place: the unpacked Windows app goes to `%USERPROFILE%\Saf0o`,
   and the companion `.xpi` sits in the same folder. Re-copy the `.xpi` after you replace the folder.
   Keep an old build only when asked. Windows locks a running exe, so the app must be closed before the copy.
+  - From WSL, check with `/mnt/c/Windows/System32/tasklist.exe`. `tasklist.exe` is not on the WSL PATH, and a check that
+    hides errors always reports "not running".
+  - Copy into a staging folder first, then swap. A plain `rm -rf` of the old folder while the app runs deletes the unlocked
+    files and leaves a broken install.
 - Destructive or rare user actions (disable signer protection, profile restore) go through the native confirmation in
   `main/windows/dialog`.
