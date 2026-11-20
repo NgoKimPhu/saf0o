@@ -730,6 +730,15 @@ test('dispatches only recognized store actions with validated arguments', () => 
   expect(parseRendererIpcArgs('event', 'tray:action', ['setGlideSide', 'top']).success).toBe(false)
   expect(parse('event', 'tray:action', ['setInterfaceScale', 1.25])).toEqual(['setInterfaceScale', 1.25])
   expect(parseRendererIpcArgs('event', 'tray:action', ['setInterfaceScale', 2]).success).toBe(false)
+  // The slider sent this action but main rejected it as unrecognized, so it did nothing.
+  expect(parse('event', 'tray:action', ['setWindowTransparency', 0])).toEqual(['setWindowTransparency', 0])
+  expect(parse('event', 'tray:action', ['setWindowTransparency', 100])).toEqual([
+    'setWindowTransparency',
+    100
+  ])
+  for (const bad of [-1, 101, 30.5, '30', Number.NaN]) {
+    expect(parseRendererIpcArgs('event', 'tray:action', ['setWindowTransparency', bad]).success).toBe(false)
+  }
   expect(parseRendererIpcArgs('event', 'tray:action', ['clearPermissions', address]).success).toBe(false)
   expect(
     parseRendererIpcArgs('event', 'tray:action', ['toggleAccess', address, handlerId, false]).success

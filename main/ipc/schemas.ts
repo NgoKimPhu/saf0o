@@ -701,6 +701,7 @@ const actionSchemas = {
   setFooterHeight: z.tuple([z.literal('panel'), z.number().finite().min(0).max(4096)]),
   setGlideSide: z.tuple([z.enum(['left', 'right'])]),
   setInterfaceScale: z.tuple([z.union([z.literal(1), z.literal(1.25), z.literal(1.5)])]),
+  setWindowTransparency: z.tuple([z.number().int().min(0).max(100)]),
   setKeyboardLayout: z.tuple([z.object({ isUS: z.boolean() }).strict()]),
   setLatticeAccountLimit: z.tuple([z.number().int().min(1).max(100)]),
   setLatticeDerivation: z.tuple([z.enum(['standard', 'legacy', 'live'])]),
