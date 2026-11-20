@@ -105,11 +105,7 @@ the [code-signing policy](CODE_SIGNING_POLICY.md).
 
 ### Browser companion
 
-Chrome and Brave users can install
-[Saf0o Companion from the Chrome Web Store](https://chromewebstore.google.com/detail/wren-companion/ifimccfajfbgligbhcgfapdagpnfkbhn).
-Firefox users can install
-[Saf0o Companion from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/wren-companion/).
-Manual Chrome and Firefox archives are available
+Saf0o Companion is not in the browser stores. Chrome and Firefox archives are available
 from the [Companion releases page](https://github.com/NgoKimPhu/saf0o-companion/releases).
 
 Compare the six-digit code shown by Saf0o and Companion before pairing.

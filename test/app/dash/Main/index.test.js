@@ -61,9 +61,7 @@ it('routes Chrome to its Web Store listing', () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'Download Chrome companion' }))
 
-  expect(SAF0O_COMPANION_CHROME_WEB_STORE_URL).toBe(
-    'https://chromewebstore.google.com/detail/wren-companion/ifimccfajfbgligbhcgfapdagpnfkbhn'
-  )
+  expect(SAF0O_COMPANION_CHROME_WEB_STORE_URL).toBe('https://github.com/NgoKimPhu/saf0o-companion/releases')
   expect(link.send).toHaveBeenCalledWith('tray:openExternal', SAF0O_COMPANION_CHROME_WEB_STORE_URL)
 })
 

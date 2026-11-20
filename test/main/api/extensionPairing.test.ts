@@ -76,10 +76,10 @@ beforeEach(() => {
 })
 
 it('passes browser and extension id to the dialog without breaking credential validation', async () => {
-  const pairing = candidate('b', { browser: 'chrome', extensionId: 'ifimccfajfbgligbhcgfapdagpnfkbhn' })
+  const pairing = candidate('b', { browser: 'chrome', extensionId: 'dkbkgeampccigheoijopoaeneajeenhm' })
   const waiting = authorizeExtension(pairing)
   const request = store.notify.mock.calls[0][1]
-  expect(request).toMatchObject({ browser: 'chrome', extensionId: 'ifimccfajfbgligbhcgfapdagpnfkbhn' })
+  expect(request).toMatchObject({ browser: 'chrome', extensionId: 'dkbkgeampccigheoijopoaeneajeenhm' })
   expect(respondToExtensionPairing(request.requestId, false)).toBe(true)
   await expect(waiting).resolves.toBe(false)
 })
