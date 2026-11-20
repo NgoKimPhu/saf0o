@@ -14,7 +14,7 @@ export type ShellLayout = {
   workspaceOverlaysMain: boolean
 }
 
-export const shellMainTargetWidth = 500
+export const shellMainTargetWidth = 425
 export const shellWorkspaceTargetWidth = 620
 export const shellTargetHeight = 900
 const workspaceMinimumWidth = 400
@@ -26,7 +26,8 @@ export function getShellLayout(
   workspaceOpen = false,
   scale: InterfaceScale = 1
 ): ShellLayout {
-  const mainTargetWidth = shellMainTargetWidth * scale
+  // 425 * 1.25 and 425 * 1.5 are fractional; window bounds must be whole pixels.
+  const mainTargetWidth = Math.round(shellMainTargetWidth * scale)
   const workspaceTargetWidth = shellWorkspaceTargetWidth * scale
   const mainWidth = Math.min(mainTargetWidth, workArea.width)
   const height = Math.max(1, Math.min(shellTargetHeight * scale, workArea.height - verticalMargin * 2))
