@@ -54,6 +54,7 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 
 - App icons: replace `asset/brand/saf0o-app-icon-master.png`, then run `pnpm run brand:generate` (it needs Electron). In the sandbox the
   brand sheet and X header render blank, so `git restore` those two files.
+- Companion icons: `node scripts/generate-companion-icons.mjs <companion checkout>` after the master changes.
 - Main-process tests write under `$HOME`. Set `HOME` to a scratch directory in a sandbox.
 - With no Electron binary or no network, up to 13 `test/main` suites fail for environment reasons only. Compare against
   this list before you call a failure yours:
@@ -68,7 +69,8 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
   `-c.electronDist=<dir holding electron-v45.3.3-win32-x64.zip>` to the Windows script. Do not put `--` before it: pnpm 10
   passes the `--` through, electron-builder then ignores the flag and tries to download Electron.
 - The Windows dir build sets `signAndEditExecutable=false`. The result is unsigned and keeps the default Electron icon.
-  It needs no Wine.
+  It needs no Wine. `-c.win.signExecutable=false` (resource editing, so the exe icon) fails offline: electron-builder downloads rcedit
+  from github.com.
 
 ## Quirks that bit earlier sessions
 
