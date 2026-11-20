@@ -63,7 +63,7 @@ describe('persisted state schema compatibility', () => {
   it('defaults window transparency to 30 and rejects out-of-range values', () => {
     expect(MainSchema.shape.windowTransparency.parse(undefined)).toBe(30)
     expect(MainSchema.shape.windowTransparency.parse(0)).toBe(0)
-    expect(() => MainSchema.shape.windowTransparency.parse(61)).toThrow()
+    expect(() => MainSchema.shape.windowTransparency.parse(101)).toThrow()
     expect(() => MainSchema.shape.windowTransparency.parse(12.5)).toThrow()
   })
 

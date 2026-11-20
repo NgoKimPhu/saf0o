@@ -568,22 +568,20 @@ export class Settings extends Component {
                     Fades the window background so your desktop shows through. Text stays solid.
                   </div>
                 </div>
-                <div
-                  className='interfaceScaleOptions'
-                  role='group'
-                  aria-labelledby='window-transparency-label'
-                >
-                  {[0, 15, 30, 45, 60].map((value) => (
-                    <button
-                      key={value}
-                      type='button'
-                      className='saf0oControl saf0oControlGhost interfaceScaleOption'
-                      aria-pressed={windowTransparency === value}
-                      onClick={() => link.send('tray:action', 'setWindowTransparency', value)}
-                    >
-                      {`${value}%`}
-                    </button>
-                  ))}
+                <div className='windowTransparencyControl'>
+                  <input
+                    type='range'
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={windowTransparency}
+                    aria-labelledby='window-transparency-label'
+                    aria-valuetext={`${windowTransparency}%`}
+                    onChange={(e) =>
+                      link.send('tray:action', 'setWindowTransparency', Number(e.target.value))
+                    }
+                  />
+                  <output>{`${windowTransparency}%`}</output>
                 </div>
               </div>
             </div>

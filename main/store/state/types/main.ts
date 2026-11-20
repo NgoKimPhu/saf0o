@@ -60,7 +60,7 @@ const PreferencesSchema = {
     .number()
     .int()
     .min(0)
-    .max(60)
+    .max(100)
     .default(30)
     .describe('Window background transparency in percent'),
   autohide: z.boolean().default(false).describe('Automatically hide Saf0o when it loses focus'),

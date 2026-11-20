@@ -1,6 +1,5 @@
 export const DEFAULT_WINDOW_TRANSPARENCY = 30
-// Above this the panel text loses contrast over bright wallpapers.
-export const MAX_WINDOW_TRANSPARENCY = 60
+export const MAX_WINDOW_TRANSPARENCY = 100
 
 export function normalizeWindowTransparency(value: unknown): number {
   return Number.isInteger(value) && (value as number) >= 0 && (value as number) <= MAX_WINDOW_TRANSPARENCY

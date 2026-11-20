@@ -439,11 +439,11 @@ describe('#setInterfaceScale', () => {
 })
 
 describe('#setWindowTransparency', () => {
-  it('persists only whole percentages within the readable range', () => {
+  it('persists only whole percentages from 0 to 100', () => {
     const update = jest.fn()
 
     setWindowTransparencyAction(update, 45)
-    setWindowTransparencyAction(update, 61)
+    setWindowTransparencyAction(update, 101)
     setWindowTransparencyAction(update, -5)
     setWindowTransparencyAction(update, 'x')
 

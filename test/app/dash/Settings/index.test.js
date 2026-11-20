@@ -281,10 +281,15 @@ it('shows window transparency at the 30% default and routes changes', () => {
   renderSettings()
 
   const transparency = setting('Window transparency')
-  expect(within(transparency).getByRole('button', { name: '30%' }).getAttribute('aria-pressed')).toBe('true')
+  const slider = within(transparency).getByRole('slider')
+  expect(slider.min).toBe('0')
+  expect(slider.max).toBe('100')
+  expect(slider.step).toBe('1')
+  expect(slider.value).toBe('30')
+  expect(within(transparency).getByText('30%')).toBeTruthy()
 
-  fireEvent.click(within(transparency).getByRole('button', { name: '45%' }))
-  expect(link.send).toHaveBeenCalledWith('tray:action', 'setWindowTransparency', 45)
+  fireEvent.change(slider, { target: { value: '85' } })
+  expect(link.send).toHaveBeenCalledWith('tray:action', 'setWindowTransparency', 85)
 })
 
 it('keeps app identity, license, and reset actions in About', async () => {

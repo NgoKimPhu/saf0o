@@ -5,11 +5,12 @@ import {
   windowCanvasAlpha
 } from '../../../../resources/domain/windowTransparency'
 
-it('defaults to 30% and rejects unreadable or malformed values', () => {
+it('defaults to 30%, allows 0 to 100, and rejects out-of-range or malformed values', () => {
   expect(normalizeWindowTransparency(undefined)).toBe(30)
   expect(normalizeWindowTransparency(0)).toBe(0)
   expect(normalizeWindowTransparency(60)).toBe(60)
-  expect(normalizeWindowTransparency(61)).toBe(30)
+  expect(normalizeWindowTransparency(100)).toBe(100)
+  expect(normalizeWindowTransparency(101)).toBe(30)
   expect(normalizeWindowTransparency(-1)).toBe(30)
   expect(normalizeWindowTransparency('45')).toBe(30)
   expect(normalizeWindowTransparency(12.5)).toBe(30)

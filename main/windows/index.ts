@@ -759,6 +759,11 @@ const init = () => {
 
   // data change events
   let observedInterfaceScale = requestedInterfaceScale()
+  // The settings slider writes on every step; only a none/acrylic flip needs a DWM call.
+  let observedMaterial = windowBackgroundMaterial(
+    process.platform,
+    normalizeWindowTransparency(store('main.windowTransparency'))
+  )
   lifecycleObservers.push(
     store.observer(() => {
       const material = windowBackgroundMaterial(
@@ -766,7 +771,13 @@ const init = () => {
         normalizeWindowTransparency(store('main.windowTransparency'))
       )
       const trayWindow = windows.tray
-      if (process.platform === 'win32' && trayWindow && !trayWindow.isDestroyed()) {
+      if (
+        material !== observedMaterial &&
+        process.platform === 'win32' &&
+        trayWindow &&
+        !trayWindow.isDestroyed()
+      ) {
+        observedMaterial = material
         trayWindow.setBackgroundMaterial(material)
       }
     }, 'windows:transparency')
