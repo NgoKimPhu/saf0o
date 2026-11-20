@@ -51,10 +51,12 @@ describe('chain request parsing', () => {
     expect(() => parseChainId('0x20000000000000')).toThrow(/safely supported/)
   })
 
-  it('requires exactly one chain parameter object', () => {
+  it('requires a leading chain parameter object and ignores extra params', () => {
     expect(parseChainRequestId([{ chainId: '0x1' }])).toBe(1)
     expect(() => parseChainRequestId([])).toThrow()
-    expect(() => parseChainRequestId([{ chainId: '0x1' }, {}])).toThrow()
+    // chainlist.org "Add to MetaMask" sends [chain, address]; rejecting it broke the button
+    expect(parseChainRequestId([{ chainId: '0x1' }, '0x0000000000000000000000000000000000000001'])).toBe(1)
+    expect(parseAddChainRequest([validRequest, '0x0000000000000000000000000000000000000001']).id).toBe(137)
     expect(() => parseChainRequestId('0x1')).toThrow()
   })
 
