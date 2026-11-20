@@ -2,6 +2,7 @@ const config = {
   appId: 'io.github.ngokimphu.saf0o',
   productName: 'Saf0o',
   npmRebuild: false,
+  electronLanguages: ['en-US'],
   files: [
     'compiled',
     'bundle',

@@ -15,6 +15,16 @@ const load = (path, env = {}) => {
 }
 
 describe('electron-builder platform boundaries', () => {
+  test.each(['base', 'windows', 'linux'])(
+    'ships only the en-US Chromium locale pack on %s (the UI is English-only; ~48 MB of .pak files otherwise)',
+    (platform) => {
+      expect(
+        load(`../../../build/electron-builder-${platform}.js`, { SAF0O_WINDOWS_SIGNING: 'skip' })
+          .electronLanguages
+      ).toEqual(['en-US'])
+    }
+  )
+
   test('makes unsigned macOS output explicit and removes inherited identities', () => {
     const config = load('../../../build/electron-builder-macos.js', {
       SAF0O_MAC_SIGNING: 'skip',
