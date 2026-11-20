@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 
 export const SECRET_CLIPBOARD_TTL_MS = 60_000
+export const SECRET_CLIPBOARD_DISPOSE_TIMEOUT_MS = 1_000
 
 type ClipboardAccess = {
   clear: () => void
@@ -26,6 +27,8 @@ export function createSecretClipboard(
 ) {
   let timer: TimerHandle | undefined
   let pendingFingerprint: Buffer | undefined
+  // In-flight async clear (Electron 45 readText is async); dispose() waits for it.
+  let clearing: Promise<void> | undefined
 
   const fingerprint = (value: string) => crypto.createHash('sha256').update(value, 'utf8').digest()
 
@@ -40,7 +43,12 @@ export function createSecretClipboard(
     try {
       const text = clipboard.readText()
       if (typeof text === 'string') clearIfMatches(text)
-      else text.then(clearIfMatches).catch(onError)
+      else {
+        const current: Promise<void> = text.then(clearIfMatches).catch(onError).finally(() => {
+          if (clearing === current) clearing = undefined
+        })
+        clearing = current
+      }
     } catch (error) {
       onError(error)
     }
@@ -80,10 +88,23 @@ export function createSecretClipboard(
     }
   }
 
-  const dispose = () => {
+  // Resolves once a pending secret is cleared, or after a timeout so quit never hangs. Never rejects.
+  const dispose = (timeoutMs = SECRET_CLIPBOARD_DISPOSE_TIMEOUT_MS): Promise<void> => {
     if (timer !== undefined) cancelScheduled(timer)
     timer = undefined
     clearIfUnchanged()
+    if (!clearing) return Promise.resolve()
+    let timeout: TimerHandle | undefined
+    const expired = new Promise<void>((resolve) => {
+      try {
+        timeout = schedule(resolve, timeoutMs)
+      } catch {
+        resolve()
+      }
+    })
+    return Promise.race([clearing, expired]).finally(() => {
+      if (timeout !== undefined) cancelScheduled(timeout)
+    })
   }
 
   return { cancel, dispose, writePublic, writeSecret }

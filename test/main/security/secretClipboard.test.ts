@@ -188,3 +188,52 @@ it('does not keep the application alive solely for sensitive clipboard cleanup',
   expect(schedule).toHaveBeenCalledWith(expect.any(Function), 60_000)
   expect(unref).toHaveBeenCalledTimes(1)
 })
+
+// Electron 45: readText is async. Quit must wait for the clear, or the secret survives exit.
+function setupAsync(readDelayMs: number) {
+  let value = ''
+  const clipboard = {
+    clear: jest.fn(() => {
+      value = ''
+    }),
+    readText: jest.fn(
+      () => new Promise<string>((resolve) => setTimeout(() => resolve(value), readDelayMs))
+    ),
+    writeText: jest.fn(async (next: string) => {
+      value = next
+    })
+  }
+  return { clipboard, managed: createSecretClipboard(clipboard), read: () => value }
+}
+
+it('waits for an async clipboard clear on shutdown, even after an earlier dispose', async () => {
+  const { clipboard, managed, read } = setupAsync(50)
+
+  managed.writeSecret('sensitive')
+  await Promise.resolve()
+  void managed.dispose() // before-quit listener runs first and drops the pending fingerprint
+  let done = false
+  const shutdown = managed.dispose().then(() => (done = true)) // awaited shutdown callback
+
+  await jest.advanceTimersByTimeAsync(49)
+  expect(done).toBe(false)
+  await jest.advanceTimersByTimeAsync(1)
+  await shutdown
+
+  expect(clipboard.clear).toHaveBeenCalledTimes(1)
+  expect(read()).toBe('')
+})
+
+it('does not hang shutdown when the async clipboard read never settles', async () => {
+  const { managed } = setupAsync(60_000)
+
+  managed.writeSecret('sensitive')
+  let done = false
+  const shutdown = managed.dispose().then(() => (done = true))
+
+  await jest.advanceTimersByTimeAsync(999)
+  expect(done).toBe(false)
+  await jest.advanceTimersByTimeAsync(1)
+  await shutdown
+  expect(done).toBe(true)
+})

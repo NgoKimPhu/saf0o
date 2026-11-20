@@ -213,8 +213,7 @@ onRenderer('tray:resetAllSettings', () => {
   }
 
   app.relaunch()
-  managedClipboard.dispose()
-  app.exit(0)
+  void managedClipboard.dispose().finally(() => app.exit(0))
 })
 
 onRenderer('tray:clipboardData', (e, data) => {
@@ -839,7 +838,7 @@ installShutdownHandlers(
     // await clients.stop()
     if (profileRestoreRelaunchTimer) clearTimeout(profileRestoreRelaunchTimer)
     profileRestoreRelaunchTimer = undefined
-    managedClipboard.dispose()
+    await managedClipboard.dispose()
     profileInspectionTokens.clear()
     contractVerification.dispose()
     removeSignerPowerLockHandlers()
