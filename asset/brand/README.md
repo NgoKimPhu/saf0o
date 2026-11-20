@@ -1,6 +1,6 @@
 # Saf0o brand library
 
-`saf0o-mark.svg` is the deterministic vector master. Do not edit generated PNGs
+`saf0o-app-icon-master.png` is the master for every app icon (`exports/app/`, `exports/web/`, and the runtime copies). `saf0o-mark.svg` is the vector master for the marks and tray icons. Do not edit generated PNGs
 or SVGs in `exports/` directly. Regenerate them with:
 
 ```sh
@@ -10,9 +10,11 @@ npm run brand:verify
 
 ## Export map
 
-- `exports/app/` — matte charcoal rounded-square application icons from 16 to
-  1024px. The plate reaches the canvas edges at its widest points, keeps
-  transparent rounded corners, and uses the approved 120% character scale.
+- `exports/app/` — application icons from 16 to 1024px, Lanczos-resampled from
+  the PNG master (`scripts/brand-resample.mjs`). A 96px master means 128px and
+  up are upscaled. The plate reaches the canvas edges and keeps transparent
+  rounded corners. To change the icon, replace the master and regenerate.
+  `exports/mark/` and the social images still show the previous bird.
 - `exports/mark/` — transparent full-color, monochrome-light, and
   monochrome-dark marks as SVG and PNG from 32 to 1024px.
 - `exports/tray/` — optically corrected Windows color, macOS black template,

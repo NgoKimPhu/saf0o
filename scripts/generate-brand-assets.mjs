@@ -1,6 +1,8 @@
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
+import { PNG } from 'pngjs'
+import { resizedPngBuffer } from './brand-resample.mjs'
 import renderAssets from './render-brand-assets.cjs'
 
 const root = process.cwd()
@@ -9,11 +11,13 @@ const outputRoot = path.resolve(values['output-dir'] || root)
 const jobs = []
 const copies = []
 const masterPath = path.join(root, 'asset/brand/saf0o-mark.svg')
+const appIconMasterPath = path.join(root, 'asset/brand/saf0o-app-icon-master.png')
 const grainPath = path.join(root, 'resources/svg/saf0o-grain.svg')
 const socialHeaderSourcePath = path.join(root, 'asset/social/source/saf0o-night-rounds-v1.png')
 const brandDirectory = path.join(outputRoot, 'asset/brand')
 const exportDirectory = path.join(brandDirectory, 'exports')
 const socialDirectory = path.join(outputRoot, 'asset/social')
+const appIconMaster = PNG.sync.read(await readFile(appIconMasterPath))
 const master = await readFile(masterPath, 'utf8')
 const grain = await readFile(grainPath, 'utf8')
 const socialHeaderSource = await readFile(socialHeaderSourcePath)
@@ -33,7 +37,6 @@ const palette = {
   panel: '#171d19',
   accent: '#a68a61'
 }
-const appMarkScale = 1.2
 
 const svg = ({ content, viewBox = '0 0 1000 1000', extraDefs = '' }) => `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">
@@ -50,13 +53,6 @@ const mark = ({ fill, symbol = 'saf0o-silhouette', scale = 1, x = 0, y = 0 }) =>
 }
 
 const colorMark = () => svg({ content: '<use href="#saf0o-color" />' })
-
-const appIcon = () => {
-  const markOffset = (1000 - 1000 * appMarkScale) / 2
-  return svg({
-    content: `<rect width="1000" height="1000" rx="220" fill="${palette.tile}" /><g transform="translate(${markOffset} ${markOffset}) scale(${appMarkScale})"><use href="#saf0o-color" /></g>`
-  })
-}
 
 const monoLightMark = () =>
   mark({ fill: palette.light, symbol: 'saf0o-silhouette', scale: 0.985, x: -8, y: -51 })
@@ -108,6 +104,12 @@ const render = async (source, outputPath, width, height = width) => {
   })
 }
 
+// App icons come straight from the PNG master, not from the SVG mark.
+const writeResized = async (outputPath, size) => {
+  await mkdir(path.dirname(outputPath), { recursive: true })
+  await writeFile(outputPath, resizedPngBuffer(appIconMaster, size))
+}
+
 const writeProductionAssets = async () => {
   const appSizes = [1024, 512, 256, 128, 64, 32, 16]
   const markSizes = [1024, 512, 256, 128, 64, 32]
@@ -119,7 +121,7 @@ const writeProductionAssets = async () => {
   await mkdir(markExportDirectory, { recursive: true })
 
   for (const size of appSizes) {
-    await render(appIcon(), path.join(appExportDirectory, `saf0o-app-icon-${size}.png`), size)
+    await writeResized(path.join(appExportDirectory, `saf0o-app-icon-${size}.png`), size)
   }
 
   const markExports = [
@@ -144,7 +146,7 @@ const writeProductionAssets = async () => {
   ]
 
   for (const [name, size] of webExports) {
-    await render(appIcon(), path.join(webExportDirectory, name), size)
+    await writeResized(path.join(webExportDirectory, name), size)
   }
 
   const appOutput = path.join(appExportDirectory, 'saf0o-app-icon-512.png')
@@ -216,7 +218,7 @@ const proofTile = ({ label, background, fill, size, symbol, scale = 1, x = 0, y 
 `
 
 const writeProofSheet = async () => {
-  const app = appIcon()
+  const app = `<img src="data:image/png;base64,${resizedPngBuffer(appIconMaster, 512).toString('base64')}">`
   const color = colorMark()
   const avatar = socialAvatar()
   const header = socialHeader()
@@ -229,7 +231,7 @@ const writeProofSheet = async () => {
       figure{margin:0;width:178px}.sample{height:178px;border-radius:22px;display:grid;place-items:center;box-shadow:0 1px 0 rgba(0,0,0,.08)}
       figcaption{padding-top:9px;color:#555a54;font-size:12px;text-align:center}
       .large figure{width:268px}.large .sample{height:268px}
-      svg{display:block;width:100%;height:100%}
+      svg,img{display:block;width:100%;height:100%}
       .checker{background-color:#b8bab6;background-image:linear-gradient(45deg,#d9dbd7 25%,transparent 25%),linear-gradient(-45deg,#d9dbd7 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#d9dbd7 75%),linear-gradient(-45deg,transparent 75%,#d9dbd7 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}
       .social-avatar{width:178px;height:178px;border-radius:50%;overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.18)}
       .social-header{width:720px}.social-header .sample{width:720px;height:240px;position:relative;overflow:hidden;background:${palette.canvas}}

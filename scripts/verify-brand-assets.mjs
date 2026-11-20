@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { access, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { PNG } from 'pngjs'
+import { resizedPngBuffer } from './brand-resample.mjs'
 
 const appSizes = [1024, 512, 256, 128, 64, 32, 16]
 const markSizes = [1024, 512, 256, 128, 64, 32]
@@ -56,42 +57,27 @@ const getWarmMarkMetrics = (png) => {
   }
 }
 
+const masterPng = await readPng('asset/brand/saf0o-app-icon-master.png')
+assert.equal(masterPng.width, masterPng.height, 'The app icon master must be square')
+
 for (const size of appSizes) {
   const filePath = appExport(size)
+  assert.deepEqual(
+    await readFile(path.resolve(filePath)),
+    resizedPngBuffer(masterPng, size),
+    `${filePath} must be generated from asset/brand/saf0o-app-icon-master.png (run npm run brand:generate)`
+  )
   const png = await readPng(filePath)
   assert.equal(png.width, size, `${filePath} must be ${size}px wide`)
   assert.equal(png.height, size, `${filePath} must be ${size}px high`)
   assert.equal(alphaAt(png, Math.floor(size / 2), 0), 255, `${filePath} plate must reach top edge`)
   assert.equal(alphaAt(png, 0, Math.floor(size / 2)), 255, `${filePath} plate must reach left edge`)
   assert.equal(alphaAt(png, size - 1, Math.floor(size / 2)), 255, `${filePath} plate must reach right edge`)
-  assert.ok(alphaAt(png, 0, 0) <= 1, `${filePath} must retain a transparent rounded corner`)
+  assert.ok(alphaAt(png, 0, 0) < 128, `${filePath} must retain a transparent rounded corner`)
 }
 
 assert.equal(canonicalPng.width, 512, `${canonicalPath} must be 512px wide`)
 assert.equal(canonicalPng.height, 512, `${canonicalPath} must be 512px high`)
-
-const markBounds = { minX: canonicalPng.width, minY: canonicalPng.height, maxX: -1, maxY: -1 }
-for (let y = 0; y < canonicalPng.height; y += 1) {
-  for (let x = 0; x < canonicalPng.width; x += 1) {
-    const offset = (y * canonicalPng.width + x) * 4
-    const pixel = canonicalPng.data.subarray(offset, offset + 4)
-    if (pixel[3] > 0 && Math.max(pixel[0], pixel[1], pixel[2]) > 80) {
-      markBounds.minX = Math.min(markBounds.minX, x)
-      markBounds.minY = Math.min(markBounds.minY, y)
-      markBounds.maxX = Math.max(markBounds.maxX, x)
-      markBounds.maxY = Math.max(markBounds.maxY, y)
-    }
-  }
-}
-
-const markWidth = markBounds.maxX - markBounds.minX + 1
-const markHeight = markBounds.maxY - markBounds.minY + 1
-assert.ok(markWidth >= 424 && markWidth <= 428, `${canonicalPath} app mark must retain its 120% scale`)
-assert.ok(markHeight >= 269 && markHeight <= 272, `${canonicalPath} app mark height is out of range`)
-assert.ok(
-  markBounds.minX >= 45 && markBounds.maxX <= 480,
-  `${canonicalPath} app mark must retain safe taskbar side insets`
-)
 
 for (const copyPath of ['main/windows/AppIcon.png', 'build/icons/512x512.png', 'build/icons/icon.png']) {
   const copy = await readFile(path.resolve(copyPath))
@@ -133,6 +119,11 @@ const webSpecs = [
 
 for (const [name, size] of webSpecs) {
   const filePath = `asset/brand/exports/web/${name}`
+  assert.deepEqual(
+    await readFile(path.resolve(filePath)),
+    resizedPngBuffer(masterPng, size),
+    `${filePath} must be generated from asset/brand/saf0o-app-icon-master.png`
+  )
   const png = await readPng(filePath)
   assert.equal(png.width, size, `${filePath} must be ${size}px wide`)
   assert.equal(png.height, size, `${filePath} must be ${size}px high`)

@@ -52,6 +52,8 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 | Lint and format                                                 | `node_modules/.bin/eslint <files>`, `node_modules/.bin/prettier --check <files>`                |
 | Windows build, unpacked, from any host                          | `pnpm run package:windows:dir:x64`                                                              |
 
+- App icons: replace `asset/brand/saf0o-app-icon-master.png`, then run `pnpm run brand:generate` (it needs Electron). In the sandbox the
+  brand sheet and X header render blank, so `git restore` those two files.
 - Main-process tests write under `$HOME`. Set `HOME` to a scratch directory in a sandbox.
 - With no Electron binary or no network, up to 13 `test/main` suites fail for environment reasons only. Compare against
   this list before you call a failure yours:
