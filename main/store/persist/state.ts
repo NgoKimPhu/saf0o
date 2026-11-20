@@ -51,3 +51,15 @@ export const pruneTransientPersistedState = (value: unknown) => {
 
   return changed ? { ...value, __: versions } : value
 }
+
+// conf's dot-prop turns the numeric segment of `main.__.<version>` into an array index when `__`
+// does not exist yet. The array reads back as non-record, so the whole saved state was ignored.
+export const ensureVersionContainer = (value: unknown) => {
+  const main = isRecord(value) ? value : {}
+  const versions = main['__']
+  if (isRecord(versions)) return value
+  const entries = Array.isArray(versions)
+    ? Object.entries(versions).filter(([, entry]) => entry !== null && entry !== undefined)
+    : []
+  return { ...main, __: Object.fromEntries(entries) }
+}
