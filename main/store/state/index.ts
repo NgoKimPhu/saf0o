@@ -190,7 +190,7 @@ const mainState = {
   interfaceScale: normalizeInterfaceScale(main('interfaceScale', 1)),
   windowTransparency: normalizeWindowTransparency(main('windowTransparency', DEFAULT_WINDOW_TRANSPARENCY)),
   showLocalNameWithENS: main('showLocalNameWithENS', false),
-  autohide: main('autohide', false),
+  autohide: main('autohide', true),
   transactionNotifications: main('transactionNotifications', true),
   rememberRecentRecipients: main('rememberRecentRecipients', false),
   accountCloseLock: main('accountCloseLock', false),

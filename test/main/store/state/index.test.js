@@ -9,6 +9,7 @@ jest.mock('electron', () => ({ app: { on: jest.fn(), getPath: jest.fn(() => mock
 let mockLatestVersion = 0
 let mockInterfaceScale = 2
 let mockPendingRemovals = false
+let mockAutohide
 const firstInstanceId = '11111111-1111-4111-8111-111111111111'
 const currentInstanceId = '22222222-2222-4222-8222-222222222222'
 
@@ -41,6 +42,7 @@ jest.mock('../../../../main/store/persist', () => {
               instanceId: currentInstanceId,
               activityClearedAt: 1234,
               interfaceScale: mockInterfaceScale,
+              ...(mockAutohide === undefined ? {} : { autohide: mockAutohide }),
               privacy: { errorReporting: true },
               accounts: {
                 '0x000000000000000000000000000000000000dead': {
@@ -75,6 +77,7 @@ jest.mock('../../../../main/store/persist', () => {
 afterEach(() => {
   mockInterfaceScale = 2
   mockPendingRemovals = false
+  mockAutohide = undefined
   // ensure modules are reloaded before each test
   jest.resetModules()
 })
@@ -113,6 +116,17 @@ it('defaults the wallet summon shortcut to Win/Meta+/ when none is persisted', a
     enabled: true,
     configuring: false
   })
+})
+
+it('auto-hides by default for new profiles but keeps a saved choice', async () => {
+  mockLatestVersion = 2
+  const { default: fresh } = await import('../../../../main/store/state')
+  expect(fresh().main.autohide).toBe(true)
+
+  jest.resetModules()
+  mockAutohide = false
+  const { default: saved } = await import('../../../../main/store/state')
+  expect(saved().main.autohide).toBe(false)
 })
 
 it('restores a supported requested interface scale', async () => {
