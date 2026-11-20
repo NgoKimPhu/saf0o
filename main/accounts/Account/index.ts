@@ -906,7 +906,7 @@ class FrameAccount {
       case 'failed':
         copy = {
           title: 'Execution Check Failed',
-          message: 'Wren could not determine whether this transaction will execute successfully.'
+          message: 'Saf0o could not determine whether this transaction will execute successfully.'
         }
         break
       case 'unavailable':

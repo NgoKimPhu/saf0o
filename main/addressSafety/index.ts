@@ -19,7 +19,7 @@ const normalizeAddress = (value: unknown) =>
 
 const addressDigest = (instanceId: string, address: string) => {
   if (!validProfileId(instanceId)) throw new Error('Address safety requires a valid profile identity')
-  return createHash('sha256').update(`wren-address-safety-v1:${instanceId}:${address}`, 'utf8').digest('hex')
+  return createHash('sha256').update(`saf0o-address-safety-v1:${instanceId}:${address}`, 'utf8').digest('hex')
 }
 
 const ends = (address: string) => ({ prefix: address.slice(2, 6), suffix: address.slice(-4) })

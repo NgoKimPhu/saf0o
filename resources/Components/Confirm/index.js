@@ -3,7 +3,7 @@ import { useState } from 'react'
 const ResponseButton = ({ disabled, primary, text, onClick }) => (
   <button
     type='button'
-    className={`confirmButton wrenControl ${primary ? 'wrenControlPrimary' : 'wrenControlSecondary'}`}
+    className={`confirmButton saf0oControl ${primary ? 'saf0oControlPrimary' : 'saf0oControlSecondary'}`}
     disabled={disabled}
     onClick={onClick}
   >

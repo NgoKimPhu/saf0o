@@ -6,9 +6,9 @@
     flex-wrap wrap
     margin 0 24px 12px
     padding 9px 0
-    border-top 1px solid var(--wren-border-subtle)
-    border-bottom 1px solid var(--wren-border-subtle)
-    color var(--wren-text-secondary)
+    border-top 1px solid var(--saf0o-border-subtle)
+    border-bottom 1px solid var(--saf0o-border-subtle)
+    color var(--saf0o-text-secondary)
     font-size 12px
 
   position fixed
@@ -19,40 +19,40 @@
   justify-content center
   align-items center
   text-align center
-  color var(--wren-text-primary)
-  background var(--wren-bg-canvas)
-  font-family var(--wren-font-ui)
+  color var(--saf0o-text-primary)
+  background var(--saf0o-bg-canvas)
+  font-family var(--saf0o-font-ui)
 
   ::selection
-    color var(--wren-text-inverse)
-    background var(--wren-accent-primary)
+    color var(--saf0o-text-inverse)
+    background var(--saf0o-accent-primary)
 
   .notifyCloseButton
     position absolute
-    top var(--wren-space-4)
+    top var(--saf0o-space-4)
     left 50%
     width 100px
     height 28px
     margin-left -50px
-    border 1px solid var(--wren-border-default)
-    border-radius var(--wren-radius-sm)
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-sm)
     display flex
     justify-content center
     align-items center
-    background var(--wren-bg-elevated)
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-caption)
+    background var(--saf0o-bg-elevated)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-caption)
     font-weight 500
     cursor pointer
-    transition background var(--wren-motion-fast) var(--wren-ease), border-color var(--wren-motion-fast) var(--wren-ease), color var(--wren-motion-fast) var(--wren-ease)
+    transition background var(--saf0o-motion-fast) var(--saf0o-ease), border-color var(--saf0o-motion-fast) var(--saf0o-ease), color var(--saf0o-motion-fast) var(--saf0o-ease)
 
     &:hover
-      background var(--wren-surface-hover)
-      border-color var(--wren-border-strong)
-      color var(--wren-text-primary)
+      background var(--saf0o-surface-hover)
+      border-color var(--saf0o-border-strong)
+      color var(--saf0o-text-primary)
 
     &:focus-visible
-      outline 2px solid var(--wren-focus)
+      outline 2px solid var(--saf0o-focus)
       outline-offset 2px
 
     *
@@ -68,8 +68,8 @@
     overflow-x hidden
     overflow-y auto
     z-index 4000000000
-    padding var(--wren-space-3)
-    background var(--wren-surface-overlay)
+    padding var(--saf0o-space-3)
+    background var(--saf0o-surface-overlay)
 
     .notifyBoxSlide
       width 100%
@@ -80,23 +80,23 @@
 
     .notifyClose
       position absolute
-      top var(--wren-space-2)
-      right var(--wren-space-2)
+      top var(--saf0o-space-2)
+      right var(--saf0o-space-2)
       z-index 3
       width 32px
       height 32px
       display flex
       justify-content center
       align-items center
-      border-radius var(--wren-radius-sm)
-      color var(--wren-text-secondary)
+      border-radius var(--saf0o-radius-sm)
+      color var(--saf0o-text-secondary)
 
       &:hover
-        background var(--wren-surface-hover)
-        color var(--wren-text-primary)
+        background var(--saf0o-surface-hover)
+        color var(--saf0o-text-primary)
 
       &:focus-visible
-        outline 2px solid var(--wren-focus)
+        outline 2px solid var(--saf0o-focus)
         outline-offset 2px
 
     .notifyBox
@@ -104,11 +104,11 @@
       box-sizing border-box
       overflow hidden
       margin auto
-      padding var(--wren-space-6) var(--wren-space-3)
-      border 1px solid var(--wren-border-subtle)
-      border-radius var(--wren-radius-md)
-      background var(--wren-surface-card)
-      box-shadow var(--wren-shadow-md)
+      padding var(--saf0o-space-6) var(--saf0o-space-3)
+      border 1px solid var(--saf0o-border-subtle)
+      border-radius var(--saf0o-radius-md)
+      background var(--saf0o-surface-card)
+      box-shadow var(--saf0o-shadow-md)
 
       &.extensionConnectBox
         max-width 420px
@@ -118,13 +118,13 @@
         display flex
         align-items center
         justify-content center
-        margin-bottom var(--wren-space-3)
-        color var(--wren-text-secondary)
+        margin-bottom var(--saf0o-space-3)
+        color var(--saf0o-text-secondary)
 
       .extensionPairingCode
-        margin var(--wren-space-4) 0
-        color var(--wren-success)
-        font-family var(--wren-font-mono)
+        margin var(--saf0o-space-4) 0
+        color var(--saf0o-success)
+        font-family var(--saf0o-font-mono)
         font-size 28px
         font-weight 550
         letter-spacing 6px
@@ -133,8 +133,8 @@
         width 100%
         max-width 100%
         overflow hidden
-        font-family var(--wren-font-mono)
-        font-size var(--wren-type-caption)
+        font-family var(--saf0o-font-mono)
+        font-size var(--saf0o-type-caption)
         text-overflow ellipsis
         white-space nowrap
 
@@ -142,26 +142,26 @@
           min-height 44px
 
       .notifySection
-        margin var(--wren-space-2) 0
+        margin var(--saf0o-space-2) 0
 
       .notifyTitle
         position relative
         z-index 3
-        margin 0 0 var(--wren-space-3)
-        color var(--wren-text-primary)
-        font-size var(--wren-type-heading)
+        margin 0 0 var(--saf0o-space-3)
+        color var(--saf0o-text-primary)
+        font-size var(--saf0o-type-heading)
         font-weight 560
-        font-variation-settings var(--wren-font-heading-settings)
+        font-variation-settings var(--saf0o-font-heading-settings)
 
       .notifySubtitle
         position relative
         z-index 3
-        margin-bottom var(--wren-space-5)
-        color var(--wren-text-secondary)
-        font-size var(--wren-type-body)
+        margin-bottom var(--saf0o-space-5)
+        color var(--saf0o-text-secondary)
+        font-size var(--saf0o-type-body)
         line-height 1.45
 
-      .notifyWrenIcon
+      .notifySaf0oIcon
         width 100%
         height 72px
         position relative
@@ -173,17 +173,17 @@
         img
           width 64px
           height 64px
-          border-radius var(--wren-radius-md)
+          border-radius var(--saf0o-radius-md)
 
       .notifyBody
         position relative
         z-index 3
         width 100%
         box-sizing border-box
-        padding var(--wren-space-2) 0
-        color var(--wren-text-secondary)
-        font-size var(--wren-type-small)
-        font-variation-settings var(--wren-font-body-settings)
+        padding var(--saf0o-space-2) 0
+        color var(--saf0o-text-secondary)
+        font-size var(--saf0o-type-small)
+        font-variation-settings var(--saf0o-font-body-settings)
         line-height 1.5
         word-break break-word
 
@@ -193,73 +193,73 @@
           font-weight 400
 
         .notifyBodyLineUrl
-          padding-bottom var(--wren-space-5)
-          font-family var(--wren-font-mono)
-          font-size var(--wren-type-small)
+          padding-bottom var(--saf0o-space-5)
+          font-family var(--saf0o-font-mono)
+          font-size var(--saf0o-type-small)
           word-break break-all
 
         .notifyBodyUpdate
-          margin-top var(--wren-space-5)
-          margin-bottom var(--wren-space-2)
-          padding var(--wren-space-3)
-          border 1px solid var(--wren-warning)
-          border-radius var(--wren-radius-sm)
-          background var(--wren-warning-soft)
-          color var(--wren-text-primary)
-          font-size var(--wren-type-small)
+          margin-top var(--saf0o-space-5)
+          margin-bottom var(--saf0o-space-2)
+          padding var(--saf0o-space-3)
+          border 1px solid var(--saf0o-warning)
+          border-radius var(--saf0o-radius-sm)
+          background var(--saf0o-warning-soft)
+          color var(--saf0o-text-primary)
+          font-size var(--saf0o-type-small)
 
         .notifyBodyBlock
-          margin-bottom var(--wren-space-2)
-          padding var(--wren-space-3)
-          border 1px solid var(--wren-border-subtle)
-          border-radius var(--wren-radius-sm)
-          background var(--wren-bg-elevated)
+          margin-bottom var(--saf0o-space-2)
+          padding var(--saf0o-space-3)
+          border 1px solid var(--saf0o-border-subtle)
+          border-radius var(--saf0o-radius-sm)
+          background var(--saf0o-bg-elevated)
 
         .notifyBodyBlockBig
-          padding var(--wren-space-4)
-          font-size var(--wren-type-small)
+          padding var(--saf0o-space-4)
+          font-size var(--saf0o-type-small)
 
         .notifyBodyLink
           appearance none
           padding 0
           border 0
-          border-radius var(--wren-radius-sm)
+          border-radius var(--saf0o-radius-sm)
           background transparent
-          color var(--wren-accent-primary-hover)
+          color var(--saf0o-accent-primary-hover)
           font inherit
           text-decoration underline
           text-underline-offset 2px
           cursor pointer
 
           &:hover
-            color var(--wren-accent-primary)
+            color var(--saf0o-accent-primary)
 
           &:focus-visible
-            outline 2px solid var(--wren-focus)
+            outline 2px solid var(--saf0o-focus)
             outline-offset 2px
 
         .notifyBodyHash
           max-height 58px
-          margin-top var(--wren-space-3)
-          padding var(--wren-space-3)
+          margin-top var(--saf0o-space-3)
+          padding var(--saf0o-space-3)
           overflow auto
-          border 1px solid var(--wren-border-default)
-          border-radius var(--wren-radius-sm)
-          background var(--wren-surface-inset)
-          color var(--wren-text-secondary)
-          font-family var(--wren-font-mono)
-          font-size var(--wren-type-small)
+          border 1px solid var(--saf0o-border-default)
+          border-radius var(--saf0o-radius-sm)
+          background var(--saf0o-surface-inset)
+          color var(--saf0o-text-secondary)
+          font-family var(--saf0o-font-mono)
+          font-size var(--saf0o-type-small)
           line-height 20px
 
         .notifyBodyPrice
-          margin-top var(--wren-space-1)
-          color var(--wren-warning)
-          font-size var(--wren-type-title)
+          margin-top var(--saf0o-space-1)
+          color var(--saf0o-warning)
+          font-size var(--saf0o-type-title)
           font-weight 540
 
         .notifyBodyQuestion
-          padding-top var(--wren-space-5)
-          color var(--wren-text-primary)
+          padding-top var(--saf0o-space-5)
+          color var(--saf0o-text-primary)
 
       .notifyCheck
         appearance none
@@ -267,21 +267,21 @@
         position relative
         justify-content center
         align-items center
-        margin-top var(--wren-space-4)
-        padding var(--wren-space-1) var(--wren-space-3)
+        margin-top var(--saf0o-space-4)
+        padding var(--saf0o-space-1) var(--saf0o-space-3)
         border 0
-        border-radius var(--wren-radius-sm)
+        border-radius var(--saf0o-radius-sm)
         background transparent
-        color var(--wren-text-secondary)
+        color var(--saf0o-text-secondary)
         font-family inherit
         cursor pointer
 
         &:hover .notifyCheckBox
-          border-color var(--wren-border-strong)
-          background var(--wren-surface-active)
+          border-color var(--saf0o-border-strong)
+          background var(--saf0o-surface-active)
 
         &:focus-visible
-          outline 2px solid var(--wren-focus)
+          outline 2px solid var(--saf0o-focus)
           outline-offset 2px
 
         .notifyCheckBox
@@ -293,12 +293,12 @@
           display flex
           justify-content center
           align-items center
-          margin-right var(--wren-space-2)
-          border 1px solid var(--wren-border-default)
-          border-radius var(--wren-radius-sm)
-          background var(--wren-surface-inset)
-          color var(--wren-accent-primary)
-          transition background var(--wren-motion-fast) var(--wren-ease), border-color var(--wren-motion-fast) var(--wren-ease)
+          margin-right var(--saf0o-space-2)
+          border 1px solid var(--saf0o-border-default)
+          border-radius var(--saf0o-radius-sm)
+          background var(--saf0o-surface-inset)
+          color var(--saf0o-accent-primary)
+          transition background var(--saf0o-motion-fast) var(--saf0o-ease), border-color var(--saf0o-motion-fast) var(--saf0o-ease)
 
           *
             pointer-events none
@@ -309,7 +309,7 @@
         .notifyCheckText
           width 210px
           text-align left
-          font-size var(--wren-type-small)
+          font-size var(--saf0o-type-small)
           line-height 1.35
 
       .notifyInput
@@ -317,8 +317,8 @@
         z-index 3
         display flex
         justify-content space-between
-        gap var(--wren-space-2)
-        margin var(--wren-space-6) 0 0
+        gap var(--saf0o-space-2)
+        margin var(--saf0o-space-6) 0 0
 
         .notifyInputOption
           width calc(50% - 4px)
@@ -342,29 +342,29 @@
     .introInstructions
       position relative
       z-index 3
-      margin calc(var(--wren-space-2) * -1)
-      color var(--wren-text-secondary)
-      font-size var(--wren-type-small)
+      margin calc(var(--saf0o-space-2) * -1)
+      color var(--saf0o-text-secondary)
+      font-size var(--saf0o-type-small)
       font-weight 400
       line-height 1.45
       text-align left
 
       .introInstructionItem
-        margin-bottom var(--wren-space-4)
-        padding 0 var(--wren-space-4)
+        margin-bottom var(--saf0o-space-4)
+        padding 0 var(--saf0o-space-4)
 
         span
-          color var(--wren-info)
+          color var(--saf0o-info)
           text-decoration none
 
       .introInstructionList
-        margin var(--wren-space-4) var(--wren-space-1) var(--wren-space-6)
-        padding var(--wren-space-4)
-        border 1px solid var(--wren-info)
-        border-radius var(--wren-radius-sm)
-        background var(--wren-info-soft)
-        color var(--wren-text-primary)
+        margin var(--saf0o-space-4) var(--saf0o-space-1) var(--saf0o-space-6)
+        padding var(--saf0o-space-4)
+        border 1px solid var(--saf0o-info)
+        border-radius var(--saf0o-radius-sm)
+        background var(--saf0o-info-soft)
+        color var(--saf0o-text-primary)
 
         div
-          font-size var(--wren-type-small)
+          font-size var(--saf0o-type-small)
           line-height 1.5

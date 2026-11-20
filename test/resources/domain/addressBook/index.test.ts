@@ -31,13 +31,13 @@ test('normalizes addresses and bounded contact text', () => {
   expect(lookupAddressBookEntry(addressBook, alice)).toEqual(entry)
 })
 
-test('resolves saved contacts before existing Wren account names', () => {
+test('resolves saved contacts before existing Saf0o account names', () => {
   const accounts = { [alice]: { name: 'Frame Savings' } }
 
   expect(resolveLocalAddressIdentity({}, accounts, alice)).toEqual({
     label: 'Frame Savings',
     kind: 'account',
-    source: 'Wren account'
+    source: 'Saf0o account'
   })
 
   const addressBook = saveAddressBookEntry(
@@ -69,7 +69,7 @@ test('exposes verification provenance without treating it as a safety bypass', (
   expect(resolveLocalAddressIdentity(addressBook, {}, alice)).toEqual({
     label: 'Treasury Contact',
     kind: 'contact',
-    source: 'Checked outside Wren',
+    source: 'Checked outside Saf0o',
     provenance: {
       status: 'verified-out-of-band',
       verifiedAt: 10,

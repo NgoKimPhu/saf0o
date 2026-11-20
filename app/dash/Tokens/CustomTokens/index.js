@@ -283,7 +283,7 @@ class CustomTokens extends React.Component {
               <div className='customTokensListNoTokens'>
                 <img alt='' aria-hidden='true' src={emptyCustomTokens} />
                 <strong>No custom tokens</strong>
-                <span>Add a token contract to keep it available in Wren.</span>
+                <span>Add a token contract to keep it available in Saf0o.</span>
               </div>
             )}
           </div>

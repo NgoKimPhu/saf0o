@@ -4,22 +4,22 @@ import path from 'node:path'
 import { PNG } from 'pngjs'
 
 const iconSpecs = [
-  { name: 'Icon.png', exportName: 'wren-tray-windows-24.png', size: 24 },
-  { name: 'Icon@2x.png', exportName: 'wren-tray-windows-48.png', size: 48 },
+  { name: 'Icon.png', exportName: 'saf0o-tray-windows-24.png', size: 24 },
+  { name: 'Icon@2x.png', exportName: 'saf0o-tray-windows-48.png', size: 48 },
   {
     name: 'IconTemplate.png',
-    exportName: 'wren-tray-macos-template-24.png',
+    exportName: 'saf0o-tray-macos-template-24.png',
     size: 24,
     template: true
   },
   {
     name: 'IconTemplate@2x.png',
-    exportName: 'wren-tray-macos-template-48.png',
+    exportName: 'saf0o-tray-macos-template-48.png',
     size: 48,
     template: true
   },
-  { name: 'LinuxTray.png', exportName: 'wren-tray-linux-light-24.png', size: 24, linux: true },
-  { name: 'LinuxTray@2x.png', exportName: 'wren-tray-linux-light-48.png', size: 48, linux: true }
+  { name: 'LinuxTray.png', exportName: 'saf0o-tray-linux-light-24.png', size: 24, linux: true },
+  { name: 'LinuxTray@2x.png', exportName: 'saf0o-tray-linux-light-48.png', size: 48, linux: true }
 ]
 
 for (const { name, exportName, size, template = false, linux = false } of iconSpecs) {

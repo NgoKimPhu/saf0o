@@ -1,7 +1,7 @@
 import React from 'react'
 import Restore from 'react-restore'
 
-import emptyRequests from 'url:../../../../asset/ui/wren-empty-requests-v2.png'
+import emptyRequests from 'url:../../../../asset/ui/saf0o-empty-requests-v2.png'
 
 // import ProviderRequest from './ProviderRequest'
 // import TransactionRequest from './TransactionRequest'
@@ -15,7 +15,7 @@ import TxOverview from './TransactionRequest/TxMainNew/overview'
 import RequestItem, { consumePendingRequestFocus } from '../../../../resources/Components/RequestItem'
 import DialogSurface from '../../../../resources/Components/DialogSurface'
 import Icon from '../../../../resources/Components/Icon'
-import WrenEmptyState from '../../../../resources/Components/WrenEmptyState'
+import Saf0oEmptyState from '../../../../resources/Components/Saf0oEmptyState'
 
 import { Cluster } from '../../../../resources/Components/Cluster'
 
@@ -262,14 +262,14 @@ export class Requests extends React.Component {
           <button
             ref={this.clearCancelRef}
             type='button'
-            className='wrenControl wrenControlSecondary wrenControlCompact'
+            className='saf0oControl saf0oControlSecondary saf0oControlCompact'
             onClick={() => this.cancelClearConfirmation()}
           >
             Cancel
           </button>
           <button
             type='button'
-            className='wrenControl wrenControlDanger wrenControlCompact'
+            className='saf0oControl saf0oControlDanger saf0oControlCompact'
             onClick={() => this.confirmClearRequests()}
           >
             {count === 1 ? 'Clear' : 'Clear all'}
@@ -594,7 +594,7 @@ export class Requests extends React.Component {
               ref={this.clearReturnFocusRef}
               type='button'
               aria-label='Clear all requests'
-              className='requestClearAll wrenControl wrenControlGhost wrenControlCompact'
+              className='requestClearAll saf0oControl saf0oControlGhost saf0oControlCompact'
               disabled={this.state.clearing}
               onClick={() => this.openClearConfirmation()}
             >
@@ -604,7 +604,7 @@ export class Requests extends React.Component {
         ) : null}
         {this.renderClearConfirmation(requests.length)}
         {groups.length === 0 ? (
-          <WrenEmptyState
+          <Saf0oEmptyState
             image={emptyRequests}
             title='No pending requests'
             copy='Requests from connected apps will appear here.'

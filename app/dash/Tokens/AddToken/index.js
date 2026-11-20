@@ -137,7 +137,7 @@ class AddTokenChainScreenComponent extends Component {
           <div className='newTokenChainSelectFooter'>
             <button
               type='button'
-              className='newTokenEnableChainLink wrenControl wrenControlSecondary'
+              className='newTokenEnableChainLink saf0oControl saf0oControlSecondary'
               disabled={this.state.selectingChainId !== null}
               onClick={() => this.openChains()}
             >
@@ -351,7 +351,7 @@ const TokenDetailsForm = ({ req, chain, tokenData = {}, isEdit = false, initialA
                   aria-label={COPY.tokenAddress}
                   aria-describedby={lookupPresentation ? 'newTokenLookupStatus' : undefined}
                   aria-invalid={invalidAddress ? 'true' : undefined}
-                  className='tokenInput tokenInputAddress wrenInput'
+                  className='tokenInput tokenInputAddress saf0oInput'
                   value={address}
                   disabled={isSaving}
                   spellCheck={false}
@@ -389,7 +389,7 @@ const TokenDetailsForm = ({ req, chain, tokenData = {}, isEdit = false, initialA
                 <span>{COPY.tokenName}</span>
                 <input
                   id='tokenName'
-                  className='tokenInput wrenInput'
+                  className='tokenInput saf0oInput'
                   value={name}
                   disabled={isSaving}
                   spellCheck={false}
@@ -403,7 +403,7 @@ const TokenDetailsForm = ({ req, chain, tokenData = {}, isEdit = false, initialA
                   <span>{COPY.symbol}</span>
                   <input
                     id='tokenSymbol'
-                    className='tokenInput wrenInput'
+                    className='tokenInput saf0oInput'
                     value={symbol}
                     disabled={isSaving}
                     spellCheck={false}
@@ -420,7 +420,7 @@ const TokenDetailsForm = ({ req, chain, tokenData = {}, isEdit = false, initialA
                   <input
                     id='tokenDecimals'
                     aria-invalid={decimals !== '' && !validDecimals ? 'true' : undefined}
-                    className='tokenInput wrenInput'
+                    className='tokenInput saf0oInput'
                     value={decimals}
                     disabled={isSaving}
                     inputMode='numeric'
@@ -439,7 +439,7 @@ const TokenDetailsForm = ({ req, chain, tokenData = {}, isEdit = false, initialA
                   <span>{COPY.logoUri}</span>
                   <input
                     id='tokenLogoUri'
-                    className='tokenInput wrenInput'
+                    className='tokenInput saf0oInput'
                     value={logoUri}
                     disabled={isSaving}
                     spellCheck={false}
@@ -456,7 +456,7 @@ const TokenDetailsForm = ({ req, chain, tokenData = {}, isEdit = false, initialA
               <div className='newTokenActions'>
                 <button
                   type='submit'
-                  className='wrenControl wrenControlPrimary'
+                  className='saf0oControl saf0oControlPrimary'
                   disabled={!newTokenReady || isSaving}
                 >
                   {isSaving

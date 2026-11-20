@@ -9,7 +9,7 @@ const mockIsSupported = jest.fn(() => true)
 
 const mocks = {
   store: jest.fn(),
-  windows: { isAnyWrenVisible: jest.fn(() => false), showTray: jest.fn() },
+  windows: { isAnySaf0oVisible: jest.fn(() => false), showTray: jest.fn() },
   showAccountActivity: jest.fn()
 }
 
@@ -40,7 +40,7 @@ jest.mock('../../../main/store', () => ({
 jest.mock('../../../main/windows', () => ({
   __esModule: true,
   default: {
-    isAnyWrenVisible: () => mocks.windows.isAnyWrenVisible(),
+    isAnySaf0oVisible: () => mocks.windows.isAnySaf0oVisible(),
     showTray: () => mocks.windows.showTray()
   }
 }))
@@ -59,7 +59,7 @@ const account = `0x${'a'.repeat(40)}`
 beforeEach(() => {
   mockNotifications.length = 0
   mocks.store.mockReset().mockReturnValue(true)
-  mocks.windows.isAnyWrenVisible.mockReturnValue(false)
+  mocks.windows.isAnySaf0oVisible.mockReturnValue(false)
   mocks.windows.showTray.mockReset()
   mocks.showAccountActivity.mockReset()
   resetTransactionNotificationDeduplicationForTests()
@@ -69,11 +69,11 @@ it.each([
   ['confirmed', 'Wallet activity confirmed', 'A submitted wallet activity completed.'],
   ['failed', 'Wallet activity failed', 'A submitted wallet activity did not complete.'],
   ['replaced', 'Wallet activity replaced', 'A submitted wallet activity was replaced.'],
-  ['long-pending', 'Wallet activity still pending', 'Wren is still checking a submitted wallet activity.'],
+  ['long-pending', 'Wallet activity still pending', 'Saf0o is still checking a submitted wallet activity.'],
   [
     'long-pending-broadcasting',
     'Wallet activity broadcast status unknown',
-    'Wren is checking whether a signed wallet activity was broadcast.'
+    'Saf0o is checking whether a signed wallet activity was broadcast.'
   ]
 ])('shows one immediate privacy-static %s notification', (outcome, title, body) => {
   expect(notifyTransactionOutcome(activityId, account, outcome as never)).toBe(true)
@@ -103,7 +103,7 @@ it('delivers a later terminal update after one long-pending update for the same 
   ])
 })
 
-it('opens the exact persisted activity entry in Wren', () => {
+it('opens the exact persisted activity entry in Saf0o', () => {
   notifyTransactionOutcome(activityId, account, 'confirmed')
   mockNotifications[0]?.emit('click')
 
@@ -118,7 +118,7 @@ it('does nothing when unsupported, disabled, or visible', () => {
   mocks.store.mockReturnValueOnce(false)
   expect(notifyTransactionOutcome(`${activityId.slice(0, -1)}3`, account, 'confirmed')).toBe(false)
 
-  mocks.windows.isAnyWrenVisible.mockReturnValueOnce(true)
+  mocks.windows.isAnySaf0oVisible.mockReturnValueOnce(true)
   expect(notifyTransactionOutcome(`${activityId.slice(0, -1)}4`, account, 'confirmed')).toBe(false)
   expect(mockNotifications).toHaveLength(0)
 })
@@ -129,7 +129,7 @@ it('notifies external activity without exposing addresses or amounts and opens t
     id: activityId,
     account,
     chainId: 1,
-    origin: 'wren:external',
+    origin: 'saf0o:external',
     type: 'transaction' as const,
     outcome: 'confirmed' as const,
     createdAt: 1,
@@ -147,12 +147,12 @@ it('notifies external activity without exposing addresses or amounts and opens t
     path === 'main.accounts' ? { [account]: {} } : path === 'main.networks.ethereum' ? 'Ethereum' : true
   )
   expect(notifyObservedActivity(entry)).toBe(true)
-  expect(mockNotifications[0].options).toEqual({ title: 'Received assets', body: 'Outside Wren · Ethereum' })
+  expect(mockNotifications[0].options).toEqual({ title: 'Received assets', body: 'Outside Saf0o · Ethereum' })
   mockNotifications[0].emit('click')
   expect(mocks.showAccountActivity).toHaveBeenCalledWith(account, activityId)
-  mocks.windows.isAnyWrenVisible.mockReturnValue(true)
+  mocks.windows.isAnySaf0oVisible.mockReturnValue(true)
   expect(notifyObservedActivity(entry)).toBe(false)
-  mocks.windows.isAnyWrenVisible.mockReturnValue(false)
+  mocks.windows.isAnySaf0oVisible.mockReturnValue(false)
   mocks.store.mockImplementation((path) => (path === 'main.accounts' ? { [account]: {} } : false))
   expect(notifyObservedActivity(entry)).toBe(false)
   mocks.store.mockReturnValue({})

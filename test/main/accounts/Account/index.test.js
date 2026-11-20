@@ -243,7 +243,7 @@ beforeEach(() => {
   jest.clearAllTimers()
   mockNebulaReady.mockReset().mockReturnValue(false)
   mockNebulaOnce.mockReset()
-  mockReverseLookup.mockReset().mockResolvedValue(['wren.eth'])
+  mockReverseLookup.mockReset().mockResolvedValue(['saf0o.eth'])
   store.mockImplementation(() => undefined)
   store.setPermission.mockClear()
   store.navDash.mockClear()
@@ -285,7 +285,7 @@ describe('ENS identity', () => {
     await flushPromises()
 
     expect(mockReverseLookup).toHaveBeenCalledWith(accountState.address.toLowerCase())
-    expect(account.ensName).toBe('wren.eth')
+    expect(account.ensName).toBe('saf0o.eth')
   })
 
   it('preserves a known name when a refresh fails and removes its listener on close', async () => {
@@ -311,7 +311,7 @@ describe('ENS identity', () => {
     statusHandler('connected')
     await flushPromises()
 
-    expect(account.ensName).toBe('wren.eth')
+    expect(account.ensName).toBe('saf0o.eth')
     expect(mockReverseLookup).toHaveBeenCalledTimes(1)
     expect(provider.off).toHaveBeenCalledWith('status:ethereum:1', statusHandler)
   })
@@ -1822,7 +1822,7 @@ describe('#addRequest', () => {
 
     const approval = request.approvals[0]
     expect(approval.data.message).toBe(
-      'Wren could not determine whether this transaction will execute successfully.'
+      'Saf0o could not determine whether this transaction will execute successfully.'
     )
     expect(approval.data.message).not.toContain('private RPC detail')
   })

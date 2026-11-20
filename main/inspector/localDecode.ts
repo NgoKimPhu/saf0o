@@ -98,7 +98,7 @@ export function decodeLocalCalldata(data: string): LocalCalldataDecode {
         status: 'unknown',
         source: 'bundled-standard-abi',
         selector,
-        reason: "Selector is not in Wren's bundled standard ABI set"
+        reason: "Selector is not in Saf0o's bundled standard ABI set"
       }
     }
 
@@ -123,7 +123,7 @@ export function decodeLocalCalldata(data: string): LocalCalldataDecode {
       status: 'unknown',
       source: 'bundled-standard-abi',
       selector,
-      reason: "Selector or arguments do not match Wren's bundled standard ABI set"
+      reason: "Selector or arguments do not match Saf0o's bundled standard ABI set"
     }
   }
 }

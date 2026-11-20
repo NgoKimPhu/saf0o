@@ -15,9 +15,9 @@
     transform translateX(0)
 
 .headShake
-  animation-duration var(--wren-motion-standard)
+  animation-duration var(--saf0o-motion-standard)
   animation-fill-mode both
-  animation-timing-function var(--wren-ease)
+  animation-timing-function var(--saf0o-ease)
   animation-name headShake
   transform translateZ(0)
 
@@ -65,10 +65,10 @@
     pointer-events auto
     width 100%
     box-sizing border-box
-    padding 0 var(--wren-space-3)
+    padding 0 var(--saf0o-space-3)
     border 0
     border-radius inherit
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
     background transparent
     font-family inherit
     // animation slideUp linear 0.2s
@@ -97,10 +97,10 @@
       cursor pointer
 
     &:hover
-      color var(--wren-accent-primary-hover)
+      color var(--saf0o-accent-primary-hover)
 
     &:focus-visible
-      outline 2px solid var(--wren-focus)
+      outline 2px solid var(--saf0o-focus)
       outline-offset -3px
 
   .signerDetails
@@ -130,10 +130,10 @@
       cursor pointer
 
       &:hover
-        color var(--wren-accent-primary-hover)
+        color var(--saf0o-accent-primary-hover)
 
       &:focus-visible
-        outline 2px solid var(--wren-focus)
+        outline 2px solid var(--saf0o-focus)
         outline-offset 2px
 
     .signerDetailsName
@@ -177,10 +177,10 @@
          padding 0px 1px 0px 2px
     
     .signerDetailsAddress:hover
-      color var(--wren-accent-primary-hover)
+      color var(--saf0o-accent-primary-hover)
 
     .signerDetailsAddress:focus-visible
-      outline 2px solid var(--wren-focus)
+      outline 2px solid var(--saf0o-focus)
       outline-offset 2px
 
   .signerAddress
@@ -214,7 +214,7 @@
       display flex
       justify-content center
       align-items center
-      font-size var(--wren-type-caption)
+      font-size var(--saf0o-type-caption)
       letter-spacing 1px
       opacity 1
       pointer-events none
@@ -270,14 +270,14 @@
     position relative
     opacity 1
     z-index 3030000
-    border-radius var(--wren-radius-sm)
+    border-radius var(--saf0o-radius-sm)
     transition var(--standard), background 0.2s linear
     z-index 9999000
     height 74px
-    background var(--wren-surface-card)
+    background var(--saf0o-surface-card)
     margin 0px 0px 6px 0px
-    box-shadow var(--wren-shadow-inset)
-    border 1px solid var(--wren-border-subtle)
+    box-shadow var(--saf0o-shadow-inset)
+    border 1px solid var(--saf0o-border-subtle)
     cursor pointer
     overflow hidden
 
@@ -293,20 +293,20 @@
       width 32px
       padding 0
       box-sizing border-box
-      border-radius var(--wren-radius-sm)
+      border-radius var(--saf0o-radius-sm)
       display flex
       justify-content center
       align-items center
       -webkit-app-region no-drag
       transform translate3d(0, 0, 0)
-      background var(--wren-surface-inset)
+      background var(--saf0o-surface-inset)
       position absolute
-      color var(--wren-text-muted)
+      color var(--saf0o-text-muted)
       font-size 13px
       font-weight 600
       transition var(--standardFast)
-      box-shadow var(--wren-shadow-inset)
-      border 1px solid var(--wren-border-subtle)
+      box-shadow var(--saf0o-shadow-inset)
+      border 1px solid var(--saf0o-border-subtle)
       z-index 999999999
       pointer-events none
       
@@ -315,21 +315,21 @@
         z-index 4000
 
     .accountNotificationBadgeReady
-      color var(--wren-text-primary)
-      background var(--wren-bg-elevated)
+      color var(--saf0o-text-primary)
+      background var(--saf0o-bg-elevated)
 
     .accountNotificationBadgeActive
       span
-        color var(--wren-text-inverse)
+        color var(--saf0o-text-inverse)
 
     .accountNotificationBadgeActive::before
       content ''
       position absolute
       z-index 3
       inset 0px
-      background var(--wren-success)
-      border-radius var(--wren-radius-sm)
-      box-shadow var(--wren-shadow-inset)
+      background var(--saf0o-success)
+      border-radius var(--saf0o-radius-sm)
+      box-shadow var(--saf0o-shadow-inset)
 
     .transactionToAddress
       .transactionToAddressLarge
@@ -340,18 +340,18 @@
       appearance none
       padding 0
       color inherit
-      border 1px solid var(--wren-border-default)
+      border 1px solid var(--saf0o-border-default)
       position absolute 
       top 18px
       right 12px
       z-index 300000
-      border-radius var(--wren-radius-sm)
+      border-radius var(--saf0o-radius-sm)
       height 38px
       min-height 38px
       width 38px
       min-width 38px
       -webkit-app-region no-drag
-      transition background-color var(--wren-motion-fast) var(--wren-ease), border-color var(--wren-motion-fast) var(--wren-ease), box-shadow var(--wren-motion-fast) var(--wren-ease), color var(--wren-motion-fast) var(--wren-ease), transform var(--wren-motion-fast) var(--wren-ease)
+      transition background-color var(--saf0o-motion-fast) var(--saf0o-ease), border-color var(--saf0o-motion-fast) var(--saf0o-ease), box-shadow var(--saf0o-motion-fast) var(--saf0o-ease), color var(--saf0o-motion-fast) var(--saf0o-ease), transform var(--saf0o-motion-fast) var(--saf0o-ease)
       transform translate3d(0, 0, 0)
       cursor pointer
 
@@ -519,7 +519,7 @@
         justify-content center
         align-items center
         text-transform uppercase
-        font-size var(--wren-type-caption)
+        font-size var(--saf0o-type-caption)
         line-height 10px
         font-weight 300
         letter-spacing 2px
@@ -857,7 +857,7 @@
       display flex
       justify-content center
       align-items center
-      font-size var(--wren-type-small)
+      font-size var(--saf0o-type-small)
       height 40px
       border-top 1px solid var(--ghostB)
 
@@ -889,7 +889,7 @@
     opacity 0
 
   .signerReady
-    font-size var(--wren-type-small)
+    font-size var(--saf0o-type-small)
     width 100%
 
   .openSigner
@@ -956,16 +956,16 @@
         pointer-events none
         transform translateY(50px)
 
-// Wren account card
+// Saf0o account card
 .signer
   .signerTop
-    border 1px solid var(--wren-border-subtle)
-    border-radius var(--wren-radius-sm)
-    background var(--wren-surface-card)
-    box-shadow var(--wren-shadow-inset)
+    border 1px solid var(--saf0o-border-subtle)
+    border-radius var(--saf0o-radius-sm)
+    background var(--saf0o-surface-card)
+    box-shadow var(--saf0o-shadow-inset)
 
   .signerTop:hover
-    background var(--wren-surface-hover)
+    background var(--saf0o-surface-hover)
 
   &.openSigner .signerTop:hover
-    background var(--wren-surface-card) !important
+    background var(--saf0o-surface-card) !important

@@ -5,7 +5,7 @@ import {
   DappGuardrailsSchema,
   type DappGuardrail
 } from '../../resources/domain/dappGuardrails'
-import { isWrenOwnedOriginName, originIdForInvoker } from '../../resources/domain/origin'
+import { isSaf0oOwnedOriginName, originIdForInvoker } from '../../resources/domain/origin'
 import { permissionCovers } from './permissions'
 import type { Origin, Permission } from '../store/state'
 
@@ -115,7 +115,7 @@ const hasCurrentPrincipal = (
   origin: Origin,
   dependencies: DappGuardrailActionDependencies
 ) => {
-  if (isWrenOwnedOriginName(origin.name) || !['direct', 'companion', 'native'].includes(origin.provenance)) {
+  if (isSaf0oOwnedOriginName(origin.name) || !['direct', 'companion', 'native'].includes(origin.provenance)) {
     return false
   }
 

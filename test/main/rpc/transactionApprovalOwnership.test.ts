@@ -9,7 +9,7 @@ jest.mock('electron', () => ({ app: { getPath: jest.fn(() => process.cwd()), on:
 
 test('broadcast-attempt recovery is on disk before response while queued writes are pending', () => {
   jest.useFakeTimers()
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-submitted-transaction-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-submitted-transaction-'))
 
   try {
     const { PersistStore, commitMainState } = jest.requireActual('../../../main/store/persist')

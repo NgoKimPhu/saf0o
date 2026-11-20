@@ -32,7 +32,7 @@ const permission = (handlerId, origin, expiresAt = Date.now() + 60_000) => ({
   parentCapability: 'eth_accounts',
   caveats: [
     {
-      type: 'wren:permissionScope',
+      type: 'saf0o:permissionScope',
       value: {
         account,
         methods: ['eth_accounts'],
@@ -909,12 +909,12 @@ it('stops clear-all uncertainty UI reconciliation after cancellation', async () 
 it('does not offer permission management or clearing for an empty list', () => {
   const { unmount } = renderWithStore(DappsPermissionsPreview, {}, {})
   expect(screen.getByText('No app access')).toBeTruthy()
-  expect(document.querySelector('.wrenEmptyStateImage')).toBeTruthy()
+  expect(document.querySelector('.saf0oEmptyStateImage')).toBeTruthy()
   expect(screen.queryByRole('button', { name: 'View all app access' })).toBeNull()
   unmount()
 
   renderWithStore(DappsPermissionsExpanded, { expanded: true }, {})
-  expect(document.querySelector('.wrenEmptyStateExpanded')).toBeTruthy()
+  expect(document.querySelector('.saf0oEmptyStateExpanded')).toBeTruthy()
   expect(screen.queryByRole('button', { name: 'Revoke all app access' })).toBeNull()
 })
 

@@ -88,7 +88,7 @@ interface FrameWebSocket extends WebSocket {
 
 const NativeHelloSchema = z
   .object({
-    type: z.literal('wren-native-auth'),
+    type: z.literal('saf0o-native-auth'),
     version: z.literal(3),
     step: z.literal('hello'),
     installationId: z.unknown(),
@@ -99,7 +99,7 @@ const NativeHelloSchema = z
 
 const NativeProofSchema = z
   .object({
-    type: z.literal('wren-native-auth'),
+    type: z.literal('saf0o-native-auth'),
     version: z.literal(3),
     step: z.literal('prove'),
     protocol: z.unknown(),
@@ -110,7 +110,7 @@ const NativeProofSchema = z
 
 const NativeRpcEnvelopeSchema = z
   .object({
-    type: z.literal('wren-native-rpc'),
+    type: z.literal('saf0o-native-rpc'),
     version: z.literal(3),
     proof: NativeRequestProofSchema,
     payloadBase64: z
@@ -136,7 +136,7 @@ const exactQuery = (query: URLSearchParams | undefined, expected: Record<string,
 }
 
 const nativeSocketRequest = (req: IncomingMessage) =>
-  exactQuery(socketQuery(req), { identity: 'wren-native', role: 'rpc', version: '3' })
+  exactQuery(socketQuery(req), { identity: 'saf0o-native', role: 'rpc', version: '3' })
 
 const extensionSocketRequest = (req: IncomingMessage) => {
   const query = socketQuery(req)
@@ -152,7 +152,7 @@ const reservedIdentityRequestValid = (req: IncomingMessage) => {
   const identities = socketQuery(req)?.getAll('identity') || []
   if (identities.length === 0) return true
   if (identities.length !== 1) return false
-  if (identities[0] === 'wren-native') return nativeSocketRequest(req) && req.headers.origin === undefined
+  if (identities[0] === 'saf0o-native') return nativeSocketRequest(req) && req.headers.origin === undefined
   if (identities[0] === 'frame-extension') return extensionSocketRequest(req)
   return false
 }
@@ -167,7 +167,7 @@ const supportedSocketPath = (req: IncomingMessage) => {
 
 const nativePairingRequired = {
   code: 4100,
-  message: 'Wren requires a paired native protocol 3 client for local requests.'
+  message: 'Saf0o requires a paired native protocol 3 client for local requests.'
 } as const
 
 const terminateSocket = (socket: FrameWebSocket, code: number, reason: string) => {
@@ -337,7 +337,7 @@ const handler = (
         try {
           const challenge = issueNativeChallenge(hello.data, `ws:${socket.id}`)
           socket.nativeChallengeId = challenge.transcript.challengeId
-          sendResponse({ type: 'wren-native-auth', version: 3, ...challenge })
+          sendResponse({ type: 'saf0o-native-auth', version: 3, ...challenge })
           if (authDeadline) clearTimeout(authDeadline)
           authDeadline = setTimeout(
             () => terminateSocket(socket, 1008, 'Native authentication proof timed out'),
@@ -377,7 +377,7 @@ const handler = (
           () => terminateSocket(socket, 1008, 'Native authentication session expired'),
           Math.max(1, authenticated.expiresAt - Date.now())
         )
-        sendResponse({ type: 'wren-native-auth', version: 3, ...authenticated })
+        sendResponse({ type: 'saf0o-native-auth', version: 3, ...authenticated })
       } catch {
         terminateSocket(socket, 1008, 'Native authentication failed')
       } finally {
@@ -563,7 +563,7 @@ const handler = (
     const companionControl =
       socket.frameExtension?.role === 'control' && socket.authSession?.authenticated === true
     if (companionControl) {
-      // Custom companion action for summoning Wren.
+      // Custom companion action for summoning Saf0o.
       if (rawPayload.method === 'frame_summon') {
         pendingRequests.delete(controller)
         return windows.toggleTray()
@@ -581,7 +581,7 @@ const handler = (
 
     if (!trusted) {
       let error = { message: 'Origin is not authorized', code: 4100 }
-      if (!accounts.getSelectedAddresses()[0]) error = { message: 'No Wren account selected', code: 4100 }
+      if (!accounts.getSelectedAddresses()[0]) error = { message: 'No Saf0o account selected', code: 4100 }
       res({ id: payload.id, jsonrpc: payload.jsonrpc, error })
     } else {
       const params = Array.isArray(payload.params) ? payload.params : []

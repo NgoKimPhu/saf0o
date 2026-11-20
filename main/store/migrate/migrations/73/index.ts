@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { WREN_EXTENSION_ORIGIN, originIdForName } from '../../../../../resources/domain/origin'
+import { SAF0O_EXTENSION_ORIGIN, originIdForName } from '../../../../../resources/domain/origin'
 
 const StateSchema = z
   .object({
@@ -20,13 +20,13 @@ const migrate = (initial: unknown) => {
   if (!parsed.success) return initial
 
   const { main } = parsed.data
-  const originId = originIdForName(WREN_EXTENSION_ORIGIN)
+  const originId = originIdForName(SAF0O_EXTENSION_ORIGIN)
   const origin = main.origins?.[originId]
-  // Only the legacy record at Wren's deterministic internal identity can
+  // Only the legacy record at Saf0o's deterministic internal identity can
   // have originated from the pre-provenance Companion control channel.
   if (
     !isRecord(origin) ||
-    origin['name'] !== WREN_EXTENSION_ORIGIN ||
+    origin['name'] !== SAF0O_EXTENSION_ORIGIN ||
     origin['provenance'] !== 'legacy' ||
     origin['sourceId'] !== undefined
   ) {

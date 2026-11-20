@@ -358,7 +358,7 @@ test('keeps profile backup passwords and inspection metadata strictly bounded', 
         formatVersion: 1,
         createdAt: '2026-08-12T00:00:00.000Z',
         signerCount: 2,
-        sourcePath: '/private/profile.wrenbackup'
+        sourcePath: '/private/profile.saf0obackup'
       }
     }).success
   ).toBe(false)

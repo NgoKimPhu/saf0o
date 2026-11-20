@@ -58,8 +58,8 @@ export const NetworkEditorField = ({
         aria-invalid={error || undefined}
         className={
           technical
-            ? 'networkEditorInput networkEditorInputTechnical wrenInput'
-            : 'networkEditorInput wrenInput'
+            ? 'networkEditorInput networkEditorInputTechnical saf0oInput'
+            : 'networkEditorInput saf0oInput'
         }
         inputMode={inputMode}
         readOnly={readOnly}
@@ -82,21 +82,25 @@ export const NetworkEditorToggle = ({ label, checked, disabled = false, onChange
 export const NetworkEditorActions = ({ primaryLabel, primaryEnabled, onCancel, onPrimary, onRemove }) => (
   <div className='networkEditorFooter'>
     {onRemove && (
-      <button type='button' className='networkEditorRemove wrenControl wrenControlDanger' onClick={onRemove}>
+      <button
+        type='button'
+        className='networkEditorRemove saf0oControl saf0oControlDanger'
+        onClick={onRemove}
+      >
         Remove network
       </button>
     )}
     <div className='networkEditorFooterActions'>
       <button
         type='button'
-        className='networkEditorCancel wrenControl wrenControlSecondary'
+        className='networkEditorCancel saf0oControl saf0oControlSecondary'
         onClick={onCancel}
       >
         Cancel
       </button>
       <button
         type='button'
-        className='networkEditorSubmit wrenControl wrenControlPrimary'
+        className='networkEditorSubmit saf0oControl saf0oControlPrimary'
         disabled={!primaryEnabled}
         onClick={onPrimary}
       >
@@ -173,7 +177,7 @@ export const RpcEndpointLedger = ({
       <div className='rpcEndpointHeading'>
         <div>
           <h2 id='rpc-endpoints-title'>RPC endpoints</h2>
-          <p>Wren uses endpoints in order and tries the next one only if the current endpoint fails.</p>
+          <p>Saf0o uses endpoints in order and tries the next one only if the current endpoint fails.</p>
         </div>
       </div>
       <div className='rpcEndpointLedger'>
@@ -211,7 +215,7 @@ export const RpcEndpointLedger = ({
                   aria-describedby={statusId}
                   aria-label={`RPC URL ${index + 1}`}
                   aria-invalid={error || undefined}
-                  className='rpcEndpointInput wrenInput'
+                  className='rpcEndpointInput saf0oInput'
                   spellCheck='false'
                   value={values[endpoint.id] ?? ''}
                   onBlur={() => onCommit(endpoint.id)}
@@ -398,7 +402,7 @@ export const EditChainField = ({ currentValue, defaultValue, label, onChange }) 
       </label>
       <input
         id={id}
-        className={!currentValue ? 'chainInput chainInputDim wrenInput' : 'chainInput wrenInput'}
+        className={!currentValue ? 'chainInput chainInputDim saf0oInput' : 'chainInput saf0oInput'}
         value={currentValue || (!editing && defaultValue) || ''}
         spellCheck='false'
         onChange={(e) => {

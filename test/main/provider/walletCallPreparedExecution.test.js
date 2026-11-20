@@ -39,9 +39,7 @@ function signPrepared(prepared, key = privateKey) {
 
 function signUnprotectedLegacy(prepared) {
   const { from: _from, gasFeesSource: _gasFeesSource, chainId: _chainId, ...txData } = prepared
-  const signed = createTx(txData, { common: chainConfig(1, 'chainstart') }).sign(
-    privateKey
-  )
+  const signed = createTx(txData, { common: chainConfig(1, 'chainstart') }).sign(privateKey)
   return `0x${Buffer.from(signed.serialize()).toString('hex')}`
 }
 
@@ -237,7 +235,7 @@ it.each([
   expect(deps.ledger.fail).not.toHaveBeenCalled()
 })
 
-it('reapplies Wren hard fee limits before invoking the signer', async () => {
+it('reapplies Saf0o hard fee limits before invoking the signer', async () => {
   const source = singleCallInput('0x2')
   const excessiveFee = 2n * 10n ** 18n + 1n
   source.preparation.calls[0].transaction.gasLimit = '0x1'

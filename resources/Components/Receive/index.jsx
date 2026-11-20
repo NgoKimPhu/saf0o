@@ -60,7 +60,7 @@ const Receive = ({ address }) => {
       <button
         type='button'
         ref={trigger}
-        className='wrenControl wrenControlSecondary'
+        className='saf0oControl saf0oControlSecondary'
         aria-expanded={open}
         aria-controls={open ? id : undefined}
         aria-haspopup='dialog'
@@ -91,7 +91,7 @@ const Receive = ({ address }) => {
                 <code>{fullAddress}</code>
                 <button
                   type='button'
-                  className='wrenControl wrenControlSecondary'
+                  className='saf0oControl saf0oControlSecondary'
                   onClick={copy}
                   onKeyDown={(event) => {
                     if (event.key === 'Tab') {

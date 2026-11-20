@@ -93,7 +93,7 @@ const latestStateVersion = () => {
   })
   const futureVersion = numericVersions.find((version) => version > migrations.latest)
   if (futureVersion !== undefined) {
-    throw new Error(`Saved state version ${futureVersion} is newer than Wren supports`)
+    throw new Error(`Saved state version ${futureVersion} is newer than Saf0o supports`)
   }
   versions.sort((a, b) => Number(a) - Number(b))
 

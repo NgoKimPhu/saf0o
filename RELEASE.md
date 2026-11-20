@@ -23,7 +23,7 @@ Keep ZIPs and macOS updater metadata outside the release.
 
 The native verifier checks source identity, resources, architecture, native
 modules, sandbox policy and archive contents. Windows checks require `NotSigned`
-for `Wren.exe` and the installer. They check DPAPI policy without real credentials.
+for `Saf0o.exe` and the installer. They check DPAPI policy without real credentials.
 GUI, hardware, SmartScreen and credential-storage checks use the manual checklists.
 DPAPI qualification also needs the
 [signer-protection checklist](WINDOWS_SIGNER_PROTECTION_QUALIFICATION.md).
@@ -31,7 +31,7 @@ DPAPI qualification also needs the
 ## 2. Prepare a candidate
 
 Review the licenses of bundled dependencies. Trezor Connect carries T-RSL;
-no separate Wren grant is recorded. Its applicable integration and redistribution
+no separate Saf0o grant is recorded. Its applicable integration and redistribution
 terms remain a [clarification item](TREZOR_CLEAR_SIGNING.md#sdk-license-prerequisite).
 
 Check the qualification record for the candidate version. If an unpublished
@@ -60,7 +60,7 @@ The workflow refuses to overwrite an existing release.
    npm run compile
    npm test
    mkdir -p .cache/release-evidence
-   WREN_E2E_EVIDENCE_DIR="$PWD/.cache/release-evidence" npm run test:e2e
+   SAF0O_E2E_EVIDENCE_DIR="$PWD/.cache/release-evidence" npm run test:e2e
    cp compiled/simulation-fallback-e2e.json .cache/release-evidence/
    npm run test:usbAdapters
    npm run qualify:ui
@@ -111,7 +111,7 @@ The workflow refuses to overwrite an existing release.
    with no Apple identity; and require Gatekeeper assessment to reject it.
 
 6. Review the diff, dependency graph, test output, package names, local Linux
-   `dist/SHA256SUMS`, and `dist/wren.cdx.json`. The final workflow creates a
+   `dist/SHA256SUMS`, and `dist/saf0o.cdx.json`. The final workflow creates a
    combined manifest covering the AppImage, deb, unsigned Windows installer,
    both unnotarized macOS DMGs, and source-bound SBOM. Do not waive an unexplained
    identity, signature-state, Gatekeeper-state, migration, native-module, or

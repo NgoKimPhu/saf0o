@@ -2,7 +2,7 @@
 
 Windows release signing requires reviewed source in the public
 [`NgoKimPhu/saf0o`](https://github.com/NgoKimPhu/saf0o) repository. Requests must come
-from Wren's release workflow, match an immutable release tag, pass release checks
+from Saf0o's release workflow, match an immutable release tag, pass release checks
 and receive manual approval.
 
 Free code signing provided by [SignPath.io](https://signpath.io/), certificate by
@@ -18,7 +18,7 @@ Signed release requests use the separate approval step required by SignPath.
 
 ## Privacy
 
-See [Privacy](README.md#privacy) for network services and shared data. Wren has no
+See [Privacy](README.md#privacy) for network services and shared data. Saf0o has no
 first-party hosted backend and does not collect telemetry. User-requested RPC,
 pricing, IPFS, protocol-data, and artwork operations can contact the services
 listed there.

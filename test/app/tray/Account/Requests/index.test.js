@@ -320,7 +320,7 @@ it('renders wallet-owned delegation revocations in the same active FIFO ledger',
   const revoke = {
     handlerId: 'revoke',
     created: 1,
-    origin: 'wren',
+    origin: 'saf0o',
     queueIndex: 1,
     type: 'eip7702Revoke',
     chainId: 1,

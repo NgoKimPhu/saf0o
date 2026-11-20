@@ -1,101 +1,101 @@
 // All editable fields share one restrained inset construction. Search fields may
 // opt into the quiet alias, but never switch to a different border geometry.
-input.wrenInput,
-textarea.wrenInput,
-select.wrenInput
+input.saf0oInput,
+textarea.saf0oInput,
+select.saf0oInput
   box-sizing border-box
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-sm)
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-sm)
   outline 0
-  color var(--wren-text-primary)
-  background-color var(--wren-surface-inset)
+  color var(--saf0o-text-primary)
+  background-color var(--saf0o-surface-inset)
   background-image linear-gradient(180deg, rgba(255, 255, 255, .012), transparent 48%)
   box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), inset 0 -1px rgba(255, 255, 255, .018)
-  caret-color var(--wren-accent-primary-hover)
-  transition border-color var(--wren-motion-fast) var(--wren-ease), box-shadow var(--wren-motion-fast) var(--wren-ease), color var(--wren-motion-fast) var(--wren-ease), background-color var(--wren-motion-fast) var(--wren-ease)
+  caret-color var(--saf0o-accent-primary-hover)
+  transition border-color var(--saf0o-motion-fast) var(--saf0o-ease), box-shadow var(--saf0o-motion-fast) var(--saf0o-ease), color var(--saf0o-motion-fast) var(--saf0o-ease), background-color var(--saf0o-motion-fast) var(--saf0o-ease)
 
   &::placeholder
-    color var(--wren-text-muted)
+    color var(--saf0o-text-muted)
     opacity 1
 
   &:hover:not(:disabled):not(:focus)
-    border-color var(--wren-border-strong)
+    border-color var(--saf0o-border-strong)
 
   &:focus,
   &:focus-visible
-    border-color var(--wren-accent-primary-hover)
+    border-color var(--saf0o-accent-primary-hover)
     outline 0
     box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), 0 0 0 1px rgba(166, 138, 97, .2)
 
   &[aria-invalid='true'],
-  &.wrenInputError
-    border-color var(--wren-danger)
-    background-color var(--wren-danger-soft)
+  &.saf0oInputError
+    border-color var(--saf0o-danger)
+    background-color var(--saf0o-danger-soft)
     box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), 0 0 0 1px rgba(225, 154, 145, .32)
 
   &:disabled,
   &[aria-disabled='true']
-    color var(--wren-text-disabled)
-    background-color var(--wren-surface-inset)
+    color var(--saf0o-text-disabled)
+    background-color var(--saf0o-surface-inset)
     box-shadow inset 0 1px 2px rgba(0, 0, 0, .38)
     cursor default
     opacity .7
 
-select.wrenInput
+select.saf0oInput
   color-scheme dark
 
   option
-    color var(--wren-text-primary)
-    background var(--wren-surface-inset)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-inset)
 
   option:checked
-    color var(--wren-text-inverse)
-    background var(--wren-accent-primary)
+    color var(--saf0o-text-inverse)
+    background var(--saf0o-accent-primary)
 
   option:hover,
   option:focus
-    color var(--wren-text-primary)
-    background var(--wren-surface-active)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-active)
 
-input.wrenInputQuiet,
-textarea.wrenInputQuiet,
-select.wrenInputQuiet
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-sm)
-  background-color var(--wren-surface-inset)
+input.saf0oInputQuiet,
+textarea.saf0oInputQuiet,
+select.saf0oInputQuiet
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-sm)
+  background-color var(--saf0o-surface-inset)
   box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), inset 0 -1px rgba(255, 255, 255, .018)
 
   &:hover:not(:disabled):not(:focus)
-    border-color var(--wren-border-strong)
+    border-color var(--saf0o-border-strong)
     box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), inset 0 -1px rgba(255, 255, 255, .018)
 
   &:focus,
   &:focus-visible
-    border-color var(--wren-accent-primary-hover)
+    border-color var(--saf0o-accent-primary-hover)
     box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), 0 0 0 1px rgba(166, 138, 97, .2)
 
-textarea.wrenInput
+textarea.saf0oInput
   resize vertical
 
-.wrenInputGroup.wrenInputGroup
+.saf0oInputGroup.saf0oInputGroup
   box-sizing border-box
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-sm)
-  background-color var(--wren-surface-inset)
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-sm)
+  background-color var(--saf0o-surface-inset)
   background-image linear-gradient(180deg, rgba(255, 255, 255, .012), transparent 48%)
   box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), inset 0 -1px rgba(255, 255, 255, .018)
-  transition border-color var(--wren-motion-fast) var(--wren-ease), box-shadow var(--wren-motion-fast) var(--wren-ease), background-color var(--wren-motion-fast) var(--wren-ease)
+  transition border-color var(--saf0o-motion-fast) var(--saf0o-ease), box-shadow var(--saf0o-motion-fast) var(--saf0o-ease), background-color var(--saf0o-motion-fast) var(--saf0o-ease)
 
   &:hover:not(:focus-within)
-    border-color var(--wren-border-strong)
+    border-color var(--saf0o-border-strong)
 
   &:focus-within
-    border-color var(--wren-accent-primary-hover)
+    border-color var(--saf0o-accent-primary-hover)
     box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), 0 0 0 1px rgba(166, 138, 97, .2)
 
-  input.wrenInput,
-  textarea.wrenInput,
-  select.wrenInput
+  input.saf0oInput,
+  textarea.saf0oInput,
+  select.saf0oInput
     border 0
     border-radius 0
     background transparent
@@ -109,20 +109,20 @@ textarea.wrenInput
       background transparent
       box-shadow none
 
-  &.wrenInputGroupError
-    border-color var(--wren-danger)
-    background-color var(--wren-danger-soft)
+  &.saf0oInputGroupError
+    border-color var(--saf0o-danger)
+    background-color var(--saf0o-danger-soft)
     box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), 0 0 0 1px rgba(225, 154, 145, .32)
 
-.wrenInputGroup.wrenInputGroupQuiet
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-sm)
+.saf0oInputGroup.saf0oInputGroupQuiet
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-sm)
   box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), inset 0 -1px rgba(255, 255, 255, .018)
 
   &:hover:not(:focus-within)
-    border-color var(--wren-border-strong)
+    border-color var(--saf0o-border-strong)
     box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), inset 0 -1px rgba(255, 255, 255, .018)
 
   &:focus-within
-    border-color var(--wren-accent-primary-hover)
+    border-color var(--saf0o-accent-primary-hover)
     box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), 0 0 0 1px rgba(166, 138, 97, .2)

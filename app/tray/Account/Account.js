@@ -160,7 +160,7 @@ export const AccountAddressActions = ({ address, name }) => {
           aria-controls={previewId}
           aria-expanded={showQr}
           aria-label='Account address QR code'
-          className='accountHomeQrTrigger wrenControl wrenControlGhost wrenControlIcon'
+          className='accountHomeQrTrigger saf0oControl saf0oControlGhost saf0oControlIcon'
           title='Hover or focus to show the account address QR code'
           onBlur={() => setQrFocused(false)}
           onFocus={() => setQrFocused(true)}
@@ -225,7 +225,7 @@ export class AccountNameEditor extends React.Component {
           <input
             autoFocus
             type='text'
-            className='accountHomeNameInput wrenInput'
+            className='accountHomeNameInput saf0oInput'
             aria-label='Account name'
             maxLength={128}
             value={this.state.draft}
@@ -244,7 +244,7 @@ export class AccountNameEditor extends React.Component {
             <button
               ref={this.renameButtonRef}
               type='button'
-              className='accountHomeRename wrenControl wrenControlGhost'
+              className='accountHomeRename saf0oControl saf0oControlGhost'
               aria-label='Update account name'
               onClick={() => this.beginEdit()}
             >
@@ -393,7 +393,7 @@ class _AccountMain extends React.Component {
         <div className='panelFilterInput'>
           <input
             aria-label='Filter account details'
-            className='wrenInput'
+            className='saf0oInput'
             type='text'
             spellCheck='false'
             onChange={(e) => {
@@ -407,7 +407,7 @@ class _AccountMain extends React.Component {
           <button
             type='button'
             aria-label='Clear account view filter'
-            className='panelFilterClear wrenControl wrenControlGhost wrenControlIcon'
+            className='panelFilterClear saf0oControl saf0oControlGhost saf0oControlIcon'
             onClick={() => {
               this.setState({ accountModuleFilter: '' })
             }}
@@ -435,7 +435,7 @@ class _AccountMain extends React.Component {
           <Receive address={this.props.id} />
           <button
             type='button'
-            className='accountPortfolioSend wrenControl wrenControlPrimary wrenControlLarge'
+            className='accountPortfolioSend saf0oControl saf0oControlPrimary saf0oControlLarge'
             onClick={() => link.send('tray:action', 'navDash', { view: 'send', data: {} })}
           >
             <Icon name='send' size={15} />
@@ -535,7 +535,7 @@ class _AccountView extends React.Component {
           <button
             type='button'
             aria-label='Back'
-            className='accountViewBack wrenControl wrenControlIcon wrenShellNav'
+            className='accountViewBack saf0oControl saf0oControlIcon saf0oShellNav'
             onClick={() => this.props.back()}
           >
             <Icon name='back' size={16} />

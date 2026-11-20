@@ -15,7 +15,7 @@ import {
 } from '../../main/profileBackup'
 import { migratePersistedConfiguration } from '../../main/profileMigration'
 import { OsSignerStorage } from '../../main/signers/hot/storage'
-import { FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN, originIdForInvoker } from '../../resources/domain/origin'
+import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN, originIdForInvoker } from '../../resources/domain/origin'
 import { createAccountPermission } from '../../main/provider/permissions'
 
 const roots: string[] = []
@@ -43,7 +43,7 @@ afterEach(() => {
 })
 
 const fixture = () => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-profile-backup-'))
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-profile-backup-'))
   roots.push(root)
   const profile = path.join(root, 'profile')
   fs.mkdirSync(path.join(profile, 'signers'), { recursive: true })
@@ -159,7 +159,7 @@ const decryptTestPayload = (backup: Buffer, backupPassword: string) => {
     maxmem: 64 * 1024 * 1024
   })
   const decipher = crypto.createDecipheriv('aes-256-gcm', key, Buffer.from(envelope.cipher.iv, 'base64'))
-  decipher.setAAD(Buffer.from('wren-profile-backup:v1'))
+  decipher.setAAD(Buffer.from('saf0o-profile-backup:v1'))
   decipher.setAuthTag(Buffer.from(envelope.cipher.tag, 'base64'))
   return JSON.parse(
     Buffer.concat([decipher.update(Buffer.from(envelope.ciphertext, 'base64')), decipher.final()]).toString(
@@ -178,11 +178,11 @@ const encryptTestPayload = (payload: object, backupPassword: string) => {
     maxmem: 64 * 1024 * 1024
   })
   const cipher = crypto.createCipheriv('aes-256-gcm', key, iv)
-  cipher.setAAD(Buffer.from('wren-profile-backup:v1'))
+  cipher.setAAD(Buffer.from('saf0o-profile-backup:v1'))
   const ciphertext = Buffer.concat([cipher.update(JSON.stringify(payload)), cipher.final()])
   return Buffer.from(
     JSON.stringify({
-      format: 'wren-profile-backup',
+      format: 'saf0o-profile-backup',
       version: 1,
       kdf: { name: 'scrypt', N: 32768, r: 8, p: 1, keyLength: 32, salt: salt.toString('base64') },
       cipher: { name: 'aes-256-gcm', iv: iv.toString('base64'), tag: cipher.getAuthTag().toString('base64') },
@@ -195,7 +195,7 @@ const restoreFixture = () => {
   const source = fixture()
   const target = path.join(source.root, 'target')
   fs.cpSync(source.profile, target, { recursive: true })
-  const backup = path.join(source.root, 'profile.wrenbackup')
+  const backup = path.join(source.root, 'profile.saf0obackup')
   writeEncryptedProfileBackup(source.profile, backup, password, new Date('2026-08-12T00:00:00.000Z'))
   return { ...source, target, backup }
 }
@@ -232,7 +232,7 @@ const simulateInstalledRestore = (target: string, removeIntent: boolean) => {
     signerCount: intent.value.signerCount,
     files: intent.value.files
   }
-  fs.writeFileSync(path.join(target, 'wren-profile-restore.json'), `${JSON.stringify(receipt)}\n`, {
+  fs.writeFileSync(path.join(target, 'saf0o-profile-restore.json'), `${JSON.stringify(receipt)}\n`, {
     mode: 0o600
   })
   if (removeIntent) fs.rmSync(intent.file)
@@ -243,7 +243,7 @@ it('packages sanitized configuration and encrypted signers in an authenticated e
   const { profile } = fixture()
   const backup = createEncryptedProfileBackup(profile, password, new Date('2026-08-12T00:00:00.000Z'))
 
-  expect(backup.toString('utf8')).toContain('wren-profile-backup')
+  expect(backup.toString('utf8')).toContain('saf0o-profile-backup')
   expect(backup.toString('utf8')).not.toMatch(/accounts|secret-shaped|encryptedSeed/)
   expect(inspectEncryptedProfileBackup(backup, password)).toEqual({
     formatVersion: 1,
@@ -342,7 +342,7 @@ it('excludes recent-recipient history and its opt-in preference from encrypted p
   expect(recoveryMain).not.toHaveProperty('recentRecipientUses')
 })
 
-it('excludes managed Wren principals and permissions while retaining unrelated direct origins', () => {
+it('excludes managed Saf0o principals and permissions while retaining unrelated direct origins', () => {
   const { profile } = fixture()
   const configPath = path.join(profile, 'config.json')
   const current = migratePersistedConfiguration(JSON.parse(fs.readFileSync(configPath, 'utf8')))
@@ -351,7 +351,7 @@ it('excludes managed Wren principals and permissions while retaining unrelated d
   const session = { requests: 1, startedAt: 1, lastUpdatedAt: 1 }
   const externalOrigin = 'https://app.example'
   const externalId = originIdForInvoker(externalOrigin, { provenance: 'direct' })
-  const managedOrigins = [FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN]
+  const managedOrigins = [FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN]
 
   current.main.origins[externalId] = {
     name: externalOrigin,
@@ -387,7 +387,7 @@ it('excludes managed Wren principals and permissions while retaining unrelated d
       now: 1
     })
   })
-  const forgedDeployId = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
+  const forgedDeployId = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
   current.main.origins[forgedDeployId].name = 'https://forged-managed-id.example'
   current.main.origins[forgedDeployId].provenance = 'direct'
   current.main.permissions[account][forgedDeployId].origin = 'https://forged-managed-id.example'
@@ -530,7 +530,7 @@ it('normalizes a version 3 profile before backup inspection and restore staging'
   expect(recoveryMain).not.toHaveProperty('addresses')
   expect(recoveryMain.accounts).toHaveProperty('0x000000000000000000000000000000000000dead')
 
-  const backupFile = path.join(root, 'legacy-profile.wrenbackup')
+  const backupFile = path.join(root, 'legacy-profile.saf0obackup')
   const target = path.join(root, 'legacy-restored')
   fs.writeFileSync(backupFile, backup)
   fs.cpSync(profile, target, { recursive: true })
@@ -576,7 +576,7 @@ it('drops source-bound origins and grants when peer credentials are excluded', (
     parentCapability: 'eth_accounts',
     caveats: [
       {
-        type: 'wren:permissionScope',
+        type: 'saf0o:permissionScope',
         value: { account, methods: ['eth_accounts'], chains: ['0x1'], expiresAt: 4_102_444_800_000 }
       }
     ],
@@ -609,30 +609,30 @@ it('drops source-bound origins and grants when peer credentials are excluded', (
 it('rejects wrong passwords and authenticated tampering without creating a profile', () => {
   const { profile, root } = fixture()
   const backup = createEncryptedProfileBackup(profile, password)
-  const source = path.join(root, 'backup.wrenbackup')
+  const source = path.join(root, 'backup.saf0obackup')
   const target = path.join(root, 'target')
   fs.cpSync(profile, target, { recursive: true })
   fs.writeFileSync(source, backup)
 
   expect(() => inspectEncryptedProfileBackup(backup, 'this password is wrong')).toThrow(
-    'Invalid Wren profile backup'
+    'Invalid Saf0o profile backup'
   )
   expect(() => stageEncryptedProfileRestore(source, 'this password is wrong', target)).toThrow(
-    'Invalid Wren profile backup'
+    'Invalid Saf0o profile backup'
   )
   const envelope = JSON.parse(backup.toString('utf8'))
   envelope.ciphertext = `${envelope.ciphertext.slice(0, -4)}AAAA`
   expect(() => inspectEncryptedProfileBackup(Buffer.from(JSON.stringify(envelope)), password)).toThrow(
-    'Invalid Wren profile backup'
+    'Invalid Saf0o profile backup'
   )
   fs.writeFileSync(source, JSON.stringify(envelope))
-  expect(() => stageEncryptedProfileRestore(source, password, target)).toThrow('Invalid Wren profile backup')
+  expect(() => stageEncryptedProfileRestore(source, password, target)).toThrow('Invalid Saf0o profile backup')
   expect(() => pendingIntent(target)).toThrow('Restore intent was not written')
 })
 
 it('writes private backup files and restores them through bounded regular-file reads', () => {
   const { root, profile } = fixture()
-  const destination = path.join(root, 'profile.wren-backup')
+  const destination = path.join(root, 'profile.saf0o-backup')
 
   expect(writeEncryptedProfileBackup(profile, destination, password).bytes).toBeGreaterThan(0)
   expect(readAndInspectEncryptedProfileBackup(destination, password)).toEqual({
@@ -653,7 +653,7 @@ it.each(['linux', 'win32'] as const)(
     signerStorage.enable()
 
     const local = fs.readFileSync(path.join(profile, 'signers', 'seed.json'))
-    expect(JSON.parse(local.toString('utf8')).format).toBe('wren-os-protected-signer')
+    expect(JSON.parse(local.toString('utf8')).format).toBe('saf0o-os-protected-signer')
     const backup = createEncryptedProfileBackup(profile, password, new Date('2026-08-12T00:00:00.000Z'), {
       readSignerFiles: () => signerStorage.readAllSignerFiles()
     })
@@ -661,10 +661,10 @@ it.each(['linux', 'win32'] as const)(
 
     expect(payload.files.signers).toHaveLength(1)
     expect(Buffer.from(payload.files.signers[0].bytes, 'base64')).toEqual(original)
-    expect(JSON.stringify(payload)).not.toContain('wren-os-protected-signer')
+    expect(JSON.stringify(payload)).not.toContain('saf0o-os-protected-signer')
     expect(JSON.stringify(payload)).not.toContain('.os-signer-protection.json')
 
-    const source = path.join(root, 'portable.wrenbackup')
+    const source = path.join(root, 'portable.saf0obackup')
     const target = path.join(root, 'restored')
     fs.writeFileSync(source, backup)
     fs.cpSync(profile, target, { recursive: true })
@@ -707,7 +707,7 @@ it('binds restore staging to the exact regular backup file that was inspected', 
   fs.renameSync(replacement, backup)
 
   expect(() => stageInspectedProfileRestore(backup, password, binding, target)).toThrow(
-    'The inspected Wren profile backup changed before restore'
+    'The inspected Saf0o profile backup changed before restore'
   )
   expect(() => pendingIntent(target)).toThrow('Restore intent was not written')
 
@@ -725,28 +725,28 @@ it('rejects symlinked profile and backup files', () => {
   fs.symlinkSync('config.json.target', config)
 
   expect(() => createEncryptedProfileBackup(profile, password)).toThrow(
-    'Wren configuration is not a regular file'
+    'Saf0o configuration is not a regular file'
   )
 
   fs.rmSync(config)
   fs.renameSync(`${config}.target`, config)
-  const backup = path.join(root, 'backup.wrenbackup')
+  const backup = path.join(root, 'backup.saf0obackup')
   writeEncryptedProfileBackup(profile, backup, password)
-  const link = path.join(root, 'backup-link.wrenbackup')
+  const link = path.join(root, 'backup-link.saf0obackup')
   fs.symlinkSync(path.basename(backup), link)
   expect(() => readAndInspectEncryptedProfileBackup(link, password)).toThrow(
-    'Wren profile backup is not a regular file'
+    'Saf0o profile backup is not a regular file'
   )
 })
 
 it('rejects oversized backup files before reading their contents', () => {
   const { root } = fixture()
-  const oversized = path.join(root, 'oversized.wrenbackup')
+  const oversized = path.join(root, 'oversized.saf0obackup')
   fs.closeSync(fs.openSync(oversized, 'w'))
   fs.truncateSync(oversized, 96 * 1024 * 1024 + 1)
 
   expect(() => readAndInspectEncryptedProfileBackup(oversized, password)).toThrow(
-    'Wren profile backup is not a regular bounded file'
+    'Saf0o profile backup is not a regular bounded file'
   )
 })
 
@@ -759,7 +759,7 @@ it('rejects a validly encrypted backup from a future state version before stagin
   fs.writeFileSync(backup, encryptTestPayload(payload, password))
 
   expect(() => stageEncryptedProfileRestore(backup, password, target)).toThrow(
-    'Frame profile version 999 is newer than Wren supports'
+    'Frame profile version 999 is newer than Saf0o supports'
   )
   expect(() => pendingIntent(target)).toThrow('Restore intent was not written')
 })
@@ -783,7 +783,7 @@ it('stages and atomically replaces a profile only during the early bootstrap', (
   expect(fs.readFileSync(path.join(target, 'signers', 'seed.json'), 'utf8')).toContain(
     'secret-shaped-but-encrypted'
   )
-  expect(JSON.parse(fs.readFileSync(path.join(target, 'wren-profile-restore.json'), 'utf8'))).toMatchObject({
+  expect(JSON.parse(fs.readFileSync(path.join(target, 'saf0o-profile-restore.json'), 'utf8'))).toMatchObject({
     schemaVersion: 1,
     restoreId: staged.restoreId,
     signerCount: 1
@@ -919,7 +919,7 @@ it('never deletes the only recoverable previous profile for an invalid receipt',
   const { target, backup } = restoreFixture()
   stageEncryptedProfileRestore(backup, password, target, new Date('2026-08-12T00:00:00.000Z'))
   const crash = simulateInstalledRestore(target, true)
-  const receiptPath = path.join(target, 'wren-profile-restore.json')
+  const receiptPath = path.join(target, 'saf0o-profile-restore.json')
   const receipt = JSON.parse(fs.readFileSync(receiptPath, 'utf8'))
   receipt.files[0].sha256 = '0'.repeat(64)
   fs.writeFileSync(receiptPath, JSON.stringify(receipt))

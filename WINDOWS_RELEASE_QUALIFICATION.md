@@ -1,6 +1,6 @@
 # Windows x64 preview qualification checklist
 
-Use this checklist for the candidate's unsigned Wren Windows installer.
+Use this checklist for the candidate's unsigned Saf0o Windows installer.
 Replace `<version>` below with the exact candidate version.
 Linux x64 remains the qualified platform. Passing this checklist makes the
 Windows file suitable for a clearly labeled preview; it does not create a trusted
@@ -12,19 +12,19 @@ signatures, profile files, or raw logs.
 
 ## 1. Confirm the candidate
 
-Record the Wren version, source commit, Windows edition/build, VM software, and
+Record the Saf0o version, source commit, Windows edition/build, VM software, and
 exact release-workflow URL. Download these files from the draft release through
 the browser:
 
-- `Wren-Setup-<version>-unsigned-x64.exe`
+- `Saf0o-Setup-<version>-unsigned-x64.exe`
 - `SHA256SUMS`
-- `wren.cdx.json`
+- `saf0o.cdx.json`
 
 Verify the installer's SHA-256 against `SHA256SUMS` and verify its GitHub build
 and SBOM attestations. Then run:
 
 ```powershell
-Get-AuthenticodeSignature '.\Wren-Setup-<version>-unsigned-x64.exe' |
+Get-AuthenticodeSignature '.\Saf0o-Setup-<version>-unsigned-x64.exe' |
   Format-List Status,StatusMessage
 ```
 
@@ -35,21 +35,21 @@ appear, but is not guaranteed. Do not disable Windows security controls globally
 ## 2. Install and launch
 
 Run the verified installer. It is intentionally a one-click current-user setup:
-there is no Next/Next/Install wizard, and Wren opens when installation finishes.
-Confirm Wren appears in installed apps and has an uninstaller.
+there is no Next/Next/Install wizard, and Saf0o opens when installation finishes.
+Confirm Saf0o appears in installed apps and has an uninstaller.
 
 Close the automatically opened instance. Create a disposable profile and launch
 the installed executable against it:
 
 ```powershell
-$ProfileRoot = Join-Path $env:LOCALAPPDATA ("wren-preview-" + [guid]::NewGuid())
+$ProfileRoot = Join-Path $env:LOCALAPPDATA ("saf0o-preview-" + [guid]::NewGuid())
 New-Item -ItemType Directory -Path $ProfileRoot | Out-Null
-& "$env:LOCALAPPDATA\Programs\Wren\Wren.exe" "--user-data-dir=$ProfileRoot"
+& "$env:LOCALAPPDATA\Programs\Saf0o\Saf0o.exe" "--user-data-dir=$ProfileRoot"
 ```
 
-If Windows installed Wren elsewhere, use that `Wren.exe`. Confirm dashboard,
+If Windows installed Saf0o elsewhere, use that `Saf0o.exe`. Confirm dashboard,
 wallet panel, tray, Control Center, clean close, restart persistence, and
-single-instance behavior. Confirm a second launch does not take over Wren's
+single-instance behavior. Confirm a second launch does not take over Saf0o's
 local ports or create a second profile writer.
 
 ## 3. Exercise the changed account and Activity flows
@@ -64,7 +64,7 @@ With disposable data only:
 3. Rename named and unnamed accounts. Confirm drafts survive background refresh,
    local and ENS names remain distinct, and Rename and Remove share one action row.
 4. From Accounts, select a locked software signer and a disconnected hardware
-   signer. Confirm Wren opens the password or device reconnect flow. Ready and
+   signer. Confirm Saf0o opens the password or device reconnect flow. Ready and
    watch-only accounts must still switch directly.
 5. Remove a signer that owns accounts and confirm those accounts also leave the
    wallet panel after restart. Do not perform a second manual account removal.
@@ -81,16 +81,16 @@ With disposable data only:
 
 ## 4. Exercise Companion and requests
 
-Use the exact qualified Wren Companion Chrome and Firefox archives. In each
+Use the exact qualified Saf0o Companion Chrome and Firefox archives. In each
 browser, compare the pairing code, approve one disposable account, and confirm
 the network list loads. On a test dapp or explorer:
 
-1. connect once as Wren;
+1. connect once as Saf0o;
 2. switch to an enabled network before account access and confirm the route changes
    immediately without a review or account exposure;
 3. reject, then approve, one personal message or zero-value testnet transaction;
 4. revoke the account and confirm the page receives an empty account list;
-5. restart Wren and the browser and confirm pairing recovers without a loop.
+5. restart Saf0o and the browser and confirm pairing recovers without a loop.
 
 No request may remain stuck after approval or rejection. Scan retained output for
 secrets before keeping any evidence.
@@ -107,9 +107,9 @@ funding evidence remains unavailable.
 
 ## 5. Check update and removal behavior
 
-Install the candidate over a disposable earlier Wren installation and confirm its
+Install the candidate over a disposable earlier Saf0o installation and confirm its
 profile still opens. Include a migrated Frame-style palette and mixed-case account
-record; require the canonical Wren palette and one lowercase account identity after
+record; require the canonical Saf0o palette and one lowercase account identity after
 upgrade without metadata loss. Uninstall and confirm the app is removed. Application
 data may remain for recovery; do not interpret that as an uninstall failure.
 Reinstall the exact candidate and confirm it starts normally.

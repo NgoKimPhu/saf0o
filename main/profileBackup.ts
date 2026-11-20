@@ -11,13 +11,13 @@ import {
 import migrations from './store/migrate'
 import { DappGuardrailSchema } from '../resources/domain/dappGuardrails'
 import {
-  WREN_MANAGED_ORIGIN_IDS,
-  isWrenOwnedOriginName,
+  SAF0O_MANAGED_ORIGIN_IDS,
+  isSaf0oOwnedOriginName,
   originIdForInvoker
 } from '../resources/domain/origin'
 import { MINIMUM_PASSWORD_LENGTH } from '../resources/domain/password'
 
-const FORMAT = 'wren-profile-backup'
+const FORMAT = 'saf0o-profile-backup'
 const VERSION = 1
 const AAD = Buffer.from(`${FORMAT}:v${VERSION}`, 'utf8')
 const CONFIG_FILE = 'config.json'
@@ -113,8 +113,8 @@ const RestoreIntentSchema = z
     schemaVersion: z.literal(1),
     restoreId: z.uuid(),
     targetFingerprint: z.string().regex(/^[0-9a-f]{16}$/u),
-    stageName: z.string().regex(/^\.wren-restore-[0-9a-f]{16}-stage-[0-9a-f-]{36}$/u),
-    previousName: z.string().regex(/^\.wren-restore-[0-9a-f]{16}-previous-[0-9a-f-]{36}$/u),
+    stageName: z.string().regex(/^\.saf0o-restore-[0-9a-f]{16}-stage-[0-9a-f-]{36}$/u),
+    previousName: z.string().regex(/^\.saf0o-restore-[0-9a-f]{16}-previous-[0-9a-f-]{36}$/u),
     stagedAt: z.string().datetime(),
     expiresAt: z.string().datetime(),
     signerCount: z.number().int().nonnegative().max(MAX_SIGNER_FILES),
@@ -132,7 +132,7 @@ const RestoreReceiptSchema = z
     schemaVersion: z.literal(1),
     restoreId: z.uuid(),
     targetFingerprint: z.string().regex(/^[0-9a-f]{16}$/u),
-    previousName: z.string().regex(/^\.wren-restore-[0-9a-f]{16}-previous-[0-9a-f-]{36}$/u),
+    previousName: z.string().regex(/^\.saf0o-restore-[0-9a-f]{16}-previous-[0-9a-f-]{36}$/u),
     stagedAt: z.string().datetime(),
     restoredAt: z.string().datetime(),
     signerCount: z.number().int().nonnegative().max(MAX_SIGNER_FILES),
@@ -150,7 +150,7 @@ export type ProfileRestoreBootstrapResult =
   | { status: 'applied'; restoreId: string; signerCount: number; restoredAt: string }
   | { status: 'canceled'; reason: 'expired' | 'invalid' | 'failed' }
 
-function fail(message = 'Invalid Wren profile backup'): never {
+function fail(message = 'Invalid Saf0o profile backup'): never {
   throw new Error(message)
 }
 
@@ -263,11 +263,11 @@ const recoveryOrigins = (value: unknown) =>
     Object.entries(recordValue(value)).flatMap(([id, originValue]) => {
       const origin = recordValue(originValue)
       if (
-        WREN_MANAGED_ORIGIN_IDS.includes(id) ||
+        SAF0O_MANAGED_ORIGIN_IDS.includes(id) ||
         origin['sessionOnly'] === true ||
         origin['provenance'] === 'companion' ||
         origin['provenance'] === 'native' ||
-        isWrenOwnedOriginName(origin['name'])
+        isSaf0oOwnedOriginName(origin['name'])
       ) {
         return []
       }
@@ -294,7 +294,7 @@ const recoveryPermissions = (value: unknown, droppedOriginIds: Set<string>) =>
           const legacyOrigin = permission['origin']
           return (
             !droppedOriginIds.has(originId) &&
-            !isWrenOwnedOriginName(legacyOrigin) &&
+            !isSaf0oOwnedOriginName(legacyOrigin) &&
             !(
               typeof legacyOrigin === 'string' &&
               (legacyOrigin === 'Unknown' || legacyOrigin.startsWith('Unknown/'))
@@ -324,7 +324,7 @@ const recoveryDappGuardrails = (
             origin['provenance'] !== 'direct' ||
             origin['sourceId'] !== undefined ||
             origin['sessionOnly'] === true ||
-            isWrenOwnedOriginName(permission['origin']) ||
+            isSaf0oOwnedOriginName(permission['origin']) ||
             permission['handlerId'] !== originId ||
             permission['origin'] !== origin['name'] ||
             originIdForInvoker(String(permission['origin']), { provenance: 'direct' }) !== originId
@@ -433,11 +433,11 @@ const recoveryMainState = (value: unknown) => {
       .filter(([id, originValue]) => {
         const origin = recordValue(originValue)
         return (
-          WREN_MANAGED_ORIGIN_IDS.includes(id) ||
+          SAF0O_MANAGED_ORIGIN_IDS.includes(id) ||
           origin['sessionOnly'] === true ||
           origin['provenance'] === 'companion' ||
           origin['provenance'] === 'native' ||
-          isWrenOwnedOriginName(origin['name'])
+          isSaf0oOwnedOriginName(origin['name'])
         )
       })
       .map(([id]) => id)
@@ -488,15 +488,15 @@ const recoveryMainState = (value: unknown) => {
 }
 
 const sanitizedConfiguration = (bytes: Buffer) => {
-  const migrated = migratePersistedConfiguration(parseJsonObject(bytes, 'Wren configuration'))
+  const migrated = migratePersistedConfiguration(parseJsonObject(bytes, 'Saf0o configuration'))
   const state = { main: recoveryMainState(migrated.main) }
 
   const normalized = Buffer.from(
     `${JSON.stringify({ main: { __: { [migrations.latest]: state } } })}\n`,
     'utf8'
   )
-  if (normalized.length > MAX_CONFIG_BYTES) throw new Error('Wren configuration exceeds the size limit')
-  validatePersistedConfiguration(parseJsonObject(normalized, 'Wren configuration'))
+  if (normalized.length > MAX_CONFIG_BYTES) throw new Error('Saf0o configuration exceeds the size limit')
+  validatePersistedConfiguration(parseJsonObject(normalized, 'Saf0o configuration'))
   return normalized
 }
 
@@ -504,11 +504,11 @@ const profilePayload = (profileRoot: string, now: Date, options: ProfileBackupOp
   const root = path.resolve(profileRoot)
   const rootStats = fs.lstatSync(root)
   if (!rootStats.isDirectory() || rootStats.isSymbolicLink()) {
-    throw new Error('Wren profile is not a regular directory')
+    throw new Error('Saf0o profile is not a regular directory')
   }
 
   const config = sanitizedConfiguration(
-    readRegularFile(path.join(root, CONFIG_FILE), MAX_CONFIG_BYTES, 'Wren configuration')
+    readRegularFile(path.join(root, CONFIG_FILE), MAX_CONFIG_BYTES, 'Saf0o configuration')
   )
 
   const signers: BackupPayload['files']['signers'] = []
@@ -521,7 +521,7 @@ const profilePayload = (profileRoot: string, now: Date, options: ProfileBackupOp
         const signerStats = lstatIfPresent(signerRoot)
         if (!signerStats) return []
         if (!signerStats.isDirectory() || signerStats.isSymbolicLink()) {
-          throw new Error('Wren signer directory is not a regular directory')
+          throw new Error('Saf0o signer directory is not a regular directory')
         }
         return fs
           .readdirSync(signerRoot, { withFileTypes: true })
@@ -541,9 +541,9 @@ const profilePayload = (profileRoot: string, now: Date, options: ProfileBackupOp
             }
           })
       })()
-  if (files.length > MAX_SIGNER_FILES) throw new Error('Wren profile contains too many signer files')
+  if (files.length > MAX_SIGNER_FILES) throw new Error('Saf0o profile contains too many signer files')
   if (new Set(files.map(({ name }) => name)).size !== files.length) {
-    throw new Error('Wren profile contains duplicate signer files')
+    throw new Error('Saf0o profile contains duplicate signer files')
   }
 
   for (const { name, bytes } of files) {
@@ -552,7 +552,7 @@ const profilePayload = (profileRoot: string, now: Date, options: ProfileBackupOp
     }
     validateSigner(name, bytes)
     totalBytes += bytes.length
-    if (totalBytes > MAX_PLAINTEXT_BYTES) throw new Error('Wren profile exceeds the backup size limit')
+    if (totalBytes > MAX_PLAINTEXT_BYTES) throw new Error('Saf0o profile exceeds the backup size limit')
     signers.push({ name, bytes: bytes.toString('base64') })
   }
 
@@ -571,7 +571,7 @@ export const createEncryptedProfileBackup = (
 ) => {
   validatePassword(password)
   const plaintext = Buffer.from(JSON.stringify(profilePayload(profileRoot, now, options)), 'utf8')
-  if (plaintext.length > MAX_PLAINTEXT_BYTES) fail('Wren profile exceeds the backup size limit')
+  if (plaintext.length > MAX_PLAINTEXT_BYTES) fail('Saf0o profile exceeds the backup size limit')
 
   const salt = crypto.randomBytes(16)
   const iv = crypto.randomBytes(12)
@@ -593,7 +593,7 @@ export const createEncryptedProfileBackup = (
       ciphertext: ciphertext.toString('base64')
     }
     const encoded = Buffer.from(`${JSON.stringify(envelope)}\n`, 'utf8')
-    if (encoded.length > MAX_BACKUP_BYTES) fail('Wren profile exceeds the backup size limit')
+    if (encoded.length > MAX_BACKUP_BYTES) fail('Saf0o profile exceeds the backup size limit')
     return encoded
   } finally {
     plaintext.fill(0)
@@ -604,7 +604,7 @@ export const createEncryptedProfileBackup = (
 const decryptProfileBackup = (backup: Buffer, password: string): BackupPayload => {
   validatePassword(password)
   if (backup.length > MAX_BACKUP_BYTES) fail()
-  const parsedEnvelope = BackupEnvelopeSchema.safeParse(parseJsonObject(backup, 'Wren profile backup'))
+  const parsedEnvelope = BackupEnvelopeSchema.safeParse(parseJsonObject(backup, 'Saf0o profile backup'))
   if (!parsedEnvelope.success) return fail()
   const envelope = parsedEnvelope.data
   const salt = canonicalBase64(envelope.kdf.salt, 16)
@@ -627,7 +627,7 @@ const decryptProfileBackup = (backup: Buffer, password: string): BackupPayload =
     plaintext = Buffer.concat([decipher.update(ciphertext), decipher.final()])
     if (plaintext.length > MAX_PLAINTEXT_BYTES) fail()
     const parsedPayload = BackupPayloadSchema.safeParse(
-      parseJsonObject(plaintext, 'Wren profile backup payload')
+      parseJsonObject(plaintext, 'Saf0o profile backup payload')
     )
     if (!parsedPayload.success) return fail()
     return parsedPayload.data
@@ -642,7 +642,7 @@ const decryptProfileBackup = (backup: Buffer, password: string): BackupPayload =
 export const inspectEncryptedProfileBackup = (backup: Buffer, password: string): ProfileBackupInspection => {
   const payload = decryptProfileBackup(backup, password)
   const config = canonicalBase64(payload.files.config, MAX_CONFIG_BYTES)
-  validatePersistedConfiguration(parseJsonObject(config, 'Wren configuration'))
+  validatePersistedConfiguration(parseJsonObject(config, 'Saf0o configuration'))
   payload.files.signers.forEach(({ name, bytes }) =>
     validateSigner(name, canonicalBase64(bytes, MAX_SIGNER_BYTES))
   )
@@ -654,13 +654,13 @@ export const inspectEncryptedProfileBackup = (backup: Buffer, password: string):
 }
 
 export const readAndInspectEncryptedProfileBackup = (source: string, password: string) =>
-  inspectEncryptedProfileBackup(readRegularFile(source, MAX_BACKUP_BYTES, 'Wren profile backup'), password)
+  inspectEncryptedProfileBackup(readRegularFile(source, MAX_BACKUP_BYTES, 'Saf0o profile backup'), password)
 
 export const inspectEncryptedProfileBackupFile = (
   source: string,
   password: string
 ): ProfileBackupFileBinding => {
-  const snapshot = readRegularFileSnapshot(source, MAX_BACKUP_BYTES, 'Wren profile backup')
+  const snapshot = readRegularFileSnapshot(source, MAX_BACKUP_BYTES, 'Saf0o profile backup')
   return Object.freeze({
     identity: snapshot.identity,
     sha256: sha256(snapshot.bytes),
@@ -691,8 +691,8 @@ const restorePaths = (targetProfileRoot: string) => {
     targetRoot,
     parent,
     fingerprint,
-    intentPath: path.join(parent, `.wren-restore-${fingerprint}-intent.json`),
-    stagePrefix: `.wren-restore-${fingerprint}-stage-`
+    intentPath: path.join(parent, `.saf0o-restore-${fingerprint}-intent.json`),
+    stagePrefix: `.saf0o-restore-${fingerprint}-stage-`
   }
 }
 
@@ -733,20 +733,20 @@ const safeRemoveRestoreDirectory = (directory: string, parent: string, prefix: s
 }
 
 const stagedFiles = (root: string, expected: RestoreIntent['files']) => {
-  ensurePrivateDirectory(root, 'Wren restore stage')
+  ensurePrivateDirectory(root, 'Saf0o restore stage')
   const files = expected.map((file) => {
     const destination = path.join(root, ...file.name.split('/'))
     const relative = path.relative(root, destination)
-    if (relative.startsWith('..') || path.isAbsolute(relative)) fail('Invalid Wren restore stage')
+    if (relative.startsWith('..') || path.isAbsolute(relative)) fail('Invalid Saf0o restore stage')
     const maximum = file.name === CONFIG_FILE ? MAX_CONFIG_BYTES : MAX_SIGNER_BYTES
     const bytes = readRegularFile(destination, maximum, `Restore file ${file.name}`)
-    if (bytes.length !== file.bytes || sha256(bytes) !== file.sha256) fail('Invalid Wren restore stage')
+    if (bytes.length !== file.bytes || sha256(bytes) !== file.sha256) fail('Invalid Saf0o restore stage')
     return { ...file, bytesValue: bytes }
   })
 
   const config = files.find(({ name }) => name === CONFIG_FILE)?.bytesValue
-  if (!config) fail('Invalid Wren restore stage')
-  validatePersistedConfiguration(parseJsonObject(config, 'Wren configuration'))
+  if (!config) fail('Invalid Saf0o restore stage')
+  validatePersistedConfiguration(parseJsonObject(config, 'Saf0o configuration'))
   files
     .filter(({ name }) => name.startsWith(`${SIGNERS_DIRECTORY}/`))
     .forEach(({ name, bytesValue }) => validateSigner(path.basename(name), bytesValue))
@@ -755,7 +755,7 @@ const stagedFiles = (root: string, expected: RestoreIntent['files']) => {
 
 const writeStagedPayload = (stageRoot: string, payload: BackupPayload) => {
   const config = canonicalBase64(payload.files.config, MAX_CONFIG_BYTES)
-  validatePersistedConfiguration(parseJsonObject(config, 'Wren configuration'))
+  validatePersistedConfiguration(parseJsonObject(config, 'Saf0o configuration'))
   writePrivateFile(path.join(stageRoot, CONFIG_FILE), config)
 
   const files: RestoreIntent['files'] = [{ name: CONFIG_FILE, bytes: config.length, sha256: sha256(config) }]
@@ -774,15 +774,15 @@ const writeStagedPayload = (stageRoot: string, payload: BackupPayload) => {
 
 const stageProfileRestorePayload = (payload: BackupPayload, targetProfileRoot: string, now = new Date()) => {
   const { targetRoot, parent, fingerprint, intentPath, stagePrefix } = restorePaths(targetProfileRoot)
-  requireRegularDirectory(parent, 'Wren profile parent')
-  if (lstatIfPresent(intentPath)) throw new Error('A Wren profile restore is already pending')
+  requireRegularDirectory(parent, 'Saf0o profile parent')
+  if (lstatIfPresent(intentPath)) throw new Error('A Saf0o profile restore is already pending')
   const target = fs.lstatSync(targetRoot)
   if (!target.isDirectory() || target.isSymbolicLink())
-    throw new Error('Wren profile is not a regular directory')
+    throw new Error('Saf0o profile is not a regular directory')
 
   const restoreId = crypto.randomUUID()
   const stageName = `${stagePrefix}${restoreId}`
-  const previousName = `.wren-restore-${fingerprint}-previous-${restoreId}`
+  const previousName = `.saf0o-restore-${fingerprint}-previous-${restoreId}`
   const stageRoot = path.join(parent, stageName)
   fs.mkdirSync(stageRoot, { mode: 0o700 })
 
@@ -822,7 +822,7 @@ export const stageEncryptedProfileRestore = (
   targetProfileRoot: string,
   now = new Date()
 ) => {
-  const backup = readRegularFile(source, MAX_BACKUP_BYTES, 'Wren profile backup')
+  const backup = readRegularFile(source, MAX_BACKUP_BYTES, 'Saf0o profile backup')
   return stageProfileRestorePayload(decryptProfileBackup(backup, password), targetProfileRoot, now)
 }
 
@@ -833,34 +833,34 @@ export const stageInspectedProfileRestore = (
   targetProfileRoot: string,
   now = new Date()
 ) => {
-  const snapshot = readRegularFileSnapshot(source, MAX_BACKUP_BYTES, 'Wren profile backup')
+  const snapshot = readRegularFileSnapshot(source, MAX_BACKUP_BYTES, 'Saf0o profile backup')
   if (snapshot.identity !== binding.identity || sha256(snapshot.bytes) !== binding.sha256) {
-    throw new Error('The inspected Wren profile backup changed before restore')
+    throw new Error('The inspected Saf0o profile backup changed before restore')
   }
   const payload = decryptProfileBackup(snapshot.bytes, password)
   const inspection = inspectEncryptedProfileBackup(snapshot.bytes, password)
   if (JSON.stringify(inspection) !== JSON.stringify(binding.backup)) {
-    throw new Error('The inspected Wren profile backup changed before restore')
+    throw new Error('The inspected Saf0o profile backup changed before restore')
   }
   return stageProfileRestorePayload(payload, targetProfileRoot, now)
 }
 
 const readRestoreIntent = (intentPath: string) => {
   const parsed = RestoreIntentSchema.safeParse(
-    parseJsonObject(readRegularFile(intentPath, 1024 * 1024, 'Wren restore intent'), 'Wren restore intent')
+    parseJsonObject(readRegularFile(intentPath, 1024 * 1024, 'Saf0o restore intent'), 'Saf0o restore intent')
   )
-  if (!parsed.success) throw new Error('Invalid Wren restore intent')
+  if (!parsed.success) throw new Error('Invalid Saf0o restore intent')
   return parsed.data
 }
 
 const readRestoreReceipt = (targetRoot: string) => {
-  const receiptPath = path.join(targetRoot, 'wren-profile-restore.json')
+  const receiptPath = path.join(targetRoot, 'saf0o-profile-restore.json')
   if (!lstatIfPresent(receiptPath)) return
   try {
     const parsed = RestoreReceiptSchema.safeParse(
       parseJsonObject(
-        readRegularFile(receiptPath, 1024 * 1024, 'Wren restore receipt'),
-        'Wren restore receipt'
+        readRegularFile(receiptPath, 1024 * 1024, 'Saf0o restore receipt'),
+        'Saf0o restore receipt'
       )
     )
     return parsed.success ? parsed.data : undefined
@@ -923,7 +923,7 @@ const finalizeRestoreReceipt = (
     // The receipt makes finalization idempotent; retry intent cleanup on the next bootstrap.
   }
   try {
-    safeRemoveRestoreDirectory(previousRoot, parent, `.wren-restore-${fingerprint}-previous-`)
+    safeRemoveRestoreDirectory(previousRoot, parent, `.saf0o-restore-${fingerprint}-previous-`)
   } catch {
     // Keep the valid installed profile and retry sensitive old-profile cleanup on next startup.
   }
@@ -941,7 +941,7 @@ const restoreDisplacedProfile = (
   const previous = lstatIfPresent(previousRoot)
   if (!previous) return
   if (!previous.isDirectory() || previous.isSymbolicLink()) {
-    throw new Error('Wren displaced profile is not a regular directory')
+    throw new Error('Saf0o displaced profile is not a regular directory')
   }
   const installed = lstatIfPresent(targetRoot)
   if (!installed) {
@@ -949,10 +949,10 @@ const restoreDisplacedProfile = (
     return
   }
   if (!installed.isDirectory() || installed.isSymbolicLink()) {
-    throw new Error('Wren installed profile is not a regular directory')
+    throw new Error('Saf0o installed profile is not a regular directory')
   }
 
-  const failedRoot = path.join(parent, `.wren-restore-${fingerprint}-failed-${restoreId}`)
+  const failedRoot = path.join(parent, `.saf0o-restore-${fingerprint}-failed-${restoreId}`)
   fs.renameSync(targetRoot, failedRoot)
   try {
     fs.renameSync(previousRoot, targetRoot)
@@ -960,7 +960,7 @@ const restoreDisplacedProfile = (
     fs.renameSync(failedRoot, targetRoot)
     throw error
   }
-  safeRemoveRestoreDirectory(failedRoot, parent, `.wren-restore-${fingerprint}-failed-`)
+  safeRemoveRestoreDirectory(failedRoot, parent, `.saf0o-restore-${fingerprint}-failed-`)
 }
 
 export const runPendingProfileRestore = (
@@ -968,7 +968,7 @@ export const runPendingProfileRestore = (
   now = new Date()
 ): ProfileRestoreBootstrapResult => {
   const { targetRoot, parent, fingerprint, intentPath, stagePrefix } = restorePaths(targetProfileRoot)
-  requireRegularDirectory(parent, 'Wren profile parent')
+  requireRegularDirectory(parent, 'Saf0o profile parent')
   if (!lstatIfPresent(intentPath)) {
     const receipt = readRestoreReceipt(targetRoot)
     if (receipt) finalizeRestoreReceipt(receipt, targetRoot, parent, fingerprint, intentPath, stagePrefix)
@@ -1026,7 +1026,7 @@ export const runPendingProfileRestore = (
   try {
     if (!installed) stagedFiles(stageRoot, intent.files)
     if (!displaced) {
-      ensurePrivateDirectory(targetRoot, 'Wren profile')
+      ensurePrivateDirectory(targetRoot, 'Saf0o profile')
       fs.renameSync(targetRoot, previousRoot)
       displaced = true
     }
@@ -1047,11 +1047,11 @@ export const runPendingProfileRestore = (
       files: intent.files
     })
     writePrivateFile(
-      path.join(targetRoot, 'wren-profile-restore.json'),
+      path.join(targetRoot, 'saf0o-profile-restore.json'),
       Buffer.from(`${JSON.stringify(receipt, null, 2)}\n`)
     )
     if (!finalizeRestoreReceipt(receipt, targetRoot, parent, fingerprint, intentPath, stagePrefix)) {
-      throw new Error('Wren restore receipt could not be finalized')
+      throw new Error('Saf0o restore receipt could not be finalized')
     }
     return { status: 'applied', restoreId: intent.restoreId, signerCount: intent.signerCount, restoredAt }
   } catch {
@@ -1063,7 +1063,7 @@ export const runPendingProfileRestore = (
       return { status: 'canceled', reason: 'failed' }
     } catch (rollbackError) {
       throw new Error(
-        `Wren profile restore rollback failed: ${rollbackError instanceof Error ? rollbackError.message : String(rollbackError)}`
+        `Saf0o profile restore rollback failed: ${rollbackError instanceof Error ? rollbackError.message : String(rollbackError)}`
       )
     }
   }

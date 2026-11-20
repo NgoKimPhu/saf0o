@@ -43,7 +43,7 @@ const ApprovalAddress = ({ address, name, copyLabel }) => {
   const [showCopiedMessage, copyAddress] = useCopiedMessage(address)
 
   return (
-    <button type='button' aria-label={copyLabel} className='wrenTokenApprovalAddress' onClick={copyAddress}>
+    <button type='button' aria-label={copyLabel} className='saf0oTokenApprovalAddress' onClick={copyAddress}>
       {name ? <strong>{name}</strong> : null}
       <code>{address}</code>
       <span role='status'>{showCopiedMessage ? 'Copied' : 'Copy address'}</span>
@@ -195,11 +195,11 @@ const EditTokenSpend = ({
     mode === 'unlimited' ? `This contract can keep using ${symbol} until you revoke access.` : ''
 
   return (
-    <div className='updateTokenApproval wrenTokenApprovalEditor'>
-      <section className='wrenTokenApprovalContext' aria-label='Approval details'>
+    <div className='updateTokenApproval saf0oTokenApprovalEditor'>
+      <section className='saf0oTokenApprovalContext' aria-label='Approval details'>
         <div>
-          <span className='wrenTokenApprovalContextLabel'>Token</span>
-          <div className='wrenTokenApprovalIdentity'>
+          <span className='saf0oTokenApprovalContextLabel'>Token</span>
+          <div className='saf0oTokenApprovalIdentity'>
             <span>
               <strong>{name}</strong>
               <small>{symbol}</small>
@@ -207,7 +207,7 @@ const EditTokenSpend = ({
           </div>
         </div>
         <div>
-          <span className='wrenTokenApprovalContextLabel'>Token contract</span>
+          <span className='saf0oTokenApprovalContextLabel'>Token contract</span>
           <ApprovalAddress
             address={contract.address}
             name={contract.ens}
@@ -215,7 +215,7 @@ const EditTokenSpend = ({
           />
         </div>
         <div>
-          <span className='wrenTokenApprovalContextLabel'>Can be used by</span>
+          <span className='saf0oTokenApprovalContextLabel'>Can be used by</span>
           <ApprovalAddress
             address={spender.address}
             name={spender.ens || 'Contract'}
@@ -223,20 +223,20 @@ const EditTokenSpend = ({
           />
         </div>
         {deadline ? (
-          <div className='wrenTokenApprovalExpiry'>
-            <span className='wrenTokenApprovalContextLabel'>{deadlineLabel}</span>
+          <div className='saf0oTokenApprovalExpiry'>
+            <span className='saf0oTokenApprovalContextLabel'>{deadlineLabel}</span>
             <strong>{formatApprovalExpiry(deadline)}</strong>
           </div>
         ) : null}
       </section>
 
-      <section className='wrenTokenApprovalDecision' aria-labelledby='token-approval-limit-title'>
-        <div className='wrenTokenApprovalDecisionHeading'>
+      <section className='saf0oTokenApprovalDecision' aria-labelledby='token-approval-limit-title'>
+        <div className='saf0oTokenApprovalDecisionHeading'>
           <div>
             <span id='token-approval-limit-title'>Spending limit</span>
           </div>
           {!isCustom ? (
-            <span className='wrenTokenApprovalCurrentValue'>
+            <span className='saf0oTokenApprovalCurrentValue'>
               <strong>{displayAmount}</strong>
               {displayAmount === 'unlimited' ? null : <span>{symbol}</span>}
             </span>
@@ -244,9 +244,9 @@ const EditTokenSpend = ({
         </div>
 
         {account && handlerId && !inputLock ? (
-          <div className='wrenTokenApprovalBalance'>
+          <div className='saf0oTokenApprovalBalance'>
             <span>
-              <span className='wrenTokenApprovalContextLabel'>Your balance</span>
+              <span className='saf0oTokenApprovalContextLabel'>Your balance</span>
               <strong title={hideBalance ? undefined : balanceDisplay?.exact}>
                 {hideBalance
                   ? '••••'
@@ -257,7 +257,7 @@ const EditTokenSpend = ({
             </span>
             <button
               type='button'
-              className='wrenControl wrenControlSecondary'
+              className='saf0oControl saf0oControlSecondary'
               disabled={approvalSubmitting || balanceLoading || hideBalance}
               onClick={(event) => activateOnce(event, useBalance)}
             >
@@ -267,11 +267,11 @@ const EditTokenSpend = ({
         ) : null}
 
         {!hasInvalidAmount ? (
-          <div className='wrenTokenApprovalModes' aria-label='Spending limit options'>
+          <div className='saf0oTokenApprovalModes' aria-label='Spending limit options'>
             <button
               type='button'
               aria-label='Requested'
-              className='wrenTokenApprovalMode'
+              className='saf0oTokenApprovalMode'
               disabled={approvalSubmitting}
               aria-pressed={mode === 'requested'}
               onClick={(event) => activateOnce(event, resetToRequestAmount)}
@@ -281,7 +281,7 @@ const EditTokenSpend = ({
             <button
               type='button'
               aria-label='Unlimited'
-              className='wrenTokenApprovalMode'
+              className='saf0oTokenApprovalMode'
               disabled={approvalSubmitting}
               aria-pressed={mode === 'unlimited'}
               onClick={(event) => activateOnce(event, setToMax)}
@@ -292,7 +292,7 @@ const EditTokenSpend = ({
               <button
                 type='button'
                 aria-label='Custom'
-                className='wrenTokenApprovalMode'
+                className='saf0oTokenApprovalMode'
                 disabled={approvalSubmitting}
                 aria-pressed={isCustom}
                 onClick={() => {
@@ -311,7 +311,7 @@ const EditTokenSpend = ({
           <button
             type='button'
             aria-label='Revoke'
-            className='wrenTokenApprovalRevoke'
+            className='saf0oTokenApprovalRevoke'
             disabled={approvalSubmitting}
             aria-pressed={mode === 'revoke'}
             onClick={(event) => activateOnce(event, setToRevoke)}
@@ -321,17 +321,17 @@ const EditTokenSpend = ({
         ) : null}
 
         {isCustom ? (
-          <div className='wrenTokenApprovalAmountEditor'>
-            <label htmlFor='wren-token-approval-custom'>Custom limit</label>
+          <div className='saf0oTokenApprovalAmountEditor'>
+            <label htmlFor='saf0o-token-approval-custom'>Custom limit</label>
             <div
-              className={`approveTokenSpendAmount wrenInputGroup ${
-                invalidCustomAmount ? 'wrenInputGroupError' : ''
+              className={`approveTokenSpendAmount saf0oInputGroup ${
+                invalidCustomAmount ? 'saf0oInputGroupError' : ''
               }`}
             >
               <input
-                id='wren-token-approval-custom'
+                id='saf0o-token-approval-custom'
                 autoFocus
-                className='wrenInput'
+                className='saf0oInput'
                 type='text'
                 maxLength={MAX_TOKEN_AMOUNT_INPUT_LENGTH}
                 aria-label='Custom amount'
@@ -348,15 +348,15 @@ const EditTokenSpend = ({
                   }
                 }}
               />
-              {!invalidCustomAmount ? <span className='wrenTokenApprovalAmountSymbol'>{symbol}</span> : null}
+              {!invalidCustomAmount ? <span className='saf0oTokenApprovalAmountSymbol'>{symbol}</span> : null}
               {invalidCustomAmount ? (
-                <span role='alert' className='wrenTokenApprovalAmountStatus wrenTokenApprovalStatusDanger'>
+                <span role='alert' className='saf0oTokenApprovalAmountStatus saf0oTokenApprovalStatusDanger'>
                   Invalid amount
                 </span>
               ) : customAmount !== undefined && amountValue !== customAmount ? (
                 <button
                   type='button'
-                  className='wrenTokenApprovalAmountAction'
+                  className='saf0oTokenApprovalAmountAction'
                   disabled={approvalSubmitting}
                   onClick={(event) => activateOnce(event, submitCustomAmount)}
                 >
@@ -365,7 +365,7 @@ const EditTokenSpend = ({
               ) : (
                 <span
                   key={mode + amount}
-                  className='wrenTokenApprovalAmountStatus wrenTokenApprovalStatusSuccess'
+                  className='saf0oTokenApprovalAmountStatus saf0oTokenApprovalStatusSuccess'
                   role='status'
                   aria-label='Approval amount applied'
                 >
@@ -377,16 +377,16 @@ const EditTokenSpend = ({
         ) : null}
 
         {unlimitedWarning ? (
-          <p className='wrenTokenApprovalDecisionCopy wrenTokenApprovalDecisionCopyWarning'>
+          <p className='saf0oTokenApprovalDecisionCopy saf0oTokenApprovalDecisionCopyWarning'>
             {unlimitedWarning}
           </p>
         ) : !inputLock ? (
-          <p className='wrenTokenApprovalDecisionCopy'>Changes apply to this transaction immediately.</p>
+          <p className='saf0oTokenApprovalDecisionCopy'>Changes apply to this transaction immediately.</p>
         ) : null}
 
         {inputLock ? (
-          <p className='wrenTokenApprovalUnavailable'>
-            Wren can show this request, but the token details are incomplete so the limit cannot be edited
+          <p className='saf0oTokenApprovalUnavailable'>
+            Saf0o can show this request, but the token details are incomplete so the limit cannot be edited
             safely.
           </p>
         ) : null}

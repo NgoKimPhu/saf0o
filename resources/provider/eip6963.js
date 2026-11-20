@@ -1,7 +1,7 @@
 export const EIP6963_ANNOUNCE_EVENT = 'eip6963:announceProvider'
 export const EIP6963_REQUEST_EVENT = 'eip6963:requestProvider'
 const UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-const WREN_ICON = [
+const SAF0O_ICON = [
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAQAElEQVR4nOydCXhUVZbH/6+WpCprpSorIStkMYSwGAiyqRBFFAFx',
   'QVFa7FFmnHHc+5NxGVyGUWntGcdutIf+7BkdtV0aFGFEUREXICBLCC2QEBKSkLWSqqSyV6qqz30QOglJ6lWllldV7/d9sbb7Ynjn',
   '3HPPPefcUwq4gaioqGSZTLYcVmsGOC6eA+LoMc5ms8VzHBcBiRGhe9RK96iBnjTQy3obe5TJyui9j/V6fS1cDAcXwQsduJ3+2Fvp',
@@ -72,9 +72,9 @@ const WREN_ICON = [
   'vwIAAP//8c81/wAAAAZJREFUAwA7w9Peyd9V2AAAAABJRU5ErkJggg=='
 ].join('')
 
-export const WREN_PROVIDER_METADATA = Object.freeze({
-  name: 'Wren',
-  icon: WREN_ICON,
+export const SAF0O_PROVIDER_METADATA = Object.freeze({
+  name: 'Saf0o',
+  icon: SAF0O_ICON,
   rdns: 'io.github.ngokimphu.saf0o'
 })
 
@@ -85,7 +85,7 @@ export function installEip6963Provider(target, provider) {
   }
   if (typeof target.CustomEvent !== 'function') throw new Error('EIP-6963 requires CustomEvent')
 
-  const info = Object.freeze({ uuid, ...WREN_PROVIDER_METADATA })
+  const info = Object.freeze({ uuid, ...SAF0O_PROVIDER_METADATA })
   const detail = Object.freeze({ info, provider })
   const announce = () => {
     target.dispatchEvent(new target.CustomEvent(EIP6963_ANNOUNCE_EVENT, { detail }))

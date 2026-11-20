@@ -4,13 +4,13 @@ import chains from '../chains'
 import store from '../store'
 import { requireStoreAction } from '../store/action'
 import { isWatchOnlyAccountType } from '../../resources/domain/signer'
-import { WREN_DEPLOY_ORIGIN, originIdForName } from '../../resources/domain/origin'
+import { SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../resources/domain/origin'
 import { simulateTransaction } from '../transaction/simulation'
 import { createDeploymentService, DeploymentEvidenceError, DeploymentPendingError } from '.'
 
 import type { TransactionData } from '../../resources/domain/transaction'
 
-const deploymentOriginId = originIdForName(WREN_DEPLOY_ORIGIN)
+const deploymentOriginId = originIdForName(SAF0O_DEPLOY_ORIGIN)
 let rpcId = 0
 
 function currentAccountContext() {
@@ -85,14 +85,14 @@ function ensureDeploymentOrigin(chainId: number) {
   if (!existing) {
     requireStoreAction('initOrigin')(deploymentOriginId, {
       chain: { type: 'ethereum', id: chainId },
-      name: WREN_DEPLOY_ORIGIN,
+      name: SAF0O_DEPLOY_ORIGIN,
       provenance: 'managed',
       sessionOnly: false
     })
     return deploymentOriginId
   }
 
-  if (existing.name !== WREN_DEPLOY_ORIGIN || existing.provenance !== 'managed' || existing.sourceId) {
+  if (existing.name !== SAF0O_DEPLOY_ORIGIN || existing.provenance !== 'managed' || existing.sourceId) {
     throw new Error('Managed deployment origin is unavailable')
   }
   if (hasPendingDeploymentOnAnotherChain(chainId)) {

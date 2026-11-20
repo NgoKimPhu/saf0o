@@ -203,7 +203,7 @@ const legacyUpgradeMessage = (): ExtensionAuthLegacyUpgradeError => ({
   step: 'error',
   code: 'unsupported-version',
   message:
-    'Update Wren Companion — This version can’t verify Wren’s identity. Update the companion, then reconnect.'
+    'Update Saf0o Companion — This version can’t verify Saf0o’s identity. Update the companion, then reconnect.'
 })
 
 const transcriptFor = (
@@ -332,7 +332,7 @@ export class ExtensionAuthSession {
       return parsed.code === 'unsupported-version'
         ? errorMessage(
             'unsupported-version',
-            'Companion protocol v2 is no longer supported. Update Companion to authenticate with Wren.'
+            'Companion protocol v2 is no longer supported. Update Companion to authenticate with Saf0o.'
           )
         : errorMessage('invalid-message', 'Invalid Companion authentication message')
     }
@@ -444,7 +444,7 @@ export class ExtensionAuthSession {
     this.responsePending = true
     try {
       if (!(await this.options.authorize(pending.candidate, signal)) || signal?.aborted) {
-        return errorMessage('denied', 'Wren Companion pairing was denied')
+        return errorMessage('denied', 'Saf0o Companion pairing was denied')
       }
       const desktop = this.desktopIdentity()
       if (
@@ -456,7 +456,7 @@ export class ExtensionAuthSession {
       const acknowledgementTranscript = { ...pending.transcript, role: 'desktop-ack' as const }
       const signature = signPeerAuthFinalAck(desktop.privateKey, acknowledgementTranscript).signature
       if (!(await this.options.commit(pending.candidate))) {
-        return errorMessage('denied', 'Wren Companion pairing could not be committed')
+        return errorMessage('denied', 'Saf0o Companion pairing could not be committed')
       }
       this.authenticated = true
       return {
@@ -477,7 +477,7 @@ export class ExtensionAuthSession {
         signature
       }
     } catch {
-      return errorMessage('denied', 'Wren Companion pairing was denied')
+      return errorMessage('denied', 'Saf0o Companion pairing was denied')
     } finally {
       this.responsePending = false
     }

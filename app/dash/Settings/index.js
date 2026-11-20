@@ -2,7 +2,7 @@ import { Component, createRef } from 'react'
 import Restore from 'react-restore'
 import { createPortal } from 'react-dom'
 
-import { WREN_LICENSE_URL } from '../../../resources/constants'
+import { SAF0O_LICENSE_URL } from '../../../resources/constants'
 import link from '../../../resources/link'
 import Dropdown from '../../../resources/Components/Dropdown'
 import KeyboardShortcutConfigurator from '../../../resources/Components/KeyboardShortcutConfigurator'
@@ -48,40 +48,40 @@ const RevokeCompanion = styled.button`
 const CompanionRevokeDialog = styled.div`
   margin-top: 12px;
   padding: 14px 16px 16px;
-  border: 1px solid var(--wren-border-subtle);
-  border-radius: var(--wren-radius-sm);
-  background: var(--wren-bg-elevated);
+  border: 1px solid var(--saf0o-border-subtle);
+  border-radius: var(--saf0o-radius-sm);
+  background: var(--saf0o-bg-elevated);
 `
 
 const CompanionRevokeTitle = styled.h3`
   margin: 0;
-  color: var(--wren-text-primary);
-  font-family: var(--wren-font-ui);
-  font-size: var(--wren-type-body);
+  color: var(--saf0o-text-primary);
+  font-family: var(--saf0o-font-ui);
+  font-size: var(--saf0o-type-body);
   font-weight: 600;
   line-height: 20px;
 `
 
 const CompanionRevokeBody = styled.p`
   margin: 6px 0 0;
-  color: var(--wren-text-secondary);
-  font-family: var(--wren-font-ui);
-  font-size: var(--wren-type-small);
+  color: var(--saf0o-text-secondary);
+  font-family: var(--saf0o-font-ui);
+  font-size: var(--saf0o-type-small);
   line-height: 18px;
 `
 
 const CompanionRevokeError = styled.div`
   margin-top: 8px;
-  color: var(--wren-danger);
-  font-family: var(--wren-font-ui);
-  font-size: var(--wren-type-small);
+  color: var(--saf0o-danger);
+  font-family: var(--saf0o-font-ui);
+  font-size: var(--saf0o-type-small);
   line-height: 18px;
 `
 
 const CompanionRevokeActions = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: var(--wren-space-2);
+  gap: var(--saf0o-space-2);
   margin-top: 12px;
 
   button {
@@ -103,7 +103,7 @@ const RecentRecipientsDialog = ({ children, ...props }) =>
 const RecentRecipientActions = styled.div`
   display: flex;
   align-items: center;
-  gap: var(--wren-space-3);
+  gap: var(--saf0o-space-3);
 
   button {
     min-height: 44px;
@@ -193,8 +193,8 @@ export class Settings extends Component {
         recentStatus: durable
           ? 'Recent recipients turned off and cleared from this device'
           : sessionOnly
-            ? 'Recent recipients are off for this session, but Wren could not confirm the clearing was saved. Restart may restore prior data.'
-            : 'Wren could not confirm that recent recipients were turned off or cleared. Try again.'
+            ? 'Recent recipients are off for this session, but Saf0o could not confirm the clearing was saved. Restart may restore prior data.'
+            : 'Saf0o could not confirm that recent recipients were turned off or cleared. Try again.'
       },
       () => this.recentDisableTriggerRef.current?.focus()
     )
@@ -231,8 +231,8 @@ export class Settings extends Component {
         recentStatus: durable
           ? 'Recent recipients cleared from this device'
           : sessionOnly
-            ? 'Recent recipients are cleared for this session, but Wren could not confirm the clearing was saved. Restart may restore prior data.'
-            : 'Wren could not confirm that recent recipients were cleared. Try again.'
+            ? 'Recent recipients are cleared for this session, but Saf0o could not confirm the clearing was saved. Restart may restore prior data.'
+            : 'Saf0o could not confirm that recent recipients were cleared. Try again.'
       },
       () => this.recentClearTriggerRef.current?.focus()
     )
@@ -268,7 +268,7 @@ export class Settings extends Component {
         <button
           type='button'
           className='appInfoViewLicense'
-          onClick={() => link.send('tray:openExternal', WREN_LICENSE_URL)}
+          onClick={() => link.send('tray:openExternal', SAF0O_LICENSE_URL)}
         >
           View License
         </button>
@@ -283,7 +283,7 @@ export class Settings extends Component {
               returnFocusRef={this.resetTriggerRef}
               onCancel={() => this.setState({ resetConfirm: false })}
             >
-              <strong id='reset-app-title'>Reset Wren?</strong>
+              <strong id='reset-app-title'>Reset Saf0o?</strong>
               <span>
                 This removes local accounts, signers, networks, contacts, recent recipients, custom tokens,
                 permissions, and settings from this device. This cannot be undone.
@@ -292,7 +292,7 @@ export class Settings extends Component {
                 <button
                   type='button'
                   ref={this.resetCancelRef}
-                  className='wrenControl wrenControlSecondary'
+                  className='saf0oControl saf0oControlSecondary'
                   onClick={() =>
                     this.setState({ resetConfirm: false }, () => this.resetTriggerRef.current?.focus())
                   }
@@ -301,10 +301,10 @@ export class Settings extends Component {
                 </button>
                 <button
                   type='button'
-                  className='wrenControl wrenControlDanger'
+                  className='saf0oControl saf0oControlDanger'
                   onClick={() => link.send('tray:resetAllSettings')}
                 >
-                  Reset Wren
+                  Reset Saf0o
                 </button>
               </span>
             </DialogSurface>
@@ -317,7 +317,7 @@ export class Settings extends Component {
                 this.setState({ resetConfirm: true }, () => this.resetCancelRef.current?.focus())
               }
             >
-              Reset Wren
+              Reset Saf0o
             </button>
           )}
         </div>
@@ -412,7 +412,7 @@ export class Settings extends Component {
     clearTimeout(this.inputLatticeTimeout)
     const value = e.target.value.replace(/\s+/g, '')
     this.setState({ latticeEndpoint: value })
-    // Lattice relay configuration is global because Wren supports one active Lattice adapter.
+    // Lattice relay configuration is global because Saf0o supports one active Lattice adapter.
     this.inputLatticeTimeout = setTimeout(
       () => link.send('tray:action', 'setLatticeEndpointCustom', value),
       1000
@@ -429,7 +429,7 @@ export class Settings extends Component {
     const interfaceScaleAnnouncement =
       requestedInterfaceScalePercent === effectiveInterfaceScalePercent
         ? `Interface scale set to ${effectiveInterfaceScalePercent}%.`
-        : `Interface scale set to ${effectiveInterfaceScalePercent}%. You requested ${requestedInterfaceScalePercent}%, but Wren reduced it to fit the available screen space.`
+        : `Interface scale set to ${effectiveInterfaceScalePercent}%. You requested ${requestedInterfaceScalePercent}%, but Saf0o reduced it to fit the available screen space.`
     const companionCredentials = Object.values(this.store('main.extensionCredentials') || {}).sort(
       (left, right) => right.pairedAt - left.pairedAt
     )
@@ -437,7 +437,7 @@ export class Settings extends Component {
       (left, right) => right.pairedAt - left.pairedAt
     )
     return (
-      <div className='localSettings wrenSettings wrenSettingsPerch'>
+      <div className='localSettings saf0oSettings saf0oSettingsPerch'>
         <div className='localSettingsWrap'>
           <nav className='settingsCategories' aria-label='Settings categories'>
             {[
@@ -450,7 +450,7 @@ export class Settings extends Component {
               <button
                 key={id}
                 type='button'
-                className='wrenControl wrenControlGhost'
+                className='saf0oControl saf0oControlGhost'
                 aria-pressed={this.state.category === id}
                 onClick={() => this.setState({ category: id })}
               >
@@ -460,10 +460,10 @@ export class Settings extends Component {
           </nav>
           <section
             hidden={this.state.category !== 'general'}
-            className='wrenSettingsSection'
-            aria-labelledby='wren-settings-desktop'
+            className='saf0oSettingsSection'
+            aria-labelledby='saf0o-settings-desktop'
           >
-            <h2 id='wren-settings-desktop' className='wrenSettingsSectionTitle'>
+            <h2 id='saf0o-settings-desktop' className='saf0oSettingsSectionTitle'>
               Desktop behavior
             </h2>
             <div className='signerPermission localSetting localSettingShortcut' style={{ zIndex: 214 }}>
@@ -473,7 +473,7 @@ export class Settings extends Component {
                   {summonShortcut.configuring ? (
                     <EditShortcut
                       type='button'
-                      className='wrenControl wrenControlGhost wrenControlLarge'
+                      className='saf0oControl saf0oControlGhost saf0oControlLarge'
                       onClick={() => {
                         link.send('tray:action', 'setShortcut', 'summon', {
                           ...summonShortcut,
@@ -486,7 +486,7 @@ export class Settings extends Component {
                   ) : (
                     <EditShortcut
                       type='button'
-                      className='wrenControl wrenControlGhost wrenControlLarge'
+                      className='saf0oControl saf0oControlGhost saf0oControlLarge'
                       onClick={() => {
                         link.send('tray:action', 'setShortcut', 'summon', {
                           ...summonShortcut,
@@ -512,7 +512,7 @@ export class Settings extends Component {
               </div>
               <div className='signerPermissionDetails'>
                 <KeyboardShortcutConfigurator
-                  actionText='open or dismiss Wren'
+                  actionText='open or dismiss Saf0o'
                   shortcut={summonShortcut}
                   shortcutName='summon'
                   platform={platform}
@@ -526,7 +526,7 @@ export class Settings extends Component {
                     Interface scale
                   </div>
                   <div className='interfaceScaleDescription'>
-                    Makes Wren’s window and contents larger when your display has room.
+                    Makes Saf0o’s window and contents larger when your display has room.
                   </div>
                 </div>
                 <div className='interfaceScaleOptions' role='group' aria-labelledby='interface-scale-label'>
@@ -538,7 +538,7 @@ export class Settings extends Component {
                     <button
                       key={option.value}
                       type='button'
-                      className='wrenControl wrenControlGhost interfaceScaleOption'
+                      className='saf0oControl saf0oControlGhost interfaceScaleOption'
                       aria-pressed={requestedInterfaceScale === option.value}
                       onClick={() => link.send('tray:action', 'setInterfaceScale', option.value)}
                     >
@@ -566,11 +566,11 @@ export class Settings extends Component {
                 />
               </div>
               <div className='signerPermissionDetails'>
-                <span>Hide Wren when it loses focus.</span>
+                <span>Hide Saf0o when it loses focus.</span>
               </div>
             </div>
             <div
-              id='wren-settings-wallet-notifications'
+              id='saf0o-settings-wallet-notifications'
               className='signerPermission localSetting localSettingExplained'
               style={{ zIndex: 212 }}
             >
@@ -583,7 +583,7 @@ export class Settings extends Component {
                 />
               </div>
               <div className='signerPermissionDetails'>
-                Show activity alerts while Wren is hidden. Wallet details stay private.
+                Show activity alerts while Saf0o is hidden. Wallet details stay private.
               </div>
             </div>
             <div className='signerPermission localSetting' style={{ zIndex: 212 }}>
@@ -595,7 +595,7 @@ export class Settings extends Component {
                   onChange={() => link.send('tray:action', 'toggleLaunch')}
                 />
               </div>
-              <div className='signerPermissionDetails'>Start Wren when you sign in.</div>
+              <div className='signerPermissionDetails'>Start Saf0o when you sign in.</div>
             </div>
             <div className='signerPermission localSetting' style={{ zIndex: 211 }}>
               <div className='signerPermissionControls'>
@@ -606,7 +606,7 @@ export class Settings extends Component {
                   onChange={() => link.send('tray:action', 'toggleReveal')}
                 />
               </div>
-              <div className='signerPermissionDetails'>{`Show Wren when the pointer rests at the display's ${this.store(
+              <div className='signerPermissionDetails'>{`Show Saf0o when the pointer rests at the display's ${this.store(
                 'main.glideSide'
               )} edge.`}</div>
             </div>
@@ -624,7 +624,7 @@ export class Settings extends Component {
                 />
               </div>
               <div className='signerPermissionDetails'>
-                Choose the display edge that reveals Wren and where the wallet appears.
+                Choose the display edge that reveals Saf0o and where the wallet appears.
               </div>
             </div>
 
@@ -645,10 +645,10 @@ export class Settings extends Component {
 
           <section
             hidden={this.state.category !== 'general'}
-            className='wrenSettingsSection'
-            aria-labelledby='wren-settings-accounts'
+            className='saf0oSettingsSection'
+            aria-labelledby='saf0o-settings-accounts'
           >
-            <h2 id='wren-settings-accounts' className='wrenSettingsSectionTitle'>
+            <h2 id='saf0o-settings-accounts' className='saf0oSettingsSectionTitle'>
               Accounts and signing
             </h2>
 
@@ -781,7 +781,7 @@ export class Settings extends Component {
                 }
               >
                 <input
-                  className='wrenInput'
+                  className='saf0oInput'
                   disabled={this.state.latticeEndpointMode !== 'custom'}
                   aria-label='Custom Lattice relay'
                   placeholder={'Custom relay'}
@@ -804,16 +804,16 @@ export class Settings extends Component {
                   ]}
                 />
               </div>
-              <div className='signerPermissionDetails'>Choose when Wren relocks hot signers.</div>
+              <div className='signerPermissionDetails'>Choose when Saf0o relocks hot signers.</div>
             </div>
           </section>
 
           <section
             hidden={this.state.category !== 'privacy'}
-            className='wrenSettingsSection'
-            aria-labelledby='wren-settings-privacy'
+            className='saf0oSettingsSection'
+            aria-labelledby='saf0o-settings-privacy'
           >
-            <h2 id='wren-settings-privacy' className='wrenSettingsSectionTitle'>
+            <h2 id='saf0o-settings-privacy' className='saf0oSettingsSectionTitle'>
               Privacy
             </h2>
             <div className='signerPermission localSetting localSettingExplained recentRecipientsSetting'>
@@ -849,7 +849,7 @@ export class Settings extends Component {
                     <button
                       type='button'
                       ref={this.recentDisableCancelRef}
-                      className='wrenControl wrenControlGhost'
+                      className='saf0oControl saf0oControlGhost'
                       disabled={this.state.recentPrivacyPending}
                       onClick={() => this.cancelRecentDisable()}
                     >
@@ -857,7 +857,7 @@ export class Settings extends Component {
                     </button>
                     <button
                       type='button'
-                      className='wrenControl wrenControlDanger'
+                      className='saf0oControl saf0oControlDanger'
                       disabled={this.state.recentPrivacyPending}
                       onClick={() => this.confirmRecentDisable()}
                     >
@@ -874,7 +874,7 @@ export class Settings extends Component {
                   <button
                     type='button'
                     ref={this.recentClearTriggerRef}
-                    className='wrenControl wrenControlGhost'
+                    className='saf0oControl saf0oControlGhost'
                     disabled={this.store('main.rememberRecentRecipients') !== true}
                     onClick={() => this.armRecentClear()}
                   >
@@ -906,7 +906,7 @@ export class Settings extends Component {
                     <button
                       type='button'
                       ref={this.recentClearCancelRef}
-                      className='wrenControl wrenControlGhost'
+                      className='saf0oControl saf0oControlGhost'
                       disabled={this.state.recentPrivacyPending}
                       onClick={() => this.cancelRecentClear()}
                     >
@@ -914,7 +914,7 @@ export class Settings extends Component {
                     </button>
                     <button
                       type='button'
-                      className='wrenControl wrenControlDanger'
+                      className='saf0oControl saf0oControlDanger'
                       disabled={this.state.recentPrivacyPending}
                       onClick={() => this.confirmRecentClear()}
                     >
@@ -932,10 +932,10 @@ export class Settings extends Component {
           {companionCredentials.length > 0 ? (
             <section
               hidden={this.state.category !== 'connections'}
-              className='wrenSettingsSection'
-              aria-labelledby='wren-settings-companions'
+              className='saf0oSettingsSection'
+              aria-labelledby='saf0o-settings-companions'
             >
-              <h2 id='wren-settings-companions' className='wrenSettingsSectionTitle'>
+              <h2 id='saf0o-settings-companions' className='saf0oSettingsSectionTitle'>
                 Browser companions
               </h2>
               {companionCredentials.map((credential, index) => {
@@ -961,7 +961,7 @@ export class Settings extends Component {
                         <RevokeCompanion
                           ref={this.revokeTriggerRefs[credential.fingerprint]}
                           type='button'
-                          className='wrenControl wrenControlGhost'
+                          className='saf0oControl saf0oControlGhost'
                           onClick={() => this.armCompanionRevocation(credential)}
                         >
                           Revoke
@@ -986,8 +986,8 @@ export class Settings extends Component {
                       >
                         <CompanionRevokeTitle id={titleId}>Revoke companion pairing?</CompanionRevokeTitle>
                         <CompanionRevokeBody id={bodyId}>
-                          This companion will be disconnected from Wren immediately. Pairing it again requires
-                          a new six-digit code comparison.
+                          This companion will be disconnected from Saf0o immediately. Pairing it again
+                          requires a new six-digit code comparison.
                         </CompanionRevokeBody>
                         {this.state.revokeCompanionError ? (
                           <CompanionRevokeError role='alert'>
@@ -998,7 +998,7 @@ export class Settings extends Component {
                           <button
                             type='button'
                             ref={this.revokeCancelRef}
-                            className='wrenControl wrenControlGhost'
+                            className='saf0oControl saf0oControlGhost'
                             disabled={this.state.revokeCompanionPending}
                             onClick={() => this.cancelCompanionRevocation(credential.fingerprint)}
                           >
@@ -1006,7 +1006,7 @@ export class Settings extends Component {
                           </button>
                           <button
                             type='button'
-                            className='wrenControl wrenControlDanger'
+                            className='saf0oControl saf0oControlDanger'
                             disabled={this.state.revokeCompanionPending}
                             onClick={() => this.revokeCompanion(credential)}
                           >
@@ -1023,10 +1023,10 @@ export class Settings extends Component {
           {nativeCredentials.length > 0 ? (
             <section
               hidden={this.state.category !== 'connections'}
-              className='wrenSettingsSection'
-              aria-labelledby='wren-settings-local-connections'
+              className='saf0oSettingsSection'
+              aria-labelledby='saf0o-settings-local-connections'
             >
-              <h2 id='wren-settings-local-connections' className='wrenSettingsSectionTitle'>
+              <h2 id='saf0o-settings-local-connections' className='saf0oSettingsSectionTitle'>
                 Local connections
               </h2>
               {nativeCredentials.map((credential, index) => {
@@ -1050,7 +1050,7 @@ export class Settings extends Component {
                         >{`Connection ID ${shortId}`}</CompanionIdentity>
                         <button
                           type='button'
-                          className='localConnectionTarget wrenControl wrenControlGhost'
+                          className='localConnectionTarget saf0oControl saf0oControlGhost'
                           onClick={() => link.send('tray:clipboardData', credential.fingerprint)}
                         >
                           Copy full connection ID
@@ -1060,7 +1060,7 @@ export class Settings extends Component {
                         <RevokeCompanion
                           ref={this.revokeNativeTriggerRefs[credential.fingerprint]}
                           type='button'
-                          className='localConnectionTarget wrenControl wrenControlGhost'
+                          className='localConnectionTarget saf0oControl saf0oControlGhost'
                           aria-label='Revoke local app'
                           onClick={() => this.armNativeRevocation(credential)}
                         >
@@ -1096,7 +1096,7 @@ export class Settings extends Component {
                           <button
                             type='button'
                             ref={this.revokeNativeCancelRef}
-                            className='wrenControl wrenControlGhost'
+                            className='saf0oControl saf0oControlGhost'
                             disabled={this.state.revokeNativePending}
                             onClick={() => this.cancelNativeRevocation(credential.fingerprint)}
                           >
@@ -1104,7 +1104,7 @@ export class Settings extends Component {
                           </button>
                           <button
                             type='button'
-                            className='wrenControl wrenControlDanger'
+                            className='saf0oControl saf0oControlDanger'
                             disabled={this.state.revokeNativePending}
                             onClick={() => this.revokeNative(credential)}
                           >
@@ -1120,40 +1120,40 @@ export class Settings extends Component {
           ) : null}
           <section
             hidden={this.state.category !== 'advanced'}
-            className='wrenSettingsSection'
-            aria-labelledby='wren-settings-contract-verification'
+            className='saf0oSettingsSection'
+            aria-labelledby='saf0o-settings-contract-verification'
           >
-            <h2 id='wren-settings-contract-verification' className='wrenSettingsSectionTitle'>
+            <h2 id='saf0o-settings-contract-verification' className='saf0oSettingsSectionTitle'>
               Contract verification
             </h2>
             <ContractVerificationCredential />
           </section>
           <section
             hidden={this.state.category !== 'security'}
-            className='wrenSettingsSection'
-            aria-labelledby='wren-settings-recovery'
+            className='saf0oSettingsSection'
+            aria-labelledby='saf0o-settings-recovery'
           >
-            <h2 id='wren-settings-recovery' className='wrenSettingsSectionTitle'>
+            <h2 id='saf0o-settings-recovery' className='saf0oSettingsSectionTitle'>
               Recovery
             </h2>
             <Recovery />
           </section>
           <section
             hidden={this.state.category !== 'security'}
-            className='wrenSettingsSection'
-            aria-labelledby='wren-settings-signer-protection'
+            className='saf0oSettingsSection'
+            aria-labelledby='saf0o-settings-signer-protection'
           >
-            <h2 id='wren-settings-signer-protection' className='wrenSettingsSectionTitle'>
+            <h2 id='saf0o-settings-signer-protection' className='saf0oSettingsSectionTitle'>
               Software signers
             </h2>
             <SignerProtection />
           </section>
           <section
             hidden={this.state.category !== 'general'}
-            className='wrenSettingsSection'
-            aria-labelledby='wren-settings-about'
+            className='saf0oSettingsSection'
+            aria-labelledby='saf0o-settings-about'
           >
-            <h2 id='wren-settings-about' className='wrenSettingsSectionTitle'>
+            <h2 id='saf0o-settings-about' className='saf0oSettingsSectionTitle'>
               About
             </h2>
             {this.appInfo()}

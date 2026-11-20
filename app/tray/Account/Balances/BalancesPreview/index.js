@@ -4,7 +4,7 @@ import Restore from 'react-restore'
 import { safeNetworkMetadata } from '../../../../../resources/domain/networkMetadata'
 import BigNumber from 'bignumber.js'
 
-import emptyBalances from 'url:../../../../../asset/ui/wren-empty-balances-v2.png'
+import emptyBalances from 'url:../../../../../asset/ui/saf0o-empty-balances-v2.png'
 
 import Icon from '../../../../../resources/Components/Icon'
 import link from '../../../../../resources/link'
@@ -17,7 +17,7 @@ import {
 import { matchFilter } from '../../../../../resources/utils'
 
 import { Cluster, ClusterRow, ClusterValue } from '../../../../../resources/Components/Cluster'
-import WrenEmptyState from '../../../../../resources/Components/WrenEmptyState'
+import Saf0oEmptyState from '../../../../../resources/Components/Saf0oEmptyState'
 
 import Balance from '../Balance'
 
@@ -128,13 +128,13 @@ export class BalancesPreview extends React.Component {
           </div>
         ) : balances.length === 0 ? (
           this.props.filter ? (
-            <div className='wrenEmptyFilter'>No matching balances</div>
+            <div className='saf0oEmptyFilter'>No matching balances</div>
           ) : (
-            <WrenEmptyState
+            <Saf0oEmptyState
               image={emptyBalances}
               transparentImage={true}
               title='No balances yet'
-              copy='Assets appear here after Wren checks your enabled networks.'
+              copy='Assets appear here after Saf0o checks your enabled networks.'
             />
           )
         ) : (
@@ -156,7 +156,7 @@ export class BalancesPreview extends React.Component {
               <div className='signerBalanceButtons'>
                 <button
                   type='button'
-                  className='signerBalanceButton signerBalanceShowAll wrenControl wrenControlGhost wrenControlCompact'
+                  className='signerBalanceButton signerBalanceShowAll saf0oControl saf0oControlGhost saf0oControlCompact'
                   onClick={() => {
                     const crumb = {
                       view: 'expandedModule',
@@ -177,7 +177,7 @@ export class BalancesPreview extends React.Component {
               <div className='signerBalanceButtons'>
                 <button
                   type='button'
-                  className='signerBalanceButton signerBalanceAddToken wrenControl wrenControlSecondary wrenControlCompact'
+                  className='signerBalanceButton signerBalanceAddToken saf0oControl saf0oControlSecondary saf0oControlCompact'
                   onClick={() => {
                     link.send('tray:action', 'navDash', { view: 'tokens', data: { notify: 'addToken' } })
                   }}

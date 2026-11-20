@@ -1,19 +1,19 @@
-# Wren social artwork
+# Saf0o social artwork
 
-The selected social direction is **Night Rounds**. The profile uses Wren's
+The selected social direction is **Night Rounds**. The profile uses Saf0o's
 canonical full-color character on a dark textured canvas. The header is a
 purpose-built 3:1 pixel-art garden panorama. Neither image uses an app-icon
 tile, wordmark, or marketing copy.
 
 ## Delivery files
 
-- `wren-profile-400.png` — 400 × 400. Keep the full character inside the
+- `saf0o-profile-400.png` — 400 × 400. Keep the full character inside the
   centered 320px safe circle for a circular crop.
-- `wren-x-header-1500x500.png` — 1500 × 500. The gate lantern balances the
-  left; a path crosses the middle; the detailed wren and main lantern anchor
+- `saf0o-x-header-1500x500.png` — 1500 × 500. The gate lantern balances the
+  left; a path crosses the middle; the detailed saf0o and main lantern anchor
   the right. Keep essential content legible when X removes the outer 60px at
   the top and bottom.
-- `source/wren-night-rounds-v1.png` — approved 2172 × 724 source panorama.
+- `source/saf0o-night-rounds-v1.png` — approved 2172 × 724 source panorama.
 
 Regenerate the delivery files with:
 
@@ -22,8 +22,8 @@ npm run brand:generate
 npm run brand:verify
 ```
 
-The profile uses `asset/brand/wren-mark.svg` and
-`resources/svg/wren-grain.svg`. The header uses the Night Rounds source. Do not
+The profile uses `asset/brand/saf0o-mark.svg` and
+`resources/svg/saf0o-grain.svg`. The header uses the Night Rounds source. Do not
 edit delivery PNGs directly. Current X dimensions and crop guidance are at
 <https://help.x.com/en/managing-your-account/common-issues-when-uploading-profile-photo>.
 
@@ -31,17 +31,17 @@ The Night Rounds source was generated with the built-in image-generation tool
 using `asset/ui/onboarding-welcome.png` as its visual reference. Its brief
 specified a native 3:1 nocturnal garden panorama with an open gate and
 secondary lantern on the left, a winding path and distant lantern in the
-middle, and one detailed wren beside the main lantern on the right. It
+middle, and one detailed saf0o beside the main lantern on the right. It
 excluded text, logos, crypto imagery, UI panels, and fantasy effects.
 
 ## Desktop launch-scene sources
 
-- `source/wren-linux-0.1.0-launch-v6.png` — original Linux and Windows launch
+- `source/saf0o-linux-0.1.0-launch-v6.png` — original Linux and Windows launch
   scene retained as the clean pre-Apple source.
-- `source/wren-linux-0.1.0-launch-v13-apple-ledge.png` — selected final
+- `source/saf0o-linux-0.1.0-launch-v13-apple-ledge.png` — selected final
   three-platform composition with the Apple mark on the upper ledge.
-- `source/wren-linux-apple-potting-shed-v1.png` — approved 1344 × 768 mature
-  pixel-art scene with Tux, a bitten silver apple, and the focal wren in a
+- `source/saf0o-linux-apple-potting-shed-v1.png` — approved 1344 × 768 mature
+  pixel-art scene with Tux, a bitten silver apple, and the focal saf0o in a
   rainy potting shed. The overhead lantern uses a compact radial contact
   shadow beneath Tux, with cool window light as a secondary source.
 

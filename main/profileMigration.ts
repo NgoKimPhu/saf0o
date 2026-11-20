@@ -135,7 +135,7 @@ export function migratePersistedConfiguration(config: unknown) {
     if (versions.length === 0) throw new Error('Frame configuration does not contain wallet state')
     const futureVersion = versions.find((version) => version > migrations.latest)
     if (futureVersion !== undefined) {
-      throw new Error(`Frame profile version ${futureVersion} is newer than Wren supports`)
+      throw new Error(`Frame profile version ${futureVersion} is newer than Saf0o supports`)
     }
     const latestVersion = Math.max(...versions)
     state = Reflect.get(snapshots, String(latestVersion))
@@ -224,7 +224,7 @@ function removeEmptyBootstrapDirectory(targetRoot: string) {
   const target = lstatIfPresent(targetRoot)
   if (!target) return
   if (!target.isDirectory() || target.isSymbolicLink() || fs.readdirSync(targetRoot).length > 0) {
-    throw new Error('A Wren profile already exists; import is available only before first launch')
+    throw new Error('A Saf0o profile already exists; import is available only before first launch')
   }
   fs.rmdirSync(targetRoot)
 }
@@ -236,7 +236,7 @@ function installStagedProfile(stagingRoot: string, targetRoot: string) {
       const target = lstatIfPresent(targetRoot)
       if (target) {
         if (!target.isDirectory() || target.isSymbolicLink() || fs.readdirSync(targetRoot).length > 0) {
-          throw new Error('A Wren profile already exists; import is available only before first launch')
+          throw new Error('A Saf0o profile already exists; import is available only before first launch')
         }
         const bootstrap = `${targetRoot}.bootstrap-${randomUUID()}`
         fs.renameSync(targetRoot, bootstrap)
@@ -267,16 +267,16 @@ export function importFrameProfile(sourceProfilePath: string, userDataPath: stri
   const targetParent = path.dirname(targetRoot)
 
   if (sourceRoot === targetRoot || isInside(sourceRoot, targetRoot) || isInside(targetRoot, sourceRoot)) {
-    throw new Error('Frame and Wren profile paths must be different')
+    throw new Error('Frame and Saf0o profile paths must be different')
   }
   removeEmptyBootstrapDirectory(targetRoot)
   if (!lstatIfPresent(sourceRoot)) throw new Error('No Frame profile was found to import')
 
   requireDirectory(sourceRoot, 'Frame profile')
   assertFrameIsClosed(sourceRoot)
-  requireDirectory(targetParent, 'Wren profile parent directory')
+  requireDirectory(targetParent, 'Saf0o profile parent directory')
 
-  const stagingRoot = fs.mkdtempSync(path.join(targetParent, '.wren-import-'))
+  const stagingRoot = fs.mkdtempSync(path.join(targetParent, '.saf0o-import-'))
   fs.chmodSync(stagingRoot, 0o700)
 
   try {
@@ -317,7 +317,7 @@ export function rollbackImportedProfile(userDataPath: string, importId: string) 
     const targetRoot = path.resolve(userDataPath)
     const receipt = path.join(targetRoot, RECEIPT_FILE)
     if (!lstatIfPresent(receipt)) return false
-    const parsed = readValidatedJson(receipt, MAX_SIGNER_BYTES, 'Wren profile import receipt').parsed
+    const parsed = readValidatedJson(receipt, MAX_SIGNER_BYTES, 'Saf0o profile import receipt').parsed
     if (Reflect.get(parsed, 'schemaVersion') !== 1 || Reflect.get(parsed, 'importId') !== importId) {
       return false
     }

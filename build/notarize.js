@@ -5,7 +5,7 @@ const { readSigningMode, requireEnvironment } = require('./signing-mode.js')
 
 module.exports = async function (params) {
   if (process.platform !== 'darwin') return // Only notarize the app on macOS
-  const mode = readSigningMode('WREN_MAC_NOTARIZATION')
+  const mode = readSigningMode('SAF0O_MAC_NOTARIZATION')
   if (mode === 'skip') return
 
   requireEnvironment(['APPLE_ID', 'APPLE_APP_SPECIFIC_PASSWORD', 'APPLE_TEAM_ID'])

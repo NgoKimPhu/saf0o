@@ -104,7 +104,7 @@ it('filters the account chooser for creation and import entry points', () => {
   expect(screen.queryByRole('button', { name: 'Create recovery phrase' })).toBeNull()
 })
 
-it('routes the account-add actions to real Wren flows', () => {
+it('routes the account-add actions to real Saf0o flows', () => {
   render(<AccountsHarness data={{}} />)
 
   fireEvent.click(screen.getByRole('button', { name: 'Create wallet' }))

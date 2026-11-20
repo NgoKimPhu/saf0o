@@ -75,11 +75,11 @@ export function snapshotWalletCallBatchAdjustment(
 
     const maximum = gasLimit * feePerGas
     if (maximum > maxFee(transaction)) {
-      throw new Error('Wallet-call transaction fee exceeds Wren hard limit')
+      throw new Error('Wallet-call transaction fee exceeds Saf0o hard limit')
     }
     aggregateMaximum += maximum
     if (aggregateMaximum > maxFee(transaction)) {
-      throw new Error('Wallet-call batch fee exceeds Wren hard limit')
+      throw new Error('Wallet-call batch fee exceeds Saf0o hard limit')
     }
 
     return Object.freeze(adjustment)

@@ -58,7 +58,7 @@ const PermitOverview = ({ req, chainData, deviceWarning, originName, addressBook
           {canEditAmount ? (
             <button
               type='button'
-              className='wrenControl wrenControlSecondary wrenControlCompact'
+              className='saf0oControl saf0oControlSecondary saf0oControlCompact'
               aria-label='Edit permit amount'
               onClick={() => link.send('nav:update', 'panel', { data: { step: 'adjustPermit', tokenData } })}
             >

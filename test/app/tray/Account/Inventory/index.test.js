@@ -51,7 +51,7 @@ afterAll(() => {
   delete global.ResizeObserver
 })
 
-it('opens inventory from a native Wren control', async () => {
+it('opens inventory from a native Saf0o control', async () => {
   const { user } = render(
     <InventoryPreviewHarness account={account} moduleId='inventory' readStore={inventoryStore(inventory)} />
   )
@@ -77,7 +77,7 @@ it('shows a plain filtered miss when inventory exists', () => {
   )
 
   expect(screen.getByText('No matching collectibles')).toBeTruthy()
-  expect(document.querySelector('.wrenEmptyStateImage')).toBeNull()
+  expect(document.querySelector('.saf0oEmptyStateImage')).toBeNull()
 })
 
 it('previews and opens a collectible from the keyboard', async () => {

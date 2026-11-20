@@ -34,11 +34,11 @@ async function launchDevServer() {
   return { shutdown: () => server.unsubscribe() }
 }
 
-function launchWren({ shutdown }) {
+function launchSaf0o({ shutdown }) {
   const npmProcess = spawn('pnpm', ['run', 'launch:dev'], { stdio: 'inherit', shell: isWindows })
 
   npmProcess.once('exit', () => {
-    console.log('Wren exited')
+    console.log('Saf0o exited')
     shutdown()
   })
 }
@@ -46,7 +46,7 @@ function launchWren({ shutdown }) {
 async function run() {
   const [, server] = await Promise.all([prepareEnvironment(), launchDevServer()])
 
-  launchWren(server)
+  launchSaf0o(server)
 }
 
 run()

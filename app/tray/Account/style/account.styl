@@ -31,9 +31,9 @@
     transform translateX(0)
 
 .headShake
-  animation-duration var(--wren-motion-standard)
+  animation-duration var(--saf0o-motion-standard)
   animation-fill-mode both
-  animation-timing-function var(--wren-ease)
+  animation-timing-function var(--saf0o-ease)
   animation-name headShake
   transform translateZ(0)
 
@@ -135,7 +135,7 @@
     z-index 999
 
   .signerAddress
-    font-size var(--wren-type-caption)
+    font-size var(--saf0o-type-caption)
     font-family 'FiraCode'
     letter-spacing 0px
     position absolute
@@ -174,7 +174,7 @@
       display flex
       justify-content center
       align-items center
-      font-size var(--wren-type-caption)
+      font-size var(--saf0o-type-caption)
       letter-spacing 1px
       opacity 1
       pointer-events none
@@ -518,7 +518,7 @@
       display flex
       justify-content center
       align-items center
-      font-size var(--wren-type-small)
+      font-size var(--saf0o-type-small)
       height 40px
       border-top 1px solid var(--ghostB)
 
@@ -550,7 +550,7 @@
     opacity 0
 
   .signerReady
-    font-size var(--wren-type-small)
+    font-size var(--saf0o-type-small)
     width 100%
 
 .accountModule
@@ -571,8 +571,8 @@
     border-radius none
 
   .accountLedgerView
-    padding-right var(--wren-space-4)
-    padding-left var(--wren-space-4)
+    padding-right var(--saf0o-space-4)
+    padding-left var(--saf0o-space-4)
 
     > ._txMain
       margin 0
@@ -603,11 +603,11 @@
 
       .clusterValueClickable:not(.clusterValueDisabled):hover
         border-color transparent
-        background var(--wren-ledger-hover)
+        background var(--saf0o-ledger-hover)
 
       .clusterValueClickable:not(.clusterValueDisabled):active
         border-color transparent
-        background var(--wren-surface-active)
+        background var(--saf0o-surface-active)
 
     .moduleMainPermissions
       border 0
@@ -624,7 +624,7 @@
   text-align left
   height 52px
   position relative
-  font-size var(--wren-type-caption)
+  font-size var(--saf0o-type-caption)
   text-transform uppercase
   letter-spacing 2px
   font-family 'MainFont'
@@ -711,7 +711,7 @@
     
   .moduleHeader
     position relative
-    font-size var(--wren-type-caption)
+    font-size var(--saf0o-type-caption)
     text-transform uppercase
     letter-spacing 2px
     padding 16px 90px 10px 20px
@@ -785,7 +785,7 @@
     padding 16px
 
   .moduleMainSettings
-    font-size var(--wren-type-caption)
+    font-size var(--saf0o-type-caption)
     text-transform uppercase
     font-weight 400
 
@@ -798,7 +798,7 @@
     width 100%
     cursor pointer
     text-align center
-    font-size var(--wren-type-small)
+    font-size var(--saf0o-type-small)
     text-transform uppercase
     border-top 1px solid var(--ghostA)
     box-sizing border-box
@@ -826,7 +826,7 @@
 
 @import './view'
 
-// Wren account surface
+// Saf0o account surface
 .accountMain
   top 88px
   right 0
@@ -837,14 +837,14 @@
     border-radius 0
 
   .accountMainSlide
-    padding-top var(--wren-space-4)
-    padding-right var(--wren-space-5)
-    padding-left var(--wren-space-5)
+    padding-top var(--saf0o-space-4)
+    padding-right var(--saf0o-space-5)
+    padding-left var(--saf0o-space-5)
     box-sizing border-box
 
 .accountModule
-  right var(--wren-space-5)
-  left var(--wren-space-5)
+  right var(--saf0o-space-5)
+  left var(--saf0o-space-5)
   padding-bottom 0
 
 .accountModuleInner
@@ -852,7 +852,7 @@
   bottom 0
   left 0
   padding 0
-  border-radius var(--wren-radius-sm)
+  border-radius var(--saf0o-radius-sm)
 
   .accountModuleCard
     overflow hidden
@@ -874,7 +874,7 @@
         gap 0
 
       .clusterRow + .clusterRow
-        margin-top var(--wren-space-2)
+        margin-top var(--saf0o-space-2)
 
       .clusterValue
         border 0
@@ -883,34 +883,34 @@
 
       .clusterValueClickable:not(.clusterValueDisabled):hover
         border-color transparent
-        background var(--wren-ledger-hover)
+        background var(--saf0o-ledger-hover)
 
       .clusterValueClickable:not(.clusterValueDisabled):active
         border-color transparent
-        background var(--wren-surface-active)
+        background var(--saf0o-surface-active)
 
     // The compact account illustrations are intentionally opaque RGB assets.
     // Match their charcoal field to the ledger and feather the crop without
     // dimming transparent empty-state artwork on other surfaces.
-    .wrenEmptyState
+    .saf0oEmptyState
       background transparent
 
-    .wrenEmptyStateImage
+    .saf0oEmptyStateImage
       opacity .9
       filter brightness(.7) saturate(.92)
       -webkit-mask-image radial-gradient(ellipse 66% 57% at 52% 52%, #000 32%, rgba(0, 0, 0, .82) 55%, transparent 88%)
       mask-image radial-gradient(ellipse 66% 57% at 52% 52%, #000 32%, rgba(0, 0, 0, .82) 55%, transparent 88%)
 
-    .wrenEmptyStateImageTransparent
+    .saf0oEmptyStateImageTransparent
       opacity 1
       filter none
       -webkit-mask-image none
       mask-image none
 
-    .wrenEmptyStateTransparent:not(.wrenEmptyStateExpanded)
+    .saf0oEmptyStateTransparent:not(.saf0oEmptyStateExpanded)
       min-height 96px
 
-      .wrenEmptyStateImageTransparent
+      .saf0oEmptyStateImageTransparent
         top 45%
         width 200px
 
@@ -920,38 +920,38 @@
 
       .settingsPreviewRemovalConfirm > .clusterValue:last-child
         min-height 42px
-        margin 5px var(--wren-space-2)
+        margin 5px var(--saf0o-space-2)
         border 1px solid rgba(225, 154, 145, .42)
-        border-radius var(--wren-radius-sm)
-        color var(--wren-danger)
-        background var(--wren-danger-soft)
-        background-image var(--wren-control-texture-dark)
-        box-shadow var(--wren-control-shadow)
-        transition background var(--wren-motion-fast) var(--wren-ease), border-color var(--wren-motion-fast) var(--wren-ease), box-shadow var(--wren-motion-fast) var(--wren-ease), transform var(--wren-motion-fast) var(--wren-ease)
+        border-radius var(--saf0o-radius-sm)
+        color var(--saf0o-danger)
+        background var(--saf0o-danger-soft)
+        background-image var(--saf0o-control-texture-dark)
+        box-shadow var(--saf0o-control-shadow)
+        transition background var(--saf0o-motion-fast) var(--saf0o-ease), border-color var(--saf0o-motion-fast) var(--saf0o-ease), box-shadow var(--saf0o-motion-fast) var(--saf0o-ease), transform var(--saf0o-motion-fast) var(--saf0o-ease)
 
       .settingsPreviewRemovalConfirm > .clusterValue:last-child:not(.clusterValueDisabled):hover
-        border-color var(--wren-danger)
-        background var(--wren-danger-soft)
-        background-image var(--wren-control-texture-dark)
-        box-shadow var(--wren-control-shadow-hover)
+        border-color var(--saf0o-danger)
+        background var(--saf0o-danger-soft)
+        background-image var(--saf0o-control-texture-dark)
+        box-shadow var(--saf0o-control-shadow-hover)
 
       .settingsPreviewRemovalConfirm > .clusterValue:last-child:not(.clusterValueDisabled):active
-        background var(--wren-danger-soft)
-        box-shadow var(--wren-control-shadow-pressed)
+        background var(--saf0o-danger-soft)
+        box-shadow var(--saf0o-control-shadow-pressed)
         transform translateY(1px)
 
       .accountLedgerLabel
         display grid
         flex 0 0 112px
         min-width 112px
-        padding 0 0 0 var(--wren-account-ledger-inset)
+        padding 0 0 0 var(--saf0o-account-ledger-inset)
         box-sizing border-box
         align-items center
-        grid-template-columns var(--wren-account-ledger-mark-column) minmax(0, 1fr)
-        column-gap var(--wren-account-ledger-column-gap)
-        color var(--wren-text-tertiary)
-        font-family var(--wren-font-ui)
-        font-size var(--wren-type-small)
+        grid-template-columns var(--saf0o-account-ledger-mark-column) minmax(0, 1fr)
+        column-gap var(--saf0o-account-ledger-column-gap)
+        color var(--saf0o-text-tertiary)
+        font-family var(--saf0o-font-ui)
+        font-size var(--saf0o-type-small)
         font-weight 560
         line-height 18px
 
@@ -962,18 +962,18 @@
 
         svg
           display block
-          color var(--wren-text-secondary)
+          color var(--saf0o-text-secondary)
 
       .clusterValue
         min-height 52px
 
       .moduleItem
         min-height 52px
-        padding var(--wren-space-3)
+        padding var(--saf0o-space-3)
 
       .signerPreviewSummary
         min-height 52px
-        padding 0 var(--wren-space-3)
+        padding 0 var(--saf0o-space-3)
 
       .signerPreviewRow
         .moduleItemSignerType,
@@ -994,56 +994,56 @@
 
 .accountMainSlide .moduleHeader
   height 40px
-  padding 13px 76px 10px var(--wren-space-4)
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-small)
-  font-variation-settings var(--wren-font-heading-settings)
+  padding 13px 76px 10px var(--saf0o-space-4)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-small)
+  font-variation-settings var(--saf0o-font-heading-settings)
   font-weight 590
   letter-spacing .1px
   text-transform none
 
 .accountMainSlide > .accountModule:first-child
   .moduleMain
-    padding var(--wren-space-4)
+    padding var(--saf0o-space-4)
 
   .moduleFooterAction
-    margin-top var(--wren-space-2)
-    color var(--wren-text-secondary)
+    margin-top var(--saf0o-space-2)
+    color var(--saf0o-text-secondary)
     background transparent
-    font-size var(--wren-type-small)
+    font-size var(--saf0o-type-small)
     text-transform none
 
     &:hover
-      color var(--wren-text-primary)
-      background var(--wren-surface-hover)
+      color var(--saf0o-text-primary)
+      background var(--saf0o-surface-hover)
 
 .requestsPreview
   height 48px
   border 0
   border-radius 0
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   background transparent
-  font-size var(--wren-type-small)
+  font-size var(--saf0o-type-small)
   letter-spacing .4px
   text-transform none
-  transition background var(--wren-motion-fast) var(--wren-ease)
+  transition background var(--saf0o-motion-fast) var(--saf0o-ease)
 
   &:hover
-    color var(--wren-text-primary)
-    background var(--wren-surface-hover)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-hover)
 
   .requestsPreviewOverlay,
   .requestsPreviewArrow
     display none
 
   .requestPreviewContent
-    padding 0 var(--wren-space-4)
-    border-radius var(--wren-radius-sm)
+    padding 0 var(--saf0o-space-4)
+    border-radius var(--saf0o-radius-sm)
 
     .requestPreviewContentTitle
-      font-family var(--wren-font-ui)
-      font-variation-settings var(--wren-font-heading-settings)
+      font-family var(--saf0o-font-ui)
+      font-variation-settings var(--saf0o-font-heading-settings)
       font-weight 590
       letter-spacing .1px
 
@@ -1051,15 +1051,15 @@
       display flex
       min-width 0
       align-items center
-      gap var(--wren-space-3)
+      gap var(--saf0o-space-3)
 
     .requestPreviewContentMeta
       min-width 0
       overflow hidden
       margin 0
-      color var(--wren-text-muted)
-      font-family var(--wren-font-utility)
-      font-size var(--wren-type-caption)
+      color var(--saf0o-text-muted)
+      font-family var(--saf0o-font-utility)
+      font-size var(--saf0o-type-caption)
       font-weight 450
       letter-spacing 0
       text-overflow ellipsis
@@ -1079,18 +1079,18 @@
     right 0
     left 0
     height 64px
-    padding 0 var(--wren-space-5)
+    padding 0 var(--saf0o-space-5)
     box-sizing border-box
     border 0
-    border-bottom 1px solid var(--wren-border-subtle)
+    border-bottom 1px solid var(--saf0o-border-subtle)
     border-radius 0
     background transparent
     box-shadow none
 
     .accountViewTitle
-      color var(--wren-text-secondary)
-      font-family var(--wren-font-ui)
-      font-size var(--wren-type-small)
+      color var(--saf0o-text-secondary)
+      font-family var(--saf0o-font-ui)
+      font-size var(--saf0o-type-small)
       font-weight 500
       letter-spacing .2px
       text-transform none
@@ -1100,9 +1100,9 @@
       left 12px
 
   .accountViewMain
-    top calc(64px + var(--wren-space-5))
-    right var(--wren-space-5)
-    left var(--wren-space-5)
+    top calc(64px + var(--saf0o-space-5))
+    right var(--saf0o-space-5)
+    left var(--saf0o-space-5)
     padding-top 0
 
     .accountViewScroll
@@ -1130,9 +1130,9 @@
         right 176px
         left 56px
         justify-content flex-start
-        color var(--wren-text-primary)
+        color var(--saf0o-text-primary)
         font-size 20px
-        font-variation-settings var(--wren-font-heading-settings)
+        font-variation-settings var(--saf0o-font-heading-settings)
         font-weight 650
         line-height 1
 
@@ -1150,9 +1150,9 @@
         height 32px
         box-sizing border-box
         overflow hidden
-        color var(--wren-text-tertiary)
-        font-family var(--wren-font-utility)
-        font-size var(--wren-type-caption)
+        color var(--saf0o-text-tertiary)
+        font-family var(--saf0o-font-utility)
+        font-size var(--saf0o-type-caption)
         line-height 32px
         text-align right
         text-overflow ellipsis
@@ -1169,21 +1169,21 @@
     transform none
 
 .moduleExpanded
-  padding-bottom var(--wren-space-5)
+  padding-bottom var(--saf0o-space-5)
 
   .accountModuleInner
     padding 0
 
   .accountModuleCard
     overflow hidden
-    border 1px solid var(--wren-border-default)
+    border 1px solid var(--saf0o-border-default)
     border-radius 10px
-    background var(--wren-surface-card)
-    box-shadow var(--wren-shadow-sm), var(--wren-shadow-inset)
+    background var(--saf0o-surface-card)
+    box-shadow var(--saf0o-shadow-sm), var(--saf0o-shadow-inset)
 
   .accountLedgerView
-    padding-right var(--wren-space-3)
-    padding-left var(--wren-space-3)
+    padding-right var(--saf0o-space-3)
+    padding-left var(--saf0o-space-3)
 
 // Account home follows the approved controls study: the selected-account switcher
 // owns the header, so the startup dashboard control stays out of the selected state.
@@ -1193,57 +1193,57 @@
     transition none
 
   &:has(.requestNoticeTransactionReview)
-    --wren-request-review-shelf-height 114px
+    --saf0o-request-review-shelf-height 114px
 
     .accountViewRequest
-      bottom var(--wren-request-review-shelf-height) !important
+      bottom var(--saf0o-request-review-shelf-height) !important
 
     .footerModule
-      height var(--wren-request-review-shelf-height) !important
+      height var(--saf0o-request-review-shelf-height) !important
 
   &:has(.requestNoticeTransactionStatus)
-    --wren-request-status-shelf-height 114px
+    --saf0o-request-status-shelf-height 114px
 
     .accountViewRequest
-      bottom var(--wren-request-status-shelf-height) !important
+      bottom var(--saf0o-request-status-shelf-height) !important
 
     .footerModule
-      height var(--wren-request-status-shelf-height) !important
+      height var(--saf0o-request-status-shelf-height) !important
 
   &:has(.requestNoticeTransactionUnconfirmed)
-    --wren-request-status-shelf-height 114px
+    --saf0o-request-status-shelf-height 114px
 
   &:has(.requestNoticeApproval)
-    --wren-request-warning-shelf-height 154px
+    --saf0o-request-warning-shelf-height 154px
 
     .accountViewRequest
-      bottom var(--wren-request-warning-shelf-height) !important
+      bottom var(--saf0o-request-warning-shelf-height) !important
 
     .footerModule
-      height var(--wren-request-warning-shelf-height) !important
+      height var(--saf0o-request-warning-shelf-height) !important
 
   &:has(.eip7702StopMonitoringDialog)
-    --wren-request-dialog-shelf-height 173px
+    --saf0o-request-dialog-shelf-height 173px
 
     .accountViewRequest
-      bottom var(--wren-request-dialog-shelf-height) !important
+      bottom var(--saf0o-request-dialog-shelf-height) !important
 
     .footerModule
-      height var(--wren-request-dialog-shelf-height) !important
+      height var(--saf0o-request-dialog-shelf-height) !important
 
   &:has(.walletCallsReview)
-    --wren-wallet-calls-shelf-height 114px
+    --saf0o-wallet-calls-shelf-height 114px
 
     .accountViewRequest
-      bottom var(--wren-wallet-calls-shelf-height) !important
+      bottom var(--saf0o-wallet-calls-shelf-height) !important
       transition none
 
     .footerModule
-      height var(--wren-wallet-calls-shelf-height) !important
+      height var(--saf0o-wallet-calls-shelf-height) !important
 
   &:has(.walletCallsFundingRecovery)
     .accountViewRequest
-      bottom var(--wren-measured-footer-height, 307px) !important
+      bottom var(--saf0o-measured-footer-height, 307px) !important
 
     .footerModule
       height auto !important
@@ -1268,34 +1268,34 @@
 #panel:has(.tokenApprovalsView),
 #panel:has(.accountSettingsExpandedView),
 #panel:has(.requestViewScroll)
-  --wren-bg-elevated #121813
-  --wren-border-subtle rgba(150, 182, 150, .10)
-  --wren-border-default rgba(150, 182, 150, .16)
-  --wren-border-strong rgba(150, 182, 150, .22)
-  --wren-text-primary #f2efe8
-  --wren-text-secondary #d6d2c8
-  --wren-text-tertiary #97917f
-  --wren-text-muted #97917f
-  --wren-text-disabled #6d7568
+  --saf0o-bg-elevated #121813
+  --saf0o-border-subtle rgba(150, 182, 150, .10)
+  --saf0o-border-default rgba(150, 182, 150, .16)
+  --saf0o-border-strong rgba(150, 182, 150, .22)
+  --saf0o-text-primary #f2efe8
+  --saf0o-text-secondary #d6d2c8
+  --saf0o-text-tertiary #97917f
+  --saf0o-text-muted #97917f
+  --saf0o-text-disabled #6d7568
 // Focused signing uses one opaque canvas through the review bar and body,
 // without carrying the ordinary wallet's atmospheric color fields into it.
 #panel:has(.accountViewRequest),
 #panel:has(.walletCallsStatus)
-  --wren-window-mode-image var(--wren-window-atmosphere-focus)
-  --wren-window-mode-repeat var(--wren-window-atmosphere-focus-repeat)
-  --wren-window-mode-size var(--wren-window-atmosphere-focus-size)
-  --wren-window-mode-blend var(--wren-window-atmosphere-focus-blend)
-  --wren-window-mode-shadow var(--wren-window-atmosphere-focus-shadow)
+  --saf0o-window-mode-image var(--saf0o-window-atmosphere-focus)
+  --saf0o-window-mode-repeat var(--saf0o-window-atmosphere-focus-repeat)
+  --saf0o-window-mode-size var(--saf0o-window-atmosphere-focus-size)
+  --saf0o-window-mode-blend var(--saf0o-window-atmosphere-focus-blend)
+  --saf0o-window-mode-shadow var(--saf0o-window-atmosphere-focus-shadow)
 
 @media (max-width: 560px)
   #panel:has(.requestNoticeTransactionReview)
-    --wren-request-review-shelf-height 132px
+    --saf0o-request-review-shelf-height 132px
 
 .accountMain.accountMainPerch
-  --wren-account-ledger-inset var(--wren-space-4)
-  --wren-account-ledger-mark-column 32px
-  --wren-account-ledger-column-gap var(--wren-space-2)
-  --wren-account-ledger-text-offset calc(var(--wren-account-ledger-mark-column) + var(--wren-account-ledger-column-gap))
+  --saf0o-account-ledger-inset var(--saf0o-space-4)
+  --saf0o-account-ledger-mark-column 32px
+  --saf0o-account-ledger-column-gap var(--saf0o-space-2)
+  --saf0o-account-ledger-text-offset calc(var(--saf0o-account-ledger-mark-column) + var(--saf0o-account-ledger-column-gap))
   top 64px
   right 0
   bottom 0 !important
@@ -1331,7 +1331,7 @@
   height 32px
   opacity 0
   background linear-gradient(to bottom, rgba(7, 9, 7, 0), rgba(7, 9, 7, .26) 52%, rgba(7, 9, 7, .78))
-  transition opacity var(--wren-motion-fast) var(--wren-ease)
+  transition opacity var(--saf0o-motion-fast) var(--saf0o-ease)
   pointer-events none
 
 .accountScrollFadeVisible
@@ -1340,12 +1340,12 @@
 .accountPortfolioCard
   position relative
   height 144px
-  padding 15px var(--wren-account-ledger-inset) 18px
+  padding 15px var(--saf0o-account-ledger-inset) 18px
   box-sizing border-box
   overflow hidden
-  border 1px solid var(--wren-border-default)
+  border 1px solid var(--saf0o-border-default)
   border-radius 10px
-  background linear-gradient(172deg, rgba(255, 255, 255, .028), transparent 46%), var(--wren-surface-card)
+  background linear-gradient(172deg, rgba(255, 255, 255, .028), transparent 46%), var(--saf0o-surface-card)
   backdrop-filter blur(10px)
   box-shadow 0 10px 26px rgba(0, 0, 0, .5), inset 1px 1px 0 rgba(150, 182, 150, .05), inset 0 1px 0 rgba(255, 255, 255, .05)
 
@@ -1369,8 +1369,8 @@
 .accountMainPerch .accountPortfolioHeader,
 .accountMainPerch .requestPreviewHeading,
 .accountMainPerch .moduleHeader
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-mono)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-mono)
   font-size 12px
   font-weight 600
   line-height 18px
@@ -1381,8 +1381,8 @@
   position relative
   z-index 1
   margin-top 28px
-  color var(--wren-text-primary)
-  font-family var(--wren-font-ui)
+  color var(--saf0o-text-primary)
+  font-family var(--saf0o-font-ui)
   font-size 40px
   font-weight 400
   line-height 1
@@ -1417,16 +1417,16 @@
     height 100%
     box-sizing border-box
     overflow hidden
-    border 1px solid var(--wren-border-default)
+    border 1px solid var(--saf0o-border-default)
     border-radius 10px
-    background linear-gradient(172deg, rgba(255, 255, 255, .028), transparent 46%), var(--wren-surface-card)
+    background linear-gradient(172deg, rgba(255, 255, 255, .028), transparent 46%), var(--saf0o-surface-card)
     backdrop-filter blur(10px)
     box-shadow 0 10px 26px rgba(0, 0, 0, .5), inset 1px 1px 0 rgba(150, 182, 150, .05), inset 0 1px 0 rgba(255, 255, 255, .05)
 
 .accountMainPerch .moduleHeader
   display flex
   height 48px
-  padding 15px var(--wren-account-ledger-inset)
+  padding 15px var(--saf0o-account-ledger-inset)
   box-sizing border-box
   align-items center
 
@@ -1448,7 +1448,7 @@
   border-radius 0
   color inherit
   background transparent
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
   text-transform none
   letter-spacing 0
 
@@ -1486,9 +1486,9 @@
     box-sizing border-box
     align-items center
     gap 12px
-    border 1px solid var(--wren-border-default)
+    border 1px solid var(--saf0o-border-default)
     border-radius 10px
-    background var(--wren-surface-card)
+    background var(--saf0o-surface-card)
 
   .requestPreviewIdentity
     display flex
@@ -1500,7 +1500,7 @@
 
     strong
       overflow hidden
-      color var(--wren-text-primary)
+      color var(--saf0o-text-primary)
       font-size 14px
       font-weight 560
       text-overflow ellipsis
@@ -1509,8 +1509,8 @@
     span
       overflow hidden
       margin 0
-      color var(--wren-text-tertiary)
-      font-family var(--wren-font-mono)
+      color var(--saf0o-text-tertiary)
+      font-family var(--saf0o-font-mono)
       font-size 12px
       text-overflow ellipsis
       white-space nowrap
@@ -1519,7 +1519,7 @@
     margin 0
     flex none
     color #c08d54
-    font-family var(--wren-font-mono)
+    font-family var(--saf0o-font-mono)
     font-size 12px
     font-weight 600
     letter-spacing .4px
@@ -1527,10 +1527,10 @@
   .requestPreviewEmpty
     margin-top 12px
     padding 14px 12px
-    color var(--wren-text-tertiary)
-    border 1px solid var(--wren-border-subtle)
+    color var(--saf0o-text-tertiary)
+    border 1px solid var(--saf0o-border-subtle)
     border-radius 10px
-    background var(--wren-surface-card)
+    background var(--saf0o-surface-card)
     font-size 13px
 
   .requestPreviewContentEnd
@@ -1548,8 +1548,8 @@
   grid-template-columns auto minmax(0, 1fr) auto
 
 .chainMonitorLabel
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-mono)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-mono)
   font-size 12px
   font-weight 600
   letter-spacing 1.4px
@@ -1560,22 +1560,22 @@
   min-width 0
   align-items center
   gap 7px
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-mono)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-mono)
   font-size 12px
 
   > strong
     overflow hidden
-    color var(--wren-text-primary)
-    font-family var(--wren-font-ui)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-ui)
     font-size 13px
     font-weight 560
     text-overflow ellipsis
     white-space nowrap
 
   .sliceTileGasPrice
-    color var(--wren-text-primary)
-    font-family var(--wren-font-mono)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-mono)
     font-size 12px
 
 .chainMonitorControls
@@ -1583,7 +1583,7 @@
   align-items center
   gap 2px
 
-  button.wrenControl
+  button.saf0oControl
     width 44px
     min-width 44px
     height 44px
@@ -1607,7 +1607,7 @@
 
     .clusterRow
       margin 0
-      border-top 1px solid var(--wren-border-subtle)
+      border-top 1px solid var(--saf0o-border-subtle)
 
       &:first-child
         border-top 0
@@ -1630,8 +1630,8 @@
   .signerBalanceIcon
     top 15px
     left 0
-    width var(--wren-account-ledger-mark-column)
-    height var(--wren-account-ledger-mark-column)
+    width var(--saf0o-account-ledger-mark-column)
+    height var(--saf0o-account-ledger-mark-column)
     overflow visible
     box-sizing border-box
     border 0
@@ -1648,17 +1648,17 @@
   .signerBalanceCurrency
     top 12px
     right 48%
-    left var(--wren-account-ledger-text-offset)
+    left var(--saf0o-account-ledger-text-offset)
     height 18px
     font-size 14px
     font-weight 500
 
   .signerBalanceChain
     top 34px
-    left var(--wren-account-ledger-text-offset)
+    left var(--saf0o-account-ledger-text-offset)
     height 14px
-    color var(--wren-text-tertiary) !important
-    font-family var(--wren-font-mono)
+    color var(--saf0o-text-tertiary) !important
+    font-family var(--saf0o-font-mono)
     font-size 12px
     font-weight 400
     letter-spacing 0
@@ -1682,12 +1682,12 @@
 
 .accountMainPerch .accountModule-permissions .connectedAppsList
   .signerPermission
-    padding-left var(--wren-account-ledger-inset)
+    padding-left var(--saf0o-account-ledger-inset)
 
   .signerPermissionControls
     display grid
-    grid-template-columns var(--wren-account-ledger-mark-column) minmax(0, 1fr) auto
-    column-gap var(--wren-account-ledger-column-gap)
+    grid-template-columns var(--saf0o-account-ledger-mark-column) minmax(0, 1fr) auto
+    column-gap var(--saf0o-account-ledger-column-gap)
 
   .signerPermissionIdentity
     width auto
@@ -1716,10 +1716,10 @@
 
 .accountHomeHeader
   display grid
-  padding 0 var(--wren-space-5) var(--wren-space-3)
-  margin-bottom var(--wren-space-2)
+  padding 0 var(--saf0o-space-5) var(--saf0o-space-3)
+  margin-bottom var(--saf0o-space-2)
   grid-template-columns minmax(0, 1fr) auto
-  column-gap var(--wren-space-5)
+  column-gap var(--saf0o-space-5)
   align-items start
 
 .accountHomeIdentity
@@ -1730,8 +1730,8 @@
   min-width 0
   margin 0
   overflow hidden
-  color var(--wren-text-primary)
-  font-family var(--wren-font-ui)
+  color var(--saf0o-text-primary)
+  font-family var(--saf0o-font-ui)
   font-size 25px
   font-weight 660
   line-height 1.08
@@ -1744,17 +1744,17 @@
   min-height 32px
   margin-top 0
   align-items center
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
-button.accountHomeRename.wrenControl
+button.accountHomeRename.saf0oControl
   display flex
   max-width 100%
   min-width 0
   min-height 44px
   height auto
-  padding 0 var(--wren-space-1)
+  padding 0 var(--saf0o-space-1)
   align-items center
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
   color inherit
   font inherit
   letter-spacing inherit
@@ -1762,10 +1762,10 @@ button.accountHomeRename.wrenControl
 
   svg
     flex none
-    color var(--wren-text-muted)
+    color var(--saf0o-text-muted)
 
   &:hover svg
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
 
 .accountHomeNameText
   min-width 0
@@ -1778,7 +1778,7 @@ button.accountHomeRename.wrenControl
   min-width 180px
   height 32px
   min-height 32px
-  padding 0 var(--wren-space-3)
+  padding 0 var(--saf0o-space-3)
   box-sizing border-box
   font-size 18px
   font-weight 620
@@ -1790,7 +1790,7 @@ button.accountHomeRename.wrenControl
   min-height 44px
   margin-top 3px
   align-items center
-  gap var(--wren-space-1)
+  gap var(--saf0o-space-1)
 
 .accountHomeQrTrigger
   width 44px !important
@@ -1799,9 +1799,9 @@ button.accountHomeRename.wrenControl
   min-height 44px !important
 
   &[aria-expanded='true']
-    color var(--wren-text-primary)
-    border-color var(--wren-border-subtle)
-    background-color var(--wren-surface-active)
+    color var(--saf0o-text-primary)
+    border-color var(--saf0o-border-subtle)
+    background-color var(--saf0o-surface-active)
 
 .accountHomeQrDisclosure
   position relative
@@ -1811,20 +1811,20 @@ button.accountHomeRename.wrenControl
 
 .accountAddressQrPopover
   position absolute
-  top calc(100% + var(--wren-space-1))
+  top calc(100% + var(--saf0o-space-1))
   left 50%
   z-index 20001
   width 217px
   margin-left -108.5px
-  padding var(--wren-space-3)
+  padding var(--saf0o-space-3)
   box-sizing border-box
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-md)
-  color var(--wren-text-primary)
-  background-color var(--wren-bg-elevated)
-  background-image var(--wren-control-texture-dark)
-  box-shadow var(--wren-shadow-lg), var(--wren-shadow-inset)
-  animation cardShow var(--wren-motion-standard) var(--wren-ease) both
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-md)
+  color var(--saf0o-text-primary)
+  background-color var(--saf0o-bg-elevated)
+  background-image var(--saf0o-control-texture-dark)
+  box-shadow var(--saf0o-shadow-lg), var(--saf0o-shadow-inset)
+  animation cardShow var(--saf0o-motion-standard) var(--saf0o-ease) both
 
   &::before
     content ''
@@ -1833,24 +1833,24 @@ button.accountHomeRename.wrenControl
     left calc(50% - 5px)
     width 9px
     height 9px
-    border-top 1px solid var(--wren-border-default)
-    border-left 1px solid var(--wren-border-default)
-    background var(--wren-bg-elevated)
+    border-top 1px solid var(--saf0o-border-default)
+    border-left 1px solid var(--saf0o-border-default)
+    background var(--saf0o-bg-elevated)
     transform rotate(45deg)
 
 .accountAddressQrHeader
   display flex
   min-height 38px
-  margin-bottom var(--wren-space-2)
+  margin-bottom var(--saf0o-space-2)
   align-items flex-start
   justify-content space-between
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
 .accountAddressQrTitle
   margin 0
-  color var(--wren-text-primary)
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-body)
+  color var(--saf0o-text-primary)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-body)
   font-weight 650
   line-height 1.2
 
@@ -1858,9 +1858,9 @@ button.accountHomeRename.wrenControl
   max-width 135px
   margin-top 3px
   overflow hidden
-  color var(--wren-text-muted)
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-muted)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-caption)
   line-height 1.25
   text-overflow ellipsis
   white-space nowrap
@@ -1873,11 +1873,11 @@ button.accountHomeRename.wrenControl
   margin 0 auto
 
 .accountAddressQrValue
-  margin-top var(--wren-space-2)
+  margin-top var(--saf0o-space-2)
   overflow-wrap anywhere
-  color var(--wren-text-secondary)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-secondary)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
   line-height 1.45
 
 .accountHomeAddress
@@ -1886,18 +1886,18 @@ button.accountHomeRename.wrenControl
   min-width 0
   min-height 44px
   max-width 100%
-  padding 0 var(--wren-space-1)
+  padding 0 var(--saf0o-space-1)
   align-items center
   gap 7px
   overflow hidden
   border 0
-  color var(--wren-text-muted)
+  color var(--saf0o-text-muted)
   background transparent
   cursor pointer
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
   text-align left
-  transition color var(--wren-motion-fast) var(--wren-ease)
+  transition color var(--saf0o-motion-fast) var(--saf0o-ease)
 
   span
     overflow hidden
@@ -1908,67 +1908,67 @@ button.accountHomeRename.wrenControl
     flex none
 
   &:hover
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
 
   &:active
-    color var(--wren-accent-primary)
+    color var(--saf0o-accent-primary)
 
   &:focus-visible
     border-radius 2px
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 3px
 
 .accountHomeActions
   display flex
-  padding-top var(--wren-space-3)
+  padding-top var(--saf0o-space-3)
   align-items center
   justify-content flex-end
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
-  .wrenControl
+  .saf0oControl
     svg
       flex none
 
 .accountContinuationRow
   appearance none
   display flex
-  width calc(100% - var(--wren-space-4))
+  width calc(100% - var(--saf0o-space-4))
   min-height 44px
-  margin var(--wren-space-1) var(--wren-space-2) 0
-  padding 0 var(--wren-space-3)
+  margin var(--saf0o-space-1) var(--saf0o-space-2) 0
+  padding 0 var(--saf0o-space-3)
   box-sizing border-box
   align-items center
   justify-content space-between
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
   border 0
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-secondary)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-secondary)
   background transparent
   cursor pointer
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-small)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-small)
   font-weight 540
   text-align left
-  transition color var(--wren-motion-fast) var(--wren-ease), background var(--wren-motion-fast) var(--wren-ease)
+  transition color var(--saf0o-motion-fast) var(--saf0o-ease), background var(--saf0o-motion-fast) var(--saf0o-ease)
 
   svg
     flex none
-    color var(--wren-text-tertiary)
-    transition color var(--wren-motion-fast) var(--wren-ease), transform var(--wren-motion-fast) var(--wren-ease)
+    color var(--saf0o-text-tertiary)
+    transition color var(--saf0o-motion-fast) var(--saf0o-ease), transform var(--saf0o-motion-fast) var(--saf0o-ease)
 
   &:hover:not(:disabled)
-    color var(--wren-text-primary)
-    background var(--wren-surface-hover)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-hover)
 
     svg
-      color var(--wren-accent-primary)
+      color var(--saf0o-accent-primary)
       transform translateX(1px)
 
   &:active:not(:disabled)
-    background var(--wren-surface-active)
+    background var(--saf0o-surface-active)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset -2px
 
   &:disabled
@@ -1976,12 +1976,12 @@ button.accountHomeRename.wrenControl
     opacity .58
 
 .accountContinuationRow.activityContinuation
-  margin-top var(--wren-space-2)
-  margin-bottom var(--wren-space-2)
-  padding-left var(--wren-space-5)
+  margin-top var(--saf0o-space-2)
+  margin-bottom var(--saf0o-space-2)
+  padding-left var(--saf0o-space-5)
 
 .accountContinuationRow.connectedAppsContinuation
-  padding-left var(--wren-space-5)
+  padding-left var(--saf0o-space-5)
 
 .accountPortfolioActions
   position absolute
@@ -2033,5 +2033,5 @@ button.accountHomeRename.wrenControl
     transition none
 
   .accountViewRequest
-    bottom var(--wren-measured-footer-height, 114px) !important
+    bottom var(--saf0o-measured-footer-height, 114px) !important
     transition none

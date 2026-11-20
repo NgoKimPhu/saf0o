@@ -18,7 +18,7 @@ test('accepts only safe positive source epochs', () => {
 })
 
 test('compares generated file contents, modes, paths, and symlinks deterministically', async () => {
-  const root = await mkdtemp(path.join(tmpdir(), 'wren-repro-test-'))
+  const root = await mkdtemp(path.join(tmpdir(), 'saf0o-repro-test-'))
   const left = path.join(root, 'left')
   const right = path.join(root, 'right')
   try {

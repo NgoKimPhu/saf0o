@@ -6,7 +6,7 @@ import {
   clearTransactionFeeDraftSafety,
   setTransactionFeeDraftSafety
 } from '../../../../../resources/domain/request'
-import { WREN_DEPLOY_ORIGIN, originIdForName } from '../../../../../resources/domain/origin'
+import { SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../../../../resources/domain/origin'
 
 jest.mock('../../../../../resources/link', () => ({ invoke: jest.fn(), rpc: jest.fn(), send: jest.fn() }))
 
@@ -112,7 +112,7 @@ it('opens source verification only for a confirmed managed deployment', async ()
   const operationId = '33333333-3333-4333-8333-333333333333'
   const req = transaction({
     activityId: operationId,
-    origin: originIdForName(WREN_DEPLOY_ORIGIN),
+    origin: originIdForName(SAF0O_DEPLOY_ORIGIN),
     status: 'confirmed',
     deployment: { inspectionId: 'a'.repeat(32) },
     tx: {
@@ -148,7 +148,7 @@ it('opens source verification only for a confirmed managed deployment', async ()
 it('keeps an unavailable verification handoff visible and retryable', async () => {
   const req = transaction({
     activityId: '33333333-3333-4333-8333-333333333333',
-    origin: originIdForName(WREN_DEPLOY_ORIGIN),
+    origin: originIdForName(SAF0O_DEPLOY_ORIGIN),
     status: 'confirmed',
     deployment: { inspectionId: 'a'.repeat(32) },
     tx: {
@@ -174,12 +174,12 @@ it('keeps an unavailable verification handoff visible and retryable', async () =
 
 it.each([
   ['ordinary confirmation', {}],
-  ['managed transaction without deployment evidence', { origin: originIdForName(WREN_DEPLOY_ORIGIN) }],
+  ['managed transaction without deployment evidence', { origin: originIdForName(SAF0O_DEPLOY_ORIGIN) }],
   [
     'managed deployment without a confirmed contract address',
     {
       activityId: '33333333-3333-4333-8333-333333333333',
-      origin: originIdForName(WREN_DEPLOY_ORIGIN),
+      origin: originIdForName(SAF0O_DEPLOY_ORIGIN),
       deployment: { inspectionId: 'a'.repeat(32) }
     }
   ]
@@ -299,7 +299,7 @@ it('fails closed without dispatching an unknown request action', () => {
   expect(link.rpc).not.toHaveBeenCalled()
   expect(command.setState).toHaveBeenLastCalledWith({
     requestActionPending: false,
-    requestActionError: 'Wren could not update this request. It is still pending.'
+    requestActionError: 'Saf0o could not update this request. It is still pending.'
   })
   command.componentWillUnmount()
 })
@@ -619,7 +619,7 @@ it('omits explorer access without a configured explorer while preserving hash co
 })
 
 it.each([
-  ['sending', 'Submitting', 'Wren is sending the transaction to the network.'],
+  ['sending', 'Submitting', 'Saf0o is sending the transaction to the network.'],
   ['verifying', 'Submitted', 'Sent to the network.'],
   ['confirming', 'Confirming', 'Waiting for network confirmation.'],
   ['confirmed', 'Confirmed', 'The transaction is confirmed on Ethereum.'],
@@ -640,7 +640,7 @@ it('presents an ambiguous one-shot broadcast without claiming network acceptance
 
   expect(transactionLifecyclePresentation(req, 'Ethereum')).toMatchObject({
     title: 'Broadcast unconfirmed',
-    detail: 'Checking network acceptance. Wren will not resend automatically.',
+    detail: 'Checking network acceptance. Saf0o will not resend automatically.',
     position: 0,
     tone: 'warning'
   })

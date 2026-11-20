@@ -56,7 +56,7 @@ const nativePaths = new Set(['/native/v3/challenge', '/native/v3/prove', '/nativ
 const nativePathPrefix = '/native/'
 const nativePairingRequired = {
   code: 4100,
-  message: 'Wren requires a paired native protocol 3 client for local requests.'
+  message: 'Saf0o requires a paired native protocol 3 client for local requests.'
 } as const
 
 export const HTTP_MAX_CONNECTIONS = 128
@@ -102,7 +102,7 @@ const parseJson = (body: Buffer) => {
 }
 
 const nativeProofHeader = (req: IncomingMessage) => {
-  const header = req.headers['x-wren-native-proof']
+  const header = req.headers['x-saf0o-native-proof']
   if (typeof header !== 'string' || header.length > 16 * 1024) return
   try {
     const bytes = Buffer.from(header, 'base64url')
@@ -417,7 +417,8 @@ const handler = (req: IncomingMessage, res: ServerResponse) => {
 
         if (!trusted) {
           let error = { message: 'Origin is not authorized', code: 4100 }
-          if (!accounts.getSelectedAddresses()[0]) error = { message: 'No Wren account selected', code: 4100 }
+          if (!accounts.getSelectedAddresses()[0])
+            error = { message: 'No Saf0o account selected', code: 4100 }
           respond({ id: payload.id, jsonrpc: payload.jsonrpc, error })
         } else {
           if (payload.method === 'eth_pollSubscriptions') {

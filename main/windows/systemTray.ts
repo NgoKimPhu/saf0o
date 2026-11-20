@@ -69,20 +69,20 @@ export class SystemTray {
     { displaySummonShortcut = false, accelerator = 'Alt+/', switchScreen = false }
   ) {
     const separatorMenuItem = {
-      label: 'Wren',
+      label: 'Saf0o',
       click: () => {},
       type: 'separator'
     }
     const menuItemLabelMap = {
       hide: 'Dismiss',
-      show: 'Show Wren'
+      show: 'Show Saf0o'
     }
     const label = menuItemLabelMap[type as keyof typeof menuItemLabelMap]
     const eventName = `click${capitalize(type)}`
     const actionMenuItem: Electron.MenuItemConstructorOptions = {
       label,
       click: () => this.clickHandlers[eventName as keyof typeof this.clickHandlers](),
-      toolTip: label === 'Show Wren' ? label : `${label} Wren`
+      toolTip: label === 'Show Saf0o' ? label : `${label} Saf0o`
     }
     const quitMenuItem = {
       label: 'Quit',

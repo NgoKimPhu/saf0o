@@ -66,7 +66,7 @@ it('presents review, queue, and signer states without overstating execution', ()
   expect(revokeLifecyclePresentation(request({ status: 'pending' }), true)).toEqual({
     kind: 'signing',
     title: 'Ready to sign',
-    detail: 'Confirm this revocation with your Wren software signer.'
+    detail: 'Confirm this revocation with your Saf0o software signer.'
   })
   expect(revokeLifecyclePresentation(request({ status: 'verifying', tx: { hash: '0x1' } }), true)).toEqual({
     kind: 'pending',
@@ -91,7 +91,7 @@ it('presents ambiguous submission as monitored without claiming sent or failed',
     kind: 'unclear',
     title: 'Submission status unclear',
     detail:
-      'Wren is monitoring the expected transaction hash, and this account’s request queue is paused until its status is known.'
+      'Saf0o is monitoring the expected transaction hash, and this account’s request queue is paused until its status is known.'
   })
   expect(`${presentation.title} ${presentation.detail}`.toLowerCase()).not.toContain('failed')
   expect(`${presentation.title} ${presentation.detail}`.toLowerCase()).not.toContain('sent')
@@ -119,7 +119,7 @@ it('requires a fresh code check before claiming that delegation is cleared', () 
   )
   expect(receiptOnly.kind).toBe('unverified')
   expect(receiptOnly.detail).toBe(
-    'Transaction confirmed. Wren could not verify that the delegation is cleared.'
+    'Transaction confirmed. Saf0o could not verify that the delegation is cleared.'
   )
 })
 

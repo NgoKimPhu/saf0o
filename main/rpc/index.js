@@ -10,7 +10,7 @@ import { respondToExtensionPairing } from '../api/extensionPairing'
 import { revokeCompanionAccess } from '../api/companionAccess'
 import { tokenApprovals } from '../tokenApprovals/runtime'
 import { TokenApprovalRevocations } from '../tokenApprovals/revocations'
-import { originIdForName, WREN_INTERNAL_ORIGIN } from '../../resources/domain/origin'
+import { originIdForName, SAF0O_INTERNAL_ORIGIN } from '../../resources/domain/origin'
 import { RequestStatus } from '../accounts/types'
 import {
   respondToNativePairing,
@@ -108,7 +108,7 @@ const approvalRevocations = new TokenApprovalRevocations({
           jsonrpc: '2.0',
           method: 'eth_sendTransaction',
           chainId: transaction.chainId,
-          _origin: originIdForName(WREN_INTERNAL_ORIGIN),
+          _origin: originIdForName(SAF0O_INTERNAL_ORIGIN),
           params: [{ ...transaction }]
         },
         (response) => {

@@ -137,9 +137,9 @@ export class AddHardwareLattice extends React.Component {
                   <label htmlFor='gridPlusDeviceName' className='addAccountItemOptionTitle'>
                     Device name
                   </label>
-                  <div className='addAccountItemOptionInput wrenInputGroup'>
+                  <div className='addAccountItemOptionInput saf0oInputGroup'>
                     <input
-                      className='wrenInput'
+                      className='saf0oInput'
                       id='gridPlusDeviceName'
                       ref={this.forms[0]}
                       value={deviceName}
@@ -156,7 +156,7 @@ export class AddHardwareLattice extends React.Component {
                   </div>
                   <button
                     type='button'
-                    className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+                    className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
                     onClick={() => this.next()}
                   >
                     Next
@@ -166,9 +166,9 @@ export class AddHardwareLattice extends React.Component {
                   <label htmlFor='gridPlusDeviceId' className='addAccountItemOptionTitle'>
                     Enter device ID
                   </label>
-                  <div className='addAccountItemOptionInput wrenInputGroup'>
+                  <div className='addAccountItemOptionInput saf0oInputGroup'>
                     <input
-                      className='wrenInput'
+                      className='saf0oInput'
                       id='gridPlusDeviceId'
                       ref={this.forms[1]}
                       value={deviceId}
@@ -185,7 +185,7 @@ export class AddHardwareLattice extends React.Component {
                   </div>
                   <button
                     type='button'
-                    className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+                    className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
                     disabled={!deviceId.trim() || creating}
                     onClick={() => this.createLattice()}
                   >
@@ -199,7 +199,7 @@ export class AddHardwareLattice extends React.Component {
                   {error ? (
                     <button
                       type='button'
-                      className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+                      className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
                       onClick={() => this.restart()}
                     >
                       Try again

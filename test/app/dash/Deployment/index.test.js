@@ -178,7 +178,7 @@ it('disables preparation when the selected configured network disconnects before
   expect(screen.getByText('Connect and select a configured network to continue.')).toBeTruthy()
 })
 
-it('changes Wren’s active account and updates the controlled selection only after success', async () => {
+it('changes Saf0o’s active account and updates the controlled selection only after success', async () => {
   let respond
   link.rpc.mockImplementation((method, selected, callback) => {
     expect(method).toBe('setSigner')

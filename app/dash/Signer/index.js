@@ -86,7 +86,7 @@ export class Signer extends React.Component {
           if (result?.status === 'deferred') {
             if (this.mounted) {
               this.setState({
-                removalStatus: 'Removal is in progress. Wren will finish automatically.'
+                removalStatus: 'Removal is in progress. Saf0o will finish automatically.'
               })
             }
             return
@@ -116,7 +116,7 @@ export class Signer extends React.Component {
         accountRemovalError: error ? 'Couldn\u2019t remove account. Try again.' : '',
         accountRemovalStatus:
           !error && result?.status === 'deferred'
-            ? 'Account removal is in progress. Wren will finish automatically.'
+            ? 'Account removal is in progress. Saf0o will finish automatically.'
             : ''
       })
     })
@@ -260,7 +260,7 @@ export class Signer extends React.Component {
                 <button
                   type='button'
                   aria-label='Delete last PIN position'
-                  className='signerPinDelete wrenControl wrenControlSecondary wrenControlIcon'
+                  className='signerPinDelete saf0oControl saf0oControlSecondary saf0oControlIcon'
                   onClick={this.backspacePin.bind(this)}
                 >
                   <Icon name='back' size={18} />
@@ -268,7 +268,7 @@ export class Signer extends React.Component {
               ) : null}
               <button
                 type='button'
-                className='signerPinMessage signerPinSubmit wrenControl wrenControlPrimary'
+                className='signerPinMessage signerPinSubmit saf0oControl saf0oControlPrimary'
                 disabled={!this.state.tPin || this.state.tPinPending}
                 onClick={() => this.submitPin()}
               >
@@ -295,9 +295,9 @@ export class Signer extends React.Component {
       <div className='trezorPinWrap' style={active ? {} : { height: '0px', padding: '0px 0px 0px 0px' }}>
         {active ? (
           <>
-            <div className='trezorPhraseInput wrenInputGroup'>
+            <div className='trezorPhraseInput saf0oInputGroup'>
               <input
-                className='wrenInput'
+                className='saf0oInput'
                 aria-label='Trezor passphrase'
                 type='password'
                 value={this.state.tPhrase}
@@ -309,7 +309,7 @@ export class Signer extends React.Component {
             </div>
             <button
               type='button'
-              className='signerPinMessage signerPinSubmit wrenControl wrenControlPrimary'
+              className='signerPinMessage signerPinSubmit saf0oControl saf0oControlPrimary'
               disabled={this.state.tPhrasePending}
               onClick={() => this.submitPhrase()}
             >
@@ -320,7 +320,7 @@ export class Signer extends React.Component {
                 <div className='signerPinMessageOr'>{'or'}</div>
                 <button
                   type='button'
-                  className='signerPinMessage signerPinSubmit wrenControl wrenControlSecondary'
+                  className='signerPinMessage signerPinSubmit saf0oControl saf0oControlSecondary'
                   disabled={this.state.tPhrasePending}
                   onClick={() => this.submitPhraseOnDevice()}
                 >
@@ -348,9 +348,9 @@ export class Signer extends React.Component {
         {active ? (
           <>
             <div className='signerLatticePairTitle'>{title}</div>
-            <div className='trezorPhraseInput wrenInputGroup'>
+            <div className='trezorPhraseInput saf0oInputGroup'>
               <input
-                className='wrenInput'
+                className='saf0oInput'
                 aria-label='Trezor pairing code'
                 type='text'
                 autoFocus
@@ -368,7 +368,7 @@ export class Signer extends React.Component {
             </div>
             <button
               type='button'
-              className='signerPinMessage signerPinSubmit wrenControl wrenControlPrimary'
+              className='signerPinMessage signerPinSubmit saf0oControl saf0oControlPrimary'
               disabled={!this.state.tPairing || this.state.tPairingPending}
               onClick={() => this.submitPairing()}
             >
@@ -543,9 +543,9 @@ export class Signer extends React.Component {
         ) : type === 'lattice' && signerStatus.input === 'pairingCode' ? (
           <div className='signerLatticePair'>
             <div className='signerLatticePairTitle'>Enter the pairing code shown on your Lattice.</div>
-            <div className='signerLatticePairInput wrenInputGroup'>
+            <div className='signerLatticePairInput saf0oInputGroup'>
               <input
-                className='wrenInput'
+                className='saf0oInput'
                 aria-label='GridPlus pairing code'
                 autoFocus
                 value={this.state.latticePairCode}
@@ -573,7 +573,7 @@ export class Signer extends React.Component {
               type='button'
               disabled={!this.state.latticePairCode || this.state.latticePairPending}
               onClick={() => this.pairToLattice()}
-              className='signerLatticePairSubmit wrenControl wrenControlPrimary'
+              className='signerLatticePairSubmit saf0oControl saf0oControlPrimary'
             >
               Pair
             </button>
@@ -637,7 +637,7 @@ export class Signer extends React.Component {
                 <button
                   type='button'
                   aria-label='Previous address page'
-                  className='signerBottomPageBack wrenControl wrenControlGhost wrenControlIcon'
+                  className='signerBottomPageBack saf0oControl saf0oControlGhost saf0oControlIcon'
                   disabled={page === 0}
                   onClick={() => this.nextPage(true)}
                 >
@@ -649,7 +649,7 @@ export class Signer extends React.Component {
                 <button
                   type='button'
                   aria-label='Next address page'
-                  className='signerBottomPageNext wrenControl wrenControlGhost wrenControlIcon'
+                  className='signerBottomPageNext saf0oControl saf0oControlGhost saf0oControlIcon'
                   disabled={startIndex + addressLimit >= signer.addresses.length}
                   onClick={() => this.nextPage()}
                 >
@@ -716,7 +716,7 @@ export class Signer extends React.Component {
                 <button
                   ref={this.signerRemovalCancel}
                   type='button'
-                  className='signerControlOption wrenControl wrenControlSecondary'
+                  className='signerControlOption saf0oControl saf0oControlSecondary'
                   disabled={this.state.removalPending}
                   onClick={() => this.cancelRemoval()}
                 >
@@ -724,7 +724,7 @@ export class Signer extends React.Component {
                 </button>
                 <button
                   type='button'
-                  className='signerControlOption signerControlOptionImportant wrenControl wrenControlDanger'
+                  className='signerControlOption signerControlOptionImportant saf0oControl saf0oControlDanger'
                   disabled={this.state.removalPending}
                   onClick={() => this.confirmRemoval()}
                 >
@@ -736,7 +736,7 @@ export class Signer extends React.Component {
             <button
               ref={this.signerRemovalTrigger}
               type='button'
-              className='signerControlOption wrenControl wrenControlGhost'
+              className='signerControlOption saf0oControl saf0oControlGhost'
               disabled={this.state.removalPending}
               onClick={() => this.armRemoval()}
             >
@@ -786,7 +786,7 @@ export class Signer extends React.Component {
             <button
               type='button'
               data-dialog-initial-focus
-              className='hardwareSignerPromptDismiss wrenControl wrenControlGhost'
+              className='hardwareSignerPromptDismiss saf0oControl saf0oControlGhost'
               disabled={this.state.promptDismissalPending}
               onClick={() => this.dismissHardwarePrompt()}
             >

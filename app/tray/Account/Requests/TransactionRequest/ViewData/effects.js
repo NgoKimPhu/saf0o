@@ -125,7 +125,7 @@ export const SimulationNativeBalanceChanges = ({ simulation }) => {
       <div className='txViewDataHeader'>RPC-Reported Native Balance Changes</div>
       <div className='simulationEffectsNotice' role='note'>
         {unavailable
-          ? `Wren could not derive native balance changes. ${evidence.reason || ''}`.trim()
+          ? `Saf0o could not derive native balance changes. ${evidence.reason || ''}`.trim()
           : 'Derived from a prestateTracer diff returned by your configured RPC. Amounts are Wei, may omit gas fees, and are not independently verified.'}
       </div>
       {!unavailable &&
@@ -170,7 +170,7 @@ export const SimulationProxyImplementationChanges = ({ simulation }) => {
       <div className='txViewData'>
         <div className='txViewDataHeader'>ERC-1967 Implementation Slot Check</div>
         <div className='simulationEffectsNotice' role='note'>
-          {`Wren could not derive net ERC-1967 implementation-slot changes from the configured RPC. ${
+          {`Saf0o could not derive net ERC-1967 implementation-slot changes from the configured RPC. ${
             evidence.reason || ''
           }`.trim()}
         </div>
@@ -285,7 +285,7 @@ export const SimulationAdvancedChecks = ({ simulation }) => {
       <div className='txViewDataHeader'>Additional Checks</div>
       <div className='simulationEffectsNotice' role='note'>
         {status === 'pending'
-          ? 'Wren is checking supporting transaction details.'
+          ? 'Saf0o is checking supporting transaction details.'
           : 'Some supporting checks could not be completed. Available results are shown below.'}
       </div>
     </div>

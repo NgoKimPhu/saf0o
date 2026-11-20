@@ -6,7 +6,7 @@ import net from 'net'
 import { createDappClient, startJsonRpcFixture } from './support/harness'
 
 it('uses a disposable mode-0700 profile outside the repository', () => {
-  const isolation = global.__WREN_E2E_ISOLATION__
+  const isolation = global.__SAF0O_E2E_ISOLATION__
   expect(isolation.profile.startsWith(`${isolation.runRoot}/`)).toBe(true)
   expect(isolation.profile.startsWith(process.cwd())).toBe(false)
   if (process.platform !== 'win32') {
@@ -14,8 +14,8 @@ it('uses a disposable mode-0700 profile outside the repository', () => {
   }
 })
 
-it.each([1248, 8421])('blocks the installed Wren port %i before connecting', (port) => {
-  expect(() => net.connect({ host: '127.0.0.1', port })).toThrow(/live Wren port/)
+it.each([1248, 8421])('blocks the installed Saf0o port %i before connecting', (port) => {
+  expect(() => net.connect({ host: '127.0.0.1', port })).toThrow(/live Saf0o port/)
 })
 
 it('blocks public RPC, arbitrary loopback, wildcard listeners, UDP, and subprocesses', () => {

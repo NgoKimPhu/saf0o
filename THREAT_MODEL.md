@@ -2,8 +2,8 @@
 
 ## Purpose and scope
 
-Wren is a desktop EVM wallet and account router. It accepts local HTTP/WebSocket
-and Wren Companion requests, obtains approval, and routes approved work to
+Saf0o is a desktop EVM wallet and account router. It accepts local HTTP/WebSocket
+and Saf0o Companion requests, obtains approval, and routes approved work to
 software or hardware signers.
 
 This document describes the implementation and its limits. Supported methods are in
@@ -39,13 +39,13 @@ are sensitive support data.
 
 ## Adversaries
 
-Wren does not protect against malware, debuggers, an administrator, a compromised
+Saf0o does not protect against malware, debuggers, an administrator, a compromised
 host or maintainer account, hardware firmware or vendor software, physical
 coercion, or a user approving unexpected data.
 
 ## Residual risks
 
-Compare a device display with the intended action. Wren does not guarantee
+Compare a device display with the intended action. Saf0o does not guarantee
 contract correctness or economic safety, third-party or RPC correctness or
 availability, or losses after a secret is exposed. Boundary bypasses that act
 without documented access or approval are in scope.
@@ -80,7 +80,7 @@ must name the selected authorized account; explicit asset, asset-type, and chain
 filters are bounded and parsed in the main process. Results contain only locally
 known native/ERC-20 balances on granted chains, and ungranted chain keys are
 omitted. The legacy no-parameter response has the same account/chain boundary.
-Wren does not infer NFT or unknown asset support from request strings.
+Saf0o does not infer NFT or unknown asset support from request strings.
 
 RPC bodies, connections, rates, header/body receive time, polls (15 seconds),
 subscription counts, queues/bytes, and idle lifetime are bounded. Client-visible
@@ -89,7 +89,7 @@ and original chain. This prevents cross-client cancellation and unbounded
 inactive poll queues, but a poll token or asserted origin is not authentication.
 
 Originless native clients use protocol-v3 HTTP or WebSocket authentication.
-Wren and the client exchange signed P-256 challenges, bind the installation,
+Saf0o and the client exchange signed P-256 challenges, bind the installation,
 role, channel, nonces, expiry, session, request path, and request-body hash, and
 require matching six-digit consent for a new key. Every native request carries a
 short-lived one-use proof. Browser origins cannot access these routes. Exact-key
@@ -98,7 +98,7 @@ it claims an existing installation identifier; replacing old trust requires manu
 revocation, which invalidates its sessions, transports, polls, subscriptions,
 queued requests, grants, and source identity.
 
-Companion protocol 3 mutually authenticates the Wren desktop and an atomic
+Companion protocol 3 mutually authenticates the Saf0o desktop and an atomic
 control/page public-key bundle with the same signed transcript family. Only a
 control channel can request pairing; page channels must reuse approved trust.
 The signed final acknowledgement precedes persistence, and an acknowledged
@@ -107,7 +107,7 @@ Recognizable protocol-v2 clients receive an explicit upgrade error and cannot
 downgrade. This authenticates the two applications and isolates their grants; it
 does not defend a compromised browser profile, native client, or host.
 
-Browser and runtime identity fields are transport evidence only; Wren does not
+Browser and runtime identity fields are transport evidence only; Saf0o does not
 store them as durable Companion identity. Legacy protocol-3 hellos are accepted
 only when their fields match the current extension origin. See
 [RPC Compatibility](RPC_COMPATIBILITY.md#transport-and-origin-boundaries) for the
@@ -139,7 +139,7 @@ nor enables passwordless unlock. Linux accepts only Electron's Secret Service
 `unknown`.
 
 Windows uses Electron `safeStorage` through DPAPI and never queries the
-Linux-only selected-backend API. macOS remains unsupported. Wren rejects an
+Linux-only selected-backend API. macOS remains unsupported. Saf0o rejects an
 unavailable credential store, another identity's undecryptable data, a corrupt
 policy marker, and any mixed protected/unprotected transition. In those states
 no software signer is loaded at startup or after the failure is detected, and
@@ -153,13 +153,13 @@ after the original credential context is available.
 Limits: while retained, legacy backup ciphertext is unauthenticated and
 protected by its old password inside either local storage layer. Device
 protection does not defend a compromised logged-in session, credential store,
-Wren process, signer worker, or host, and loss of the original credential
+Saf0o process, signer worker, or host, and loss of the original credential
 context makes the bound local signer files unavailable. DPAPI does not isolate
-Wren from other processes running as the same Windows user.
+Saf0o from other processes running as the same Windows user.
 
 Without the optional OS-backed layer, signer encryption remains password-only.
 The outer layer is at-rest protection, not continuous authorization: a signer
-already loaded into a running Wren process is governed by the normal password
+already loaded into a running Saf0o process is governed by the normal password
 and process-lock lifecycle. It is never hardware-bound.
 
 Live-profile metadata, addresses,
@@ -173,10 +173,10 @@ provenance are unencrypted relationship metadata. "Verified out of band"
 records the user’s statement, time, and optional note. It is not a trust score
 or proof. It never hides the full address, lookalike evidence, simulation,
 approval, or signing warnings. Address-book JSON exports contain this metadata
-in plaintext. Wren offers Save contact explicitly after confirmation.
+in plaintext. Saf0o offers Save contact explicitly after confirmation.
 
 Recent recipients is off by default. When enabled, it stores canonical
-destinations only from Wren Send and managed Sweep after successful canonical
+destinations only from Saf0o Send and managed Sweep after successful canonical
 network confirmation. It keeps at most 50 operation uses for one year. The
 picker shows the newest use of each address. A recent use does not establish
 trust. It never learns from generic dapp calls, incoming activity, indexers,
@@ -211,7 +211,7 @@ policies. Guardrails do not contain request calldata or typed data.
 
 #### Profile backups
 
-User-created `.wrenbackup` files are size-bounded, scrypt-derived AES-256-GCM
+User-created `.saf0obackup` files are size-bounded, scrypt-derived AES-256-GCM
 envelopes over an explicit recovery allowlist. They include configuration,
 validated contacts and their provenance, and validated encrypted
 software-signer records, but exclude activity, address-safety memory, pending
@@ -245,7 +245,7 @@ weakening encryption.
 
 #### Hardware signers
 
-Hardware keys are expected to stay on-device, but Wren controls the presented
+Hardware keys are expected to stay on-device, but Saf0o controls the presented
 request and depends on firmware, vendor libraries, and USB drivers. Blind or
 incomplete displays are risky. Claims require physical-device evidence in
 [`HARDWARE_SUPPORT.md`](HARDWARE_SUPPORT.md).
@@ -266,7 +266,7 @@ off, navigation/popups and browser permissions are denied, and production
 renderers have CSP. Production startup rejects `--no-sandbox`; AppImage requires
 unprivileged user namespaces rather than an unsandboxed fallback. Display capture,
 Bluetooth pairing, device permission, and HID/USB/serial/Bluetooth selectors are
-denied for Wren renderers and embedded dapps.
+denied for Saf0o renderers and embedded dapps.
 
 #### IPC authority
 
@@ -311,13 +311,13 @@ Token multicalls use at most 200 calls per batch. For each account on each netwo
 discovery and tracked reads each run at most two batches at once. Native balance
 reads run separately.
 
-Wren combines unchanged requests during a read and keeps successful batches.
+Saf0o combines unchanged requests during a read and keeps successful batches.
 Token additions and metadata edits trigger a follow-up read. Tracked results with pending
 metadata edits are discarded. Late discovery results use current custom token
 units, names and artwork.
 
 The parent allows 12 seconds per RPC request. The worker waits five more seconds
-for the parent's reply over IPC. Wren discards late replies. An unresponsive RPC
+for the parent's reply over IPC. Saf0o discards late replies. An unresponsive RPC
 can still prevent discovery.
 
 ### Networks and content
@@ -350,7 +350,7 @@ entering provider admission or any signer/broadcast path. Its bundled standard A
 identify only known selector and argument shapes; it downloads no verified ABI and
 treats no selector match as proof of contract semantics. A pasted `eth_call` or
 `eth_estimateGas` block reference is displayed but not forwarded: simulation is fresh
-evidence from Wren's current configured-RPC review path. Omitted sender, target,
+evidence from Saf0o's current configured-RPC review path. Omitted sender, target,
 signer, or chain context stays visibly unestablished rather than being inferred from a
 selected wallet account or an EIP-712 domain.
 
@@ -360,7 +360,7 @@ plus the maximum execution fee; Optimism-family requests also require the
 available L1 data-fee estimate. Sequential Wallet Calls repeat the same check
 over every prepared transaction, aggregate value and fees exactly once, verify
 the pending nonce, and statefully simulate the exact prepared batch before
-Wren returns its public batch ID or invokes any signer.
+Saf0o returns its public batch ID or invokes any signer.
 
 Missing or malformed quantities and account-code evidence fail closed. A
 shortfall keeps the original transient dapp responder and review alive,
@@ -416,27 +416,27 @@ intent, and violations.
 Intent extraction is local and bounded. Top-level destinations and typed-data
 verifying contracts are targets; recognized ERC-20 transfers, EIP-2612,
 Permit2, and ERC-3009 contribute token amounts; recognized approvals
-contribute spenders; Wallet Calls aggregate all calls. Wren does not fetch
+contribute spenders; Wallet Calls aggregate all calls. Saf0o does not fetch
 remote ABI evidence to widen a policy. Opaque or ambiguous fields violate only
 configured restrictions that depend on those fields. Enforcement is
 fail-closed but cannot prove contract semantics, prevent a malicious allowed
 contract from moving additional assets, or reserve onchain state.
 
-The policy can change between user review and signing, so Wren rechecks at the
+The policy can change between user review and signing, so Saf0o rechecks at the
 signer boundary and stops remaining sequential calls on drift. A
 user-initiated Cancel is exempt so a dapp policy cannot trap transaction
 recovery; Speed Up remains constrained.
 
 #### Observed token approvals
 
-Wren keeps at most 500 observed ERC-20 approval pairs for one year. Records contain
+Saf0o keeps at most 500 observed ERC-20 approval pairs for one year. Records contain
 the account, chain, token, spender, observation time and transaction hashes.
 The hashes support execution checks after scan catch-up. Amounts and calldata
 are not stored. Records are excluded from renderer bootstrap state, profile
 backups and diagnostics. Account removal and **Forget observed approvals** delete them.
 
-Pairs come from Wren broadcast attempts and successful direct calls found by
-Activity. Wren saves the signed hash before sending, including attempts with a
+Pairs come from Saf0o broadcast attempts and successful direct calls found by
+Activity. Saf0o saves the signed hash before sending, including attempts with a
 missing RPC reply. This records an attempt, not a confirmed allowance.
 External calls use Activity's block and receipt checks. Observations and scan
 progress are saved together. Replayed calls keep one record. Clearing the list
@@ -459,7 +459,7 @@ The list does not discover older approvals, NFT authority, or signed permits.
 #### Account activity monitoring
 
 The desktop reads blocks, receipts, and filtered transfer logs through each enabled,
-connected RPC. Filters contain saved addresses. No indexer or Wren backend is used.
+connected RPC. Filters contain saved addresses. No indexer or Saf0o backend is used.
 First use starts at the current chain position. Subsequent runs resume saved progress.
 The scanner waits two blocks, checks block ancestry and receipt identity, and replays
 changed branches. This delay is not finality; an entry can later become reorged.
@@ -469,7 +469,7 @@ skip irrelevant log queries. Responses are validated before advancing progress. 
 history holds 12 block hashes and up to 1,000 notification hashes per network; the existing
 Activity retention applies to records. Cursors stay out of renderer state and backups. Observed transaction evidence stays
 in the main process until the Activity details lookup; renderer summaries carry the action and source.
-Wren-owned transaction references avoid duplicate entries for the submitting account.
+Saf0o-owned transaction references avoid duplicate entries for the submitting account.
 
 Standard transfer events and recognised call selectors describe reported activity;
 they do not establish token value or prove a contract's intent. Internal traces and
@@ -479,7 +479,7 @@ addresses and amounts.
 
 #### Remote services and content
 
-Wren has no first-party backend. Built-in networks use visibly named
+Saf0o has no first-party backend. Built-in networks use visibly named
 PublicNode; it can observe IP and routed account/contract reads,
 simulation/traces, calldata, and broadcasts. A custom/local RPC replaces it
 per network. Migration 53 retires Pylon for PublicNode; old Pylon URLs are
@@ -489,7 +489,7 @@ tracked-token IDs for supported mainnets, not the selected account, though
 timing/token sets can fingerprint; failures keep old values. Robinhood token
 quotes go directly to GeckoTerminal. It also supplies missing token quotes on
 Ethereum, Optimism, Gnosis, Polygon, Base, Arbitrum and Katana. It sees the user's
-IP address, network IDs, token contracts, and selected pool IDs. Wren does
+IP address, network IDs, token contracts, and selected pool IDs. Saf0o does
 not send wallet addresses, balances, or keys to either price service.
 
 GeckoTerminal requests share a desktop queue with at least 6.5 seconds
@@ -498,13 +498,13 @@ and respect Retry-After. Remaining token lookups resume after the pause.
 Quote and missing-pool caches last five minutes;
 pool selection lasts 30 minutes. The cache holds up to 1,000 token entries.
 Each request has a 10-second timeout and a 1 MiB response limit. If a later
-pool page fails, Wren retains the best eligible quote found. It retries discovery
+pool page fails, Saf0o retains the best eligible quote found. It retries discovery
 after the five-minute quote cache expires, subject to provider backoff.
 
-Pool discovery checks up to ten pages (200 pools). Wren selects the largest
+Pool discovery checks up to ten pages (200 pools). Saf0o selects the largest
 eligible USD reserve, with at least $10,000 in liquidity and positive volume
 and trades in the last 24 hours. These checks do not establish a fair or
-executable price. Wren trusts the service's reported liquidity and USD price.
+executable price. Saf0o trusts the service's reported liquidity and USD price.
 Token rates use chain ID and contract address so chains cannot share a quote
 by address alone. Missing fallback history does not display as a zero change.
 
@@ -536,14 +536,14 @@ Contract verification deliberately publishes user-selected source and compiler
 metadata to Sourcify after an explicit permanent-public acknowledgement.
 Sourcify and any explorer it forwards to can observe the source, contract
 address, chain, IP address, and timing, and published source cannot be
-withdrawn by Wren. Direct Etherscan V2 fallback is manual and supported-chain
+withdrawn by Saf0o. Direct Etherscan V2 fallback is manual and supported-chain
 only; the user API key is stored in a dedicated OS-protected credential file,
 excluded from profile backup, and sent only to Etherscan's fixed HTTPS API.
 
 Because the documented API requires authentication parameters in the request
-URL, Wren must not log, persist, expose, or include that URL in renderer state
+URL, Saf0o must not log, persist, expose, or include that URL in renderer state
 or errors. Direct submission also requires explicit ABI-encoded constructor
-arguments, or confirmation that the contract has none; Wren does not guess
+arguments, or confirmation that the contract has none; Saf0o does not guess
 them. Source bundles remain bounded main-process memory and are never placed
 in Activity, ordinary state, backup, or logs.
 
@@ -556,7 +556,7 @@ resubmitted.
 
 The exact `eth_getCode` EIP-7702 indicator triggers extra approval for ordinary
 transactions and blocks sequential wallet-call batches. Type-4 envelopes and
-authorization lists supplied by external clients are rejected. Wren authors only
+authorization lists supplied by external clients are rejected. Saf0o authors only
 one constrained authorization: a selected unlocked Ring or Seed account can sign a
 chain-specific zero-address authorization to revoke its own existing delegation.
 State can change after review and RPC can lie. Input transactions have only
@@ -570,9 +570,9 @@ rechecks the original receipt and latest nonce immediately before signer invocat
 and persists only public hash/nonce plus UUID relationship evidence. Cancel is a
 zero-value self-transfer that succeeds only if it confirms first. Linked lifecycle
 rows can recover an older transaction from `replaced` after a replacement reorg;
-Wren never treats the button or a mempool observation as proof of cancellation.
+Saf0o never treats the button or a mempool observation as proof of cancellation.
 
-Wren ships no hosted crash client: uncaught main errors stay local and are not
+Saf0o ships no hosted crash client: uncaught main errors stay local and are not
 sent to upstream Sentry.
 
 ### Builds and updates

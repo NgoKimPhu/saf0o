@@ -846,7 +846,7 @@ describe('exact target and privacy-minimal job ledger', () => {
       ],
       [
         { destination: 'sourcify', status: 'published' },
-        { destination: 'etherscan-forwarded', status: 'verified', remoteId: 'not-owned-by-wren' }
+        { destination: 'etherscan-forwarded', status: 'verified', remoteId: 'not-owned-by-saf0o' }
       ],
       [{ destination: 'sourcify', status: 'published', remoteId: 'valid', opaqueId: 'extra' }]
     ]) {

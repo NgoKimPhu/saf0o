@@ -1,19 +1,19 @@
-button.wrenControl
+button.saf0oControl
   appearance none
   min-height 38px
-  padding 0 var(--wren-space-3)
+  padding 0 var(--saf0o-space-3)
   display inline-flex
   align-items center
   justify-content center
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
   box-sizing border-box
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-primary)
-  background-color var(--wren-bg-elevated)
-  background-image var(--wren-control-texture-dark)
-  box-shadow var(--wren-control-shadow)
-  font-family var(--wren-font-ui)
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-primary)
+  background-color var(--saf0o-bg-elevated)
+  background-image var(--saf0o-control-texture-dark)
+  box-shadow var(--saf0o-control-shadow)
+  font-family var(--saf0o-font-ui)
   font-size 13px
   font-weight 550
   line-height 1
@@ -21,131 +21,131 @@ button.wrenControl
   text-transform none
   cursor pointer
   transform translateY(0)
-  transition background-color var(--wren-motion-fast) var(--wren-ease), border-color var(--wren-motion-fast) var(--wren-ease), box-shadow var(--wren-motion-fast) var(--wren-ease), color var(--wren-motion-fast) var(--wren-ease), transform var(--wren-motion-fast) var(--wren-ease)
+  transition background-color var(--saf0o-motion-fast) var(--saf0o-ease), border-color var(--saf0o-motion-fast) var(--saf0o-ease), box-shadow var(--saf0o-motion-fast) var(--saf0o-ease), color var(--saf0o-motion-fast) var(--saf0o-ease), transform var(--saf0o-motion-fast) var(--saf0o-ease)
 
   > svg
     flex none
 
   &:hover:not(:disabled)
-    border-color var(--wren-border-strong)
-    background-color var(--wren-bg-panel)
-    box-shadow var(--wren-control-shadow-hover)
+    border-color var(--saf0o-border-strong)
+    background-color var(--saf0o-bg-panel)
+    box-shadow var(--saf0o-control-shadow-hover)
 
   &:active:not(:disabled)
     transform translateY(1px)
-    background-color var(--wren-surface-active)
-    box-shadow var(--wren-control-shadow-pressed)
+    background-color var(--saf0o-surface-active)
+    box-shadow var(--saf0o-control-shadow-pressed)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
   &:disabled,
   &[aria-disabled='true']
-    color var(--wren-text-disabled)
-    border-color var(--wren-border-subtle)
-    background-color var(--wren-surface-inset)
+    color var(--saf0o-text-disabled)
+    border-color var(--saf0o-border-subtle)
+    background-color var(--saf0o-surface-inset)
     background-image none
-    box-shadow var(--wren-control-shadow-disabled)
+    box-shadow var(--saf0o-control-shadow-disabled)
     cursor default
     opacity .72
 
-button.wrenControl.wrenControlPrimary
-  border-color var(--wren-control-primary-border)
-  color var(--wren-text-inverse)
-  background-color var(--wren-accent-primary)
-  background-image var(--wren-control-texture-light)
-  box-shadow var(--wren-control-primary-shadow)
+button.saf0oControl.saf0oControlPrimary
+  border-color var(--saf0o-control-primary-border)
+  color var(--saf0o-text-inverse)
+  background-color var(--saf0o-accent-primary)
+  background-image var(--saf0o-control-texture-light)
+  box-shadow var(--saf0o-control-primary-shadow)
 
   &:hover:not(:disabled)
-    border-color var(--wren-control-primary-border-hover)
-    background-color var(--wren-accent-primary-hover)
-    box-shadow var(--wren-control-primary-shadow-hover)
+    border-color var(--saf0o-control-primary-border-hover)
+    background-color var(--saf0o-accent-primary-hover)
+    box-shadow var(--saf0o-control-primary-shadow-hover)
 
   &:active:not(:disabled)
-    background-color var(--wren-accent-primary-active)
-    box-shadow var(--wren-control-primary-shadow-pressed)
+    background-color var(--saf0o-accent-primary-active)
+    box-shadow var(--saf0o-control-primary-shadow-pressed)
 
-button.wrenControl.wrenControlSecondary
-  color var(--wren-text-secondary)
+button.saf0oControl.saf0oControlSecondary
+  color var(--saf0o-text-secondary)
 
   &:hover:not(:disabled)
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
 
-button.wrenControl.wrenControlGhost
+button.saf0oControl.saf0oControlGhost
   border-color transparent
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   background-color transparent
   background-image none
   box-shadow none
 
   &:hover:not(:disabled)
-    color var(--wren-text-primary)
-    border-color var(--wren-border-subtle)
-    background-color var(--wren-surface-hover)
+    color var(--saf0o-text-primary)
+    border-color var(--saf0o-border-subtle)
+    background-color var(--saf0o-surface-hover)
     background-image none
     box-shadow none
 
   &:active:not(:disabled)
-    background-color var(--wren-surface-active)
+    background-color var(--saf0o-surface-active)
     background-image none
     box-shadow none
 
 // Persistent selection is a quiet state surface, not a tactile action.
 // Keep this rule after the ghost variant so hover cannot erase the applied state.
-button.wrenControl.wrenControlSelected,
-button.wrenControl[aria-selected='true']
-  border-color var(--wren-border-subtle)
-  color var(--wren-text-primary)
-  background-color var(--wren-surface-active)
+button.saf0oControl.saf0oControlSelected,
+button.saf0oControl[aria-selected='true']
+  border-color var(--saf0o-border-subtle)
+  color var(--saf0o-text-primary)
+  background-color var(--saf0o-surface-active)
   background-image none
-  box-shadow var(--wren-shadow-sm)
+  box-shadow var(--saf0o-shadow-sm)
 
   &:hover:not(:disabled)
-    border-color var(--wren-border-subtle)
-    color var(--wren-text-primary)
-    background-color var(--wren-surface-active)
+    border-color var(--saf0o-border-subtle)
+    color var(--saf0o-text-primary)
+    background-color var(--saf0o-surface-active)
     background-image none
-    box-shadow var(--wren-shadow-sm)
+    box-shadow var(--saf0o-shadow-sm)
 
-button.wrenControl.wrenControlDanger
+button.saf0oControl.saf0oControlDanger
   border-color rgba(213, 116, 104, .48)
-  color var(--wren-danger)
-  background-color var(--wren-danger-soft)
-  background-image var(--wren-control-texture-dark)
+  color var(--saf0o-danger)
+  background-color var(--saf0o-danger-soft)
+  background-image var(--saf0o-control-texture-dark)
 
   &:hover:not(:disabled)
-    border-color var(--wren-danger)
+    border-color var(--saf0o-danger)
     color #f0b2ab
     background-color #321a18
 
-button.wrenControl.wrenControlLarge
+button.saf0oControl.saf0oControlLarge
   min-height 44px
-  padding 0 var(--wren-space-5)
+  padding 0 var(--saf0o-space-5)
   font-size 15px
 
-button.wrenControl.wrenControlIcon
+button.saf0oControl.saf0oControlIcon
   width 38px
   min-width 38px
   height 38px
   min-height 38px
   padding 0
 
-button.wrenControl.wrenControlCompact
+button.saf0oControl.saf0oControlCompact
   min-height 32px
-  padding 0 var(--wren-space-2)
-  font-size var(--wren-type-small)
+  padding 0 var(--saf0o-space-2)
+  font-size var(--saf0o-type-small)
 
-button.wrenControl.wrenControlChrome
+button.saf0oControl.saf0oControlChrome
   width 28px
   min-width 28px
   height 24px
   min-height 24px
   padding 0
-  border-radius var(--wren-radius-sm)
+  border-radius var(--saf0o-radius-sm)
 
 // Navigation shared by the adjoining wallet and dashboard shells.
-button.wrenControl.wrenShellNav
+button.saf0oControl.saf0oShellNav
   width 40px
   min-width 40px
   height 40px
@@ -153,99 +153,99 @@ button.wrenControl.wrenShellNav
   padding 0
   border-color transparent
   border-radius 7px
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   background-color transparent
   background-image none
   box-shadow none
 
   &:hover:not(:disabled)
-    color var(--wren-text-primary)
-    border-color var(--wren-border-subtle)
-    background-color var(--wren-surface-hover)
+    color var(--saf0o-text-primary)
+    border-color var(--saf0o-border-subtle)
+    background-color var(--saf0o-surface-hover)
     background-image none
     box-shadow none
 
   &:active:not(:disabled)
-    color var(--wren-accent-primary-active)
-    background-color var(--wren-surface-active)
+    color var(--saf0o-accent-primary-active)
+    background-color var(--saf0o-surface-active)
     box-shadow none
 
   &[aria-pressed='true'],
   &[aria-expanded='true']
-    color var(--wren-text-primary)
-    border-color var(--wren-border-subtle)
-    background-color var(--wren-surface-active)
+    color var(--saf0o-text-primary)
+    border-color var(--saf0o-border-subtle)
+    background-color var(--saf0o-surface-active)
     background-image none
-    box-shadow var(--wren-shadow-sm)
+    box-shadow var(--saf0o-shadow-sm)
 
-button.wrenControl.wrenControlPrimary:disabled,
-button.wrenControl.wrenControlPrimary[aria-disabled='true'],
-button.wrenControl.wrenControlSecondary:disabled,
-button.wrenControl.wrenControlSecondary[aria-disabled='true'],
-button.wrenControl.wrenControlDanger:disabled,
-button.wrenControl.wrenControlDanger[aria-disabled='true']
-  border-color var(--wren-border-subtle)
-  color var(--wren-text-disabled)
-  background-color var(--wren-surface-inset)
+button.saf0oControl.saf0oControlPrimary:disabled,
+button.saf0oControl.saf0oControlPrimary[aria-disabled='true'],
+button.saf0oControl.saf0oControlSecondary:disabled,
+button.saf0oControl.saf0oControlSecondary[aria-disabled='true'],
+button.saf0oControl.saf0oControlDanger:disabled,
+button.saf0oControl.saf0oControlDanger[aria-disabled='true']
+  border-color var(--saf0o-border-subtle)
+  color var(--saf0o-text-disabled)
+  background-color var(--saf0o-surface-inset)
   background-image none
-  box-shadow var(--wren-control-shadow-disabled)
+  box-shadow var(--saf0o-control-shadow-disabled)
 
-button.wrenControl.wrenControlGhost:disabled,
-button.wrenControl.wrenControlGhost[aria-disabled='true']
+button.saf0oControl.saf0oControlGhost:disabled,
+button.saf0oControl.saf0oControlGhost[aria-disabled='true']
   border-color transparent
-  color var(--wren-text-disabled)
+  color var(--saf0o-text-disabled)
   background-color transparent
   background-image none
   box-shadow none
 
 // Emphasized calls to action reproduce the reviewed quiet-tactile masters.
 // Onboarding retains a semantic alias so its paired secondary can optically overshoot.
-button.wrenControl.wrenHeroPrimary,
-button.wrenControl.wrenOnboardPrimary
+button.saf0oControl.saf0oHeroPrimary,
+button.saf0oControl.saf0oOnboardPrimary
   min-width 156px
   height 46px
   min-height 46px
   padding 0 22px
-  border-color var(--wren-accent-primary-hover)
+  border-color var(--saf0o-accent-primary-hover)
   border-radius 7px
   color #11130f
-  background-color var(--wren-accent-primary)
-  background-image var(--wren-control-texture-light)
-  box-shadow var(--wren-control-primary-shadow)
+  background-color var(--saf0o-accent-primary)
+  background-image var(--saf0o-control-texture-light)
+  box-shadow var(--saf0o-control-primary-shadow)
 
   &:hover:not(:disabled)
-    border-color var(--wren-control-primary-border-hover)
-    background-color var(--wren-accent-primary-hover)
-    background-image var(--wren-control-texture-light)
-    box-shadow var(--wren-control-primary-shadow-hover)
+    border-color var(--saf0o-control-primary-border-hover)
+    background-color var(--saf0o-accent-primary-hover)
+    background-image var(--saf0o-control-texture-light)
+    box-shadow var(--saf0o-control-primary-shadow-hover)
 
   &:active:not(:disabled)
     transform translateY(1px)
-    background-color var(--wren-accent-primary-active)
-    box-shadow var(--wren-control-primary-shadow-pressed)
+    background-color var(--saf0o-accent-primary-active)
+    box-shadow var(--saf0o-control-primary-shadow-pressed)
 
-button.wrenControl.wrenOnboardSecondary
+button.saf0oControl.saf0oOnboardSecondary
   min-width 96px
   height 48px
   min-height 48px
   padding 0 18px
-  border-color var(--wren-border-strong)
+  border-color var(--saf0o-border-strong)
   border-radius 7px
-  color var(--wren-text-secondary)
-  background-color var(--wren-bg-elevated)
-  background-image var(--wren-control-texture-dark)
-  box-shadow var(--wren-control-shadow)
+  color var(--saf0o-text-secondary)
+  background-color var(--saf0o-bg-elevated)
+  background-image var(--saf0o-control-texture-dark)
+  box-shadow var(--saf0o-control-shadow)
   transform translateY(-1px)
 
   &:hover:not(:disabled)
-    color var(--wren-text-primary)
-    border-color var(--wren-border-strong)
-    background-color var(--wren-bg-panel)
-    background-image var(--wren-control-texture-dark)
-    box-shadow var(--wren-control-shadow-hover)
+    color var(--saf0o-text-primary)
+    border-color var(--saf0o-border-strong)
+    background-color var(--saf0o-bg-panel)
+    background-image var(--saf0o-control-texture-dark)
+    box-shadow var(--saf0o-control-shadow-hover)
     transform translateY(-1px)
 
   &:active:not(:disabled)
     transform translateY(0)
-    background-color var(--wren-surface-active)
-    box-shadow var(--wren-control-shadow-pressed)
+    background-color var(--saf0o-surface-active)
+    box-shadow var(--saf0o-control-shadow-pressed)

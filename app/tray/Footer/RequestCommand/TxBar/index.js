@@ -12,7 +12,7 @@ export const isUnconfirmedSubmission = (req) =>
 export const transactionLifecyclePresentation = (req, networkName = 'the network') => {
   if (isUnconfirmedSubmission(req)) {
     return {
-      detail: 'Checking network acceptance. Wren will not resend automatically.',
+      detail: 'Checking network acceptance. Saf0o will not resend automatically.',
       icon: 'alert',
       position: 0,
       title: 'Broadcast unconfirmed',
@@ -23,7 +23,7 @@ export const transactionLifecyclePresentation = (req, networkName = 'the network
   switch (req?.status) {
     case 'pending':
       return {
-        detail: 'Wren is waiting for your signer to sign this transaction.',
+        detail: 'Saf0o is waiting for your signer to sign this transaction.',
         icon: 'sign',
         position: -1,
         title: 'View signer',
@@ -31,7 +31,7 @@ export const transactionLifecyclePresentation = (req, networkName = 'the network
       }
     case 'sending':
       return {
-        detail: 'Wren is sending the transaction to the network.',
+        detail: 'Saf0o is sending the transaction to the network.',
         icon: 'send',
         position: 0,
         title: 'Submitting',
@@ -74,7 +74,7 @@ export const transactionLifecyclePresentation = (req, networkName = 'the network
       }
     default:
       return {
-        detail: 'Wren is sending the transaction to the network.',
+        detail: 'Saf0o is sending the transaction to the network.',
         icon: 'send',
         position: 0,
         title: 'Submitted',

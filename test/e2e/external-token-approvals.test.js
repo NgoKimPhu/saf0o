@@ -63,7 +63,7 @@ async function fixture() {
     }
     throw new Error(`Unexpected RPC method ${method}`)
   })
-  const rpc = createDappClient(upstream.url, 'https://wren-test.invalid')
+  const rpc = createDappClient(upstream.url, 'https://saf0o-test.invalid')
   const approvalDependencies = {
     load: () => storage.load().main.observedTokenApprovals,
     save: (entries) => {
@@ -295,7 +295,7 @@ it('does not let a pre-update allowance read overwrite a newly observed external
 })
 
 it.each([false, true])(
-  'refreshes a Wren submission after older external activity for the same pair (restart: %s)',
+  'refreshes a Saf0o submission after older external activity for the same pair (restart: %s)',
   async (restart) => {
     const submittedHash = hash(80000)
     f.service.observeSubmitted(

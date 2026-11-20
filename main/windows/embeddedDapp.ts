@@ -5,7 +5,7 @@ import server from '../dapps/server'
 import { createViewInstance } from './window'
 import { DappViewDescriptor, extractDappSession, loadDappView } from './dappView'
 
-// Keep aligned with the Wren command bottom and `.dash .dashMain` top in the dashboard styles.
+// Keep aligned with the Saf0o command bottom and `.dash .dashMain` top in the dashboard styles.
 export const dashContentTop = 64
 
 export class EmbeddedDapp {

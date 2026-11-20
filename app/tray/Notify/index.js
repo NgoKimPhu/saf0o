@@ -8,10 +8,10 @@ import link from '../../../resources/link'
 import { usesBaseFee } from '../../../resources/domain/transaction'
 import { safeNetworkMetadata } from '../../../resources/domain/networkMetadata'
 import { capitalize } from '../../../resources/utils'
-import wrenIcon from '../../../asset/brand/exports/app/wren-app-icon-512.png'
+import saf0oIcon from '../../../asset/brand/exports/app/saf0o-app-icon-512.png'
 import ExtensionConnectNotification from './ExtensionConnect'
 import NativeConnectNotification from './NativeConnect'
-import { WREN_LICENSE_URL, WREN_SUPPORT_URL } from '../../../resources/constants'
+import { SAF0O_LICENSE_URL, SAF0O_SUPPORT_URL } from '../../../resources/constants'
 import {
   EXTENSION_OWNER_PREFIX,
   NATIVE_OWNER_PREFIX,
@@ -104,7 +104,7 @@ export class Notify extends React.Component {
         ref={this.dialogRef}
         className='notify cardShow'
         modal
-        labelledBy='wren-notify-title'
+        labelledBy='saf0o-notify-title'
         onCancel={
           dismissible
             ? () => {
@@ -129,11 +129,11 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <div className='notifyWrenIcon'>
-            <img alt='' aria-hidden='true' src={wrenIcon} />
+          <div className='notifySaf0oIcon'>
+            <img alt='' aria-hidden='true' src={saf0oIcon} />
           </div>
-          <h2 id='wren-notify-title' className='notifyTitle'>
-            Welcome to Wren
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
+            Welcome to Saf0o
           </h2>
           <div className='notifySubtitle'>Your desktop EVM wallet</div>
           <div className='notifyBody'>
@@ -143,7 +143,7 @@ export class Notify extends React.Component {
                 type='button'
                 className='notifyBodyLink'
                 onClick={() => {
-                  link.send('tray:openExternal', WREN_LICENSE_URL)
+                  link.send('tray:openExternal', SAF0O_LICENSE_URL)
                 }}
               >
                 License
@@ -153,7 +153,7 @@ export class Notify extends React.Component {
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputSingleButton wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputSingleButton saf0oControl saf0oControlPrimary'
               onClick={() => {
                 link.send('tray:action', 'muteWelcomeWarning')
                 this.dismissNotification()
@@ -172,11 +172,11 @@ export class Notify extends React.Component {
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBoxSlide'>
           <div className='notifyBox'>
-            <div className='notifyWrenIcon'>
-              <img alt='' aria-hidden='true' src={wrenIcon} />
+            <div className='notifySaf0oIcon'>
+              <img alt='' aria-hidden='true' src={saf0oIcon} />
             </div>
-            <h2 id='wren-notify-title' className='notifyTitle'>
-              About Wren
+            <h2 id='saf0o-notify-title' className='notifyTitle'>
+              About Saf0o
             </h2>
             <div className='notifyBody'>
               <div className='notifyBodyBlock'>
@@ -185,7 +185,7 @@ export class Notify extends React.Component {
                     type='button'
                     className='notifyBodyLink'
                     onClick={() => {
-                      link.send('tray:openExternal', WREN_LICENSE_URL)
+                      link.send('tray:openExternal', SAF0O_LICENSE_URL)
                     }}
                   >
                     License
@@ -197,7 +197,7 @@ export class Notify extends React.Component {
                     type='button'
                     className='notifyBodyLink'
                     onClick={() => {
-                      link.send('tray:openExternal', WREN_SUPPORT_URL)
+                      link.send('tray:openExternal', SAF0O_SUPPORT_URL)
                     }}
                   >
                     GitHub Issues
@@ -208,7 +208,7 @@ export class Notify extends React.Component {
             <div className='notifyInput'>
               <button
                 type='button'
-                className='notifyInputOption notifyInputSingleButton wrenControl wrenControlPrimary'
+                className='notifyInputOption notifyInputSingleButton saf0oControl saf0oControlPrimary'
                 onClick={() => {
                   link.send('tray:action', 'muteBetaDisclosure')
                   this.dismissNotification()
@@ -229,7 +229,7 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <h2 id='wren-notify-title' className='notifyTitle'>
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
             Gas fee warning
           </h2>
           {this.deferredPairingContext()}
@@ -252,7 +252,7 @@ export class Notify extends React.Component {
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputDeny wrenControl wrenControlSecondary'
+              className='notifyInputOption notifyInputDeny saf0oControl saf0oControlSecondary'
               data-dialog-initial-focus
               disabled={approvalPending}
               onClick={() => {
@@ -263,7 +263,7 @@ export class Notify extends React.Component {
             </button>
             <button
               type='button'
-              className='notifyInputOption notifyInputProceed wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputProceed saf0oControl saf0oControlPrimary'
               disabled={approvalPending}
               onClick={() => this.approveRequest(req, (expectedId) => this.dismissNotification(expectedId))}
             >
@@ -291,7 +291,7 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <h2 id='wren-notify-title' className='notifyTitle'>
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
             Signer unavailable
           </h2>
           {this.deferredPairingContext()}
@@ -301,7 +301,7 @@ export class Notify extends React.Component {
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputSingleButton wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputSingleButton saf0oControl saf0oControlPrimary'
               onClick={() => {
                 this.dismissNotification()
               }}
@@ -318,7 +318,7 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <h2 id='wren-notify-title' className='notifyTitle'>
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
             No signer attached
           </h2>
           {this.deferredPairingContext()}
@@ -329,7 +329,7 @@ export class Notify extends React.Component {
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputSingleButton wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputSingleButton saf0oControl saf0oControlPrimary'
               onClick={() => {
                 this.dismissNotification()
               }}
@@ -353,7 +353,7 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <h2 id='wren-notify-title' className='notifyTitle'>
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
             Signer compatibility
           </h2>
           {this.deferredPairingContext()}
@@ -378,7 +378,7 @@ export class Notify extends React.Component {
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputDeny wrenControl wrenControlSecondary'
+              className='notifyInputOption notifyInputDeny saf0oControl saf0oControlSecondary'
               data-dialog-initial-focus
               disabled={approvalPending}
               onClick={() => {
@@ -389,7 +389,7 @@ export class Notify extends React.Component {
             </button>
             <button
               type='button'
-              className='notifyInputOption notifyInputProceed wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputProceed saf0oControl saf0oControlPrimary'
               disabled={approvalPending}
               onClick={() => {
                 const isTestnet = this.store('main.networks', chain.type, chain.id, 'isTestnet')
@@ -462,7 +462,7 @@ export class Notify extends React.Component {
         }
       >
         <div className='notifyBox'>
-          <h2 id='wren-notify-title' className='notifyTitle'>
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
             <div>Blind signing is disabled</div>
           </h2>
           <div className='notifyBody'>
@@ -480,7 +480,7 @@ export class Notify extends React.Component {
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputSingleButton wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputSingleButton saf0oControl saf0oControlPrimary'
               onClick={() => {
                 this.dismissNotification()
               }}
@@ -505,7 +505,7 @@ export class Notify extends React.Component {
         }
       >
         <div className='notifyBox'>
-          <h2 id='wren-notify-title' className='notifyTitle'>
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
             <div>Hot signer warning</div>
           </h2>
           <div className='notifyBody'>
@@ -517,7 +517,7 @@ export class Notify extends React.Component {
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputSingleButton wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputSingleButton saf0oControl saf0oControlPrimary'
               onClick={() => {
                 this.dismissNotification()
               }}
@@ -542,18 +542,18 @@ export class Notify extends React.Component {
         }
       >
         <div className='notifyBox'>
-          <h2 id='wren-notify-title' className='notifyTitle'>
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
             <div>Hot signer address mismatch</div>
           </h2>
           <div className='notifyBody'>
             <div className='notifyBodyLine'>
-              The unlocked hot signer did not match the address shown in Wren and has been relocked.
+              The unlocked hot signer did not match the address shown in Saf0o and has been relocked.
             </div>
           </div>
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputSingleButton wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputSingleButton saf0oControl saf0oControlPrimary'
               onClick={() => {
                 this.dismissNotification()
               }}
@@ -570,7 +570,7 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <h2 id='wren-notify-title' className='notifyTitle'>
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
             Open external link
           </h2>
           <div className='notifyBody'>
@@ -580,7 +580,7 @@ export class Notify extends React.Component {
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputDeny wrenControl wrenControlSecondary'
+              className='notifyInputOption notifyInputDeny saf0oControl saf0oControlSecondary'
               onClick={() => {
                 this.dismissNotification()
               }}
@@ -589,7 +589,7 @@ export class Notify extends React.Component {
             </button>
             <button
               type='button'
-              className='notifyInputOption notifyInputProceed wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputProceed saf0oControl saf0oControlPrimary'
               onClick={() => {
                 link.send('tray:openExternal', url)
                 this.dismissNotification()
@@ -608,17 +608,17 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <h2 id='wren-notify-title' className='notifyTitle'>
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
             Open block explorer
           </h2>
           {hash ? (
             <div className='notifyBody'>
-              <div className='notifyBodyLine'>{'Wren will open this transaction in your browser:'}</div>
+              <div className='notifyBodyLine'>{'Saf0o will open this transaction in your browser:'}</div>
               <div className='notifyBodyHash'>{hash}</div>
             </div>
           ) : (
             <div className='notifyBody'>
-              <div className='notifyBodyLine'>{`Wren will open the ${chainName} block explorer`}</div>
+              <div className='notifyBodyLine'>{`Saf0o will open the ${chainName} block explorer`}</div>
               <div className='notifyBodyLine'>in your browser:</div>
               <div className='notifyBodyHash'>{explorerUrl}</div>
             </div>
@@ -627,7 +627,7 @@ export class Notify extends React.Component {
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputDeny wrenControl wrenControlSecondary'
+              className='notifyInputOption notifyInputDeny saf0oControl saf0oControlSecondary'
               onClick={() => {
                 this.dismissNotification()
               }}
@@ -636,7 +636,7 @@ export class Notify extends React.Component {
             </button>
             <button
               type='button'
-              className='notifyInputOption notifyInputProceed wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputProceed saf0oControl saf0oControlPrimary'
               onClick={() => {
                 link.send('tray:openExplorer', chain, hash)
                 this.dismissNotification()

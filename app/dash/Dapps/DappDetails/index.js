@@ -129,7 +129,7 @@ export class DappDetails extends React.Component {
             .map(([account]) => (
               <button
                 type='button'
-                className='wrenControl wrenControlGhost originAccountAccess'
+                className='saf0oControl saf0oControlGhost originAccountAccess'
                 key={account}
                 disabled={Boolean(this.state.openingAccount)}
                 onClick={() => this.openAccountAccess(account)}

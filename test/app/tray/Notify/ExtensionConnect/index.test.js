@@ -4,7 +4,7 @@ import { Notify } from '../../../../../app/tray/Notify'
 import { act, render, screen, waitFor } from '../../../../componentSetup'
 
 jest.mock('../../../../../resources/link', () => ({ rpc: jest.fn(), send: jest.fn() }))
-jest.mock('../../../../../asset/brand/exports/app/wren-app-icon-512.png', () => 'wren-icon.png')
+jest.mock('../../../../../asset/brand/exports/app/saf0o-app-icon-512.png', () => 'saf0o-icon.png')
 
 it('routes the complete authentication candidate into the consent component', () => {
   const notifyData = {
@@ -107,7 +107,7 @@ it('keeps pairing open after an RPC error and permits one guarded retry', async 
 
   expect(onClose).not.toHaveBeenCalled()
   expect(screen.getByRole('heading', { name: 'Could not connect to the extension' })).toBeTruthy()
-  expect(screen.getByText('Wren could not complete pairing with the extension.')).toBeTruthy()
+  expect(screen.getByText('Saf0o could not complete pairing with the extension.')).toBeTruthy()
   await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Cancel' })))
 
   await user.dblClick(screen.getByRole('button', { name: 'Retry' }))

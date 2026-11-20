@@ -110,7 +110,7 @@ it('renders persisted partial Sweep counts without implying unsent calls resume'
       accountId={account}
       chainName='Ethereum'
       nativeCurrency={{ symbol: 'ETH', decimals: 18 }}
-      originName='Wren Send'
+      originName='Saf0o Send'
       status={status({
         status: 600,
         callCount: 3,
@@ -198,7 +198,7 @@ it('does not present an unknown status as pending and only rereads it on refresh
   )
 
   expect(screen.getByText('Status unavailable')).toBeTruthy()
-  expect(screen.getByText('Wren cannot verify the current status of this wallet call.')).toBeTruthy()
+  expect(screen.getByText('Saf0o cannot verify the current status of this wallet call.')).toBeTruthy()
   expect(screen.queryByText('Pending')).toBeNull()
 
   await user.click(screen.getByRole('button', { name: 'Refresh' }))

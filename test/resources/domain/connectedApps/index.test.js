@@ -1,6 +1,6 @@
 import {
   FRAME_SEND_ORIGIN,
-  WREN_DEPLOY_ORIGIN,
+  SAF0O_DEPLOY_ORIGIN,
   originIdForInvoker
 } from '../../../../resources/domain/origin'
 import { createAccountPermission } from '../../../../main/provider/permissions'
@@ -170,7 +170,7 @@ it('hides managed and internal origins even when their sessions are recent', () 
     networks: { 1: chain(1) },
     origins: {
       managed: origin(FRAME_SEND_ORIGIN, 1, { endedAt: undefined }),
-      deployment: origin(WREN_DEPLOY_ORIGIN, 1, { endedAt: undefined }),
+      deployment: origin(SAF0O_DEPLOY_ORIGIN, 1, { endedAt: undefined }),
       internal: origin('frame-internal', 1, { endedAt: undefined }),
       extension: origin('frame-extension', 1, { endedAt: undefined }),
       external: origin('https://app.example', 1, { endedAt: undefined })
@@ -178,7 +178,7 @@ it('hides managed and internal origins even when their sessions are recent', () 
     permissions: {
       account: {
         managed: permission('managed', FRAME_SEND_ORIGIN),
-        deployment: permission('deployment', WREN_DEPLOY_ORIGIN)
+        deployment: permission('deployment', SAF0O_DEPLOY_ORIGIN)
       }
     },
     now

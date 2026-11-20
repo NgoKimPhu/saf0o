@@ -8,7 +8,7 @@ export function okProtocol(location: string) {
   if (validProtocol) {
     const target = location.substring(validProtocol.length)
 
-    // Do not allow dapp connections back to Wren.
+    // Do not allow dapp connections back to Saf0o.
     return !!target && target !== 'localhost:1248' && target !== '127.0.0.1:1248'
   }
 

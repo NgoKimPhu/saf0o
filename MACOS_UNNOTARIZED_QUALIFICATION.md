@@ -1,6 +1,6 @@
 # macOS unnotarized qualification checklist
 
-Use this checklist for Wren's ad-hoc-signed Intel and Apple Silicon DMGs. It does
+Use this checklist for Saf0o's ad-hoc-signed Intel and Apple Silicon DMGs. It does
 not create an Apple Developer ID, notarization ticket, trusted publisher, or
 platform qualification by itself.
 
@@ -35,12 +35,12 @@ Use a freshly downloaded GitHub-release DMG so browser quarantine is present.
 Run these checks before creating a Gatekeeper exception:
 
 ```bash
-file='Wren-<version>-macos-arm64-unnotarized.dmg'
+file='Saf0o-<version>-macos-arm64-unnotarized.dmg'
 grep "  $file$" SHA256SUMS | shasum -a 256 --check
 gh attestation verify "$file" -R NgoKimPhu/saf0o
 mountpoint=$(mktemp -d)
 hdiutil attach "$file" -readonly -nobrowse -mountpoint "$mountpoint"
-app="$mountpoint/Wren.app"
+app="$mountpoint/Saf0o.app"
 codesign --verify --deep --strict "$app"
 codesign --display --verbose=4 "$app"
 if spctl --assess --type execute --verbose=4 "$app"; then
@@ -59,13 +59,13 @@ Developer ID, Team ID, or unexpected notarization state.
 
 ## 3. Exercise installation and runtime
 
-1. Open the DMG, drag Wren to Applications, and confirm ordinary first launch is
+1. Open the DMG, drag Saf0o to Applications, and confirm ordinary first launch is
    blocked as unidentified or unverified.
 2. Follow the documented **System Settings → Privacy & Security → Open Anyway**
    path. Do not use `xattr`, disable Gatekeeper, or weaken system-wide policy.
-3. Start Wren with a new disposable profile. Confirm dashboard, wallet panel,
+3. Start Saf0o with a new disposable profile. Confirm dashboard, wallet panel,
    tray, Control Center, clean close, restart persistence, and single-instance
-   behavior. A second instance must not take Wren's local ports or create another
+   behavior. A second instance must not take Saf0o's local ports or create another
    profile writer.
 4. Create and remove disposable recovery-phrase and private-key signers. Confirm
    password unlock, signing, lock, restart, backup export, and backup restore.
@@ -75,7 +75,7 @@ Developer ID, Team ID, or unexpected notarization state.
    transaction Activity detail and compare its amount, destination, hash, and
    explorer route with independent testnet evidence. Clear Activity and wait through
    one lifecycle refresh; unchanged evidence must not restore it. Reconnect after a
-   Wren and browser restart.
+   Saf0o and browser restart.
 6. Confirm no macOS automatic-update metadata was published or consumed. Install
    a later candidate only by downloading and verifying it independently.
 

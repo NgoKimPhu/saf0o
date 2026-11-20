@@ -9,7 +9,7 @@ export const ObservedActivitySchema = z
     from: Address,
     blockHash: Hash,
     blockNumber: Height,
-    source: z.enum(['external', 'wren']),
+    source: z.enum(['external', 'saf0o']),
     action: z.enum([
       'received',
       'sent',

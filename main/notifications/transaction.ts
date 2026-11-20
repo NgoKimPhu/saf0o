@@ -14,11 +14,11 @@ const copy: Record<WalletActivityNotificationOutcome, { title: string; body: str
   replaced: { title: 'Wallet activity replaced', body: 'A submitted wallet activity was replaced.' },
   'long-pending': {
     title: 'Wallet activity still pending',
-    body: 'Wren is still checking a submitted wallet activity.'
+    body: 'Saf0o is still checking a submitted wallet activity.'
   },
   'long-pending-broadcasting': {
     title: 'Wallet activity broadcast status unknown',
-    body: 'Wren is checking whether a signed wallet activity was broadcast.'
+    body: 'Saf0o is checking whether a signed wallet activity was broadcast.'
   }
 }
 
@@ -40,7 +40,7 @@ export function notifyTransactionOutcome(
     typeof Notification.isSupported !== 'function' ||
     !Notification.isSupported() ||
     store('main.transactionNotifications') === false ||
-    windows.isAnyWrenVisible()
+    windows.isAnySaf0oVisible()
   ) {
     return false
   }

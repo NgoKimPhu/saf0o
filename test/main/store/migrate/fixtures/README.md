@@ -28,7 +28,7 @@ The test validates these fixtures individually:
 - `v41-current-state.json` — historical boundary name; it does not claim that
   version 41 is current.
 - `v52-pylon-network-state.json` — provider preset migration.
-- `v68-release-boundary-state.json` — the published Wren 0.1.2 schema
+- `v68-release-boundary-state.json` — the published Saf0o 0.1.2 schema
   boundary, including its legacy Ethereum label and internal-origin records.
 - `v69-safe-current-state.json` — previous safe profile coverage with contact
   provenance, dapp guardrails, opt-in recent recipients, and

@@ -45,10 +45,10 @@ const QUALIFICATION_INVOKE_CHANNELS = Object.freeze([
 ])
 
 const qualificationPairingCode = () => {
-  const code = process.env.WREN_UI_QUALIFICATION_PAIRING_CODE
+  const code = process.env.SAF0O_UI_QUALIFICATION_PAIRING_CODE
   if (!code) return '482 731'
   if (!/^\d{6}$/u.test(code)) {
-    throw new Error('WREN_UI_QUALIFICATION_PAIRING_CODE must contain exactly six digits')
+    throw new Error('SAF0O_UI_QUALIFICATION_PAIRING_CODE must contain exactly six digits')
   }
   return `${code.slice(0, 3)} ${code.slice(3)}`
 }
@@ -61,7 +61,7 @@ const activePermission = (handlerId, origin) => ({
   parentCapability: 'eth_accounts',
   caveats: [
     {
-      type: 'wren:permissionScope',
+      type: 'saf0o:permissionScope',
       value: {
         account: QUALIFICATION_ACCOUNT,
         methods: ['eth_accounts'],
@@ -184,7 +184,7 @@ const accountHomeNetworks = () => ({
   },
   metadata: {
     1: {
-      primaryColor: 'wren-chain-ethereum',
+      primaryColor: 'saf0o-chain-ethereum',
       nativeCurrency: { symbol: 'ETH', name: 'Ether', decimals: 18, usd: { price: 3200 } },
       gas: {
         price: {
@@ -195,7 +195,7 @@ const accountHomeNetworks = () => ({
       }
     },
     10: {
-      primaryColor: 'wren-chain-optimism',
+      primaryColor: 'saf0o-chain-optimism',
       nativeCurrency: { symbol: 'ETH', name: 'Ether', decimals: 18, usd: { price: 3200 } },
       gas: {
         price: {
@@ -457,7 +457,13 @@ const permitReviewRequest = () => ({
     }
   },
   permit: {
-    spender: { address: QUALIFICATION_DELEGATE, ens: '', type: 'contract', contractName: 'SwapRouter', contractSource: 'sourcify' },
+    spender: {
+      address: QUALIFICATION_DELEGATE,
+      ens: '',
+      type: 'contract',
+      contractName: 'SwapRouter',
+      contractSource: 'sourcify'
+    },
     verifyingContract: {
       address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
       ens: '',
@@ -525,7 +531,7 @@ const RPC_WARNING_FIXTURES = Object.freeze({
   'execution-failed': {
     type: 'approveSimulationOverride',
     title: 'Execution Check Failed',
-    message: 'Wren could not determine whether this transaction will execute successfully.',
+    message: 'Saf0o could not determine whether this transaction will execute successfully.',
     confirmLabel: 'Sign anyway'
   },
   'execution-unavailable': {
@@ -1005,12 +1011,12 @@ const revocationRequest = (monitoring) => ({
   handlerId: QUALIFICATION_REQUEST,
   account: QUALIFICATION_ACCOUNT,
   chainId: '0xa',
-  origin: 'wren',
+  origin: 'saf0o',
   mode: monitoring ? 'monitor' : 'normal',
   payload: {
     id: 1,
     jsonrpc: '2.0',
-    method: 'wren_revokeEip7702Delegation',
+    method: 'saf0o_revokeEip7702Delegation',
     params: [QUALIFICATION_ACCOUNT, '0xa']
   },
   evidence: {
@@ -1287,7 +1293,7 @@ const fixtureFor = (scenario) => {
             notify: 'addToken',
             notifyData: {
               address,
-              chain: { id: 1, name: 'Ethereum', color: 'wren-chain-ethereum' },
+              chain: { id: 1, name: 'Ethereum', color: 'saf0o-chain-ethereum' },
               tokenData: {
                 address,
                 name: 'USD Coin',
@@ -2082,12 +2088,22 @@ const fixtureFor = (scenario) => {
     state.main.activity =
       scenario.state === 'account-activity-lifecycle' ? lifecycleActivity() : qualificationActivity()
     if (scenario.externalActivity) {
-      state.main.activity = qualificationActivity().slice(0, 3).map((entry, index) => ({
-        ...entry, type: 'transaction', origin: 'wren:external', outcome: 'confirmed',
-        observed: {hash: QUALIFICATION_TX_HASH, from: QUALIFICATION_RECIPIENT,
-          blockHash: `0x${'ef'.repeat(32)}`, blockNumber: 100,
-          source: 'external', action: ['received', 'approve', 'deposit'][index]}
-      }))
+      state.main.activity = qualificationActivity()
+        .slice(0, 3)
+        .map((entry, index) => ({
+          ...entry,
+          type: 'transaction',
+          origin: 'saf0o:external',
+          outcome: 'confirmed',
+          observed: {
+            hash: QUALIFICATION_TX_HASH,
+            from: QUALIFICATION_RECIPIENT,
+            blockHash: `0x${'ef'.repeat(32)}`,
+            blockNumber: 100,
+            source: 'external',
+            action: ['received', 'approve', 'deposit'][index]
+          }
+        }))
     }
     if (scenario.state === 'account-activity-detail') {
       state.main.operationLifecycles = qualificationOperationLifecycles()
@@ -2196,7 +2212,7 @@ const fixtureFor = (scenario) => {
         updatedAt: verifiedAt
       }
     }
-    state.main.origins = { wren: { name: 'Wren' } }
+    state.main.origins = { saf0o: { name: 'Saf0o' } }
   }
 
   if (scenario.state === 'account-access-review') {
@@ -2245,11 +2261,24 @@ const fixtureFor = (scenario) => {
         request.typedMessage.data.message.details[0].amount = amount
       }
       request.signingMetadata = {
-        tokens: (request.context.permit2?.permissions.map(({ token }) => token) || [token]).map((address, index) => ({ address, chainId: 1, symbol: index ? 'USDT' : 'USDC', name: index ? 'Tether USD' : 'USD Coin', decimals: 6 })),
-        ...(request.context.permit2 ? { spender: {
-          address: request.context.permit2.spender.toLowerCase(),
-          contractName: 'SwapRouter', contractSource: 'sourcify'
-        }} : {})
+        tokens: (request.context.permit2?.permissions.map(({ token }) => token) || [token]).map(
+          (address, index) => ({
+            address,
+            chainId: 1,
+            symbol: index ? 'USDT' : 'USDC',
+            name: index ? 'Tether USD' : 'USD Coin',
+            decimals: 6
+          })
+        ),
+        ...(request.context.permit2
+          ? {
+              spender: {
+                address: request.context.permit2.spender.toLowerCase(),
+                contractName: 'SwapRouter',
+                contractSource: 'sourcify'
+              }
+            }
+          : {})
       }
     }
     prepareSelectedAccount(state, request)
@@ -2318,7 +2347,7 @@ const fixtureFor = (scenario) => {
     const request = addressLookalikeRequest()
     const initcodeHash = '0x5e3ce470a8506d55e59815db7232a08774174ae0c7fdb2fbc81a49e4e242b0d6'
     request.handlerId = 'qualification-deployment-review'
-    request.origin = 'qualification-wren-deploy'
+    request.origin = 'qualification-saf0o-deploy'
     request.classification = 'CONTRACT_DEPLOY'
     request.data = {
       from: QUALIFICATION_ACCOUNT,
@@ -2351,7 +2380,7 @@ const fixtureFor = (scenario) => {
     state.main.networks.ethereum = networks
     state.main.networksMeta.ethereum = metadata
     state.main.origins = {
-      'qualification-wren-deploy': { name: 'http://deploy.wren.localhost:8421' }
+      'qualification-saf0o-deploy': { name: 'http://deploy.saf0o.localhost:8421' }
     }
     state.windows.panel.nav = [
       {
@@ -2446,7 +2475,7 @@ const fixtureFor = (scenario) => {
     state.main.networks.ethereum = networks
     state.main.networksMeta.ethereum = metadata
     state.main.origins = {
-      [request.origin]: { name: 'http://deploy.wren.localhost:8421' }
+      [request.origin]: { name: 'http://deploy.saf0o.localhost:8421' }
     }
     state.windows.panel.nav = [
       {
@@ -2561,7 +2590,8 @@ const fixtureFor = (scenario) => {
     const request = responsiveTransactionRequest(scenario.variant)
     if (scenario.namedSpender) {
       Object.assign(request.recognizedActions[0].data.spender, {
-        contractName: 'SwapRouter', contractSource: 'sourcify'
+        contractName: 'SwapRouter',
+        contractSource: 'sourcify'
       })
     }
     prepareSelectedAccount(state, request)

@@ -23,7 +23,7 @@ import { showWalletCallStatus } from '../../../main/provider/walletCallStatusVie
 import { ApprovalType } from '../../../resources/constants'
 import { bindRequestSignal } from '../../../main/provider/requestSignal'
 import { createAccountPermission } from '../../../main/provider/permissions'
-import { FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN, originIdForInvoker } from '../../../resources/domain/origin'
+import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN, originIdForInvoker } from '../../../resources/domain/origin'
 import { GasFeesSource } from '../../../resources/domain/transaction'
 import recentRecipientsRuntime from '../../../main/recentRecipients/runtime'
 import { generatePeerAuthKeyPair, peerAuthClientBundleFingerprint } from '../../../main/api/peerAuth'
@@ -1154,7 +1154,7 @@ describe('#wallet-call provider boundary', () => {
 
     await expect(provider.approveWalletCallsRequest(address, admitted.handlerId)).rejects.toMatchObject({
       code: 4100,
-      message: 'Managed Wren Send request is no longer authorized'
+      message: 'Managed Saf0o Send request is no longer authorized'
     })
     expect(accounts.settleWalletCallsRequest).toHaveBeenCalledWith(
       address,
@@ -1809,7 +1809,7 @@ describe('#send', () => {
     expect(response).toHaveBeenCalledWith({
       id: 19,
       jsonrpc: '2.0',
-      error: { message: `Wren does not support ${method}`, code: 4200 }
+      error: { message: `Saf0o does not support ${method}`, code: 4200 }
     })
     expect(connection.send).not.toHaveBeenCalled()
   })
@@ -1909,7 +1909,7 @@ describe('#send', () => {
       expect(response).toHaveBeenCalledWith({
         id: 21,
         jsonrpc: '2.0',
-        error: { message: `Wren does not support ${reason}`, code: 4200 }
+        error: { message: `Saf0o does not support ${reason}`, code: 4200 }
       })
       expect(connection.send).not.toHaveBeenCalled()
     }
@@ -1958,7 +1958,7 @@ describe('#send', () => {
       store.set('main.networks.ethereum', 5, { id: 5, on: false })
 
       send({ method: 'eth_chainId', chainId: '0x5' }, (response) => {
-        expect(response.error).toEqual({ message: 'Wren is not connected to chain 5', code: 4901 })
+        expect(response.error).toEqual({ message: 'Saf0o is not connected to chain 5', code: 4901 })
         expect(response.result).toBeUndefined()
       })
     })
@@ -1982,7 +1982,7 @@ describe('#send', () => {
       expect(response).toHaveBeenCalledTimes(1)
       expect(response).toHaveBeenCalledWith(
         expect.objectContaining({
-          error: { message: 'Wren is not connected to chain 5', code: 4901 }
+          error: { message: 'Saf0o is not connected to chain 5', code: 4901 }
         })
       )
     })
@@ -2377,7 +2377,7 @@ describe('#send', () => {
       store.set('main.networks.ethereum', 5, { id: 5, on: false })
 
       send({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x5' }] }, (response) => {
-        expect(response.error).toEqual({ code: 4901, message: 'Wren is not connected to chain 5' })
+        expect(response.error).toEqual({ code: 4901, message: 'Saf0o is not connected to chain 5' })
         expect(accountRequests).toHaveLength(0)
         done()
       })
@@ -2448,7 +2448,7 @@ describe('#send', () => {
           {
             invoker: 'test.frame',
             parentCapability: 'eth_accounts',
-            caveats: [expect.objectContaining({ type: 'wren:permissionScope' })]
+            caveats: [expect.objectContaining({ type: 'saf0o:permissionScope' })]
           }
         ])
         done()
@@ -3808,7 +3808,7 @@ describe('#send', () => {
           try {
             expect(response.error).toEqual({
               code: 4100,
-              message: 'Managed Wren Send origin is not authorized'
+              message: 'Managed Saf0o Send origin is not authorized'
             })
             expect(accountRequests).toHaveLength(0)
             done()
@@ -3821,7 +3821,7 @@ describe('#send', () => {
     })
 
     it('admits only an exact immutable managed deployment and classifies it as contract creation', (done) => {
-      const managedOrigin = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
+      const managedOrigin = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
       const initcode = '0x60006000'
       tx = {
         from: address,
@@ -3845,7 +3845,7 @@ describe('#send', () => {
       accounts.current.mockReturnValue({ id: address, lastSignerType: 'ring' })
       store.set('main.networks.ethereum', 1, { id: 1, on: true })
       store.set('main.origins', managedOrigin, {
-        name: WREN_DEPLOY_ORIGIN,
+        name: SAF0O_DEPLOY_ORIGIN,
         provenance: 'managed',
         chain: { type: 'ethereum', id: 1 },
         session: { requests: 1, startedAt: 1, lastUpdatedAt: 1 }
@@ -3878,7 +3878,7 @@ describe('#send', () => {
     })
 
     it('admits an exact managed deployment speed-up with its frozen creation evidence', (done) => {
-      const managedOrigin = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
+      const managedOrigin = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
       const initcode = '0x60006000'
       tx = {
         from: address,
@@ -3908,7 +3908,7 @@ describe('#send', () => {
       accounts.current.mockReturnValue({ id: address, lastSignerType: 'ring' })
       store.set('main.networks.ethereum', 1, { id: 1, on: true })
       store.set('main.origins', managedOrigin, {
-        name: WREN_DEPLOY_ORIGIN,
+        name: SAF0O_DEPLOY_ORIGIN,
         provenance: 'managed',
         chain: { type: 'ethereum', id: 1 }
       })
@@ -3936,7 +3936,7 @@ describe('#send', () => {
     })
 
     it('keeps managed deployment speed-ups bound to the original creation data', (done) => {
-      const managedOrigin = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
+      const managedOrigin = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
       const initcode = '0x60006000'
       const deployment = {
         version: 1,
@@ -3957,7 +3957,7 @@ describe('#send', () => {
       accounts.current.mockReturnValue({ id: address, lastSignerType: 'ring' })
       store.set('main.networks.ethereum', 1, { id: 1, on: true })
       store.set('main.origins', managedOrigin, {
-        name: WREN_DEPLOY_ORIGIN,
+        name: SAF0O_DEPLOY_ORIGIN,
         provenance: 'managed',
         chain: { type: 'ethereum', id: 1 }
       })
@@ -3994,8 +3994,8 @@ describe('#send', () => {
       )
     })
 
-    it('does not widen Wren Deploy authorization to cancellation self-transfers', (done) => {
-      const managedOrigin = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
+    it('does not widen Saf0o Deploy authorization to cancellation self-transfers', (done) => {
+      const managedOrigin = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
       const initcode = '0x60006000'
       const deployment = {
         version: 1,
@@ -4011,7 +4011,7 @@ describe('#send', () => {
       accounts.current.mockReturnValue({ id: address, lastSignerType: 'ring' })
       store.set('main.networks.ethereum', 1, { id: 1, on: true })
       store.set('main.origins', managedOrigin, {
-        name: WREN_DEPLOY_ORIGIN,
+        name: SAF0O_DEPLOY_ORIGIN,
         provenance: 'managed',
         chain: { type: 'ethereum', id: 1 }
       })
@@ -4057,7 +4057,7 @@ describe('#send', () => {
     })
 
     it('revalidates managed deployment authorization after asynchronous transaction filling', (done) => {
-      const managedOrigin = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
+      const managedOrigin = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
       const initcode = '0x60006000'
       tx = {
         from: address,
@@ -4080,7 +4080,7 @@ describe('#send', () => {
       }
       store.set('main.networks.ethereum', 1, { id: 1, on: true })
       store.set('main.origins', managedOrigin, {
-        name: WREN_DEPLOY_ORIGIN,
+        name: SAF0O_DEPLOY_ORIGIN,
         provenance: 'managed',
         chain: { type: 'ethereum', id: 1 }
       })
@@ -4097,7 +4097,7 @@ describe('#send', () => {
           try {
             expect(response.error).toEqual({
               code: 4100,
-              message: 'Managed Wren Deploy origin is no longer authorized'
+              message: 'Managed Saf0o Deploy origin is no longer authorized'
             })
             expect(accountRequests).toHaveLength(0)
             fill.mockRestore()
@@ -4125,7 +4125,7 @@ describe('#send', () => {
       ['changed creation data', { data: '0x6001' }, 'prepared evidence'],
       ['combined metadata', {}, 'only be combined']
     ])('rejects a managed deployment with %s', (_label, transactionChange, message, done) => {
-      const managedOrigin = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
+      const managedOrigin = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
       const initcode = '0x60006000'
       tx = {
         from: address,
@@ -4150,7 +4150,7 @@ describe('#send', () => {
       accounts.current.mockReturnValue({ id: address, lastSignerType: 'ring' })
       store.set('main.networks.ethereum', 1, { id: 1, on: true })
       store.set('main.origins', managedOrigin, {
-        name: WREN_DEPLOY_ORIGIN,
+        name: SAF0O_DEPLOY_ORIGIN,
         provenance: 'managed',
         chain: { type: 'ethereum', id: 1 }
       })
@@ -4195,7 +4195,7 @@ describe('#send', () => {
         { jsonrpc: '2.0', id: 16, method: 'eth_sendTransaction', params: [tx], _origin: defaultOriginId },
         (response) => {
           try {
-            expect(response.error.message).toMatch(/exact managed Wren Deploy origin/i)
+            expect(response.error.message).toMatch(/exact managed Saf0o Deploy origin/i)
             expect(accountRequests).toHaveLength(0)
             done()
           } catch (error) {
@@ -4208,7 +4208,7 @@ describe('#send', () => {
       )
     })
 
-    it('retains an immutable native Max snapshot only for the exact managed Wren Send origin', (done) => {
+    it('retains an immutable native Max snapshot only for the exact managed Saf0o Send origin', (done) => {
       accounts.current.mockReturnValue({ id: address, lastSignerType: 'ring' })
       const managedOrigin = originIdForInvoker(FRAME_SEND_ORIGIN, { provenance: 'managed' })
       store.set('main.origins', managedOrigin, {
@@ -4248,7 +4248,7 @@ describe('#send', () => {
       )
     })
 
-    it('retains a normalized immutable recent-recipient snapshot for managed Wren Send', (done) => {
+    it('retains a normalized immutable recent-recipient snapshot for managed Saf0o Send', (done) => {
       accounts.current.mockReturnValue({ id: address, lastSignerType: 'ring' })
       const managedOrigin = originIdForInvoker(FRAME_SEND_ORIGIN, { provenance: 'managed' })
       store.set('main.origins', managedOrigin, {
@@ -4287,7 +4287,7 @@ describe('#send', () => {
         },
         (response) => {
           try {
-            expect(response.error.message).toMatch(/recent recipient.+exact managed Wren Send origin/i)
+            expect(response.error.message).toMatch(/recent recipient.+exact managed Saf0o Send origin/i)
             expect(accountRequests).toHaveLength(0)
             done()
           } catch (error) {
@@ -4313,7 +4313,7 @@ describe('#send', () => {
         { jsonrpc: '2.0', id: 11, method: 'eth_sendTransaction', params: [tx], _origin: managedOrigin },
         (response) => {
           try {
-            expect(response.error.message).toBe('Managed Wren Send origin is not authorized')
+            expect(response.error.message).toBe('Managed Saf0o Send origin is not authorized')
             expect(accountRequests).toHaveLength(0)
             done()
           } catch (error) {
@@ -4364,7 +4364,7 @@ describe('#send', () => {
         payload,
         (response) => {
           try {
-            expect(response.error.message).toMatch(/exact managed Wren Send origin/i)
+            expect(response.error.message).toMatch(/exact managed Saf0o Send origin/i)
             expect(accountRequests).toHaveLength(0)
             done()
           } catch (error) {
@@ -5444,7 +5444,7 @@ describe('#send', () => {
         const params = [address, 'test']
 
         send({ method, params }, (err) => {
-          expect(err.error).toEqual({ message: `Wren does not support ${method}`, code: 4200 })
+          expect(err.error).toEqual({ message: `Saf0o does not support ${method}`, code: 4200 })
           expect(connection.send).not.toHaveBeenCalled()
           done()
         })
@@ -6234,7 +6234,7 @@ describe('#signAndSend', () => {
           try {
             expect(error).toMatchObject({
               code: 4100,
-              message: 'Managed Wren Send request is no longer authorized'
+              message: 'Managed Saf0o Send request is no longer authorized'
             })
             expect(connection.send).not.toHaveBeenCalled()
             done()
@@ -6270,7 +6270,7 @@ describe('#signAndSend', () => {
           try {
             expect(error).toMatchObject({
               code: 4100,
-              message: 'Managed Wren Send request is no longer authorized'
+              message: 'Managed Saf0o Send request is no longer authorized'
             })
             expect(connection.send).not.toHaveBeenCalled()
             done()
@@ -6308,7 +6308,7 @@ describe('#signAndSend', () => {
       ])('blocks a prepared deployment when the %s changes before signing', (_label, mutate, done) => {
         const initcode = '0x60006000'
         request.type = 'transaction'
-        request.origin = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
+        request.origin = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
         Object.assign(request.data, { from: address, data: initcode, value: '0x0' })
         request.deployment = {
           version: 1,
@@ -6324,7 +6324,7 @@ describe('#signAndSend', () => {
         store.set('main.networks.ethereum', 1, { id: 1, on: true })
         store.set('main.origins', request.origin, {
           chain: { type: 'ethereum', id: 1 },
-          name: WREN_DEPLOY_ORIGIN,
+          name: SAF0O_DEPLOY_ORIGIN,
           provenance: 'managed',
           sessionOnly: false,
           session: { requests: 1, startedAt: 1, lastUpdatedAt: 1 }
@@ -6345,7 +6345,7 @@ describe('#signAndSend', () => {
           try {
             expect(error).toMatchObject({
               code: 4100,
-              message: 'Managed Wren Deploy request is no longer authorized'
+              message: 'Managed Saf0o Deploy request is no longer authorized'
             })
             expect(connection.send).not.toHaveBeenCalled()
             done()
@@ -6358,7 +6358,7 @@ describe('#signAndSend', () => {
       it('blocks a prepared deployment whose creation data changes before signing', (done) => {
         const initcode = '0x60006000'
         request.type = 'transaction'
-        request.origin = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
+        request.origin = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
         Object.assign(request.data, { from: address, data: initcode, value: '0x0' })
         request.deployment = {
           version: 1,
@@ -6374,7 +6374,7 @@ describe('#signAndSend', () => {
         store.set('main.networks.ethereum', 1, { id: 1, on: true })
         store.set('main.origins', request.origin, {
           chain: { type: 'ethereum', id: 1 },
-          name: WREN_DEPLOY_ORIGIN,
+          name: SAF0O_DEPLOY_ORIGIN,
           provenance: 'managed',
           sessionOnly: false,
           session: { requests: 1, startedAt: 1, lastUpdatedAt: 1 }
@@ -6405,7 +6405,7 @@ describe('#signAndSend', () => {
       it('blocks a managed deployment whose trusted evidence disappears before signing', (done) => {
         const initcode = '0x60006000'
         request.type = 'transaction'
-        request.origin = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
+        request.origin = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
         Object.assign(request.data, { from: address, data: initcode, value: '0x0' })
         request.deployment = {
           version: 1,
@@ -6421,7 +6421,7 @@ describe('#signAndSend', () => {
         store.set('main.networks.ethereum', 1, { id: 1, on: true })
         store.set('main.origins', request.origin, {
           chain: { type: 'ethereum', id: 1 },
-          name: WREN_DEPLOY_ORIGIN,
+          name: SAF0O_DEPLOY_ORIGIN,
           provenance: 'managed',
           sessionOnly: false,
           session: { requests: 1, startedAt: 1, lastUpdatedAt: 1 }
@@ -6442,7 +6442,7 @@ describe('#signAndSend', () => {
           try {
             expect(error).toMatchObject({
               code: 4100,
-              message: 'Managed Wren Deploy request is missing deployment evidence'
+              message: 'Managed Saf0o Deploy request is missing deployment evidence'
             })
             expect(connection.send).not.toHaveBeenCalled()
             done()

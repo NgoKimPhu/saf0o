@@ -2,7 +2,7 @@ import { getCreateAddress } from 'ethers'
 import { z } from 'zod'
 
 import { MAX_DEPLOYMENT_INITCODE_BYTES } from '../../../../resources/domain/deployment'
-import { FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN, originIdForName } from '../../../../resources/domain/origin'
+import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../../../resources/domain/origin'
 import { MAX_OUTBOUND_ADDRESS_MEMORY, OutboundAddressFingerprintSchema } from './outboundAddressMemory'
 
 const ADDRESS = /^0x[0-9a-fA-F]{40}$/u
@@ -144,7 +144,7 @@ export const OperationLifecycleSchema = z
     }
 
     const hasDeploymentReceiptAddress = operation.receipt?.contractAddress !== undefined
-    if (operation.transaction?.deployment && operation.origin !== originIdForName(WREN_DEPLOY_ORIGIN)) {
+    if (operation.transaction?.deployment && operation.origin !== originIdForName(SAF0O_DEPLOY_ORIGIN)) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'deployment evidence requires managed origin' })
     }
     if (operation.broadcast && operation.kind !== 'transaction') {

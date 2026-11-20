@@ -5,7 +5,7 @@ import provider from '../../../main/provider'
 import store from '../../../main/store'
 import { requireStoreAction } from '../../../main/store/action'
 import { simulateTransaction } from '../../../main/transaction/simulation'
-import { WREN_DEPLOY_ORIGIN, originIdForName } from '../../../resources/domain/origin'
+import { SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../../resources/domain/origin'
 
 jest.mock('../../../main/accounts', () => ({ current: jest.fn() }))
 jest.mock('../../../main/chains', () => ({ send: jest.fn() }))
@@ -20,7 +20,7 @@ jest.mock('../../../main/store/action', () => ({ requireStoreAction: jest.fn() }
 jest.mock('../../../main/transaction/simulation', () => ({ simulateTransaction: jest.fn() }))
 
 const account = '0x1111111111111111111111111111111111111111'
-const originId = originIdForName(WREN_DEPLOY_ORIGIN)
+const originId = originIdForName(SAF0O_DEPLOY_ORIGIN)
 const initcode = '0x60006000'
 const draft = { account, chainId: 1, initcode, value: '' }
 const actions: Record<string, jest.Mock> = {
@@ -113,7 +113,7 @@ it('queues the prepared no-destination transaction under the distinct managed De
   })
   expect(actions.initOrigin).toHaveBeenCalledWith(originId, {
     chain: { type: 'ethereum', id: 1 },
-    name: WREN_DEPLOY_ORIGIN,
+    name: SAF0O_DEPLOY_ORIGIN,
     provenance: 'managed',
     sessionOnly: false
   })
@@ -151,7 +151,7 @@ it('does not move the managed Deploy origin while another-chain deployment await
   ;(store as unknown as jest.Mock).mockImplementation((...path: Array<string | number>) => {
     if (path.join('.') === `main.origins.${originId}`) {
       return {
-        name: WREN_DEPLOY_ORIGIN,
+        name: SAF0O_DEPLOY_ORIGIN,
         provenance: 'managed',
         chain: { type: 'ethereum', id: 1 }
       }
@@ -198,7 +198,7 @@ it('rejects another-chain deployment when a stale origin route already matches i
   ;(store as unknown as jest.Mock).mockImplementation((...path: Array<string | number>) => {
     if (path.join('.') === `main.origins.${originId}`) {
       return {
-        name: WREN_DEPLOY_ORIGIN,
+        name: SAF0O_DEPLOY_ORIGIN,
         provenance: 'managed',
         chain: { type: 'ethereum', id: 137 }
       }

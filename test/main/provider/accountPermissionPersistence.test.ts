@@ -17,7 +17,7 @@ const secondOriginId = originIdForInvoker(secondOrigin, { provenance: 'direct' }
 
 test('clearing external access survives restart while preserving managed access', () => {
   jest.useFakeTimers()
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-permission-revoke-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-permission-revoke-'))
 
   try {
     const persisted = new PersistStore({ configName: 'config', cwd: directory })

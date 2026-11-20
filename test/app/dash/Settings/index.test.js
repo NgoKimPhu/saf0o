@@ -1,7 +1,7 @@
 import Restore from 'react-restore'
 
 import { Settings } from '../../../../app/dash/Settings'
-import { WREN_LICENSE_URL } from '../../../../resources/constants'
+import { SAF0O_LICENSE_URL } from '../../../../resources/constants'
 import link from '../../../../resources/link'
 import { act, fireEvent, render, screen, waitFor, within } from '../../../componentSetup'
 
@@ -121,7 +121,7 @@ it('groups settings into a short, semantic ledger', () => {
   ).toBe(true)
   expect(
     within(setting('Wallet activity notifications')).getByText(
-      'Show activity alerts while Wren is hidden. Wallet details stay private.'
+      'Show activity alerts while Saf0o is hidden. Wallet details stay private.'
     )
   ).toBeTruthy()
   fireEvent.click(screen.getByRole('button', { name: 'Privacy' }))
@@ -231,7 +231,7 @@ it('announces session-only clearing when the durable acknowledgement fails', asy
 
   await waitFor(() =>
     expect(within(screen.getByRole('region', { name: 'Privacy' })).getByRole('status').textContent).toBe(
-      'Recent recipients are off for this session, but Wren could not confirm the clearing was saved. Restart may restore prior data.'
+      'Recent recipients are off for this session, but Saf0o could not confirm the clearing was saved. Restart may restore prior data.'
     )
   )
   expect(screen.queryByText('Recent recipients turned off and cleared from this device')).toBeNull()
@@ -265,11 +265,11 @@ it('shows requested and effective interface scale and routes scale changes', () 
 
   const scaleSetting = setting('Interface scale')
   expect(
-    within(scaleSetting).getByText('Makes Wren’s window and contents larger when your display has room.')
+    within(scaleSetting).getByText('Makes Saf0o’s window and contents larger when your display has room.')
   ).toBeTruthy()
   expect(within(scaleSetting).getByText('150% requested · using 125% to fit this display')).toBeTruthy()
   expect(within(scaleSetting).getByRole('status').textContent).toBe(
-    'Interface scale set to 125%. You requested 150%, but Wren reduced it to fit the available screen space.'
+    'Interface scale set to 125%. You requested 150%, but Saf0o reduced it to fit the available screen space.'
   )
   expect(within(scaleSetting).getByRole('button', { name: '150%' }).getAttribute('aria-pressed')).toBe('true')
 
@@ -288,17 +288,17 @@ it('keeps app identity, license, and reset actions in About', async () => {
   expect(within(about).getByText('v0.1.2')).toBeTruthy()
 
   fireEvent.click(within(about).getByRole('button', { name: 'View License' }))
-  expect(link.send).toHaveBeenCalledWith('tray:openExternal', WREN_LICENSE_URL)
+  expect(link.send).toHaveBeenCalledWith('tray:openExternal', SAF0O_LICENSE_URL)
 
-  const reset = within(about).getByRole('button', { name: 'Reset Wren' })
+  const reset = within(about).getByRole('button', { name: 'Reset Saf0o' })
   await user.click(reset)
   expect(within(about).getByRole('alertdialog').hasAttribute('aria-modal')).toBe(false)
   expect(document.activeElement).toBe(within(about).getByRole('button', { name: 'Cancel' }))
   await user.click(within(about).getByRole('button', { name: 'Cancel' }))
-  expect(document.activeElement).toBe(within(about).getByRole('button', { name: 'Reset Wren' }))
+  expect(document.activeElement).toBe(within(about).getByRole('button', { name: 'Reset Saf0o' }))
 
-  await user.click(within(about).getByRole('button', { name: 'Reset Wren' }))
-  await user.click(within(about).getByRole('button', { name: 'Reset Wren' }))
+  await user.click(within(about).getByRole('button', { name: 'Reset Saf0o' }))
+  await user.click(within(about).getByRole('button', { name: 'Reset Saf0o' }))
   expect(link.send).toHaveBeenCalledWith('tray:resetAllSettings')
 })
 
@@ -306,11 +306,11 @@ it('cancels a staged reset from About with Escape', async () => {
   const { user } = renderSettings()
   const about = screen.getByRole('region', { name: 'About' })
 
-  await user.click(within(about).getByRole('button', { name: 'Reset Wren' }))
+  await user.click(within(about).getByRole('button', { name: 'Reset Saf0o' }))
   await user.keyboard('{Escape}')
 
-  expect(within(about).queryByRole('alertdialog', { name: 'Reset Wren?' })).toBeNull()
-  expect(document.activeElement).toBe(within(about).getByRole('button', { name: 'Reset Wren' }))
+  expect(within(about).queryByRole('alertdialog', { name: 'Reset Saf0o?' })).toBeNull()
+  expect(document.activeElement).toBe(within(about).getByRole('button', { name: 'Reset Saf0o' }))
 })
 
 it.each([
@@ -378,7 +378,7 @@ it('requires confirmation before revoking a companion pairing', () => {
   const dialog = screen.getByRole('alertdialog', { name: 'Revoke companion pairing?' })
   expect(dialog.getAttribute('aria-modal')).toBeNull()
   expect(dialog.textContent).toContain(
-    'This companion will be disconnected from Wren immediately. Pairing it again requires a new six-digit code comparison.'
+    'This companion will be disconnected from Saf0o immediately. Pairing it again requires a new six-digit code comparison.'
   )
   fireEvent.click(screen.getByRole('button', { name: 'Revoke pairing' }))
 

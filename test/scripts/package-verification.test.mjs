@@ -10,7 +10,7 @@ import { assertAdHocSignatureDetails } from '../../scripts/verify-macos-preview.
 
 test('accepts only an ad-hoc macOS application identity without an Apple authority', () => {
   const details = [
-    'Executable=/Volumes/Wren/Wren.app/Contents/MacOS/Wren',
+    'Executable=/Volumes/Saf0o/Saf0o.app/Contents/MacOS/Saf0o',
     'Identifier=io.github.ngokimphu.saf0o',
     'Signature=adhoc',
     'TeamIdentifier=not set'
@@ -31,14 +31,14 @@ test('rejects missing, duplicate, stale, and unknown package outputs', () => {
   assert.throws(
     () =>
       selectPackageArtifacts(
-        ['Wren-0.1.0.AppImage', 'Wren-0.1.0.AppImage', 'wren_0.1.0_amd64.deb'],
+        ['Saf0o-0.1.0.AppImage', 'Saf0o-0.1.0.AppImage', 'saf0o_0.1.0_amd64.deb'],
         target,
         '0.1.0'
       ),
     /Expected one AppImage, found 2/
   )
   assert.throws(
-    () => selectPackageArtifacts(['Wren-0.0.9.AppImage', 'wren_0.0.9_amd64.deb'], target, '0.1.0'),
+    () => selectPackageArtifacts(['Saf0o-0.0.9.AppImage', 'saf0o_0.0.9_amd64.deb'], target, '0.1.0'),
     /Expected one AppImage, found 0/
   )
   assert.throws(() => getPackageTarget('plan9-x64'), /Unknown package verification target/)
@@ -53,10 +53,10 @@ test('requires a matching native host before executing the package', () => {
 })
 
 test('rejects archive entries that could escape their disposable extraction root', () => {
-  assert.doesNotThrow(() => assertSafeArchiveEntries(['Wren/', 'Wren/resources/app.asar']))
+  assert.doesNotThrow(() => assertSafeArchiveEntries(['Saf0o/', 'Saf0o/resources/app.asar']))
   assert.throws(() => assertSafeArchiveEntries([]), /archive is empty/)
   assert.throws(() => assertSafeArchiveEntries(['/etc/passwd']), /Absolute package archive entry/)
   assert.throws(() => assertSafeArchiveEntries(['C:\\Windows\\system.ini']), /Drive-qualified/)
-  assert.throws(() => assertSafeArchiveEntries(['Wren/../../outside']), /escapes extraction root/)
-  assert.throws(() => assertSafeArchiveEntries(['Wren/evil\0name']), /null byte/)
+  assert.throws(() => assertSafeArchiveEntries(['Saf0o/../../outside']), /escapes extraction root/)
+  assert.throws(() => assertSafeArchiveEntries(['Saf0o/evil\0name']), /null byte/)
 })

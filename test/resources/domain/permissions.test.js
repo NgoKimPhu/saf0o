@@ -1,4 +1,4 @@
-import { FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN } from '../../../resources/domain/origin'
+import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN } from '../../../resources/domain/origin'
 import { getPermissionIds, isManagedPermission } from '../../../resources/domain/permissions'
 
 const activePermission = (origin) => ({
@@ -9,13 +9,13 @@ const activePermission = (origin) => ({
   parentCapability: 'eth_accounts',
   caveats: [
     {
-      type: 'wren:permissionScope',
+      type: 'saf0o:permissionScope',
       value: { expiresAt: 2 }
     }
   ]
 })
 
-test.each([FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN])(
+test.each([FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN])(
   'classifies and hides the exact managed permission for %s',
   (origin) => {
     expect(isManagedPermission({ origin })).toBe(true)

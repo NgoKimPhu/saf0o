@@ -87,7 +87,7 @@ export class SignerStatus extends React.Component {
                 aria-label='Signer password'
                 autoFocus={true}
                 ref={this.inputRef}
-                className='signerUnlockInput wrenInput'
+                className='signerUnlockInput saf0oInput'
                 type='password'
                 value={unlockInput}
                 disabled={unlockPending}
@@ -109,7 +109,7 @@ export class SignerStatus extends React.Component {
               ) : null}
               <button
                 type='button'
-                className='signerUnlockSubmit wrenControl wrenControlPrimary wrenControlLarge'
+                className='signerUnlockSubmit saf0oControl saf0oControlPrimary saf0oControlLarge'
                 disabled={!unlockInput || unlockPending}
                 onClick={this.unlockSubmit.bind(this)}
               >

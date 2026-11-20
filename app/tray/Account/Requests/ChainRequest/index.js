@@ -41,7 +41,7 @@ export class ChainRequest extends React.Component {
         req={req}
         icon='network'
         eyebrow='Network proposal'
-        title={`Add ${networkName(chain.name, chain.id)} to Wren?`}
+        title={`Add ${networkName(chain.name, chain.id)} to Saf0o?`}
       >
         <RequestSection title='Network details'>
           <RequestFactGrid>

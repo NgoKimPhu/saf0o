@@ -78,7 +78,7 @@ class ChainConnection extends EventEmitter {
 
     this.active.provider = provider(target, {
       name: endpointId,
-      origin: 'wren'
+      origin: 'saf0o'
     })
     this.active.blockMonitor = this._createBlockMonitor(this.active.provider, this.active.generation)
   }
@@ -496,7 +496,7 @@ class ChainConnection extends EventEmitter {
       this.active.provider.sendAsync(payload, (err, result) => {
         if (!this.isActiveProvider(activeProvider, generation)) {
           return resError(
-            { message: `Wren is not connected to chain ${this.chainId}`, code: 4901 },
+            { message: `Saf0o is not connected to chain ${this.chainId}`, code: 4901 },
             payload,
             res
           )
@@ -505,7 +505,7 @@ class ChainConnection extends EventEmitter {
         res(result)
       })
     } else {
-      resError({ message: `Wren is not connected to chain ${this.chainId}`, code: 4901 }, payload, res)
+      resError({ message: `Saf0o is not connected to chain ${this.chainId}`, code: 4901 }, payload, res)
     }
   }
 }
@@ -530,7 +530,7 @@ class Chains extends EventEmitter {
 
       new Notification({
         title: 'Connection switched',
-        body: `Wren lost connection to RPC ${fromIndex + 1} on ${chain.name} and switched to RPC ${toIndex + 1}. Manage endpoint order and availability in the network editor.`
+        body: `Saf0o lost connection to RPC ${fromIndex + 1} on ${chain.name} and switched to RPC ${toIndex + 1}. Manage endpoint order and availability in the network editor.`
       }).show()
     }
 
@@ -618,7 +618,7 @@ class Chains extends EventEmitter {
 
     const { type, id } = targetChain
     if (!this.connections[type] || !this.connections[type][id]) {
-      return resError({ message: `Wren is not connected to ${type} chain ${id}`, code: 4901 }, payload, res)
+      return resError({ message: `Saf0o is not connected to ${type} chain ${id}`, code: 4901 }, payload, res)
     }
 
     this.connections[type][id].send(payload, res)

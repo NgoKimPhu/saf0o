@@ -847,7 +847,7 @@ store.api.feed((_state, actions) => {
 })
 
 export default {
-  isAnyWrenVisible() {
+  isAnySaf0oVisible() {
     return Boolean(
       tray?.isVisible() ||
       dash?.isVisible() ||

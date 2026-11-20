@@ -95,7 +95,7 @@ export class SignerProtection extends Component {
       if (status.backend === 'windows_dpapi') {
         return 'Windows DPAPI encryption is unavailable, so device protection cannot be enabled. Existing signer password encryption remains active.'
       }
-      return 'Wren could not find Secret Service or KWallet. It refuses Electron’s insecure basic-text fallback.'
+      return 'Saf0o could not find Secret Service or KWallet. It refuses Electron’s insecure basic-text fallback.'
     }
     if (status.state === 'enabled') {
       return `${status.signerFiles} signer file${status.signerFiles === 1 ? '' : 's'} protected by ${backendName(status.backend)}. Your signer password is still required.`
@@ -125,16 +125,16 @@ export class SignerProtection extends Component {
         </strong>
         <p id='signer-protection-confirm-copy' className='recoveryPanelCopy'>
           {enabling
-            ? `Wren will bind the existing password-encrypted signer files to ${
+            ? `Saf0o will bind the existing password-encrypted signer files to ${
                 windows ? 'this Windows account through DPAPI' : 'this Linux keychain'
               }. Export an encrypted backup for recovery on another device.`
-            : 'Wren will remove only the device-bound layer. Existing signer password encryption stays in place.'}
+            : 'Saf0o will remove only the device-bound layer. Existing signer password encryption stays in place.'}
         </p>
         <div className='recoveryActions'>
           <button
             ref={this.cancelRef}
             type='button'
-            className='wrenControl wrenControlSecondary wrenControlLarge'
+            className='saf0oControl saf0oControlSecondary saf0oControlLarge'
             disabled={this.state.pending}
             onClick={() => this.cancel()}
           >
@@ -142,7 +142,7 @@ export class SignerProtection extends Component {
           </button>
           <button
             type='button'
-            className='wrenControl wrenControlPrimary wrenControlLarge'
+            className='saf0oControl saf0oControlPrimary saf0oControlLarge'
             disabled={this.state.pending}
             onClick={() => this.apply()}
           >
@@ -166,7 +166,7 @@ export class SignerProtection extends Component {
           <button
             ref={this.actionRef}
             type='button'
-            className='wrenControl wrenControlSecondary wrenControlLarge'
+            className='saf0oControl saf0oControlSecondary saf0oControlLarge'
             disabled={!status.available}
             onClick={() => this.arm('disable')}
           >
@@ -174,7 +174,7 @@ export class SignerProtection extends Component {
           </button>
           <button
             type='button'
-            className='wrenControl wrenControlPrimary wrenControlLarge'
+            className='saf0oControl saf0oControlPrimary saf0oControlLarge'
             disabled={!status.available}
             onClick={() => this.arm('enable')}
           >
@@ -188,7 +188,7 @@ export class SignerProtection extends Component {
         <button
           ref={this.actionRef}
           type='button'
-          className='wrenControl wrenControlSecondary wrenControlLarge'
+          className='saf0oControl saf0oControlSecondary saf0oControlLarge'
           onClick={() => this.arm('disable')}
         >
           Remove protection
@@ -200,7 +200,7 @@ export class SignerProtection extends Component {
         <button
           ref={this.actionRef}
           type='button'
-          className='wrenControl wrenControlPrimary wrenControlLarge'
+          className='saf0oControl saf0oControlPrimary saf0oControlLarge'
           onClick={() => this.arm('enable')}
         >
           Enable protection
@@ -212,7 +212,7 @@ export class SignerProtection extends Component {
         <button
           ref={this.actionRef}
           type='button'
-          className='wrenControl wrenControlSecondary wrenControlLarge'
+          className='saf0oControl saf0oControlSecondary saf0oControlLarge'
           onClick={() => this.refresh()}
         >
           Retry

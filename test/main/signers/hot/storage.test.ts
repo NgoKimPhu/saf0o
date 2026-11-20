@@ -63,7 +63,7 @@ const signerRecord = (id: string) =>
   )
 
 const fixture = (safeStorage = new FakeSafeStorage(), platform: NodeJS.Platform = 'linux') => {
-  const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-os-signer-storage-'))
+  const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-os-signer-storage-'))
   roots.push(profile)
   const signerRoot = path.join(profile, 'signers')
   fs.mkdirSync(signerRoot, { mode: 0o700 })
@@ -93,7 +93,7 @@ test('protects all signer and legacy recovery files while preserving portable by
   for (const [name, original] of Object.entries(records)) {
     const stored = fs.readFileSync(path.join(signerRoot, name))
     expect(stored.includes(original)).toBe(false)
-    expect(JSON.parse(stored.toString())).toMatchObject({ format: 'wren-os-protected-signer', version: 1 })
+    expect(JSON.parse(stored.toString())).toMatchObject({ format: 'saf0o-os-protected-signer', version: 1 })
   }
   expect(fs.statSync(path.join(signerRoot, '.os-signer-protection.json')).mode & 0o777).toBe(0o600)
   expect(Object.fromEntries(storage.readAllSignerFiles().map(({ name, bytes }) => [name, bytes]))).toEqual(
@@ -129,7 +129,7 @@ test('uses Windows DPAPI without querying the Linux-only backend API', () => {
     state: 'enabled'
   })
   expect(JSON.parse(fs.readFileSync(path.join(signerRoot, '.os-signer-protection.json'), 'utf8'))).toEqual({
-    format: 'wren-os-signer-protection',
+    format: 'saf0o-os-signer-protection',
     version: 1,
     backend: 'windows_dpapi'
   })
@@ -243,7 +243,7 @@ test('rejects tampered Windows DPAPI ciphertext without changing the profile', (
 
   expect(storage.status()).toMatchObject({ enabled: true, state: 'unavailable' })
   expect(() => storage.readAllSignerFiles()).toThrow('could not be decrypted')
-  expect(JSON.parse(fs.readFileSync(signerPath, 'utf8')).format).toBe('wren-os-protected-signer')
+  expect(JSON.parse(fs.readFileSync(signerPath, 'utf8')).format).toBe('saf0o-os-protected-signer')
 })
 
 test('recovers Windows DPAPI migrations interrupted in either direction', () => {
@@ -304,7 +304,7 @@ test('does not silently downgrade an enabled profile when its keychain becomes u
   )
   expect(fs.existsSync(path.join(signerRoot, 'new.json'))).toBe(false)
   expect(JSON.parse(fs.readFileSync(path.join(signerRoot, 'alpha.json'), 'utf8')).format).toBe(
-    'wren-os-protected-signer'
+    'saf0o-os-protected-signer'
   )
 })
 
@@ -367,7 +367,7 @@ test('protects new writes while enabled and refuses writes during a mixed transi
   const added = signerRecord('added')
   storage.writeSignerFile('added.json', added)
   expect(JSON.parse(fs.readFileSync(path.join(signerRoot, 'added.json'), 'utf8')).format).toBe(
-    'wren-os-protected-signer'
+    'saf0o-os-protected-signer'
   )
   expect(storage.readAllSignerFiles().find(({ name }) => name === 'added.json')?.bytes).toEqual(added)
 
@@ -434,7 +434,7 @@ test('bounds the signer set before keychain work', () => {
     fs.writeFileSync(path.join(signerRoot, `extra-${index}.json`), signerRecord(`extra-${index}`))
   }
 
-  expect(() => storage.status()).toThrow('Wren profile contains too many signer files')
+  expect(() => storage.status()).toThrow('Saf0o profile contains too many signer files')
   expect(safeStorage.encryptCalls).toBe(0)
 })
 

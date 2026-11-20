@@ -14,7 +14,7 @@ const retainedAccount = '0x0000000000000000000000000000000000000003'
 
 test('a persisted removal journal suppresses removed accounts and access on restart', () => {
   jest.useFakeTimers()
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-removal-journal-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-removal-journal-'))
 
   try {
     const persisted = new PersistStore({ configName: 'config', cwd: directory })

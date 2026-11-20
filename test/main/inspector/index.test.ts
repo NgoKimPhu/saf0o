@@ -104,7 +104,7 @@ test('returns exact canonical typed data, local risks, and honest absent request
       EIP712Domain: [{ name: 'name', type: 'string' }]
     },
     primaryType: 'Mail',
-    domain: { name: 'Wren test' },
+    domain: { name: 'Saf0o test' },
     message: { contents: 'inspect every field' }
   }
   const result = await inspect(
@@ -233,7 +233,7 @@ test('uses only bundled ABI data and bounds decoded dynamic values', () => {
     status: 'unknown',
     source: 'bundled-standard-abi',
     selector: '0x12345678',
-    reason: "Selector is not in Wren's bundled standard ABI set"
+    reason: "Selector is not in Saf0o's bundled standard ABI set"
   })
 })
 

@@ -91,7 +91,7 @@ describe('generated recovery-phrase wallet', () => {
       )
     await view.user.click(screen.getByRole('button', { name: 'Create' }))
 
-    expect(screen.getByRole('alert').textContent).toBe('Wren could not create this wallet safely.')
+    expect(screen.getByRole('alert').textContent).toBe('Saf0o could not create this wallet safely.')
     expect(screen.getByText('No account was added.')).toBeTruthy()
     act(() => jest.advanceTimersByTime(100))
     expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Start again' }))
@@ -312,7 +312,7 @@ describe('generated recovery-phrase wallet', () => {
 
     act(() => jest.advanceTimersByTime(65_000))
 
-    expect(screen.getByRole('alert').textContent).toBe('Wren could not create this wallet safely.')
+    expect(screen.getByRole('alert').textContent).toBe('Saf0o could not create this wallet safely.')
     expect(screen.getByText('No account was added.')).toBeTruthy()
     expect(link.rpc).toHaveBeenCalledWith(
       'discardGeneratedWallet',
@@ -370,7 +370,7 @@ describe('generated recovery-phrase wallet', () => {
     act(() => requestDashNavigation('close', navigate))
 
     expect(screen.getByRole('alertdialog', { name: 'Wallet setup is finishing' })).toBeTruthy()
-    expect(screen.getByText('Wait for Wren to finish before leaving.')).toBeTruthy()
+    expect(screen.getByText('Wait for Saf0o to finish before leaving.')).toBeTruthy()
     expect(screen.queryByRole('button', { name: 'Delete and leave' })).toBeNull()
     expect(screen.getByRole('button', { name: 'Keep creating' })).toBeTruthy()
 

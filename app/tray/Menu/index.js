@@ -11,7 +11,7 @@ export class Menu extends React.Component {
       <div className='panelMenu'>
         <button
           type='button'
-          className='panelMenuItem panelMenuItemOpen panelWorkspaceToggle wrenControl wrenControlGhost wrenControlIcon wrenShellNav'
+          className='panelMenuItem panelMenuItemOpen panelWorkspaceToggle saf0oControl saf0oControlGhost saf0oControlIcon saf0oShellNav'
           aria-label={workspaceOpen ? 'Close dashboard' : 'Open dashboard'}
           aria-pressed={workspaceOpen}
           onClick={() => {

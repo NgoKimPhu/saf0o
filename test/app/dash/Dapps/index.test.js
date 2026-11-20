@@ -32,7 +32,7 @@ const permission = (handlerId, origin, expiresAt = Date.now() + 60_000) => ({
   parentCapability: 'eth_accounts',
   caveats: [
     {
-      type: 'wren:permissionScope',
+      type: 'saf0o:permissionScope',
       value: {
         account,
         methods: ['eth_accounts'],
@@ -66,7 +66,7 @@ test('shows one global empty state when there are no connected apps', () => {
   renderDapps({})
 
   expect(screen.getByText('No connected apps')).toBeTruthy()
-  expect(screen.getByText('Open a dapp with the Wren Companion to see it here.')).toBeTruthy()
+  expect(screen.getByText('Open a dapp with the Saf0o Companion to see it here.')).toBeTruthy()
   expect(screen.getAllByAltText('')).toHaveLength(1)
 })
 
@@ -256,7 +256,7 @@ test('reschedules long permission deadlines and removes an app at the exact boun
   jest.setSystemTime(now)
 })
 
-test('does not expose managed Wren Send activity as a connected app', () => {
+test('does not expose managed Saf0o Send activity as a connected app', () => {
   renderDapps(
     {
       managed: {

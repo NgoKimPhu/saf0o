@@ -25,7 +25,7 @@ const recentUse = {
 
 test('a failed synchronous commit reports session-only clearing and restart restores disk state', () => {
   jest.useFakeTimers()
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-recent-recipient-clearing-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-recent-recipient-clearing-'))
 
   try {
     const { PersistStore, commitMainState } = jest.requireActual('../../../main/store/persist')
@@ -77,7 +77,7 @@ test('a failed synchronous commit reports session-only clearing and restart rest
 
 test('a failed Activity commit restores history and address memories after restart', () => {
   jest.useFakeTimers()
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-activity-clearing-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-activity-clearing-'))
   const digest = 'b'.repeat(64)
   const activity = {
     id: '00000000-0000-4000-8000-000000000002',

@@ -31,7 +31,7 @@ const LocateKeystore = ({ addKeystore, error, setError, active, selectionPending
       ) : (
         <button
           type='button'
-          className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+          className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
           disabled={selectionPending}
           style={{ marginTop: '10px' }}
           onClick={() => addKeystore()}

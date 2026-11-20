@@ -94,7 +94,7 @@
 
           .featureBoxSubtext
             margin-top 8px
-            font-size var(--wren-type-caption)
+            font-size var(--saf0o-type-caption)
             font-family 'FiraCode'
             justify-content center
             opacity 0.7
@@ -116,7 +116,7 @@
   height 48px
   z-index 99
   overflow hidden
-  animation appear var(--wren-motion-standard) var(--wren-ease)
+  animation appear var(--saf0o-motion-standard) var(--saf0o-ease)
 
 .panelFilterAccount
   position sticky
@@ -127,7 +127,7 @@
   width 100%
   z-index 99
   overflow hidden
-  animation appear var(--wren-motion-standard) var(--wren-ease)
+  animation appear var(--saf0o-motion-standard) var(--saf0o-ease)
 
 .panelFilterIcon
   position absolute
@@ -139,7 +139,7 @@
   justify-content center
   align-items center
   z-index 1
-  color var(--wren-text-muted)
+  color var(--saf0o-text-muted)
   pointer-events none
 
 .panelFilterInput
@@ -155,9 +155,9 @@
     height 100%
     padding 0 12px 0 34px
     text-align left
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
     font-size 13px
-    font-family var(--wren-font-ui)
+    font-family var(--saf0o-font-ui)
     font-weight 450
 
 .panelFilterClear
@@ -172,7 +172,7 @@
   display flex
   justify-content center
   align-items center
-  border-radius var(--wren-radius-sm)
+  border-radius var(--saf0o-radius-sm)
 
   *
     pointer-events none
@@ -183,7 +183,7 @@
   .newAccountIcon
     padding-right 10px
 
-// Wren account selector foundation
+// Saf0o account selector foundation
 .accountSelector
   top 88px
   right 0
@@ -195,10 +195,10 @@
     border-radius 0
 
     .accountSelectorScrollWrap
-      padding 24px var(--wren-space-5) 48px
+      padding 24px var(--saf0o-space-5) 48px
 
 .accountSelectorWelcome
-  padding var(--wren-space-4) var(--wren-space-2) var(--wren-space-5)
+  padding var(--saf0o-space-4) var(--saf0o-space-2) var(--saf0o-space-5)
   pointer-events auto
 
   h1,
@@ -206,23 +206,23 @@
     margin 0
 
   h1
-    color var(--wren-text-primary)
-    font-family var(--wren-font-ui)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-ui)
     font-size 20px
     font-weight 640
     line-height 26px
-    font-variation-settings var(--wren-font-heading-settings)
+    font-variation-settings var(--saf0o-font-heading-settings)
 
   p
-    margin-top var(--wren-space-1)
-    color var(--wren-text-secondary)
-    font-family var(--wren-font-ui)
-    font-size var(--wren-type-small)
+    margin-top var(--saf0o-space-1)
+    color var(--saf0o-text-secondary)
+    font-family var(--saf0o-font-ui)
+    font-size var(--saf0o-type-small)
     line-height 20px
 
 .accountSelector:not(.accountSelectorOpen)
   display grid
-  padding 8px var(--wren-space-5) var(--wren-space-4)
+  padding 8px var(--saf0o-space-5) var(--saf0o-space-4)
   box-sizing border-box
   align-items stretch
   justify-content stretch
@@ -260,7 +260,7 @@
   flex-direction column
   pointer-events auto
   text-align center
-  color var(--wren-text-primary)
+  color var(--saf0o-text-primary)
   background transparent
   border 0
   border-radius 0
@@ -282,7 +282,7 @@
 .accountSelectorEmptyCopy
   max-width 300px
   margin-top 6px
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   font-size 13px
   line-height 20px
 
@@ -293,7 +293,7 @@
   justify-content center
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
   .newAccountIcon
@@ -315,8 +315,8 @@
 .accountSwitcherBar
   position absolute
   top 0
-  right var(--wren-space-5)
-  left var(--wren-space-5)
+  right var(--saf0o-space-5)
+  left var(--saf0o-space-5)
   z-index 4
   display flex
   height 60px
@@ -335,7 +335,7 @@
   display flex
   flex none
   align-items center
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
 .accountSwitcherQr
   pointer-events auto
@@ -353,31 +353,31 @@
   width 40px
   height 40px
   flex none
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-secondary)
-  background-color var(--wren-bg-elevated)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-secondary)
+  background-color var(--saf0o-bg-elevated)
   background-image none
   box-shadow none
 
   &:hover:not(:disabled)
-    border-color var(--wren-border-default)
-    color var(--wren-accent-primary-hover)
-    background-color var(--wren-surface-hover)
+    border-color var(--saf0o-border-default)
+    color var(--saf0o-accent-primary-hover)
+    background-color var(--saf0o-surface-hover)
     background-image none
     box-shadow none
 
   &:active:not(:disabled)
-    color var(--wren-accent-primary-active)
-    background-color var(--wren-surface-active)
+    color var(--saf0o-accent-primary-active)
+    background-color var(--saf0o-surface-active)
     background-image none
     box-shadow none
 
   &[aria-pressed='true']
-    color var(--wren-text-primary)
-    background-color var(--wren-surface-active)
+    color var(--saf0o-text-primary)
+    background-color var(--saf0o-surface-active)
     background-image none
-    box-shadow var(--wren-shadow-sm)
+    box-shadow var(--saf0o-shadow-sm)
 
 .accountSwitcherTrigger
   display grid
@@ -392,16 +392,16 @@
   text-align left
 
   &[aria-expanded='true']
-    color var(--wren-text-primary)
-    border-color var(--wren-border-subtle)
-    background-color var(--wren-surface-active)
-    box-shadow var(--wren-shadow-sm)
+    color var(--saf0o-text-primary)
+    border-color var(--saf0o-border-subtle)
+    background-color var(--saf0o-surface-active)
+    box-shadow var(--saf0o-shadow-sm)
 
 .accountSwitcherIcon
   display flex
   align-items center
   justify-content center
-  color var(--wren-accent-primary-hover)
+  color var(--saf0o-accent-primary-hover)
 
 .accountSwitcherIdentity
   min-width 0
@@ -414,29 +414,29 @@
   white-space nowrap
 
 .accountSwitcherName
-  color var(--wren-text-primary)
-  font-size var(--wren-type-small)
+  color var(--saf0o-text-primary)
+  font-size var(--saf0o-type-small)
   font-weight 620
 
 .accountSwitcherAddress
   margin-top 2px
-  color var(--wren-text-muted)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-muted)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
 
 .accountSwitcherChevron
   display flex
   justify-content flex-end
-  color var(--wren-text-muted)
+  color var(--saf0o-text-muted)
 
 .accountSwitcherPrivacy
   display flex
   align-items center
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
 .accountSwitcherPrivacyLabel
-  color var(--wren-text-muted)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-muted)
+  font-size var(--saf0o-type-caption)
 
 .accountPrivacyToggle
   position relative
@@ -444,11 +444,11 @@
   min-width 40px
   height 40px
   min-height 40px
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
 
   &.accountPrivacyToggleHidden
     border-color rgba(183, 154, 112, .48)
-    color var(--wren-accent-primary-hover)
+    color var(--saf0o-accent-primary-hover)
     background rgba(166, 138, 97, .11)
 
     &:after
@@ -484,7 +484,7 @@
   box-sizing border-box
   overflow hidden
   grid-template-rows auto auto minmax(0, 1fr) auto
-  background radial-gradient(circle at 16% 92%, rgba(166, 138, 97, .055), transparent 30%), var(--wren-bg-elevated)
+  background radial-gradient(circle at 16% 92%, rgba(166, 138, 97, .055), transparent 30%), var(--saf0o-bg-elevated)
   box-shadow 18px 0 45px rgba(0, 0, 0, .46)
 
 .accountChooserPanel
@@ -495,7 +495,7 @@
   left 0
   z-index 6
   display grid
-  padding 8px var(--wren-space-5) var(--wren-space-4)
+  padding 8px var(--saf0o-space-5) var(--saf0o-space-4)
   box-sizing border-box
   overflow hidden
   grid-template-rows auto minmax(0, 1fr) auto
@@ -509,15 +509,15 @@
   justify-content space-between
 
 .accountDrawerTitle
-  color var(--wren-text-primary)
+  color var(--saf0o-text-primary)
   font-size 17px
   font-weight 650
 
 .accountDrawerCount
   margin-left 7px
-  color var(--wren-text-muted)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-muted)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
 
 .accountDrawerClose
   width 30px
@@ -555,10 +555,10 @@
   height auto
   max-height none
   align-self start
-  border 1px solid var(--wren-border-default)
+  border 1px solid var(--saf0o-border-default)
   border-radius 10px
-  background var(--wren-surface-card)
-  box-shadow var(--wren-shadow-sm), var(--wren-shadow-inset)
+  background var(--saf0o-surface-card)
+  box-shadow var(--saf0o-shadow-sm), var(--saf0o-shadow-inset)
   overflow-y auto
   overflow-x hidden
 
@@ -576,13 +576,13 @@
   height 54px
   padding 0 9px
   border 0
-  border-bottom 1px solid var(--wren-ledger-rule)
+  border-bottom 1px solid var(--saf0o-ledger-rule)
   border-radius 0
-  color var(--wren-text-primary)
+  color var(--saf0o-text-primary)
   background transparent
   grid-template-columns 32px minmax(0, 1fr) 24px
   align-items center
-  column-gap var(--wren-space-2)
+  column-gap var(--saf0o-space-2)
   text-align left
   cursor pointer
 
@@ -590,38 +590,38 @@
     border-bottom 0
 
   &:hover
-    background var(--wren-ledger-hover)
+    background var(--saf0o-ledger-hover)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset -2px
 
   &:disabled
-    color var(--wren-text-disabled)
+    color var(--saf0o-text-disabled)
     cursor default
     opacity .58
 
   &.accountDrawerItemSelected
-    background var(--wren-ledger-selected)
+    background var(--saf0o-ledger-selected)
 
 .accountDrawerItemIcon
   display flex
   width 32px
   height 32px
   box-sizing border-box
-  border 1px solid var(--wren-border-subtle)
+  border 1px solid var(--saf0o-border-subtle)
   border-radius 8px
   justify-self center
   align-items center
   justify-content center
-  color var(--wren-accent-primary-hover)
-  background var(--wren-surface-inset)
+  color var(--saf0o-accent-primary-hover)
+  background var(--saf0o-surface-inset)
 
 .accountDrawerItemSelected .accountDrawerItemEnd
-  color var(--wren-accent-primary-hover)
+  color var(--saf0o-accent-primary-hover)
 
 .accountDrawerItemSelected .accountDrawerItemIcon
-  color var(--wren-accent-primary-hover)
+  color var(--saf0o-accent-primary-hover)
 
 .accountDrawerItemIdentity
   min-width 0
@@ -634,38 +634,38 @@
   white-space nowrap
 
 .accountDrawerItemName
-  font-size var(--wren-type-small)
+  font-size var(--saf0o-type-small)
   font-weight 610
 
 .accountDrawerItemAddress
   margin-top 3px
-  color var(--wren-text-muted)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-muted)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
 
 .accountDrawerItemEnd
   display flex
   justify-content flex-end
-  color var(--wren-accent-primary)
+  color var(--saf0o-accent-primary)
 
 .accountDrawerRequestCount
   display flex
   width 19px
   height 19px
-  border-radius var(--wren-radius-sm)
+  border-radius var(--saf0o-radius-sm)
   align-items center
   justify-content center
-  color var(--wren-bg-canvas)
-  background var(--wren-success)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-bg-canvas)
+  background var(--saf0o-success)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
   font-weight 700
 
 .accountDrawerFooter
   position relative
   z-index 1
   display flex
-  padding-top var(--wren-space-3)
+  padding-top var(--saf0o-space-3)
   justify-content flex-end
 
 .accountDrawerAdd
@@ -675,7 +675,7 @@
   padding 0 13px
   align-items center
   gap 7px
-  font-size var(--wren-type-caption)
+  font-size var(--saf0o-type-caption)
   font-weight 610
 
 // Perch fidelity checkpoint: the selected account owns the screen-edge chrome.
@@ -691,30 +691,30 @@
   padding 0 20px
   box-sizing border-box
   gap 12px
-  border-bottom 1px solid var(--wren-border-subtle)
+  border-bottom 1px solid var(--saf0o-border-subtle)
   background transparent
   box-shadow none
 
-button.accountSwitcherTrigger.wrenControl.wrenControlGhost
+button.accountSwitcherTrigger.saf0oControl.saf0oControlGhost
   min-width 0
   max-width 310px
   height 44px
   min-height 44px
   padding 0
   grid-template-columns 32px minmax(0, 1fr)
-  column-gap var(--wren-space-2)
+  column-gap var(--saf0o-space-2)
   border 0
   border-radius 8px
   background transparent
   box-shadow none
 
   &:hover:not(:disabled)
-    background var(--wren-surface-hover)
+    background var(--saf0o-surface-hover)
     box-shadow none
 
   &[aria-expanded='true']
-    color var(--wren-text-primary)
-    background var(--wren-surface-active)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-active)
     box-shadow none
 
 .accountSwitcherBrand
@@ -734,7 +734,7 @@ button.accountSwitcherTrigger.wrenControl.wrenControlGhost
 .accountSwitcherAddress
   margin-top 3px
   color #97917f
-  font-family var(--wren-font-mono)
+  font-family var(--saf0o-font-mono)
   font-size 12px
   font-weight 400
   line-height 13px

@@ -14,12 +14,12 @@ const {
 } = require('./state-fixture.cjs')
 
 const projectRoot = path.resolve(__dirname, '../../..')
-const runRoot = path.resolve(process.env.WREN_UI_QUALIFICATION_ROOT || '')
-const reportPath = path.resolve(process.env.WREN_UI_QUALIFICATION_REPORT || '')
-const screenshotRoot = path.resolve(process.env.WREN_UI_QUALIFICATION_SCREENSHOTS || '')
-const captureAll = process.env.WREN_UI_QUALIFICATION_CAPTURE_ALL === '1'
+const runRoot = path.resolve(process.env.SAF0O_UI_QUALIFICATION_ROOT || '')
+const reportPath = path.resolve(process.env.SAF0O_UI_QUALIFICATION_REPORT || '')
+const screenshotRoot = path.resolve(process.env.SAF0O_UI_QUALIFICATION_SCREENSHOTS || '')
+const captureAll = process.env.SAF0O_UI_QUALIFICATION_CAPTURE_ALL === '1'
 const selectedScenarioIds = new Set(
-  (process.env.WREN_UI_QUALIFICATION_SCENARIOS || '')
+  (process.env.SAF0O_UI_QUALIFICATION_SCENARIOS || '')
     .split(',')
     .map((value) => value.trim())
     .filter(Boolean)
@@ -179,14 +179,14 @@ const runIsolationSelfTest = async () => {
     webPreferences: { contextIsolation: true, sandbox: true, nodeIntegration: false }
   })
   try {
-    await probe.loadURL('data:text/html,<meta charset="utf-8"><title>Wren isolation probe</title>')
+    await probe.loadURL('data:text/html,<meta charset="utf-8"><title>Saf0o isolation probe</title>')
     const result = await probe.webContents.executeJavaScript(
       `(async () => {
       let fetchBlocked = false
-      try { await fetch('https://example.invalid/wren-ui-qualification') } catch { fetchBlocked = true }
-      const popupBlocked = window.open('https://example.invalid/wren-ui-popup') === null
+      try { await fetch('https://example.invalid/saf0o-ui-qualification') } catch { fetchBlocked = true }
+      const popupBlocked = window.open('https://example.invalid/saf0o-ui-popup') === null
       const initialLocation = location.href
-      location.assign('https://example.invalid/wren-ui-navigation')
+      location.assign('https://example.invalid/saf0o-ui-navigation')
       await new Promise((resolve) => setTimeout(resolve, 50))
       const navigationBlocked = location.href === initialLocation
       const permission = await navigator.permissions.query({ name: 'geolocation' })
@@ -605,7 +605,8 @@ const runScenario = async (scenario) => {
                 (element) => element.getAttribute('aria-label') === ${JSON.stringify(scenario.expectedInitialFocus)}
               )
               target?.focus({ preventScroll: true })
-            })()`, true
+            })()`,
+            true
           )
         }
         await window.webContents.executeJavaScript(
@@ -683,10 +684,18 @@ const main = async () => {
     const module = state?.panel?.account?.modules?.chains
     if (!module || module.height === update.height) return
     module.height = update.height
-    event.sender.send('main:action', 'stateSync', JSON.stringify([{
-      name: 'qualification-gas-module-size', count: 1, deferred: false,
-      updates: [{ path: 'panel.account.modules.chains.height', value: update.height }]
-    }]))
+    event.sender.send(
+      'main:action',
+      'stateSync',
+      JSON.stringify([
+        {
+          name: 'qualification-gas-module-size',
+          count: 1,
+          deferred: false,
+          updates: [{ path: 'panel.account.modules.chains.height', value: update.height }]
+        }
+      ])
+    )
   })
 
   ipcMain.on('nav:update', (event, windowId, crumb, navigate = true) => {

@@ -141,7 +141,7 @@ it('returns the exact actionable v2 error only to a recognizable legacy hello', 
     step: 'error',
     code: 'unsupported-version',
     message:
-      'Update Wren Companion — This version can’t verify Wren’s identity. Update the companion, then reconnect.'
+      'Update Saf0o Companion — This version can’t verify Saf0o’s identity. Update the companion, then reconnect.'
   })
   await expect(
     auth.receive(JSON.stringify({ type: 'frame-auth', version: 2, step: 'hello' }))

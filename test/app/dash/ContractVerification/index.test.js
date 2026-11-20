@@ -657,11 +657,11 @@ it('retries a key-failed direct POST only without a remote id', async () => {
 it.each([
   [
     'transport-failure',
-    'Etherscan’s response was not confirmed. Wren will not submit this publication again; check the contract on Etherscan later.'
+    'Etherscan’s response was not confirmed. Saf0o will not submit this publication again; check the contract on Etherscan later.'
   ],
   [
     'status-unavailable',
-    'Wren cannot confirm whether direct publication began. It will not submit this publication again; check the contract on Etherscan later.'
+    'Saf0o cannot confirm whether direct publication began. It will not submit this publication again; check the contract on Etherscan later.'
   ]
 ])('explains a terminal direct unknown result for %s without offering replay', async (reasonCode, copy) => {
   const unknownDirect = {
@@ -723,7 +723,7 @@ it('focuses fixed errors and ignores stale completion after unmount', async () =
   const { user } = render(<ContractVerification networks={networks} />)
   await user.click(screen.getByRole('button', { name: 'Choose artifact' }))
   const alert = await screen.findByRole('alert')
-  expect(alert.textContent).toBe('Wren could not use this verification artifact.')
+  expect(alert.textContent).toBe('Saf0o could not use this verification artifact.')
   expect(document.activeElement).toBe(alert)
   expect(screen.getAllByRole('status')).toHaveLength(1)
 })

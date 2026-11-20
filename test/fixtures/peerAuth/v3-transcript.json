@@ -1,6 +1,6 @@
 {
   "transcript": {
-    "protocol": "wren-companion-auth",
+    "protocol": "saf0o-companion-auth",
     "version": 3,
     "peerKind": "companion",
     "role": "desktop-challenge",

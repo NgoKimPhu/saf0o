@@ -6,7 +6,7 @@ import {
   APPLICATION_NAME,
   INSTANCE_LOCK_DIRECTORY,
   configureApplicationIdentity,
-  requestWrenSingleInstanceLock
+  requestSaf0oSingleInstanceLock
 } from '../../main/applicationIdentity'
 
 const roots: string[] = []
@@ -16,7 +16,7 @@ afterEach(() => {
 })
 
 const application = (customProfile?: string) => {
-  const appData = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-identity-'))
+  const appData = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-identity-'))
   roots.push(appData)
   const paths = { appData, userData: customProfile || path.join(appData, 'electron-default') }
 
@@ -31,7 +31,7 @@ const application = (customProfile?: string) => {
   }
 }
 
-it('uses an independent Wren profile by default', () => {
+it('uses an independent Saf0o profile by default', () => {
   const app = application()
 
   configureApplicationIdentity(app)
@@ -41,7 +41,7 @@ it('uses an independent Wren profile by default', () => {
 })
 
 it('preserves an explicit isolated profile', () => {
-  const app = application(path.join(os.tmpdir(), 'isolated-wren-profile'))
+  const app = application(path.join(os.tmpdir(), 'isolated-saf0o-profile'))
 
   configureApplicationIdentity(app)
 
@@ -49,15 +49,15 @@ it('preserves an explicit isolated profile', () => {
   expect(app.setPath).not.toHaveBeenCalled()
 })
 
-it('acquires one Wren-wide lock without creating the wallet profile', () => {
-  const profile = path.join(os.tmpdir(), 'isolated-wren-profile')
+it('acquires one Saf0o-wide lock without creating the wallet profile', () => {
+  const profile = path.join(os.tmpdir(), 'isolated-saf0o-profile')
   const app = application(profile)
   app.requestSingleInstanceLock.mockImplementation(() => {
     expect(app.getPath('userData')).toBe(path.join(app.getPath('appData'), INSTANCE_LOCK_DIRECTORY))
     return true
   })
 
-  expect(requestWrenSingleInstanceLock(app)).toBe(true)
+  expect(requestSaf0oSingleInstanceLock(app)).toBe(true)
   expect(app.getPath('userData')).toBe(profile)
   const lockPath = path.join(app.getPath('appData'), INSTANCE_LOCK_DIRECTORY)
   expect(fs.lstatSync(lockPath).isDirectory()).toBe(true)
@@ -74,14 +74,14 @@ it('rejects direct and nested access to the legacy Frame profile', () => {
   )
 
   expect(() => configureApplicationIdentity(direct)).toThrow(
-    'Wren cannot use a profile inside the Frame profile; use --import-frame-profile instead'
+    'Saf0o cannot use a profile inside the Frame profile; use --import-frame-profile instead'
   )
 
   direct.getPath.mockImplementation((name: 'appData' | 'userData') =>
-    name === 'appData' ? path.dirname(frameProfile) : path.join(frameProfile, 'nested-wren')
+    name === 'appData' ? path.dirname(frameProfile) : path.join(frameProfile, 'nested-saf0o')
   )
   expect(() => configureApplicationIdentity(direct)).toThrow(
-    'Wren cannot use a profile inside the Frame profile; use --import-frame-profile instead'
+    'Saf0o cannot use a profile inside the Frame profile; use --import-frame-profile instead'
   )
 
   const linked = application()
@@ -91,10 +91,10 @@ it('rejects direct and nested access to the legacy Frame profile', () => {
   fs.symlinkSync(linkedFrame, alias, 'dir')
   linked.commandLine.hasSwitch.mockReturnValue(true)
   linked.getPath.mockImplementation((name: 'appData' | 'userData') =>
-    name === 'appData' ? path.dirname(linkedFrame) : path.join(alias, 'nested-wren')
+    name === 'appData' ? path.dirname(linkedFrame) : path.join(alias, 'nested-saf0o')
   )
 
   expect(() => configureApplicationIdentity(linked)).toThrow(
-    'Wren cannot use a profile inside the Frame profile; use --import-frame-profile instead'
+    'Saf0o cannot use a profile inside the Frame profile; use --import-frame-profile instead'
   )
 })

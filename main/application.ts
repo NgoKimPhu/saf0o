@@ -634,8 +634,8 @@ handleRenderer('profile:stageRestore', async (e, restoreToken, password, confirm
     }
     if (
       !(await confirmSensitiveAction(
-        'Replace your Wren profile?',
-        'Your current profile will be replaced by the selected backup when Wren restarts.',
+        'Replace your Saf0o profile?',
+        'Your current profile will be replaced by the selected backup when Saf0o restarts.',
         'Replace profile'
       ))
     ) {

@@ -8,7 +8,7 @@ const QUANTITY = /^0x(?:0|[1-9a-fA-F][0-9a-fA-F]*)$/
 const presentations = {
   100: {
     label: 'Pending',
-    detail: 'Wren is waiting for submitted transactions.',
+    detail: 'Saf0o is waiting for submitted transactions.',
     tone: 'pending',
     icon: 'pending'
   },
@@ -40,7 +40,7 @@ const presentations = {
 
 const unavailablePresentation = {
   label: 'Status unavailable',
-  detail: 'Wren cannot verify the current status of this wallet call.',
+  detail: 'Saf0o cannot verify the current status of this wallet call.',
   tone: 'warning',
   icon: 'alert'
 }

@@ -2,9 +2,9 @@ import Restore from 'react-restore'
 
 import { Main } from '../../../../app/dash/Main'
 import {
-  WREN_COMPANION_CHROME_WEB_STORE_URL,
-  WREN_COMPANION_FIREFOX_ADDONS_URL,
-  WREN_SUPPORT_URL
+  SAF0O_COMPANION_CHROME_WEB_STORE_URL,
+  SAF0O_COMPANION_FIREFOX_ADDONS_URL,
+  SAF0O_SUPPORT_URL
 } from '../../../../resources/constants'
 import link from '../../../../resources/link'
 import { fireEvent, render, screen } from '../../../componentSetup'
@@ -61,10 +61,10 @@ it('routes Chrome to its Web Store listing', () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'Download Chrome companion' }))
 
-  expect(WREN_COMPANION_CHROME_WEB_STORE_URL).toBe(
+  expect(SAF0O_COMPANION_CHROME_WEB_STORE_URL).toBe(
     'https://chromewebstore.google.com/detail/wren-companion/ifimccfajfbgligbhcgfapdagpnfkbhn'
   )
-  expect(link.send).toHaveBeenCalledWith('tray:openExternal', WREN_COMPANION_CHROME_WEB_STORE_URL)
+  expect(link.send).toHaveBeenCalledWith('tray:openExternal', SAF0O_COMPANION_CHROME_WEB_STORE_URL)
 })
 
 it('keeps Firefox on companion releases while store approval is pending', () => {
@@ -72,7 +72,7 @@ it('keeps Firefox on companion releases while store approval is pending', () => 
 
   fireEvent.click(screen.getByRole('button', { name: 'Download Firefox companion' }))
 
-  expect(link.send).toHaveBeenCalledWith('tray:openExternal', WREN_COMPANION_FIREFOX_ADDONS_URL)
+  expect(link.send).toHaveBeenCalledWith('tray:openExternal', SAF0O_COMPANION_FIREFOX_ADDONS_URL)
 })
 
 it('routes support, tutorial, and quit actions', () => {
@@ -80,10 +80,10 @@ it('routes support, tutorial, and quit actions', () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'Report an issue' }))
   fireEvent.click(screen.getByRole('button', { name: 'Add account' }))
-  fireEvent.click(screen.getByRole('button', { name: 'Quit Wren' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Quit Saf0o' }))
 
   expect(link.send.mock.calls).toEqual([
-    ['tray:openExternal', WREN_SUPPORT_URL],
+    ['tray:openExternal', SAF0O_SUPPORT_URL],
     ['tray:action', 'navDash', { view: 'accounts', data: { showAddAccounts: true } }],
     ['tray:quit']
   ])
@@ -92,7 +92,7 @@ it('routes support, tutorial, and quit actions', () => {
 it('has no support-address copy or QR control', () => {
   renderMain()
 
-  expect(screen.queryByRole('button', { name: 'Support Wren' })).toBeNull()
+  expect(screen.queryByRole('button', { name: 'Support Saf0o' })).toBeNull()
   expect(screen.queryByRole('img', { name: 'QR code for the support address' })).toBeNull()
 })
 

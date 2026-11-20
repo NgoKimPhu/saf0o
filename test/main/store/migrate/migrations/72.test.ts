@@ -1,7 +1,7 @@
 import migration from '../../../../../main/store/migrate/migrations/72'
 import {
   FRAME_SEND_ORIGIN,
-  WREN_DEPLOY_ORIGIN,
+  SAF0O_DEPLOY_ORIGIN,
   originIdForName
 } from '../../../../../resources/domain/origin'
 import { createState } from '../setup'
@@ -14,13 +14,13 @@ const managedOrigin = (name: string) => ({
   session: { requests: 1, startedAt: 1, lastUpdatedAt: 1 }
 })
 
-test('removes untrusted legacy collisions at Wren-managed origin identities', () => {
+test('removes untrusted legacy collisions at Saf0o-managed origin identities', () => {
   const state = createState(71)
   const sendId = originIdForName(FRAME_SEND_ORIGIN)
-  const deployId = originIdForName(WREN_DEPLOY_ORIGIN)
+  const deployId = originIdForName(SAF0O_DEPLOY_ORIGIN)
   state.main.origins = {
     [sendId]: { ...managedOrigin(FRAME_SEND_ORIGIN), provenance: 'legacy' },
-    [deployId]: { ...managedOrigin(WREN_DEPLOY_ORIGIN), sourceId: 'colliding-source' },
+    [deployId]: { ...managedOrigin(SAF0O_DEPLOY_ORIGIN), sourceId: 'colliding-source' },
     direct: { name: 'https://example.test', provenance: 'direct' }
   }
   state.main.permissions = {
@@ -42,10 +42,10 @@ test('removes untrusted legacy collisions at Wren-managed origin identities', ()
 test('preserves exact managed origins and unrelated permission grants', () => {
   const state = createState(71)
   const sendId = originIdForName(FRAME_SEND_ORIGIN)
-  const deployId = originIdForName(WREN_DEPLOY_ORIGIN)
+  const deployId = originIdForName(SAF0O_DEPLOY_ORIGIN)
   state.main.origins = {
     [sendId]: managedOrigin(FRAME_SEND_ORIGIN),
-    [deployId]: managedOrigin(WREN_DEPLOY_ORIGIN)
+    [deployId]: managedOrigin(SAF0O_DEPLOY_ORIGIN)
   }
   state.main.permissions = { account: { [sendId]: { handlerId: 'send' } } }
 

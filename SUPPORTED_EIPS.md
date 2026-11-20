@@ -14,19 +14,19 @@ and origins, see [RPC Compatibility](RPC_COMPATIBILITY.md). Companion is release
 
 ## Status definitions
 
-- **Implemented**: Wren owns the path and has automated regression coverage.
-- **Partial**: Wren supports part of the standard. The table states what is missing.
-- **Review-only**: Wren recognizes and reviews protocol messages. The app or
+- **Implemented**: Saf0o owns the path and has automated regression coverage.
+- **Partial**: Saf0o supports part of the standard. The table states what is missing.
+- **Review-only**: Saf0o recognizes and reviews protocol messages. The app or
   contract handles execution or session validation.
-- **Awareness-only**: Wren detects state but cannot change it.
-- **Unsupported**: Wren has no maintained implementation.
+- **Awareness-only**: Saf0o detects state but cannot change it.
+- **Unsupported**: Saf0o has no maintained implementation.
 
 **Implemented** refers to a usable wallet path. Internal helpers alone do not
 change an **Unsupported** status.
 
 ## Provider and wallet interfaces
 
-| Standard                                            | Status      | Wren behavior and limit                                                                                                                                                                                                                                                                                                                           |
+| Standard                                            | Status      | Saf0o behavior and limit                                                                                                                                                                                                                                                                                                                          |
 | --------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193) | Implemented | Provides `request`, `ProviderRpcError`, account/chain/connection events, subscriptions and legacy methods. Account state updates before listeners run. Transport and origin rules are in [RPC Compatibility](RPC_COMPATIBILITY.md).                                                                                                               |
 | [EIP-1102](https://eips.ethereum.org/EIPS/eip-1102) | Implemented | Account exposure is permission-gated. `eth_requestAccounts` returns the selected account.                                                                                                                                                                                                                                                         |
@@ -34,12 +34,12 @@ change an **Unsupported** status.
 | [EIP-3085](https://eips.ethereum.org/EIPS/eip-3085) | Implemented | Validates chain IDs and metadata, checks the supplied RPC chain and requires approval. RPC, explorer and icon URLs must use HTTPS without credentials.                                                                                                                                                                                            |
 | [EIP-3326](https://eips.ethereum.org/EIPS/eip-3326) | Implemented | Known origins can switch to enabled chains without new account access. Untouched requests on the old route are cancelled. Unknown origins and unavailable chains are rejected.                                                                                                                                                                    |
 | [EIP-747](https://eips.ethereum.org/EIPS/eip-747)   | Implemented | Supports checksummed legacy and ERC-1046 ERC-20 suggestions. Inline JSON and IPFS metadata have size limits and must agree with contract reads. HTTP(S) metadata and images are rejected.                                                                                                                                                         |
-| [ERC-7811](https://eips.ethereum.org/EIPS/eip-7811) | Partial     | Parameterized `wallet_getAssets` returns native and ERC-20 balances for the authorized account and granted chains. Supports asset, type and chain filters, and `assetDiscovery`. Empty-parameter calls keep the legacy Wren response. NFT indexing is unsupported.                                                                                |
+| [ERC-7811](https://eips.ethereum.org/EIPS/eip-7811) | Partial     | Parameterized `wallet_getAssets` returns native and ERC-20 balances for the authorized account and granted chains. Supports asset, type and chain filters, and `assetDiscovery`. Empty-parameter calls keep the legacy Saf0o response. NFT indexing is unsupported.                                                                               |
 | [EIP-6963](https://eips.ethereum.org/EIPS/eip-6963) | Partial     | The embedded injector announces fixed provider metadata and preserves `window.ethereum`. Companion handles discovery in browsers.                                                                                                                                                                                                                 |
 
 ## Signing and account intent
 
-| Standard                                            | Status      | Wren behavior and limit                                                                                                                                                                                                                                                                                                                                  |
+| Standard                                            | Status      | Saf0o behavior and limit                                                                                                                                                                                                                                                                                                                                 |
 | --------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [EIP-712](https://eips.ethereum.org/EIPS/eip-712)   | Implemented | Validates and reviews V3/V4 typed data and nested fields. Reports domain-chain risks. Preserves the flat Hyperliquid `ApproveAgent` message as a compatibility extension. Rejects nested namespaced structs before signing. V1 arrays use the legacy path. Hardware support varies.                                                                      |
 | [EIP-2612](https://eips.ethereum.org/EIPS/eip-2612) | Review-only | Detects exact signed permits, including owner, spender, amount, expiry, nonce, chain, and contract. It does not implement permit contracts.                                                                                                                                                                                                              |
@@ -54,7 +54,7 @@ See [RPC Compatibility](RPC_COMPATIBILITY.md) for the method rules.
 
 ## Transactions and execution
 
-| Standard                                            | Status      | Wren behavior and limit                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Standard                                            | Status      | Saf0o behavior and limit                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | --------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [EIP-155](https://eips.ethereum.org/EIPS/eip-155)   | Implemented | Chain-binds legacy transactions before signing.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | [EIP-2718](https://eips.ethereum.org/EIPS/eip-2718) | Partial     | Handles legacy, type-1, and type-2 envelopes. It rejects explicit unsupported or unknown types rather than rewriting them.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -67,15 +67,15 @@ See [RPC Compatibility](RPC_COMPATIBILITY.md) for the method rules.
 
 ## Simulation evidence
 
-Wren uses configured-RPC `eth_simulateV1` when available. An unsupported-method
+Saf0o uses configured-RPC `eth_simulateV1` when available. An unsupported-method
 reply falls back to bounded `eth_call` for single transactions. Successful
 calls can also request bounded `debug_traceCall` prestate and call traces.
 Fallback token events require execution and traces at the same canonical block
 hash. Missing tracing or block-selector support leaves the preview limited.
 See [Simulation fallback](SIMULATION_FALLBACK.md) for coverage and tested endpoints.
 
-Wren can show native Wei deltas and summarized nested calls or creations. The
-results can omit fees or details and remain RPC claims. Wren hides raw trace
+Saf0o can show native Wei deltas and summarized nested calls or creations. The
+results can omit fees or details and remain RPC claims. Saf0o hides raw trace
 input and return data. Standard token and NFT logs are reported effects, not
 complete or independently verified balance changes. Stateful wallet-call
 batches have no independent traces because a trace cannot represent state
@@ -88,8 +88,8 @@ delegated sender does not automatically run its delegate.
 
 ## Chain-agnostic compatibility
 
-| Standard                                                               | Status      | Wren behavior and limit                                                                                                                                                 |
-| ---------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [CAIP-2](https://standards.chainagnostic.org/CAIPs/caip-2)             | Unsupported | Wren's removed historical envelopes no longer expose CAIP-2 routing. Use the top-level canonical hexadecimal EIP-1193 `chainId`.                                        |
-| [CAIP-27](https://standards.chainagnostic.org/CAIPs/caip-27)           | Unsupported | Historical `caip_request` and `wallet_request` envelopes are removed and return `4200`. Wren does not implement current `wallet_invokeMethod` session or scope support. |
-| [EIP-155 namespace](https://namespaces.chainagnostic.org/eip155/caip2) | Unsupported | Wren does not expose CAIP-2 namespace routing. EVM requests use a top-level canonical hexadecimal `chainId`.                                                            |
+| Standard                                                               | Status      | Saf0o behavior and limit                                                                                                                                                 |
+| ---------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [CAIP-2](https://standards.chainagnostic.org/CAIPs/caip-2)             | Unsupported | Saf0o's removed historical envelopes no longer expose CAIP-2 routing. Use the top-level canonical hexadecimal EIP-1193 `chainId`.                                        |
+| [CAIP-27](https://standards.chainagnostic.org/CAIPs/caip-27)           | Unsupported | Historical `caip_request` and `wallet_request` envelopes are removed and return `4200`. Saf0o does not implement current `wallet_invokeMethod` session or scope support. |
+| [EIP-155 namespace](https://namespaces.chainagnostic.org/eip155/caip2) | Unsupported | Saf0o does not expose CAIP-2 namespace routing. EVM requests use a top-level canonical hexadecimal `chainId`.                                                            |

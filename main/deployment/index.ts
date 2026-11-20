@@ -81,7 +81,7 @@ export type DeploymentGasEstimateEvidence =
       readonly source: 'configured-rpc'
       readonly method: 'eth_estimateGas'
       readonly value: string
-      /** provider.estimateGas applies Wren's 1.5x safety margin. */
+      /** provider.estimateGas applies Saf0o's 1.5x safety margin. */
       readonly padded: true
     }
   | (EvidenceFailure & { readonly method: 'eth_estimateGas' })
@@ -152,7 +152,7 @@ export interface DeploymentServiceDependencies {
   readonly estimateGas: (transaction: DeploymentTransaction) => Promise<unknown>
   readonly simulateTransaction: (transaction: DeploymentTransaction) => Promise<unknown>
   readonly getPendingNonce: (transaction: DeploymentTransaction) => Promise<unknown>
-  /** Must create or validate Wren's distinct managed deployment origin. */
+  /** Must create or validate Saf0o's distinct managed deployment origin. */
   readonly ensureDeploymentOrigin: (chainId: number) => string | Promise<string>
   readonly admitTransaction: (
     input: DeploymentAdmissionInput

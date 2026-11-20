@@ -1,11 +1,11 @@
 .clearPermissionsButton
   display grid
   min-height 60px
-  padding var(--wren-space-2) var(--wren-space-3)
+  padding var(--saf0o-space-2) var(--saf0o-space-3)
   align-items center
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
   grid-template-columns minmax(0, 1fr) auto
-  border-top 1px solid var(--wren-border-subtle)
+  border-top 1px solid var(--saf0o-border-subtle)
 
 .clearPermissionsSummary
   min-width 0
@@ -13,87 +13,87 @@
   gap 2px
 
   strong
-    color var(--wren-text-primary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-small)
     font-weight 550
     line-height 18px
 
   span
-    color var(--wren-text-tertiary)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-tertiary)
+    font-size var(--saf0o-type-caption)
     line-height 18px
 
 .clearPermissionsConfirm
   display flex
   grid-column 1 / -1
   flex-direction column
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
 .clearPermissionsCopy
   strong
     display block
-    color var(--wren-text-primary)
-    font-family var(--wren-font-ui)
-    font-size var(--wren-type-body)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-ui)
+    font-size var(--saf0o-type-body)
     font-weight 600
 
   p
-    margin var(--wren-space-2) 0 0
-    color var(--wren-text-secondary)
-    font-family var(--wren-font-ui)
-    font-size var(--wren-type-small)
+    margin var(--saf0o-space-2) 0 0
+    color var(--saf0o-text-secondary)
+    font-family var(--saf0o-font-ui)
+    font-size var(--saf0o-type-small)
     line-height 20px
 
 .clearPermissionsActions
   display grid
   grid-template-columns repeat(2, minmax(0, 1fr))
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
 .clearPermissionsAction
   width auto
 
-button.wrenControl.clearPermissionsAction
+button.saf0oControl.clearPermissionsAction
   min-height 44px
 
-.clearPermissionsButton > button.wrenControl.clearPermissionsAction
+.clearPermissionsButton > button.saf0oControl.clearPermissionsAction
   min-width 88px
-  color var(--wren-text-tertiary)
+  color var(--saf0o-text-tertiary)
 
   &:hover:not(:disabled)
-    color var(--wren-danger)
+    color var(--saf0o-danger)
 
 .clearPermissionsActions .clearPermissionsAction
   flex 1
 
 .clearPermissionsStatus
-  padding var(--wren-space-3)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-secondary)
-  background var(--wren-surface-inset)
-  font-size var(--wren-type-small)
+  padding var(--saf0o-space-3)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-secondary)
+  background var(--saf0o-surface-inset)
+  font-size var(--saf0o-type-small)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
-.signerPermissionControls .wrenToggle
+.signerPermissionControls .saf0oToggle
   margin-top 0
 
 .revokeAccessButton
   flex none
   padding 0
 
-button.wrenControl.revokeAccessButton
+button.saf0oControl.revokeAccessButton
   min-width 68px
   min-height 44px
   padding 0
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
   font-weight 500
 
   &:hover:not(:disabled)
-    color var(--wren-danger)
+    color var(--saf0o-danger)
 
   &:hover:not(:disabled),
   &:active:not(:disabled)
@@ -102,18 +102,18 @@ button.wrenControl.revokeAccessButton
 
   &:hover:not(:disabled) .revokeAccessLabel
     border-color rgba(213, 116, 104, .32)
-    color var(--wren-danger)
-    background var(--wren-danger-soft)
+    color var(--saf0o-danger)
+    background var(--saf0o-danger-soft)
 
 .revokeAccessLabel
   display inline-flex
   min-height 28px
-  padding 0 var(--wren-space-2)
+  padding 0 var(--saf0o-space-2)
   align-items center
   justify-content center
   box-sizing border-box
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
   background rgba(255, 255, 255, .015)
 
 .revokeAccessDialog
@@ -123,7 +123,7 @@ button.wrenControl.revokeAccessButton
   display flex
   align-items center
   justify-content center
-  padding var(--wren-space-4)
+  padding var(--saf0o-space-4)
   box-sizing border-box
   background rgba(18, 20, 22, .76)
 
@@ -132,62 +132,62 @@ button.wrenControl.revokeAccessButton
   max-width 430px
   max-height calc(100vh - 32px)
   overflow auto
-  padding var(--wren-space-5)
+  padding var(--saf0o-space-5)
   box-sizing border-box
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-md)
-  background var(--wren-bg-elevated)
-  box-shadow var(--wren-shadow-lg), var(--wren-shadow-inset)
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-md)
+  background var(--saf0o-bg-elevated)
+  box-shadow var(--saf0o-shadow-lg), var(--saf0o-shadow-inset)
 
   strong
     display block
     overflow-wrap anywhere
-    color var(--wren-text-primary)
-    font-size var(--wren-type-body)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-body)
     font-weight 600
 
   p
-    margin var(--wren-space-2) 0 0
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-small)
+    margin var(--saf0o-space-2) 0 0
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-small)
     line-height 20px
 
 .revokeAccessActions
   display grid
   grid-template-columns repeat(2, minmax(0, 1fr))
-  gap var(--wren-space-2)
-  margin-top var(--wren-space-5)
+  gap var(--saf0o-space-2)
+  margin-top var(--saf0o-space-5)
 
-  button.wrenControl
+  button.saf0oControl
     width 100%
     min-height 44px
 
 .revokeAccessStatus
   min-height 18px
-  margin var(--wren-space-2) var(--wren-space-2) 0
-  padding 4px var(--wren-space-2) 0
-  color var(--wren-text-secondary)
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-caption)
+  margin var(--saf0o-space-2) var(--saf0o-space-2) 0
+  padding 4px var(--saf0o-space-2) 0
+  color var(--saf0o-text-secondary)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-caption)
   line-height 18px
   text-align center
 
   &:focus
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
 .revokeAccessFailure
-  margin-top var(--wren-space-3)
-  padding var(--wren-space-2)
-  border 1px solid var(--wren-danger)
-  border-radius var(--wren-radius-sm)
-  color var(--wren-danger)
-  background var(--wren-danger-soft)
-  font-size var(--wren-type-small)
+  margin-top var(--saf0o-space-3)
+  padding var(--saf0o-space-2)
+  border 1px solid var(--saf0o-danger)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-danger)
+  background var(--saf0o-danger-soft)
+  font-size var(--saf0o-type-small)
   line-height 20px
 
 .permissionsLedgerView:focus
-  outline 2px solid var(--wren-focus)
+  outline 2px solid var(--saf0o-focus)
   outline-offset -2px
 
 .permissionsModuleFocusFallback
@@ -206,17 +206,17 @@ button.wrenControl.revokeAccessButton
 
 .moduleMainPermissions
   overflow auto
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-md)
-  background var(--wren-surface-inset)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-md)
+  background var(--saf0o-surface-inset)
 
 .signerPermissionOrigin
   width 250px
   overflow hidden
-  color var(--wren-text-primary)
+  color var(--saf0o-text-primary)
   direction ltr
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
   line-height 18px
   text-align left
   text-overflow ellipsis
@@ -224,19 +224,19 @@ button.wrenControl.revokeAccessButton
 
 .signerPermissionNoPermissions
   width 100%
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-small)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-small)
   text-align center
 
 .signerPermission
   position relative
   z-index 2000
   width 100%
-  padding var(--wren-space-3)
+  padding var(--saf0o-space-3)
   box-sizing border-box
-  border-bottom 1px solid var(--wren-border-subtle)
-  color var(--wren-text-primary)
-  font-size var(--wren-type-small)
+  border-bottom 1px solid var(--saf0o-border-subtle)
+  color var(--saf0o-text-primary)
+  font-size var(--saf0o-type-small)
 
   &:last-child
     border-bottom 0
@@ -252,20 +252,20 @@ button.wrenControl.revokeAccessButton
     z-index 20
     display flex
     justify-content space-between
-    padding-top var(--wren-space-2)
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-caption)
+    padding-top var(--saf0o-space-2)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-caption)
 
 .connectedAppsList
   .signerPermission
     min-height 44px
-    padding 0 var(--wren-space-2) 0 var(--wren-space-3)
+    padding 0 var(--saf0o-space-2) 0 var(--saf0o-space-3)
     border-bottom 0
 
   .signerPermissionControls
     min-height 44px
     align-items center
-    gap var(--wren-space-2)
+    gap var(--saf0o-space-2)
 
   .signerPermissionOrigin
     width auto
@@ -291,45 +291,45 @@ button.wrenControl.revokeAccessButton
   align-items center
   justify-content center
   box-sizing border-box
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-tertiary)
-  background var(--wren-surface-inset)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-tertiary)
+  background var(--saf0o-surface-inset)
 
 .connectedAppKind
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-caption)
   line-height 18px
 
 .signerPermissionPrincipal
   overflow-wrap anywhere
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
   line-height 18px
 
 .dappGuardrailChainActions
   display grid
   gap 0
   padding 0
-  border-top 1px solid var(--wren-border-subtle)
+  border-top 1px solid var(--saf0o-border-subtle)
 
 .dappGuardrailManage
   width 100%
   height auto
-  padding var(--wren-space-2) 0
+  padding var(--saf0o-space-2) 0
   overflow-wrap anywhere
   white-space normal
 
-button.wrenControl.dappGuardrailManage
+button.saf0oControl.dappGuardrailManage
   min-height 52px
   justify-content space-between
   border 0
   border-radius 0
   text-align left
 
-button.wrenControl.dappGuardrailManage.wrenControlCompact
+button.saf0oControl.dappGuardrailManage.saf0oControlCompact
   min-height 52px
 
 .dappGuardrailIdentity
@@ -339,34 +339,34 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
 
   strong
     overflow hidden
-    color var(--wren-text-primary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-small)
     font-weight 550
     line-height 18px
     text-overflow ellipsis
     white-space nowrap
 
   > span
-    color var(--wren-text-tertiary)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-tertiary)
+    font-size var(--saf0o-type-caption)
     font-weight 400
     line-height 18px
 
 .dappGuardrailAction
   flex none
-  color var(--wren-text-secondary)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-secondary)
+  font-size var(--saf0o-type-caption)
   font-weight 550
 
 .connectedAppDetails
-  border-top 1px solid var(--wren-border-subtle)
+  border-top 1px solid var(--saf0o-border-subtle)
 
   summary
     min-height 44px
     display flex
     align-items center
-    color var(--wren-text-tertiary)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-tertiary)
+    font-size var(--saf0o-type-caption)
     font-weight 500
     cursor pointer
     list-style none
@@ -374,12 +374,12 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
     &:after
       content '+'
       margin-left auto
-      color var(--wren-text-tertiary)
-      font-family var(--wren-font-mono)
+      color var(--saf0o-text-tertiary)
+      font-family var(--saf0o-font-mono)
       font-size 14px
 
     &:focus-visible
-      outline 2px solid var(--wren-focus)
+      outline 2px solid var(--saf0o-focus)
       outline-offset -2px
 
   &[open] summary:after
@@ -387,18 +387,18 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
 
 .connectedAppConnection
   display grid
-  gap var(--wren-space-1)
-  padding 0 0 var(--wren-space-3)
+  gap var(--saf0o-space-1)
+  padding 0 0 var(--saf0o-space-3)
 
   span
-    color var(--wren-text-tertiary)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-tertiary)
+    font-size var(--saf0o-type-caption)
 
   code
     overflow-wrap anywhere
-    color var(--wren-text-secondary)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-secondary)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
     line-height 18px
 
 .permissionsLedgerView
@@ -411,7 +411,7 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
     .moduleMainPermissions
       display grid
       overflow visible
-      gap var(--wren-space-3)
+      gap var(--saf0o-space-3)
       border 0
       background transparent
 
@@ -420,19 +420,19 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
 
     .clusterValue
       overflow visible
-      border-radius var(--wren-radius-md)
-      background var(--wren-surface-card)
+      border-radius var(--saf0o-radius-md)
+      background var(--saf0o-surface-card)
 
     .signerPermission
       min-height 0
-      padding var(--wren-space-3)
+      padding var(--saf0o-space-3)
 
     .signerPermissionControls
       min-height 44px
 
     .signerPermissionOrigin
-      font-family var(--wren-font-ui)
-      font-size var(--wren-type-small)
+      font-family var(--saf0o-font-ui)
+      font-size var(--saf0o-type-small)
       font-weight 600
 
     .connectedAppMark
@@ -440,18 +440,18 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
       height 34px
 
     .revokeAccessButton
-      margin-left var(--wren-space-1)
+      margin-left var(--saf0o-space-1)
 
 .dappGuardrailNoChains
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
 
 .dappGuardrailEditor
-  margin var(--wren-space-1) 0 var(--wren-space-2)
-  padding var(--wren-space-3)
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-sm)
-  background var(--wren-surface-inset)
+  margin var(--saf0o-space-1) 0 var(--saf0o-space-2)
+  padding var(--saf0o-space-3)
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-surface-inset)
 
   textarea
     min-height 88px
@@ -460,152 +460,152 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
   display flex
   align-items flex-start
   justify-content space-between
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
   > div
     min-width 0
     display grid
-    gap var(--wren-space-1)
+    gap var(--saf0o-space-1)
 
   strong
-    color var(--wren-text-primary)
-    font-size var(--wren-type-body)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-body)
 
   span
     overflow-wrap anywhere
-    color var(--wren-text-secondary)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-secondary)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
 
 .dappGuardrailEvidence
   display grid
-  gap var(--wren-space-1)
-  margin var(--wren-space-3) 0
+  gap var(--saf0o-space-1)
+  margin var(--saf0o-space-3) 0
 
   > div
     display grid
     grid-template-columns minmax(88px, auto) minmax(0, 1fr)
-    gap var(--wren-space-2)
+    gap var(--saf0o-space-2)
 
   dt
-    color var(--wren-text-tertiary)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-tertiary)
+    font-size var(--saf0o-type-caption)
     text-transform uppercase
 
   dd
     min-width 0
     margin 0
     overflow-wrap anywhere
-    color var(--wren-text-secondary)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-secondary)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
 
 .dappGuardrailDisclosure
-  margin 0 0 var(--wren-space-3)
-  padding var(--wren-space-2)
-  border-left 2px solid var(--wren-accent-primary)
-  color var(--wren-text-secondary)
-  background var(--wren-surface-overlay)
-  font-size var(--wren-type-caption)
+  margin 0 0 var(--saf0o-space-3)
+  padding var(--saf0o-space-2)
+  border-left 2px solid var(--saf0o-accent-primary)
+  color var(--saf0o-text-secondary)
+  background var(--saf0o-surface-overlay)
+  font-size var(--saf0o-type-caption)
   line-height 1.45
 
 .dappGuardrailField
   display grid
-  gap var(--wren-space-1)
-  margin-bottom var(--wren-space-3)
+  gap var(--saf0o-space-1)
+  margin-bottom var(--saf0o-space-3)
 
   > span
-    color var(--wren-text-primary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-small)
 
   input,
   select,
   textarea
     width 100%
     min-height 44px
-    padding var(--wren-space-2)
+    padding var(--saf0o-space-2)
 
 .dappGuardrailToggleField
   min-width 0
-  margin 0 0 var(--wren-space-3)
-  padding var(--wren-space-2)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
+  margin 0 0 var(--saf0o-space-3)
+  padding var(--saf0o-space-2)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
 
   legend
     width 100%
     display flex
     align-items center
     justify-content space-between
-    gap var(--wren-space-2)
+    gap var(--saf0o-space-2)
     padding 0
-    color var(--wren-text-primary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-small)
 
   > input,
   > textarea
     width 100%
     min-height 44px
-    margin-top var(--wren-space-2)
-    padding var(--wren-space-2)
+    margin-top var(--saf0o-space-2)
+    padding var(--saf0o-space-2)
 
 .dappGuardrailFieldDetail
   display block
-  padding-top var(--wren-space-1)
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  padding-top var(--saf0o-space-1)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
   line-height 1.4
 
 .dappGuardrailMessage
-  margin-bottom var(--wren-space-2)
-  padding var(--wren-space-2)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
+  margin-bottom var(--saf0o-space-2)
+  padding var(--saf0o-space-2)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
   overflow-wrap anywhere
-  font-size var(--wren-type-small)
+  font-size var(--saf0o-type-small)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
 .dappGuardrailMessage-status
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
 
 .dappGuardrailMessage-alert
-  border-color var(--wren-danger)
-  color var(--wren-danger)
-  background var(--wren-danger-soft)
+  border-color var(--saf0o-danger)
+  color var(--saf0o-danger)
+  background var(--saf0o-danger-soft)
 
 .dappGuardrailActions,
 .dappGuardrailConfirmActions
   display grid
   grid-template-columns repeat(2, minmax(0, 1fr))
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
 .dappGuardrailActions
   grid-template-columns repeat(auto-fit, minmax(150px, 1fr))
 
-  button.wrenControl
+  button.saf0oControl
     width 100%
     min-height 44px
 
 .dappGuardrailConfirm
   display grid
-  gap var(--wren-space-2)
-  margin-bottom var(--wren-space-2)
-  padding var(--wren-space-2)
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-sm)
-  background var(--wren-surface-overlay)
+  gap var(--saf0o-space-2)
+  margin-bottom var(--saf0o-space-2)
+  padding var(--saf0o-space-2)
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-surface-overlay)
 
   strong
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
 
   > span
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-caption)
 
-  button.wrenControl
+  button.saf0oControl
     width 100%
     min-height 44px
 
@@ -661,7 +661,7 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
   border 0
   border-radius 0
   background transparent
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
   font-size 14px
   line-height 22px
 
@@ -672,7 +672,7 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
       font-size 18px
 
     span
-      font-family var(--wren-font-ui)
+      font-family var(--saf0o-font-ui)
       font-size 14px
       line-height 22px
 
@@ -704,7 +704,7 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
     line-height 22px
 
   textarea
-    font-family var(--wren-font-mono)
+    font-family var(--saf0o-font-mono)
     font-size 13px
 
   .dappGuardrailToggleField
@@ -722,7 +722,7 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
     padding 4px 0 0
     font-size 13px
     line-height 20px
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
 
   .dappGuardrailEvidence
     gap 10px
@@ -741,13 +741,13 @@ button.wrenControl.dappGuardrailManage.wrenControlCompact
 
   .dappGuardrailActions
     padding-top 16px
-    border-top 1px solid var(--wren-border-subtle)
+    border-top 1px solid var(--saf0o-border-subtle)
 
   .dappGuardrailConfirm
     padding 16px
     gap 16px
 
-.permissionsLedgerView button.wrenControl.dappGuardrailManage
+.permissionsLedgerView button.saf0oControl.dappGuardrailManage
   min-height 64px
 
 .connectedAppDetails > summary

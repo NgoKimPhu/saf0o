@@ -2,13 +2,7 @@ const crypto = require('crypto')
 const { signTypedData, personalSign } = require('@metamask/eth-sig-util')
 const { createTx } = require('@ethereumjs/tx')
 const { Common, Mainnet, createCustomCommon, getPresetChainConfig } = require('@ethereumjs/common')
-const {
-  hashPersonalMessage,
-  toBytes,
-  bytesToHex,
-  pubToAddress,
-  ecrecover
-} = require('@ethereumjs/util')
+const { hashPersonalMessage, toBytes, bytesToHex, pubToAddress, ecrecover } = require('@ethereumjs/util')
 const { encryptSecret } = require('../crypto')
 
 function chainConfig(chain, hardfork) {
@@ -129,7 +123,7 @@ class HotSignerWorker {
       const signature = Buffer.from(signedMessage.replace('0x', ''), 'hex')
       // Ensure correct length
       if (signature.length !== 65)
-        return pseudoCallback(new Error('Wren verifyAddress signature has incorrect length'))
+        return pseudoCallback(new Error('Saf0o verifyAddress signature has incorrect length'))
       // Verify address
       let v = signature[64]
       v = BigInt(v === 0 || v === 1 ? v + 27 : v)

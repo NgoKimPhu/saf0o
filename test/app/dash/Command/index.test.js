@@ -33,7 +33,7 @@ it('hides Back at the dashboard root while retaining Close', () => {
 
   expect(screen.queryByRole('button', { name: 'Back' })).toBeNull()
   expect(screen.getByRole('button', { name: 'Close' })).toBeTruthy()
-  expect(screen.queryByText('Wren settings & destinations')).toBeNull()
+  expect(screen.queryByText('Saf0o settings & destinations')).toBeNull()
   expect(screen.getAllByText('Control')).toHaveLength(1)
   expect(document.querySelector('.commandHomeMark').getAttribute('aria-hidden')).toBe('true')
   expect(document.querySelector('.commandHomeClose')).toBeTruthy()

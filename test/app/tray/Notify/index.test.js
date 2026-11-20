@@ -3,7 +3,7 @@ import { Notify } from '../../../../app/tray/Notify'
 import link from '../../../../resources/link'
 
 jest.mock('../../../../resources/link', () => ({ rpc: jest.fn(), send: jest.fn() }))
-jest.mock('../../../../asset/brand/exports/app/wren-app-icon-512.png', () => 'wren-icon.png')
+jest.mock('../../../../asset/brand/exports/app/saf0o-app-icon-512.png', () => 'saf0o-icon.png')
 
 test('exposes warning suppression as a pressed-state button', () => {
   const notify = new Notify({})

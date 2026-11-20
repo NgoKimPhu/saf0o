@@ -4,7 +4,7 @@ const MAX_ERROR_LENGTH = 240
 
 export const boundedInspectorError = (error) => {
   const message = typeof error === 'string' ? error : error?.message
-  if (!message) return 'Wren could not inspect this input.'
+  if (!message) return 'Saf0o could not inspect this input.'
   return message.slice(0, MAX_ERROR_LENGTH)
 }
 

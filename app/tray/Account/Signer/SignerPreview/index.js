@@ -166,7 +166,7 @@ export class Signer extends React.Component {
       style.color = 'var(--bad)'
       status = 'Device disconnected'
     } else {
-      style.color = 'var(--wren-text-muted)'
+      style.color = 'var(--saf0o-text-muted)'
     }
 
     return (

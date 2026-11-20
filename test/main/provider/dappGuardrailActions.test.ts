@@ -1,4 +1,4 @@
-import { FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN, originIdForInvoker } from '../../../resources/domain/origin'
+import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN, originIdForInvoker } from '../../../resources/domain/origin'
 import { createAccountPermission } from '../../../main/provider/permissions'
 import { applyDappGuardrailRendererAction } from '../../../main/provider/dappGuardrailActions'
 
@@ -151,7 +151,7 @@ test('allows authenticated companion, native, and direct session-bound principal
   const principals = [
     { provenance: 'direct' as const, origin: 'Unknown/session', sourceId: undefined },
     { provenance: 'companion' as const, origin: originName, sourceId: 'companion-key' },
-    { provenance: 'native' as const, origin: 'wren-native', sourceId: 'native-key' }
+    { provenance: 'native' as const, origin: 'saf0o-native', sourceId: 'native-key' }
   ]
 
   principals.forEach(({ provenance, origin, sourceId }) => {
@@ -258,7 +258,7 @@ test.each([
   expect(dependencies.onPolicyChanged).not.toHaveBeenCalled()
 })
 
-test.each([FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN])(
+test.each([FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN])(
   'never treats the managed origin %s as an external guardrail principal',
   (managedOrigin) => {
     const managedId = originIdForInvoker(managedOrigin, { provenance: 'managed' })

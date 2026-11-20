@@ -28,7 +28,7 @@ try {
     names: 'bafybeifuz46dqy7lot2v4v3o5guritrksttsfs4q6zijsfg7ynmbgp2sly'
   }
   const hashes = { existing: fixtureCid }
-  const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'wren-unixfs-compatibility-'))
+  const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'saf0o-unixfs-compatibility-'))
   try {
     for (const [name, cid] of Object.entries(fixtures)) {
       const directory = path.join(fixtureRoot, name)

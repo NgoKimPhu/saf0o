@@ -1,7 +1,7 @@
 import React from 'react'
 import Restore from 'react-restore'
 
-import emptyConnections from 'url:../../../../../asset/ui/wren-empty-connections-v2.png'
+import emptyConnections from 'url:../../../../../asset/ui/saf0o-empty-connections-v2.png'
 
 import link from '../../../../../resources/link'
 import {
@@ -21,7 +21,7 @@ import DappGuardrailEditor, { canonicalChainId } from '../DappGuardrailEditor'
 
 import { ClusterBox, Cluster, ClusterRow, ClusterValue } from '../../../../../resources/Components/Cluster'
 import Icon from '../../../../../resources/Components/Icon'
-import WrenEmptyState from '../../../../../resources/Components/WrenEmptyState'
+import Saf0oEmptyState from '../../../../../resources/Components/Saf0oEmptyState'
 import DialogSurface from '../../../../../resources/Components/DialogSurface'
 
 let clearDescriptionIndex = 0
@@ -446,9 +446,9 @@ export class DappsPermissionsExpanded extends React.Component {
       >
         {permissionList.length === 0 ? (
           allPermissionIds.length ? (
-            <div className='wrenEmptyFilter'>No matching app permissions</div>
+            <div className='saf0oEmptyFilter'>No matching app permissions</div>
           ) : (
-            <WrenEmptyState
+            <Saf0oEmptyState
               image={emptyConnections}
               transparentImage={true}
               title='No app access'
@@ -521,7 +521,7 @@ export class DappsPermissionsExpanded extends React.Component {
                                 return (
                                   <button
                                     type='button'
-                                    className='dappGuardrailManage wrenControl wrenControlGhost wrenControlCompact'
+                                    className='dappGuardrailManage saf0oControl saf0oControlGhost saf0oControlCompact'
                                     key={chainId}
                                     ref={this.guardrailButtonRef(originId, chainId)}
                                     aria-expanded={
@@ -605,7 +605,7 @@ export class DappsPermissionsExpanded extends React.Component {
                 <div className='clearPermissionsActions'>
                   <button
                     type='button'
-                    className='clearPermissionsAction wrenControl wrenControlSecondary'
+                    className='clearPermissionsAction saf0oControl saf0oControlSecondary'
                     disabled={this.state.clearing}
                     onClick={() => this.cancelClear()}
                     ref={this.cancelClearRef}
@@ -615,7 +615,7 @@ export class DappsPermissionsExpanded extends React.Component {
                   <button
                     ref={this.clearConfirmRef}
                     type='button'
-                    className='clearPermissionsAction wrenControl wrenControlDanger'
+                    className='clearPermissionsAction saf0oControl saf0oControlDanger'
                     disabled={this.state.clearing}
                     onClick={() => this.confirmClear()}
                   >
@@ -631,7 +631,7 @@ export class DappsPermissionsExpanded extends React.Component {
                 </div>
                 <button
                   type='button'
-                  className='clearPermissionsAction wrenControl wrenControlGhost wrenControlCompact'
+                  className='clearPermissionsAction saf0oControl saf0oControlGhost saf0oControlCompact'
                   aria-label='Revoke all app access'
                   onClick={() => this.beginClear()}
                   ref={this.clearButtonRef}

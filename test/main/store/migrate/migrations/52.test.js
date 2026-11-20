@@ -1,7 +1,7 @@
 import migration from '../../../../../main/store/migrate/migrations/52'
 import { createState } from '../setup'
 
-it('moves existing profiles to Wren dark mode and preserves a valid Glide edge', () => {
+it('moves existing profiles to Saf0o dark mode and preserves a valid Glide edge', () => {
   const left = createState(51)
   left.main.colorway = 'light'
   left.main.glideSide = 'left'

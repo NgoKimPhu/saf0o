@@ -2,9 +2,9 @@
   width 100%
   padding 20px 20px 32px
   box-sizing border-box
-  color var(--wren-text-primary)
+  color var(--saf0o-text-primary)
   background transparent
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
 
 .newTokenFormInner
   width 100%
@@ -16,10 +16,10 @@
 
 .newTokenTitle
   margin 0
-  padding var(--wren-space-4) 0 var(--wren-space-5)
-  color var(--wren-text-primary)
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-title)
+  padding var(--saf0o-space-4) 0 var(--saf0o-space-5)
+  color var(--saf0o-text-primary)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-title)
   font-weight 620
   line-height 1.2
 
@@ -31,16 +31,16 @@
   display flex
   align-items center
   justify-content center
-  margin var(--wren-space-2)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-md)
-  background var(--wren-surface-inset)
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-body)
+  margin var(--saf0o-space-2)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-md)
+  background var(--saf0o-surface-inset)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-body)
 
 .newTokenChainSelectFooter
   display flex
-  margin-top var(--wren-space-5)
+  margin-top var(--saf0o-space-5)
   justify-content flex-start
 
   .newTokenEnableChainLink
@@ -49,43 +49,43 @@
 .newTokenForm,
 .addToken
   display grid
-  gap var(--wren-space-5)
+  gap var(--saf0o-space-5)
 
 .newTokenDetails
   display grid
-  gap var(--wren-space-5)
-  margin-top var(--wren-space-1)
-  padding-top var(--wren-space-4)
-  border-top 1px solid var(--wren-ledger-rule)
+  gap var(--saf0o-space-5)
+  margin-top var(--saf0o-space-1)
+  padding-top var(--saf0o-space-4)
+  border-top 1px solid var(--saf0o-ledger-rule)
 
 .newTokenDetailsTitle
   margin 0
-  color var(--wren-text-primary)
-  font-size var(--wren-type-heading)
+  color var(--saf0o-text-primary)
+  font-size var(--saf0o-type-heading)
   font-weight 600
   line-height 1.3
 
 .newTokenLookupStatus
   display flex
   min-height 20px
-  margin-top calc(-1 * var(--wren-space-3))
+  margin-top calc(-1 * var(--saf0o-space-3))
   align-items center
-  gap var(--wren-space-2)
-  color var(--wren-text-secondary)
-  font-size var(--wren-type-small)
+  gap var(--saf0o-space-2)
+  color var(--saf0o-text-secondary)
+  font-size var(--saf0o-type-small)
   line-height 1.4
 
 .newTokenLookupStatus-ready
-  color var(--wren-success)
+  color var(--saf0o-success)
 
 .newTokenLookupStatus-checking
-  color var(--wren-warning)
+  color var(--saf0o-warning)
 
   svg
-    animation newTokenLookupChecking var(--wren-motion-slow) linear infinite
+    animation newTokenLookupChecking var(--saf0o-motion-slow) linear infinite
 
 .newTokenLookupStatus-error
-  color var(--wren-danger)
+  color var(--saf0o-danger)
 
 @keyframes newTokenLookupChecking
   to
@@ -96,93 +96,93 @@
     animation none
 
 .newTokenNetwork
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-small)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-small)
   font-weight 500
 
 .newTokenContext
   display flex
   min-height 44px
-  margin-bottom var(--wren-space-5)
-  padding var(--wren-space-2) 0
+  margin-bottom var(--saf0o-space-5)
+  padding var(--saf0o-space-2) 0
   box-sizing border-box
   align-items center
   justify-content space-between
-  gap var(--wren-space-3)
-  border-top 1px solid var(--wren-ledger-rule)
-  border-bottom 1px solid var(--wren-ledger-rule)
+  gap var(--saf0o-space-3)
+  border-top 1px solid var(--saf0o-ledger-rule)
+  border-bottom 1px solid var(--saf0o-ledger-rule)
 
 .newTokenChainAddress
   display flex
   min-width 0
   align-items center
-  color var(--wren-text-secondary)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-small)
+  color var(--saf0o-text-secondary)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-small)
 
   svg
-    margin 0 var(--wren-space-1)
+    margin 0 var(--saf0o-space-1)
 
 .tokenFieldRow
   display grid
   grid-template-columns minmax(0, 1fr) minmax(112px, .62fr)
-  gap var(--wren-space-4)
+  gap var(--saf0o-space-4)
 
 .tokenInputLabel
   display grid
   min-width 0
-  gap var(--wren-space-2)
-  color var(--wren-text-secondary)
-  font-size var(--wren-type-small)
+  gap var(--saf0o-space-2)
+  color var(--saf0o-text-secondary)
+  font-size var(--saf0o-type-small)
   font-weight 590
   text-align left
 
 .tokenInput
   width 100%
   min-height 44px
-  padding 0 var(--wren-space-3)
-  color var(--wren-text-primary)
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-body)
+  padding 0 var(--saf0o-space-3)
+  color var(--saf0o-text-primary)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-body)
   font-weight 400
   text-align left
 
 .tokenInputAddress
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-small)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-small)
 
 .newTokenActions
   display flex
   min-height 44px
   justify-content flex-end
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
 
-  .wrenControl
+  .saf0oControl
     min-height 44px
 
 .newTokenSaveError
-  padding var(--wren-space-3)
-  border 1px solid var(--wren-danger)
-  border-radius var(--wren-radius-sm)
-  background var(--wren-surface-inset)
-  color var(--wren-danger)
-  font-size var(--wren-type-small)
+  padding var(--saf0o-space-3)
+  border 1px solid var(--saf0o-danger)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-surface-inset)
+  color var(--saf0o-danger)
+  font-size var(--saf0o-type-small)
   line-height 1.45
 
 @media (max-height: 760px)
   .newTokenView
-    padding-top var(--wren-space-3)
-    padding-bottom var(--wren-space-5)
+    padding-top var(--saf0o-space-3)
+    padding-bottom var(--saf0o-space-5)
 
   .newTokenTitle
-    padding-bottom var(--wren-space-4)
+    padding-bottom var(--saf0o-space-4)
 
   .newTokenForm,
   .addToken
-    gap var(--wren-space-4)
+    gap var(--saf0o-space-4)
 
   .newTokenContext
-    margin-bottom var(--wren-space-4)
+    margin-bottom var(--saf0o-space-4)
 
 @media (max-width: 520px)
   .tokenFieldRow
@@ -194,4 +194,4 @@
 
 .tokenMetadata
   display grid
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)

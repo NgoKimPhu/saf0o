@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const electron = path.join(projectRoot, 'node_modules', '.bin', 'electron')
 const harness = path.join(projectRoot, 'scripts', 'qualification', 'ui', 'electron-harness.cjs')
-const runRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-ui-qualification-'))
+const runRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-ui-qualification-'))
 const directories = ['home', 'config', 'data', 'cache', 'tmp', 'profile', 'report', 'screenshots']
 const children = new Set()
 let interruptedSignal
@@ -21,8 +21,8 @@ for (const directory of directories) {
 
 const reportPath = path.join(runRoot, 'report', 'ui-qualification.json')
 const screenshotRoot = path.join(runRoot, 'screenshots')
-const exportRoot = process.env.WREN_UI_QUALIFICATION_EXPORT
-  ? path.resolve(process.env.WREN_UI_QUALIFICATION_EXPORT)
+const exportRoot = process.env.SAF0O_UI_QUALIFICATION_EXPORT
+  ? path.resolve(process.env.SAF0O_UI_QUALIFICATION_EXPORT)
   : undefined
 
 const assertPrivateExportDirectory = (target) => {
@@ -101,7 +101,7 @@ const startXvfb = async () => {
 
 const preserveFailures = (report) => {
   if (!report?.violations) return null
-  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-ui-qualification-failures-'))
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-ui-qualification-failures-'))
   fs.chmodSync(target, 0o700)
   fs.copyFileSync(reportPath, path.join(target, 'ui-qualification.json'))
   fs.chmodSync(path.join(target, 'ui-qualification.json'), 0o600)
@@ -143,9 +143,9 @@ try {
     XDG_DATA_HOME: path.join(runRoot, 'data'),
     XDG_CACHE_HOME: path.join(runRoot, 'cache'),
     TMPDIR: path.join(runRoot, 'tmp'),
-    WREN_UI_QUALIFICATION_ROOT: runRoot,
-    WREN_UI_QUALIFICATION_REPORT: reportPath,
-    WREN_UI_QUALIFICATION_SCREENSHOTS: screenshotRoot,
+    SAF0O_UI_QUALIFICATION_ROOT: runRoot,
+    SAF0O_UI_QUALIFICATION_REPORT: reportPath,
+    SAF0O_UI_QUALIFICATION_SCREENSHOTS: screenshotRoot,
     HTTP_PROXY: '',
     HTTPS_PROXY: '',
     ALL_PROXY: '',

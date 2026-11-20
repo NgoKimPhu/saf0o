@@ -52,7 +52,7 @@ describe('gateway mode', () => {
   test('uses an HTTPS gateway override, preserving a safe base path', async () => {
     const fetch = jest.fn(async () => response(['{"ok":true}']))
     const ipfs = createIpfs(undefined, 32, 64, {
-      env: { WREN_IPFS_GATEWAY_URL: 'https://gateway.example.test/content/' },
+      env: { SAF0O_IPFS_GATEWAY_URL: 'https://gateway.example.test/content/' },
       fetch
     })
 
@@ -103,14 +103,14 @@ describe('gateway mode', () => {
     'https://gateway.example.test?token=value',
     'https://gateway.example.test#fragment'
   ])('rejects unsafe gateway endpoint %s', (url) => {
-    expect(() => getGatewayUrl({ WREN_IPFS_GATEWAY_URL: url })).toThrow()
+    expect(() => getGatewayUrl({ SAF0O_IPFS_GATEWAY_URL: url })).toThrow()
   })
 
   test('permits loopback HTTP gateways for tests and self-hosting', () => {
-    expect(getGatewayUrl({ WREN_IPFS_GATEWAY_URL: 'http://127.0.0.1:8080' }).toString()).toBe(
+    expect(getGatewayUrl({ SAF0O_IPFS_GATEWAY_URL: 'http://127.0.0.1:8080' }).toString()).toBe(
       'http://127.0.0.1:8080/'
     )
-    expect(getGatewayUrl({ WREN_IPFS_GATEWAY_URL: 'http://[::1]:8080' }).toString()).toBe(
+    expect(getGatewayUrl({ SAF0O_IPFS_GATEWAY_URL: 'http://[::1]:8080' }).toString()).toBe(
       'http://[::1]:8080/'
     )
   })
@@ -221,17 +221,17 @@ describe('explicit Kubo API mode', () => {
     expect(factory).toHaveBeenCalledTimes(1)
   })
 
-  test('prefers Wren API and auth settings over deprecated fallbacks', () => {
+  test('prefers Saf0o API and auth settings over deprecated fallbacks', () => {
     expect(
       getKuboOptions({
-        WREN_IPFS_API_URL: 'https://wren.example.test/api/v0',
+        SAF0O_IPFS_API_URL: 'https://saf0o.example.test/api/v0',
         FRAME_IPFS_API_URL: 'https://frame.example.test/api/v0',
-        WREN_IPFS_AUTH_TOKEN: 'wren-token',
+        SAF0O_IPFS_AUTH_TOKEN: 'saf0o-token',
         NEBULA_AUTH_TOKEN: 'legacy-token'
       })
     ).toEqual({
-      url: 'https://wren.example.test/api/v0',
-      headers: { authorization: `Basic ${Buffer.from('wren-token:').toString('base64')}` }
+      url: 'https://saf0o.example.test/api/v0',
+      headers: { authorization: `Basic ${Buffer.from('saf0o-token:').toString('base64')}` }
     })
   })
 
@@ -247,7 +247,7 @@ describe('explicit Kubo API mode', () => {
     })
 
     expect(() => getKuboOptions({ NEBULA_AUTH_TOKEN: 'unused' })).toThrow(
-      'explicit WREN_IPFS_API_URL is required'
+      'explicit SAF0O_IPFS_API_URL is required'
     )
   })
 
@@ -258,7 +258,7 @@ describe('explicit Kubo API mode', () => {
     'https://kubo.example.test/api/v0?token=value',
     'https://kubo.example.test/api/v0#fragment'
   ])('rejects unsafe API endpoint %s', (url) => {
-    expect(() => getKuboOptions({ WREN_IPFS_API_URL: url })).toThrow()
+    expect(() => getKuboOptions({ SAF0O_IPFS_API_URL: url })).toThrow()
   })
 
   test('applies streaming bounds and deadlines in Kubo mode', async () => {

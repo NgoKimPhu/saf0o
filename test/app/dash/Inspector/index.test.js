@@ -319,7 +319,7 @@ it('renders unknown selectors without empty method or argument rows', async () =
         status: 'unknown',
         source: 'bundled-standard-abi',
         selector: '0x12345678',
-        reason: "Selector is not in Wren's bundled standard ABI set"
+        reason: "Selector is not in Saf0o's bundled standard ABI set"
       }
     }
   })

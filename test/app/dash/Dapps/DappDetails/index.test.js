@@ -88,7 +88,7 @@ test('opens permissions on the exact account after selecting it', async () => {
       version: 1,
       provider: true,
       parentCapability: 'eth_accounts',
-      caveats: [{ type: 'wren:permissionScope', value: { expiresAt: Date.now() + 60000 } }]
+      caveats: [{ type: 'saf0o:permissionScope', value: { expiresAt: Date.now() + 60000 } }]
     }
   }
   let finish

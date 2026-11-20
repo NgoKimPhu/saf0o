@@ -1,18 +1,18 @@
 # Trezor clear signing investigation
 
 Checked 26 October 2026 against Connect 10.0.1. Its signing path handles
-clear-signing definition requests. Wren settles active and queued callers when
+clear-signing definition requests. Saf0o settles active and queued callers when
 the bridge closes, including during a metadata lookup.
 SDK lookup cancellation and format selection remain pending. The bridge fix does
 not modify the SDK.
 
 ## What already works in code
 
-Wren sends the reviewed transaction through `TrezorBridge.signTransaction` to
+Saf0o sends the reviewed transaction through `TrezorBridge.signTransaction` to
 Connect. Both legacy and type-2 SDK helpers advertise definition-request support.
 When firmware asks for network, token, or contract display data, Connect retrieves
 it and sends `EthereumDefinitionAck`, then continues the original calldata flow.
-Wren does not need to decode ERC-7730 descriptors itself.
+Saf0o does not need to decode ERC-7730 descriptors itself.
 
 This is present in the [released SDK source](https://github.com/trezor/trezor-suite/blob/2ee7bd0636889196bab33e6069e2736393a58f3c/packages/connect-core/src/api/ethereum/ethereumSignTx.ts)
 and [definition loader](https://github.com/trezor/trezor-suite/blob/2ee7bd0636889196bab33e6069e2736393a58f3c/packages/connect-core/src/api/ethereum/ethereumDefinitions.ts).
@@ -21,14 +21,14 @@ and [definition loader](https://github.com/trezor/trezor-suite/blob/2ee7bd063688
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | Network/token definitions | Signed metadata for names, units, and network identity; separate from contract decoding.                                    |
 | Contract clear signing    | Firmware renders supported calls using registry display definitions. Coverage depends on the contract, firmware, and model. |
-| EIP-712                   | Wren already sends structured data to Core models and hashes to Model One. This is a separate signing path.                 |
-| Wren transaction preview  | Host-side evidence. It does not attest what the hardware screen displayed.                                                  |
+| EIP-712                   | Saf0o already sends structured data to Core models and hashes to Model One. This is a separate signing path.                |
+| Saf0o transaction preview | Host-side evidence. It does not attest what the hardware screen displayed.                                                  |
 
 Trezor lists Model T, Safe 3, Safe 5, and Safe 7 with Universal firmware 2.12.4
 or later for registered-contract clear signing. Model One does not support that
-display feature. Its user-tested Wren signing support remains unchanged.
+display feature. Its user-tested Saf0o signing support remains unchanged.
 See the [vendor coverage guide](https://trezor.io/guides/sending-receiving-staking-funds/interacting-with-smart-contracts/clear-signing-on-trezor)
-and [Wren hardware evidence](HARDWARE_SUPPORT.md).
+and [Saf0o hardware evidence](HARDWARE_SUPPORT.md).
 
 ## Known gaps
 
@@ -59,8 +59,8 @@ and [Model One 1.14.2 source](https://github.com/trezor/trezor-firmware/blob/037
 
 The official Connect and connect-core 10.0.1 packages include T-RSL. Its grant
 covers read-only reference use and excludes redistribution. Connect 9.7.3 has
-the same terms. No separate Wren grant is recorded. The applicable terms for
-bundling Connect in Wren need clarification. Review any integration agreement
+the same terms. No separate Saf0o grant is recorded. The applicable terms for
+bundling Connect in Saf0o need clarification. Review any integration agreement
 and confirm rights before preparing a distributable SDK patch.
 See the [SDK license](https://github.com/trezor/trezor-suite/blob/2ee7bd0636889196bab33e6069e2736393a58f3c/packages/connect/LICENSE.md).
 
@@ -70,7 +70,7 @@ license of any replacement before adopting it.
 
 ## Bridge lookup qualification
 
-Run `node scripts/qualify-trezor-lookups.mjs`. The script exercises Wren's bridge
+Run `node scripts/qualify-trezor-lookups.mjs`. The script exercises Saf0o's bridge
 source and Connect's public method factory and real in-process core. An empty
 in-memory transport replaces USB; no device or account is opened. All HTTP is
 intercepted. This diagnostic reproduces known gaps; a zero exit code means the
@@ -83,7 +83,7 @@ cancellation during network and token lookups, and close/reinitialization during
 a lookup. Decodable, missing, or unavailable metadata reaches
 device selection. Malformed metadata rejects before device selection; the next
 request still runs. Cancellation remains pending during a held reply and does
-not prevent later device selection. Closing settles active and queued Wren
+not prevent later device selection. Closing settles active and queued Saf0o
 callers before HTTP completion, prevents queued work from dispatching, and
 leaves a fresh core usable. It does not claim to abort the SDK's network fetch.
 
@@ -103,7 +103,7 @@ HTTP success alone does not establish firmware acceptance.
    on disposal, and select the firmware's supported format. Qualify any pinned
    SDK change before adoption. A wrapper timeout alone does not stop the SDK
    from continuing towards a device. Keep definition lookup separate from RPC
-   simulation and Wren token metadata.
+   simulation and Saf0o token metadata.
 2. Add an isolated firmware emulator qualification for the existing SDK path.
    Cover legacy/type-2 signing, token transfer, exact/unlimited approval, a
    registered contract call, and an unsupported contract. Check returned signed
@@ -117,7 +117,7 @@ HTTP success alone does not establish firmware acceptance.
 5. Qualify a packaged Linux build on Safe 7 with recorded firmware and fixtures.
    Confirm on-device action, amounts, spender/recipient, native value, fallback,
    cancellation, and reconnect. Use a no-value test setup. Record evidence before
-   making a Wren clear-signing support claim.
+   making a Saf0o clear-signing support claim.
 
 Keep the existing review UI. No global clear-signing badge, extra confirmation
 screen, firmware setting change, or new backend is proposed.

@@ -1,6 +1,6 @@
 import { permissionCovers } from '../provider/permissions'
 import {
-  WREN_DEPLOY_ORIGIN,
+  SAF0O_DEPLOY_ORIGIN,
   getManagedOriginNameForId,
   originIdForInvoker
 } from '../../resources/domain/origin'
@@ -137,7 +137,7 @@ const managedRequestAuthorized = (
   managedOriginName: string,
   principal?: { chain: { type: string; id: number } }
 ) => {
-  if (managedOriginName !== WREN_DEPLOY_ORIGIN) return true
+  if (managedOriginName !== SAF0O_DEPLOY_ORIGIN) return true
   const chainId = deploymentRequestChain(request)
   if (chainId === undefined) return false
   if (!principal) return true

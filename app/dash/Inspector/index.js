@@ -9,7 +9,7 @@ const MODES = Object.freeze([
     label: 'Transaction',
     title: 'Decode unsigned transaction',
     description:
-      'Paste one unsigned transaction object. Wren does not sign, broadcast, or queue it; complete fields may be simulated through your configured RPC.',
+      'Paste one unsigned transaction object. Saf0o does not sign, broadcast, or queue it; complete fields may be simulated through your configured RPC.',
     inputLabel: 'Unsigned transaction JSON',
     placeholder: '{\n  "from": "0x…",\n  "to": "0x…",\n  "chainId": "0x1"\n}'
   },
@@ -86,7 +86,7 @@ const EvidenceRow = ({ label, value, copy, tone }) => {
         {canCopy ? (
           <button
             type='button'
-            className='inspectorCopy wrenControl wrenControlSecondary wrenControlCompact'
+            className='inspectorCopy saf0oControl saf0oControlSecondary saf0oControlCompact'
             aria-label={`Copy ${label.toLowerCase()}`}
             onClick={() => copy(display, label)}
           >
@@ -110,7 +110,7 @@ const evidenceStatusCopy = (entry) => {
 const RISK_COPY = Object.freeze({
   'legacy-v1': 'Legacy EIP-712 V1 message: reduced domain and type protections.',
   'domain-chain-missing': 'Domain chain missing: the typed-data domain does not bind this intent to a chain.',
-  'domain-chain-invalid': 'Domain chain invalid: Wren could not establish a valid chain from the domain.',
+  'domain-chain-invalid': 'Domain chain invalid: Saf0o could not establish a valid chain from the domain.',
   'domain-chain-mismatch': 'Chain mismatch: the requested chain differs from the typed-data domain chain.',
   'permit2-allowance': 'Permit2 allowance: this message can grant token spending authority.',
   'permit2-transfer': 'Permit2 transfer: this message can authorize a token transfer.',
@@ -490,7 +490,7 @@ export class Inspector extends React.Component {
             Chain ID <em>optional</em>
           </span>
           <input
-            className='wrenInput'
+            className='saf0oInput'
             type='text'
             value={fields.chainId}
             placeholder='1 or 0x1'
@@ -506,7 +506,7 @@ export class Inspector extends React.Component {
                 Sender <em>optional</em>
               </span>
               <input
-                className='wrenInput'
+                className='saf0oInput'
                 type='text'
                 value={fields.from}
                 placeholder='0x…'
@@ -520,7 +520,7 @@ export class Inspector extends React.Component {
                 Target <em>optional</em>
               </span>
               <input
-                className='wrenInput'
+                className='saf0oInput'
                 type='text'
                 value={fields.to}
                 placeholder='0x…'
@@ -534,7 +534,7 @@ export class Inspector extends React.Component {
                 Value <em>optional · wei quantity</em>
               </span>
               <input
-                className='wrenInput'
+                className='saf0oInput'
                 type='text'
                 value={fields.value}
                 placeholder='0x0'
@@ -549,7 +549,7 @@ export class Inspector extends React.Component {
           <label>
             <span>Typed-data version</span>
             <select
-              className='wrenInput'
+              className='saf0oInput'
               value={fields.typedVersion}
               onChange={(event) => this.updateField('typedVersion', event.target.value)}
             >
@@ -591,7 +591,7 @@ export class Inspector extends React.Component {
               aria-controls='inspector-input-panel'
               aria-selected={mode === item.id ? 'true' : 'false'}
               tabIndex={mode === item.id ? 0 : -1}
-              className={`wrenControl wrenControlGhost${mode === item.id ? ' inspectorModeSelected' : ''}`}
+              className={`saf0oControl saf0oControlGhost${mode === item.id ? ' inspectorModeSelected' : ''}`}
               onClick={() => this.selectMode(item.id)}
               onKeyDown={(event) => this.selectModeFromKeyboard(event)}
             >
@@ -613,7 +613,7 @@ export class Inspector extends React.Component {
           <label className='inspectorRawInput'>
             <span>{selected.inputLabel}</span>
             <textarea
-              className='wrenInput'
+              className='saf0oInput'
               ref={this.editorRef}
               value={fields[field]}
               placeholder={selected.placeholder}
@@ -634,7 +634,7 @@ export class Inspector extends React.Component {
             ) : null}
             <button
               type='submit'
-              className='inspectorInspectButton wrenControl wrenControlSecondary wrenControlLarge'
+              className='inspectorInspectButton saf0oControl saf0oControlSecondary saf0oControlLarge'
               disabled={!this.canInspect()}
             >
               {pending ? 'Inspecting…' : 'Inspect'}

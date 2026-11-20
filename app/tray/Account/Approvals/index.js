@@ -194,7 +194,7 @@ export class Approvals extends React.Component {
             <button
               type='button'
               ref={this.refreshRef}
-              className='wrenControl wrenControlSecondary wrenControlLarge'
+              className='saf0oControl saf0oControlSecondary saf0oControlLarge'
               disabled={busy || Boolean(opening)}
               onClick={() => void this.load(true)}
             >
@@ -237,7 +237,7 @@ export class Approvals extends React.Component {
                         </div>
                         <button
                           type='button'
-                          className='wrenControl wrenControlDanger wrenControlLarge'
+                          className='saf0oControl saf0oControlDanger saf0oControlLarge'
                           aria-label={`Revoke ${token?.symbol || 'token'} approval`}
                           disabled={
                             busy ||
@@ -264,7 +264,7 @@ export class Approvals extends React.Component {
             <nav className='tokenApprovalsPagination' aria-label='Approval pages'>
               <button
                 type='button'
-                className='wrenControl wrenControlSecondary wrenControlLarge'
+                className='saf0oControl saf0oControlSecondary saf0oControlLarge'
                 disabled={busy || Boolean(opening) || !page}
                 onClick={() => this.setState({ page: page - 1 }, () => void this.load(true))}
               >
@@ -275,7 +275,7 @@ export class Approvals extends React.Component {
               </span>
               <button
                 type='button'
-                className='wrenControl wrenControlSecondary wrenControlLarge'
+                className='saf0oControl saf0oControlSecondary saf0oControlLarge'
                 disabled={busy || Boolean(opening) || page + 1 === pages}
                 onClick={() => this.setState({ page: page + 1 }, () => void this.load(true))}
               >
@@ -286,7 +286,7 @@ export class Approvals extends React.Component {
           <details className='tokenApprovalsAbout'>
             <summary>About this list</summary>
             <p>
-              Approvals sent through Wren and direct approvals observed by Activity appear here. Refresh
+              Approvals sent through Saf0o and direct approvals observed by Activity appear here. Refresh
               checks current allowances through your configured RPC. Earlier approvals, NFT approvals, and
               signed permits are not included.
             </p>
@@ -297,7 +297,7 @@ export class Approvals extends React.Component {
             {entries.length ? (
               <button
                 type='button'
-                className='wrenControl wrenControlSecondary wrenControlLarge'
+                className='saf0oControl saf0oControlSecondary saf0oControlLarge'
                 disabled={busy || Boolean(opening)}
                 onClick={() => void this.forget()}
               >

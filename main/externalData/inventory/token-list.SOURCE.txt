@@ -1,12 +1,12 @@
-Wren bundled token catalog
+Saf0o bundled token catalog
 
 Snapshot date: 2026-11-07
 
-This is a one-time data import. Wren does not download token lists at runtime.
+This is a one-time data import. Saf0o does not download token lists at runtime.
 
 Sources
 
-- Original Wren catalog: 6,292 entries, including 13 exclusions.
+- Original Saf0o catalog: 6,292 entries, including 13 exclusions.
   Source commit: 9d41f4a2b58b36178ef1573497ff46dc97fbaa05
   Original file SHA-256:
   20962f2fa6f910de3bd80dcfaa1c1933074c12b83b97f8bae3f1178096fb248e
@@ -25,7 +25,7 @@ Sources
   Repository: https://github.com/Uniswap/default-token-list
   Source file SHA-256:
   7353bb7a76a86f95a9f2ce874168e8c6557d5dc8e6da90157112747cbb4b4627
-  License: GPL-3.0, also used by Wren.
+  License: GPL-3.0, also used by Saf0o.
 
 Merge
 

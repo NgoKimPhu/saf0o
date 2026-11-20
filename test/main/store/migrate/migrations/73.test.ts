@@ -1,6 +1,6 @@
 import migrations from '../../../../../main/store/migrate'
 import migration from '../../../../../main/store/migrate/migrations/73'
-import { WREN_EXTENSION_ORIGIN, originIdForName } from '../../../../../resources/domain/origin'
+import { SAF0O_EXTENSION_ORIGIN, originIdForName } from '../../../../../resources/domain/origin'
 import { createState } from '../setup'
 
 type MigratableTestState = {
@@ -13,14 +13,14 @@ type MigratableTestState = {
 
 const legacyExtensionOrigin = {
   chain: { type: 'ethereum', id: 1 },
-  name: WREN_EXTENSION_ORIGIN,
+  name: SAF0O_EXTENSION_ORIGIN,
   provenance: 'legacy',
   session: { requests: 1, startedAt: 1, lastUpdatedAt: 1 }
 }
 
 test('upgrades only the deterministic legacy Companion control origin to internal provenance', () => {
   const state = createState(72) as MigratableTestState
-  const extensionOriginId = originIdForName(WREN_EXTENSION_ORIGIN)
+  const extensionOriginId = originIdForName(SAF0O_EXTENSION_ORIGIN)
   state.main.origins = {
     [extensionOriginId]: legacyExtensionOrigin,
     lookalike: legacyExtensionOrigin,
@@ -51,7 +51,7 @@ test.each([
   ['non-legacy collision', { ...legacyExtensionOrigin, provenance: 'direct' }]
 ])('does not elevate a %s at the deterministic identity', (_label, collision) => {
   const state = createState(72) as MigratableTestState
-  const extensionOriginId = originIdForName(WREN_EXTENSION_ORIGIN)
+  const extensionOriginId = originIdForName(SAF0O_EXTENSION_ORIGIN)
   state.main.origins = { [extensionOriginId]: collision }
 
   expect((migration.migrate(state) as MigratableTestState).main.origins[extensionOriginId]).toEqual(collision)

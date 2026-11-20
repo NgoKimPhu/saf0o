@@ -34,7 +34,7 @@ const expectedSerial = releaseSbomSerial({
   packageLock: lockText
 })
 const sourceProperty = sbom.metadata.component.properties?.find(
-  (property) => property?.name === 'wren:source-commit'
+  (property) => property?.name === 'saf0o:source-commit'
 )
 if (
   sbom.serialNumber !== expectedSerial ||
@@ -79,7 +79,7 @@ const electronVersion = packageJson.devDependencies?.electron
 const electronReference = `pkg:github/electron/electron@v${electronVersion}`
 const electron = componentsByReference.get(electronReference)
 const packagedRuntime = electron?.properties?.some(
-  (property) => property?.name === 'wren:packaged-runtime' && property.value === 'true'
+  (property) => property?.name === 'saf0o:packaged-runtime' && property.value === 'true'
 )
 if (electron?.version !== electronVersion || !packagedRuntime || !rootDependencies.has(electronReference)) {
   throw new Error('SBOM is missing the packaged Electron runtime')

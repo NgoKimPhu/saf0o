@@ -47,16 +47,16 @@ function validateEndpoint(value: string, label: string) {
 }
 
 export function getGatewayUrl(env: NodeJS.ProcessEnv = process.env) {
-  return validateEndpoint(env['WREN_IPFS_GATEWAY_URL'] || DEFAULT_IPFS_GATEWAY_URL, 'IPFS gateway')
+  return validateEndpoint(env['SAF0O_IPFS_GATEWAY_URL'] || DEFAULT_IPFS_GATEWAY_URL, 'IPFS gateway')
 }
 
 export function getKuboOptions(env: NodeJS.ProcessEnv = process.env) {
-  const endpoint = env['WREN_IPFS_API_URL'] || env['FRAME_IPFS_API_URL']
-  if (!endpoint) throw new Error('An explicit WREN_IPFS_API_URL is required for Kubo API mode')
+  const endpoint = env['SAF0O_IPFS_API_URL'] || env['FRAME_IPFS_API_URL']
+  if (!endpoint) throw new Error('An explicit SAF0O_IPFS_API_URL is required for Kubo API mode')
 
   const url = validateEndpoint(endpoint, 'IPFS API')
   const headers: Record<string, string> = {}
-  const authToken = env['WREN_IPFS_AUTH_TOKEN'] || env['NEBULA_AUTH_TOKEN']
+  const authToken = env['SAF0O_IPFS_AUTH_TOKEN'] || env['NEBULA_AUTH_TOKEN']
   if (authToken) {
     headers['authorization'] = `Basic ${Buffer.from(`${authToken}:`).toString('base64')}`
   }
@@ -192,7 +192,7 @@ export default function createIpfs(
   const timeoutMs = dependencies.timeoutMs ?? DEFAULT_REQUEST_TIMEOUT_MS
   if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) throw new Error('IPFS timeout must be positive')
 
-  const apiConfigured = Boolean(clientFactory || env['WREN_IPFS_API_URL'] || env['FRAME_IPFS_API_URL'])
+  const apiConfigured = Boolean(clientFactory || env['SAF0O_IPFS_API_URL'] || env['FRAME_IPFS_API_URL'])
   let client: Promise<KuboClient> | undefined
   const getClient = () => (client ||= clientFactory!())
 

@@ -3,7 +3,7 @@ const baseConfig = require('./electron-builder-base.js')
 module.exports = {
   ...baseConfig,
   appImage: {
-    // Wren requires Electron's renderer sandbox in production.
+    // Saf0o requires Electron's renderer sandbox in production.
     executableArgs: []
   },
   linux: {

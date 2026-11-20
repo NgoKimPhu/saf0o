@@ -1,7 +1,7 @@
 import React from 'react'
 
-const createWrenGlyph = (content) => {
-  const WrenGlyph = ({ size = 16, style, verticalAlign = 'middle', ...props }) => (
+const createSaf0oGlyph = (content) => {
+  const Saf0oGlyph = ({ size = 16, style, verticalAlign = 'middle', ...props }) => (
     <svg
       {...props}
       width={size}
@@ -18,7 +18,7 @@ const createWrenGlyph = (content) => {
       {content}
     </svg>
   )
-  return WrenGlyph
+  return Saf0oGlyph
 }
 
 const createPixelGlyph = ({ compact, regular }) => {
@@ -116,22 +116,22 @@ const pixelGlyphs = Object.freeze({
 })
 
 // Restrained curves and compact geometry keep routine controls precise with a hand-drawn edge.
-const wrenGlyphs = Object.freeze({
-  add: createWrenGlyph(<path d='M12 5v14M5 12h14' />),
-  alert: createWrenGlyph(
+const saf0oGlyphs = Object.freeze({
+  add: createSaf0oGlyph(<path d='M12 5v14M5 12h14' />),
+  alert: createSaf0oGlyph(
     <>
       <path d='M12 3 21 20H3L12 3Z' />
       <path d='M12 9v5M12 17.5v.5' />
     </>
   ),
-  accounts: createWrenGlyph(
+  accounts: createSaf0oGlyph(
     <>
       <circle cx='12' cy='8' r='3' />
       <path d='M5 20v-2.5C5 14.5 7.5 13 12 13s7 1.5 7 4.5V20' />
       <path d='M8 4h8' />
     </>
   ),
-  contacts: createWrenGlyph(
+  contacts: createSaf0oGlyph(
     <>
       <circle cx='9' cy='8' r='2.7' />
       <path d='M3.5 19v-2c0-2.8 2-4.2 5.5-4.2s5.5 1.4 5.5 4.2v2' />
@@ -140,41 +140,41 @@ const wrenGlyphs = Object.freeze({
   ),
   network: pixelGlyphs.network,
   tokens: pixelGlyphs.tokens,
-  apps: createWrenGlyph(
+  apps: createSaf0oGlyph(
     <>
       <path d='M8 4v5M16 4v5M6 9h12v2a6 6 0 0 1-6 6 6 6 0 0 1-6-6V9ZM12 17v3' />
       <path d='M9 20h6' />
     </>
   ),
-  overview: createWrenGlyph(
+  overview: createSaf0oGlyph(
     <>
       <path d='M4 5h7v6H4V5ZM13 5h7v6h-7V5ZM4 13h7v6H4v-6ZM13 13h7v6h-7v-6Z' />
     </>
   ),
-  blocked: createWrenGlyph(
+  blocked: createSaf0oGlyph(
     <>
       <circle cx='12' cy='12' r='8' />
       <path d='m6.5 17.5 11-11' />
     </>
   ),
-  browser: createWrenGlyph(
+  browser: createSaf0oGlyph(
     <>
       <rect x='3' y='4' width='18' height='16' rx='1.5' />
       <path d='M3 8h18M6 6h.5M9 6h.5' />
     </>
   ),
-  check: createWrenGlyph(<path d='m5 12 4.5 4.5L19 7' />),
-  chevronDown: createWrenGlyph(<path d='m6.5 9 5.5 5.5L17.5 9' />),
-  chevronLeft: createWrenGlyph(<path d='m15 6.5-5.5 5.5 5.5 5.5' />),
-  chevronRight: createWrenGlyph(<path d='m9 6.5 5.5 5.5L9 17.5' />),
-  chevronUp: createWrenGlyph(<path d='m6.5 15 5.5-5.5 5.5 5.5' />),
-  copy: createWrenGlyph(
+  check: createSaf0oGlyph(<path d='m5 12 4.5 4.5L19 7' />),
+  chevronDown: createSaf0oGlyph(<path d='m6.5 9 5.5 5.5L17.5 9' />),
+  chevronLeft: createSaf0oGlyph(<path d='m15 6.5-5.5 5.5 5.5 5.5' />),
+  chevronRight: createSaf0oGlyph(<path d='m9 6.5 5.5 5.5L9 17.5' />),
+  chevronUp: createSaf0oGlyph(<path d='m6.5 15 5.5-5.5 5.5 5.5' />),
+  copy: createSaf0oGlyph(
     <>
       <rect x='8' y='8' width='11' height='12' rx='1' />
       <path d='M16 8V4H5v12h3' />
     </>
   ),
-  settings: createWrenGlyph(
+  settings: createSaf0oGlyph(
     <>
       <path d='M4 6h5M13 6h7M4 12h10M18 12h2M4 18h2M10 18h10' />
       <rect x='9' y='4' width='4' height='4' rx='.5' />
@@ -182,106 +182,106 @@ const wrenGlyphs = Object.freeze({
       <rect x='6' y='16' width='4' height='4' rx='.5' />
     </>
   ),
-  support: createWrenGlyph(
+  support: createSaf0oGlyph(
     <>
       <path d='M4 5h16v11H9l-4 3v-3H4V5Z' />
       <path d='M8 10h8M8 13h5' />
     </>
   ),
-  tutorial: createWrenGlyph(
+  tutorial: createSaf0oGlyph(
     <>
       <path d='M4 5h6c1.2 0 2 .8 2 2v13c0-1.2-.8-2-2-2H4V5ZM20 5h-6c-1.2 0-2 .8-2 2v13c0-1.2.8-2 2-2h6V5Z' />
     </>
   ),
-  quit: createWrenGlyph(
+  quit: createSaf0oGlyph(
     <>
       <path d='M13 4H6v16h7M10 12h10M17 9l3 3-3 3' />
     </>
   ),
-  back: createWrenGlyph(<path d='m14.5 5-7 7 7 7M8 12h11' />),
-  next: createWrenGlyph(<path d='M6 12h11M13.5 7l5 5-5 5' />),
-  close: createWrenGlyph(<path d='M6 6l12 12M18 6 6 18' />),
-  details: createWrenGlyph(<path d='M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1' />),
-  devices: createWrenGlyph(
+  back: createSaf0oGlyph(<path d='m14.5 5-7 7 7 7M8 12h11' />),
+  next: createSaf0oGlyph(<path d='M6 12h11M13.5 7l5 5-5 5' />),
+  close: createSaf0oGlyph(<path d='M6 6l12 12M18 6 6 18' />),
+  details: createSaf0oGlyph(<path d='M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1' />),
+  devices: createSaf0oGlyph(
     <>
       <rect x='4' y='3' width='11' height='17' rx='1.5' />
       <path d='M8 17h3M17 8h3v11h-3' />
     </>
   ),
-  ellipsis: createWrenGlyph(<path d='M5 12h.5M11.75 12h.5M18.5 12h.5' />),
-  external: createWrenGlyph(
+  ellipsis: createSaf0oGlyph(<path d='M5 12h.5M11.75 12h.5M18.5 12h.5' />),
+  external: createSaf0oGlyph(
     <>
       <path d='M13 5h6v6M19 5l-9 9' />
       <path d='M18 14v5H5V6h5' />
     </>
   ),
-  eye: createWrenGlyph(
+  eye: createSaf0oGlyph(
     <>
       <path d='M3 12s3-6 9-6 9 6 9 6-3 6-9 6-9-6-9-6Z' />
       <circle cx='12' cy='12' r='2.5' />
     </>
   ),
-  file: createWrenGlyph(
+  file: createSaf0oGlyph(
     <>
       <path d='M6 3h8l4 4v14H6V3Z' />
       <path d='M14 3v5h4M9 12h6M9 16h6' />
     </>
   ),
-  hot: createWrenGlyph(
+  hot: createSaf0oGlyph(
     <path d='M13 3c1 4-2 5-2 8 0 1.5 1 2.5 2 3-1-3 3-4 3-7 3 3 4 6 4 9a8 8 0 0 1-16 0c0-4 2-7 5-10 0 3 1 5 3 6-1-4 2-7 2-11Z' />
   ),
-  globe: createWrenGlyph(
+  globe: createSaf0oGlyph(
     <>
       <circle cx='12' cy='12' r='8' />
       <path d='M4 12h16' />
       <path d='M12 4c2.4 2.1 3.6 4.9 3.6 8s-1.2 5.9-3.6 8c-2.4-2.1-3.6-4.9-3.6-8s1.2-5.9 3.6-8Z' />
     </>
   ),
-  inbox: createWrenGlyph(
+  inbox: createSaf0oGlyph(
     <>
       <path d='M4 5h16v14H4V5Z' />
       <path d='M4 14h5l1.5 2h3L15 14h5' />
     </>
   ),
-  inventory: createWrenGlyph(
+  inventory: createSaf0oGlyph(
     <>
       <path d='m4 7 8-4 8 4-8 4-8-4Z' />
       <path d='M4 7v10l8 4 8-4V7M12 11v10' />
     </>
   ),
-  key: createWrenGlyph(
+  key: createSaf0oGlyph(
     <>
       <circle cx='8' cy='12' r='4' />
       <path d='M12 12h9M17 12v3M20 12v2' />
     </>
   ),
-  lock: createWrenGlyph(
+  lock: createSaf0oGlyph(
     <>
       <rect x='5' y='10' width='14' height='11' rx='1.5' />
       <path d='M8 10V7a4 4 0 0 1 8 0v3M12 14v3' />
     </>
   ),
-  meter: createWrenGlyph(
+  meter: createSaf0oGlyph(
     <>
       <path d='M5 18a8 8 0 1 1 14 0H5Z' />
       <path d='m12 14 4-5M8 18h8' />
     </>
   ),
-  minimize: createWrenGlyph(<path d='M6 15h12' />),
-  maximize: createWrenGlyph(<path d='M5 5h14v14H5V5ZM8 8h8v8H8V8Z' />),
-  restore: createWrenGlyph(
+  minimize: createSaf0oGlyph(<path d='M6 15h12' />),
+  maximize: createSaf0oGlyph(<path d='M5 5h14v14H5V5ZM8 8h8v8H8V8Z' />),
+  restore: createSaf0oGlyph(
     <>
       <path d='M8 5h11v11h-3M5 8h11v11H5V8Z' />
     </>
   ),
-  pencil: createWrenGlyph(
+  pencil: createSaf0oGlyph(
     <>
       <path d='m5 16-1 4 4-1L19 8l-3-3L5 16Z' />
       <path d='m14 7 3 3' />
     </>
   ),
-  pulse: createWrenGlyph(<path d='M3 12h4l2-6 4 12 2-6h6' />),
-  qr: createWrenGlyph(
+  pulse: createSaf0oGlyph(<path d='M3 12h4l2-6 4 12 2-6h6' />),
+  qr: createSaf0oGlyph(
     <>
       <rect x='4' y='4' width='6' height='6' rx='.5' />
       <rect x='14' y='4' width='6' height='6' rx='.5' />
@@ -289,55 +289,55 @@ const wrenGlyphs = Object.freeze({
       <path d='M14 14h2v2h-2zM18 14h2v4h-2M14 18h4v2h2' />
     </>
   ),
-  receive: createWrenGlyph(<path d='M18 6 6 18M6 9v9h9' />),
-  remove: createWrenGlyph(
+  receive: createSaf0oGlyph(<path d='M18 6 6 18M6 9v9h9' />),
+  remove: createSaf0oGlyph(
     <>
       <path d='M5 7h14M9 7V4h6v3M7 7l1 14h8l1-14M10 11v6M14 11v6' />
     </>
   ),
-  search: createWrenGlyph(
+  search: createSaf0oGlyph(
     <>
       <circle cx='10.5' cy='10.5' r='6.5' />
       <path d='m15.5 15.5 5 5' />
     </>
   ),
   seedling: pixelGlyphs.seedling,
-  server: createWrenGlyph(
+  server: createSaf0oGlyph(
     <>
       <rect x='4' y='4' width='16' height='6' rx='1' />
       <rect x='4' y='14' width='16' height='6' rx='1' />
       <path d='M7 7h.5M7 17h.5M11 7h6M11 17h6' />
     </>
   ),
-  shield: createWrenGlyph(<path d='M12 3 19 6v5c0 5-2.5 8-7 10-4.5-2-7-5-7-10V6l7-3Z' />),
+  shield: createSaf0oGlyph(<path d='M12 3 19 6v5c0 5-2.5 8-7 10-4.5-2-7-5-7-10V6l7-3Z' />),
   shieldCheck: pixelGlyphs.verified,
-  sync: createWrenGlyph(
+  sync: createSaf0oGlyph(
     <>
       <path d='M19 8a8 8 0 0 0-13-2L4 8M4 4v4h4' />
       <path d='M5 16a8 8 0 0 0 13 2l2-2M20 20v-4h-4' />
     </>
   ),
-  sidebar: createWrenGlyph(
+  sidebar: createSaf0oGlyph(
     <>
       <rect x='3.5' y='4' width='17' height='16' rx='1.5' />
       <path d='M10 4v16M14 9l3 3-3 3' />
     </>
   ),
-  panelSingle: createWrenGlyph(<rect x='4' y='5' width='16' height='14' rx='1.5' />),
-  panelSplit: createWrenGlyph(
+  panelSingle: createSaf0oGlyph(<rect x='4' y='5' width='16' height='14' rx='1.5' />),
+  panelSplit: createSaf0oGlyph(
     <>
       <rect x='3' y='5' width='8' height='14' rx='1.5' />
       <rect x='13' y='5' width='8' height='14' rx='1.5' />
     </>
   ),
-  workspace: createWrenGlyph(
+  workspace: createSaf0oGlyph(
     <>
       <rect x='3.5' y='5' width='9' height='14' rx='1' />
       <rect x='15.5' y='7' width='5' height='10' rx='1' />
       <path d='M12.5 12h3' />
     </>
   ),
-  send: createWrenGlyph(
+  send: createSaf0oGlyph(
     <>
       <path d='M5 19 19 5M10 5h9v9' />
       <path d='M5 12v7h7' />
@@ -346,74 +346,74 @@ const wrenGlyphs = Object.freeze({
 })
 
 const icons = Object.freeze({
-  account: wrenGlyphs.accounts,
-  accounts: wrenGlyphs.accounts,
-  add: wrenGlyphs.add,
-  alert: wrenGlyphs.alert,
-  back: wrenGlyphs.back,
-  blocked: wrenGlyphs.blocked,
-  browser: wrenGlyphs.browser,
-  check: wrenGlyphs.check,
-  'chevron-down': wrenGlyphs.chevronDown,
-  'chevron-left': wrenGlyphs.chevronLeft,
-  'chevron-right': wrenGlyphs.chevronRight,
-  'chevron-up': wrenGlyphs.chevronUp,
-  close: wrenGlyphs.close,
-  contacts: wrenGlyphs.contacts,
-  copy: wrenGlyphs.copy,
-  details: wrenGlyphs.details,
-  ellipsis: wrenGlyphs.ellipsis,
-  eye: wrenGlyphs.eye,
-  external: wrenGlyphs.external,
+  account: saf0oGlyphs.accounts,
+  accounts: saf0oGlyphs.accounts,
+  add: saf0oGlyphs.add,
+  alert: saf0oGlyphs.alert,
+  back: saf0oGlyphs.back,
+  blocked: saf0oGlyphs.blocked,
+  browser: saf0oGlyphs.browser,
+  check: saf0oGlyphs.check,
+  'chevron-down': saf0oGlyphs.chevronDown,
+  'chevron-left': saf0oGlyphs.chevronLeft,
+  'chevron-right': saf0oGlyphs.chevronRight,
+  'chevron-up': saf0oGlyphs.chevronUp,
+  close: saf0oGlyphs.close,
+  contacts: saf0oGlyphs.contacts,
+  copy: saf0oGlyphs.copy,
+  details: saf0oGlyphs.details,
+  ellipsis: saf0oGlyphs.ellipsis,
+  eye: saf0oGlyphs.eye,
+  external: saf0oGlyphs.external,
   failed: pixelGlyphs.failed,
-  file: wrenGlyphs.file,
-  hot: wrenGlyphs.hot,
-  hardware: wrenGlyphs.devices,
-  inventory: wrenGlyphs.inventory,
-  key: wrenGlyphs.key,
-  lock: wrenGlyphs.lock,
-  maximize: wrenGlyphs.maximize,
-  minimize: wrenGlyphs.minimize,
-  gas: wrenGlyphs.meter,
-  globe: wrenGlyphs.globe,
-  network: wrenGlyphs.network,
-  next: wrenGlyphs.next,
-  overview: wrenGlyphs.overview,
+  file: saf0oGlyphs.file,
+  hot: saf0oGlyphs.hot,
+  hardware: saf0oGlyphs.devices,
+  inventory: saf0oGlyphs.inventory,
+  key: saf0oGlyphs.key,
+  lock: saf0oGlyphs.lock,
+  maximize: saf0oGlyphs.maximize,
+  minimize: saf0oGlyphs.minimize,
+  gas: saf0oGlyphs.meter,
+  globe: saf0oGlyphs.globe,
+  network: saf0oGlyphs.network,
+  next: saf0oGlyphs.next,
+  overview: saf0oGlyphs.overview,
   pending: pixelGlyphs.pending,
-  pencil: wrenGlyphs.pencil,
-  permissions: wrenGlyphs.shield,
-  pulse: wrenGlyphs.pulse,
-  qr: wrenGlyphs.qr,
-  receive: wrenGlyphs.receive,
-  restore: wrenGlyphs.restore,
-  remove: wrenGlyphs.remove,
-  requests: wrenGlyphs.inbox,
-  search: wrenGlyphs.search,
-  seedling: wrenGlyphs.seedling,
-  server: wrenGlyphs.server,
-  send: wrenGlyphs.send,
-  settings: wrenGlyphs.settings,
-  sign: wrenGlyphs.pencil,
-  sidebar: wrenGlyphs.sidebar,
-  panelSingle: wrenGlyphs.panelSingle,
-  panelSplit: wrenGlyphs.panelSplit,
-  workspace: wrenGlyphs.workspace,
-  support: wrenGlyphs.support,
-  sync: wrenGlyphs.sync,
-  tokens: wrenGlyphs.tokens,
-  tutorial: wrenGlyphs.tutorial,
-  quit: wrenGlyphs.quit,
-  verify: wrenGlyphs.shieldCheck,
+  pencil: saf0oGlyphs.pencil,
+  permissions: saf0oGlyphs.shield,
+  pulse: saf0oGlyphs.pulse,
+  qr: saf0oGlyphs.qr,
+  receive: saf0oGlyphs.receive,
+  restore: saf0oGlyphs.restore,
+  remove: saf0oGlyphs.remove,
+  requests: saf0oGlyphs.inbox,
+  search: saf0oGlyphs.search,
+  seedling: saf0oGlyphs.seedling,
+  server: saf0oGlyphs.server,
+  send: saf0oGlyphs.send,
+  settings: saf0oGlyphs.settings,
+  sign: saf0oGlyphs.pencil,
+  sidebar: saf0oGlyphs.sidebar,
+  panelSingle: saf0oGlyphs.panelSingle,
+  panelSplit: saf0oGlyphs.panelSplit,
+  workspace: saf0oGlyphs.workspace,
+  support: saf0oGlyphs.support,
+  sync: saf0oGlyphs.sync,
+  tokens: saf0oGlyphs.tokens,
+  tutorial: saf0oGlyphs.tutorial,
+  quit: saf0oGlyphs.quit,
+  verify: saf0oGlyphs.shieldCheck,
   verified: pixelGlyphs.verified,
-  apps: wrenGlyphs.apps,
-  watch: wrenGlyphs.eye
+  apps: saf0oGlyphs.apps,
+  watch: saf0oGlyphs.eye
 })
 
 export const iconNames = Object.freeze(Object.keys(icons))
 
 const Icon = ({ className, label, name, size = 16, ...props }) => {
   const IconComponent = icons[name]
-  if (!IconComponent) throw new Error(`Unknown Wren icon: ${name}`)
+  if (!IconComponent) throw new Error(`Unknown Saf0o icon: ${name}`)
 
   return (
     <IconComponent

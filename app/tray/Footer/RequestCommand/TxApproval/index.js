@@ -40,7 +40,7 @@ const TxApproval = ({ req, approval, inline = false, readOnly = false }) => {
           ) : null}
           <button
             type='button'
-            className={inline ? 'wrenControl wrenControlSecondary' : '_txActionButton _txActionButtonGood'}
+            className={inline ? 'saf0oControl saf0oControlSecondary' : '_txActionButton _txActionButtonGood'}
             disabled={inline && (readOnly || pending || approval?.approved)}
             aria-pressed={inline ? Boolean(approval?.approved) : undefined}
             onClick={() => {

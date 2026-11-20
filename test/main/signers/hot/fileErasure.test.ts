@@ -2,12 +2,12 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-const mockUserData = path.join(os.tmpdir(), `wren-signer-erasure-${process.pid}`)
+const mockUserData = path.join(os.tmpdir(), `saf0o-signer-erasure-${process.pid}`)
 
 jest.mock('electron', () => ({
   app: {
     getPath: jest.fn(() =>
-      require('path').join(require('os').tmpdir(), `wren-signer-erasure-${process.pid}`)
+      require('path').join(require('os').tmpdir(), `saf0o-signer-erasure-${process.pid}`)
     ),
     on: jest.fn()
   }
@@ -27,11 +27,11 @@ afterAll(() => {
 })
 
 test('rejects path-like signer identifiers without touching an external file', () => {
-  const target = path.join(mockUserData, '..', `wren-signer-erasure-target-${process.pid}.json`)
+  const target = path.join(mockUserData, '..', `saf0o-signer-erasure-target-${process.pid}.json`)
   fs.writeFileSync(target, 'keep me')
 
   try {
-    expect(() => eraseSignerFiles('../../wren-signer-erasure-target')).toThrow('Invalid signer identifier')
+    expect(() => eraseSignerFiles('../../saf0o-signer-erasure-target')).toThrow('Invalid signer identifier')
     expect(fs.readFileSync(target, 'utf8')).toBe('keep me')
   } finally {
     fs.rmSync(target, { force: true })

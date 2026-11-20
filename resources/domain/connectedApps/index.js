@@ -1,6 +1,6 @@
 import { isNetworkConnected } from '../../utils/chains'
 import { isManagedPermission, isPermissionActive } from '../permissions'
-import { isWrenOwnedOriginName } from '../origin'
+import { isSaf0oOwnedOriginName } from '../origin'
 
 export const RECENT_ORIGIN_TTL = 60 * 60 * 1000
 export const MAX_TIMER_DELAY = 2 ** 31 - 1
@@ -8,7 +8,7 @@ export const MAX_TIMER_DELAY = 2 ** 31 - 1
 const isActiveExternalPermission = (permission, now) =>
   !isManagedPermission(permission) &&
   typeof permission?.origin === 'string' &&
-  !isWrenOwnedOriginName(permission.origin) &&
+  !isSaf0oOwnedOriginName(permission.origin) &&
   isPermissionActive(permission, now)
 
 export function nextActiveExternalPermissionExpiry(permissionsByAccount = {}, now = Date.now()) {
@@ -63,7 +63,7 @@ export function selectConnectedAppGroups({
       const disconnected = []
 
       Object.entries(origins).forEach(([id, origin]) => {
-        if (origin?.chain?.id !== chain.id || isWrenOwnedOriginName(origin?.name)) return
+        if (origin?.chain?.id !== chain.id || isSaf0oOwnedOriginName(origin?.name)) return
 
         const accessCount = permissionAccess.get(id)?.size || 0
         const durable = accessCount > 0

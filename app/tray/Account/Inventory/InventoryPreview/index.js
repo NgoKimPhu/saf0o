@@ -1,14 +1,14 @@
 import React from 'react'
 import Restore from 'react-restore'
 
-import emptyInventory from 'url:../../../../../asset/ui/wren-empty-inventory-v1.png'
+import emptyInventory from 'url:../../../../../asset/ui/saf0o-empty-inventory-v1.png'
 
 import Icon from '../../../../../resources/Components/Icon'
 import link from '../../../../../resources/link'
 import { matchFilter } from '../../../../../resources/utils'
 
 import { Cluster, ClusterRow, ClusterValue } from '../../../../../resources/Components/Cluster'
-import WrenEmptyState from '../../../../../resources/Components/WrenEmptyState'
+import Saf0oEmptyState from '../../../../../resources/Components/Saf0oEmptyState'
 
 export class InventoryPreview extends React.Component {
   constructor(...args) {
@@ -108,9 +108,9 @@ export class InventoryPreview extends React.Component {
         {collections.length && displayCollections.length ? (
           <Cluster>{this.renderInventoryList()}</Cluster>
         ) : collections.length ? (
-          <div className='wrenEmptyFilter'>No matching collectibles</div>
+          <div className='saf0oEmptyFilter'>No matching collectibles</div>
         ) : inventory ? (
-          <WrenEmptyState
+          <Saf0oEmptyState
             image={emptyInventory}
             title='No collectibles yet'
             copy='Collectibles associated with this account appear here.'
@@ -123,7 +123,7 @@ export class InventoryPreview extends React.Component {
             <div className='signerBalanceButtons'>
               <button
                 type='button'
-                className='signerBalanceButton signerBalanceShowAll wrenControl wrenControlSecondary wrenControlCompact'
+                className='signerBalanceButton signerBalanceShowAll saf0oControl saf0oControlSecondary saf0oControlCompact'
                 onClick={() => {
                   const crumb = {
                     view: 'expandedModule',

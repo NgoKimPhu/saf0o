@@ -88,7 +88,7 @@ import {
   TRANSACTION_FUNDING_UNAVAILABLE,
   type WalletCallFundingError
 } from '../../resources/domain/transaction/funding'
-import { WREN_DEPLOY_ORIGIN, originIdForName } from '../../resources/domain/origin'
+import { SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../resources/domain/origin'
 
 const MAX_FEE_PER_GAS = 9_999n * 1_000_000_000n
 const MAX_GAS_LIMIT = 12_500_000n
@@ -98,7 +98,7 @@ const EIP7702_CONFIRMATIONS = 12
 const EIP7702_MONITOR_INTERVAL_MS = 15_000
 const EIP7702_SUBMISSION_UNCLEAR_NOTICE = 'Submission status unclear'
 const EIP7702_SUBMISSION_UNCLEAR_DETAIL =
-  'Wren is monitoring the expected transaction hash, and this account’s request queue is paused until its status is known.'
+  'Saf0o is monitoring the expected transaction hash, and this account’s request queue is paused until its status is known.'
 
 export type TransactionSubmissionContext = Readonly<{
   handlerId: string
@@ -503,7 +503,7 @@ export class Accounts extends EventEmitter {
       !request ||
       request.type !== 'transaction' ||
       request.status !== RequestStatus.Confirmed ||
-      request.origin !== originIdForName(WREN_DEPLOY_ORIGIN) ||
+      request.origin !== originIdForName(SAF0O_DEPLOY_ORIGIN) ||
       !request.deployment ||
       !request.activityId ||
       !request.tx?.hash ||
@@ -678,7 +678,7 @@ export class Accounts extends EventEmitter {
     const key = this.transactionTerminalTimerKey(account.id, request.handlerId)
     const completedAt = request.completed || Date.now()
     const reviewDwell =
-      request.origin === originIdForName(WREN_DEPLOY_ORIGIN) &&
+      request.origin === originIdForName(SAF0O_DEPLOY_ORIGIN) &&
       request.deployment &&
       contractAddressFromReceipt(request.tx?.receipt)
         ? CONFIRMED_DEPLOYMENT_REVIEW_DWELL_MS
@@ -1070,7 +1070,7 @@ export class Accounts extends EventEmitter {
         payload: {
           id: 1,
           jsonrpc: '2.0',
-          method: 'wren_revokeEip7702Delegation',
+          method: 'saf0o_revokeEip7702Delegation',
           params: [admission.account.id, toRpcQuantity(BigInt(chainId))]
         },
         chainId: toRpcQuantity(BigInt(chainId)),
@@ -1758,12 +1758,12 @@ export class Accounts extends EventEmitter {
         chainId: toRpcQuantity(BigInt(chainId)),
         params: [params],
         _origin:
-          type === ReplacementType.Cancel && original.origin === originIdForName(WREN_DEPLOY_ORIGIN)
+          type === ReplacementType.Cancel && original.origin === originIdForName(SAF0O_DEPLOY_ORIGIN)
             ? frameOriginId
             : original.origin
       }
 
-      const isManagedDeployment = original.origin === originIdForName(WREN_DEPLOY_ORIGIN)
+      const isManagedDeployment = original.origin === originIdForName(SAF0O_DEPLOY_ORIGIN)
       if (isManagedDeployment && !original.deployment) {
         throw new Error('Managed deployment replacement requires deployment evidence')
       }
@@ -3291,7 +3291,7 @@ export class Accounts extends EventEmitter {
         request.mode = RequestMode.Monitor
         request.submission = Object.freeze({
           status: 'unconfirmed',
-          detail: 'Wren attempted one broadcast, but the RPC response was not confirmed.'
+          detail: 'Saf0o attempted one broadcast, but the RPC response was not confirmed.'
         })
         request.tx = { hash: hash.toLowerCase(), confirmations: 0 }
         recordRequestActivity(request, 'submitted')

@@ -191,7 +191,7 @@ it('names the account and consequence in a separate removal confirmation', () =>
   const dialog = screen.getByRole('alertdialog', { name: 'Remove Primary?' })
   expect(dialog.getAttribute('aria-modal')).toBeNull()
   expect(dialog.textContent).toContain(
-    `This removes Primary (${account}) from Wren. Funds remain onchain, but this account and its signer connection will no longer be available here.`
+    `This removes Primary (${account}) from Saf0o. Funds remain onchain, but this account and its signer connection will no longer be available here.`
   )
 })
 
@@ -250,7 +250,7 @@ it('explains when durable account removal is finishing in the background', () =>
   act(() => link.rpc.mock.calls[0][3](null, { status: 'deferred' }))
 
   expect(screen.getByRole('status').textContent).toBe(
-    'Removal is in progress. Wren will finish automatically.'
+    'Removal is in progress. Saf0o will finish automatically.'
   )
   expect(screen.getByRole('button', { name: 'Removing account\u2026' }).disabled).toBe(true)
 })

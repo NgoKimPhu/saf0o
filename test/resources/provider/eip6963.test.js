@@ -4,7 +4,7 @@ import { Buffer } from 'buffer'
 import {
   EIP6963_ANNOUNCE_EVENT,
   EIP6963_REQUEST_EVENT,
-  WREN_PROVIDER_METADATA,
+  SAF0O_PROVIDER_METADATA,
   installEip6963Provider
 } from '../../../resources/provider/eip6963'
 import { installFrameProvider } from '../../../resources/provider/frame'
@@ -26,7 +26,7 @@ class RawProvider extends EventEmitter {
   }
 }
 
-const expectCanonicalWrenIcon = (icon) => {
+const expectCanonicalSaf0oIcon = (icon) => {
   const match = /^data:image\/png;base64,([A-Za-z0-9+/]+={0,2})$/.exec(icon)
   expect(match).not.toBeNull()
   const png = Buffer.from(match[1], 'base64')
@@ -46,14 +46,14 @@ it('announces immutable final EIP-6963 metadata immediately', () => {
   expect(installation.detail).toEqual({
     info: {
       uuid: '4d2d8f2a-85fb-4d1d-aa0e-16490915ee09',
-      ...WREN_PROVIDER_METADATA
+      ...SAF0O_PROVIDER_METADATA
     },
     provider
   })
   expect(Object.isFrozen(installation.detail)).toBe(true)
   expect(Object.isFrozen(installation.detail.info)).toBe(true)
   expect(Object.isFrozen(provider)).toBe(false)
-  expectCanonicalWrenIcon(installation.detail.info.icon)
+  expectCanonicalSaf0oIcon(installation.detail.info.icon)
   expect(target.crypto.randomUUID).toHaveBeenCalledTimes(1)
 })
 

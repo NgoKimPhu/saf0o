@@ -12,19 +12,19 @@ const chainFamilies = Object.freeze({
 })
 
 const identities = Object.freeze({
-  ethereum: Object.freeze({ colorToken: '--wren-chain-ethereum', mark: 'ethereum' }),
-  optimism: Object.freeze({ colorToken: '--wren-chain-optimism', mark: 'optimism' }),
-  gnosis: Object.freeze({ colorToken: '--wren-chain-gnosis', mark: 'gnosis' }),
-  polygon: Object.freeze({ colorToken: '--wren-chain-polygon', mark: 'polygon' }),
-  base: Object.freeze({ colorToken: '--wren-chain-base', mark: 'base' }),
-  arbitrum: Object.freeze({ colorToken: '--wren-chain-arbitrum', mark: 'arbitrum' }),
-  katana: Object.freeze({ colorToken: '--wren-chain-katana', mark: 'katana' }),
-  custom: Object.freeze({ colorToken: '--wren-chain-custom', mark: 'chain' })
+  ethereum: Object.freeze({ colorToken: '--saf0o-chain-ethereum', mark: 'ethereum' }),
+  optimism: Object.freeze({ colorToken: '--saf0o-chain-optimism', mark: 'optimism' }),
+  gnosis: Object.freeze({ colorToken: '--saf0o-chain-gnosis', mark: 'gnosis' }),
+  polygon: Object.freeze({ colorToken: '--saf0o-chain-polygon', mark: 'polygon' }),
+  base: Object.freeze({ colorToken: '--saf0o-chain-base', mark: 'base' }),
+  arbitrum: Object.freeze({ colorToken: '--saf0o-chain-arbitrum', mark: 'arbitrum' }),
+  katana: Object.freeze({ colorToken: '--saf0o-chain-katana', mark: 'katana' }),
+  custom: Object.freeze({ colorToken: '--saf0o-chain-custom', mark: 'chain' })
 })
 
 export function getChainIdentity(chainId, isTestnet = false) {
   const family = chainFamilies[Number(chainId)] || 'custom'
   const identity = identities[family]
 
-  return isTestnet ? { ...identity, colorToken: '--wren-chain-testnet' } : identity
+  return isTestnet ? { ...identity, colorToken: '--saf0o-chain-testnet' } : identity
 }

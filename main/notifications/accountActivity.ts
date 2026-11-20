@@ -12,7 +12,7 @@ export function notifyObservedActivity(entry: ActivityEntry, count = 1) {
     entry.chainId === undefined ||
     !accounts().includes(entry.account) ||
     store('main.transactionNotifications') === false ||
-    windows.isAnyWrenVisible() ||
+    windows.isAnySaf0oVisible() ||
     !Notification?.isSupported?.()
   )
     return false
@@ -24,7 +24,7 @@ export function notifyObservedActivity(entry: ActivityEntry, count = 1) {
           ? 'Transaction failed'
           : observedActivityLabels[entry.observed.action],
     body: [
-      count > 1 ? `${count} activities outside Wren` : 'Outside Wren',
+      count > 1 ? `${count} activities outside Saf0o` : 'Outside Saf0o',
       store('main.networks.ethereum', entry.chainId, 'name')
     ]
       .filter(Boolean)

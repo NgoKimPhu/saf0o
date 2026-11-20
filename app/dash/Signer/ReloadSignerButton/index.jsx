@@ -22,7 +22,7 @@ const ReloadSignerButton = ({ id, status, type }) => {
   return (
     <button
       type='button'
-      className='signerControlOption wrenControl wrenControlSecondary'
+      className='signerControlOption saf0oControl saf0oControlSecondary'
       disabled={pending}
       onClick={reload}
     >

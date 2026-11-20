@@ -1,6 +1,6 @@
-# Wren assets
+# Saf0o assets
 
-This directory contains artwork used by Wren. Keep review drafts elsewhere.
+This directory contains artwork used by Saf0o. Keep review drafts elsewhere.
 
 - `brand/` contains the deterministic identity master, generated exports, the
   brand sheet, and approved concept provenance.

@@ -1,9 +1,9 @@
 // Signing-critical surfaces use one continuous review canvas. Preserve the existing request and
 // signer flow while removing the inherited card stack, animated split pill, and decorative chrome.
 .approveTransaction
-  --transaction-review-row-height var(--wren-review-row-height)
+  --transaction-review-row-height var(--saf0o-review-row-height)
   --transaction-review-section-height 34px
-  padding 0 var(--wren-space-5)
+  padding 0 var(--saf0o-space-5)
   border-radius 0
   background transparent
 
@@ -12,15 +12,15 @@
     min-height 36px
     align-items center
     justify-content space-between
-    gap var(--wren-space-3)
-    padding var(--wren-space-2) 0
-    color var(--wren-text-tertiary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    gap var(--saf0o-space-3)
+    padding var(--saf0o-space-2) 0
+    color var(--saf0o-text-tertiary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
     line-height 1.35
 
     strong
-      color var(--wren-text-secondary)
+      color var(--saf0o-text-secondary)
       font-weight 560
       text-align right
 
@@ -74,17 +74,17 @@
       display grid
       width 100%
       min-height 116px
-      padding var(--wren-space-3) 0
+      padding var(--saf0o-space-3) 0
       box-sizing border-box
       grid-template-columns minmax(0, 1fr)
       align-items center
-      gap var(--wren-space-6)
+      gap var(--saf0o-space-6)
 
     ._txDescriptionSummary
       width 100%
 
     ._txDescriptionSummaryMain
-      padding-top var(--wren-space-2)
+      padding-top var(--saf0o-space-2)
       min-width 0
       font-size 26px
       line-height 32px
@@ -95,7 +95,7 @@
         min-width 0
         align-items baseline
         flex-wrap wrap
-        gap var(--wren-space-2)
+        gap var(--saf0o-space-2)
 
       .displayValue
         font-size inherit
@@ -119,10 +119,10 @@
           box-shadow none
 
       ._txDescriptionAction
-        color var(--wren-accent-primary)
-        font-family var(--wren-font-ui)
-        font-size var(--wren-type-caption)
-        font-variation-settings var(--wren-font-body-settings)
+        color var(--saf0o-accent-primary)
+        font-family var(--saf0o-font-ui)
+        font-size var(--saf0o-type-caption)
+        font-variation-settings var(--saf0o-font-body-settings)
         font-weight 620
         letter-spacing .8px
         line-height 16px
@@ -131,10 +131,10 @@
       ._txDescriptionFiat
         display flex
         align-items baseline
-        gap var(--wren-space-1)
-        color var(--wren-text-secondary)
-        font-family var(--wren-font-utility)
-        font-size var(--wren-type-small)
+        gap var(--saf0o-space-1)
+        color var(--saf0o-text-secondary)
+        font-family var(--saf0o-font-utility)
+        font-size var(--saf0o-type-small)
         font-weight 450
         line-height 18px
 
@@ -143,15 +143,15 @@
       max-width none
       min-height 42px
       box-sizing border-box
-      padding var(--wren-space-2)
+      padding var(--saf0o-space-2)
       display grid
       align-content center
       grid-template-rows auto
       gap 2px
       justify-self stretch
-      font-family var(--wren-font-ui)
-      font-size var(--wren-type-small)
-      font-variation-settings var(--wren-font-body-settings)
+      font-family var(--saf0o-font-ui)
+      font-size var(--saf0o-type-small)
+      font-variation-settings var(--saf0o-font-body-settings)
       font-weight 540
       line-height 18px
       text-align left
@@ -164,10 +164,10 @@
           display none
 
       ._txMainTagQuiet
-        color var(--wren-text-muted)
+        color var(--saf0o-text-muted)
 
     .transactionReviewStatusRow
-      border-top 1px solid var(--wren-ledger-rule)
+      border-top 1px solid var(--saf0o-ledger-rule)
 
       .clusterValue
         padding 0
@@ -175,7 +175,7 @@
     ._txDescriptionSummaryTag
       display block
       margin-top 6px
-      color var(--wren-text-secondary)
+      color var(--saf0o-text-secondary)
 
   .transactionReviewMainApproval
     .transactionReviewOverview > .clusterRow:first-child .clusterValue,
@@ -183,22 +183,22 @@
       min-height 72px
 
     ._txDescription
-      padding var(--wren-space-1) 0
+      padding var(--saf0o-space-1) 0
 
     ._txDescriptionSummaryMain
       padding-top 0
 
     .transactionReviewSummaryStatus
       min-height 36px
-      padding var(--wren-space-1) var(--wren-space-2)
+      padding var(--saf0o-space-1) var(--saf0o-space-2)
 
   .transactionReviewSectionTitle
     min-height var(--transaction-review-section-height)
     box-sizing border-box
-    padding var(--wren-space-2) 0 var(--wren-space-1)
-    color var(--wren-text-primary)
-    font-size var(--wren-type-body)
-    font-variation-settings var(--wren-font-heading-settings)
+    padding var(--saf0o-space-2) 0 var(--saf0o-space-1)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-body)
+    font-variation-settings var(--saf0o-font-heading-settings)
     font-weight 650
 
   .transactionReviewRecipient,
@@ -219,10 +219,10 @@
       display grid
       min-height var(--transaction-review-row-height)
       padding 0
-      grid-template-columns var(--wren-review-label-column) minmax(0, 1fr)
+      grid-template-columns var(--saf0o-review-label-column) minmax(0, 1fr)
       align-items center
       justify-content stretch
-      column-gap var(--wren-space-4)
+      column-gap var(--saf0o-space-4)
 
     .transactionReviewRecipientLabel
       align-self center
@@ -231,7 +231,7 @@
 
     .clusterAddress
       min-width 0
-      padding var(--wren-space-1) 0
+      padding var(--saf0o-space-1) 0
 
     .clusterAddressRecipient,
     .clusterAddressRecipientLabeled
@@ -240,11 +240,11 @@
       text-align left
 
     .clusterAddressEvidence
-      color var(--wren-accent-primary-hover)
+      color var(--saf0o-accent-primary-hover)
 
     .clusterRow + .clusterRow
       margin 0
-      border-top 1px solid var(--wren-ledger-rule)
+      border-top 1px solid var(--saf0o-ledger-rule)
 
   .transactionReviewFeeRow,
   .transactionReviewNonceRow
@@ -252,13 +252,13 @@
     width 100%
     min-height var(--transaction-review-row-height)
     box-sizing border-box
-    padding var(--wren-space-1) 0
-    grid-template-columns var(--wren-review-label-column) minmax(0, 1fr) auto
+    padding var(--saf0o-space-1) 0
+    grid-template-columns var(--saf0o-review-label-column) minmax(0, 1fr) auto
     align-items center
-    column-gap var(--wren-space-4)
+    column-gap var(--saf0o-space-4)
 
   .transactionReviewNonceRow
-    grid-template-columns var(--wren-review-label-column) minmax(0, 1fr) auto
+    grid-template-columns var(--saf0o-review-label-column) minmax(0, 1fr) auto
 
   .transactionReviewFeeValue,
   .transactionNonceDetails
@@ -271,9 +271,9 @@
     max-width 330px
 
   .transactionReviewFeeTotal
-    color var(--wren-text-primary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-body)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-body)
     font-weight 550
 
   .transactionReviewFeeSubline
@@ -281,10 +281,10 @@
     min-width 0
     margin-top 2px
     align-items center
-    gap var(--wren-space-2)
-    color var(--wren-text-tertiary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    gap var(--saf0o-space-2)
+    color var(--saf0o-text-tertiary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
 
     .clusterTag,
     ._txFeeGwei
@@ -309,16 +309,16 @@
 
   .transactionReviewFeeNotice
     min-height 34px
-    padding 8px 0 8px calc(var(--wren-review-label-column) + var(--wren-space-4))
-    border-top 1px solid var(--wren-ledger-rule)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    padding 8px 0 8px calc(var(--saf0o-review-label-column) + var(--saf0o-space-4))
+    border-top 1px solid var(--saf0o-ledger-rule)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
 
   .transactionReviewNonceHint
     margin-top 2px
-    color var(--wren-text-tertiary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-tertiary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
 
   .transactionNonce
     display grid
@@ -326,7 +326,7 @@
     grid-column 2 / 4
     grid-template-columns minmax(0, 1fr) auto
     align-items center
-    gap var(--wren-space-6)
+    gap var(--saf0o-space-6)
 
   .transactionNonceDetails
     min-width 0
@@ -335,9 +335,9 @@
     display flex
     height 20px
     align-items center
-    color var(--wren-text-primary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-body)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-body)
     font-weight 550
     line-height 20px
 
@@ -358,11 +358,11 @@
   ._txLabel
     min-height var(--transaction-review-section-height)
     box-sizing border-box
-    padding var(--wren-space-2) 0 var(--wren-space-1)
-    color var(--wren-text-primary)
-    font-family var(--wren-font-ui)
-    font-size var(--wren-type-body)
-    font-variation-settings var(--wren-font-heading-settings)
+    padding var(--saf0o-space-2) 0 var(--saf0o-space-1)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-ui)
+    font-size var(--saf0o-type-body)
+    font-variation-settings var(--saf0o-font-heading-settings)
     font-weight 650
     letter-spacing 0
     text-transform none
@@ -406,11 +406,11 @@
 
     .clusterValueClickable:not(.clusterValueDisabled):hover
       border-color transparent
-      background var(--wren-ledger-hover)
+      background var(--saf0o-ledger-hover)
 
     .clusterValueClickable:not(.clusterValueDisabled):active
       border-color transparent
-      background var(--wren-surface-active)
+      background var(--saf0o-surface-active)
 
   .transactionReviewOverview
     > .clusterRow:first-child + .clusterRow:not(.transactionReviewAssetChanges):not(.transactionReviewDataRow)
@@ -423,79 +423,79 @@
 
     > .requestItemTitle
       min-height 52px
-      padding var(--wren-space-3) 0
+      padding var(--saf0o-space-3) 0
       border-bottom 0
 
     .requestItemTitleMain
-      font-size var(--wren-type-heading)
+      font-size var(--saf0o-type-heading)
       font-weight 650
 
     .requestItemDetailsSlide
-      color var(--wren-text-tertiary)
-      font-family var(--wren-font-utility)
-      font-size var(--wren-type-caption)
+      color var(--saf0o-text-tertiary)
+      font-family var(--saf0o-font-utility)
+      font-size var(--saf0o-type-caption)
 
   ._txDescription
     width 100%
-    padding var(--wren-space-4) 0
+    padding var(--saf0o-space-4) 0
 
     ._txDescriptionSummaryMain
-      padding-top var(--wren-space-2)
-      font-size var(--wren-type-title)
+      padding-top var(--saf0o-space-2)
+      font-size var(--saf0o-type-title)
       font-weight 650
       line-height 30px
 
     ._txDescriptionSummaryTag,
     .requestItemTitleSub
-      color var(--wren-text-tertiary)
-      font-family var(--wren-font-utility)
-      font-size var(--wren-type-caption)
+      color var(--saf0o-text-tertiary)
+      font-family var(--saf0o-font-utility)
+      font-size var(--saf0o-type-caption)
 
   ._txMainTag
     width 100%
     margin 0
-    padding var(--wren-space-3) 0
+    padding var(--saf0o-space-3) 0
     border-radius 0
     background transparent
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
     line-height 18px
     text-align left
 
   ._txMainTagGood
-    color var(--wren-success)
+    color var(--saf0o-success)
     background transparent
 
   ._txMainTagWarning
-    color var(--wren-warning)
+    color var(--saf0o-warning)
     background transparent
 
   ._txMainTagBad
-    color var(--wren-danger)
+    color var(--saf0o-danger)
     background transparent
 
   .txSendingValue
     min-height 52px
     justify-content flex-start
-    color var(--wren-text-primary)
-    font-family var(--wren-font-utility)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-utility)
     font-size 18px
     font-weight 500
     text-align left
 
   ._txFeeGwei
     min-height 52px
-    padding var(--wren-space-3)
+    padding var(--saf0o-space-3)
 
     ._txFeeGweiValue
-      font-family var(--wren-font-utility)
+      font-family var(--saf0o-font-utility)
       font-size 18px
       font-weight 500
 
     ._txFeeGweiLabel
-      color var(--wren-text-tertiary)
-      font-family var(--wren-font-utility)
-      font-size var(--wren-type-caption)
+      color var(--saf0o-text-tertiary)
+      font-family var(--saf0o-font-utility)
+      font-size var(--saf0o-type-caption)
       text-transform none
 
   .transactionReviewFeeValue .transactionReviewFeeSubline
@@ -511,24 +511,24 @@
       font-weight 400
 
     ._txFeeAdjustLabel
-      margin-left var(--wren-space-3)
-      padding var(--wren-space-1) var(--wren-space-2)
-      border 1px solid var(--wren-border-default)
-      border-radius var(--wren-radius-sm)
-      color var(--wren-text-secondary)
-      background var(--wren-control-texture-dark), var(--wren-bg-elevated)
-      font-family var(--wren-font-ui)
-      font-size var(--wren-type-caption)
+      margin-left var(--saf0o-space-3)
+      padding var(--saf0o-space-1) var(--saf0o-space-2)
+      border 1px solid var(--saf0o-border-default)
+      border-radius var(--saf0o-radius-sm)
+      color var(--saf0o-text-secondary)
+      background var(--saf0o-control-texture-dark), var(--saf0o-bg-elevated)
+      font-family var(--saf0o-font-ui)
+      font-size var(--saf0o-type-caption)
       font-weight 550
 
   .transactionDataDisclosure
     display flex
     align-items center
     justify-content space-between
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
 
     span:last-child
-      color var(--wren-accent-primary-hover)
+      color var(--saf0o-accent-primary-hover)
 
   .transactionReviewAssetChanges
     margin 0
@@ -540,20 +540,20 @@
   .transactionReviewAssetChangesInner
     width 100%
     box-sizing border-box
-    padding var(--wren-space-3) var(--wren-space-4)
-    border 1px solid var(--wren-border-subtle)
-    border-radius var(--wren-radius-md)
-    background var(--wren-surface-card)
+    padding var(--saf0o-space-3) var(--saf0o-space-4)
+    border 1px solid var(--saf0o-border-subtle)
+    border-radius var(--saf0o-radius-md)
+    background var(--saf0o-surface-card)
 
   .transactionReviewAssetChangesHeader
     display flex
     min-height 22px
     align-items center
-    padding-bottom var(--wren-space-1)
+    padding-bottom var(--saf0o-space-1)
 
     strong
-      color var(--wren-text-primary)
-      font-size var(--wren-type-small)
+      color var(--saf0o-text-primary)
+      font-size var(--saf0o-type-small)
       font-weight 620
 
   .transactionReviewAssetChange
@@ -563,7 +563,7 @@
     box-sizing border-box
     align-items center
     grid-template-columns minmax(0, 1fr) auto
-    column-gap var(--wren-space-4)
+    column-gap var(--saf0o-space-4)
     border-top 0
 
   .transactionReviewAssetChangeIdentity
@@ -573,8 +573,8 @@
     strong
       display block
       overflow hidden
-      color var(--wren-text-primary)
-      font-size var(--wren-type-small)
+      color var(--saf0o-text-primary)
+      font-size var(--saf0o-type-small)
       font-weight 600
       text-overflow ellipsis
       white-space nowrap
@@ -582,10 +582,10 @@
   .transactionReviewAssetChangeAmount
     display flex
     align-items baseline
-    gap var(--wren-space-1)
-    color var(--wren-text-primary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-small)
+    gap var(--saf0o-space-1)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-small)
     font-weight 620
     text-align right
 
@@ -597,19 +597,19 @@
     clip-path inset(50%)
 
   .transactionReviewAssetChangeIncoming .transactionReviewAssetChangeAmount
-    color var(--wren-success)
+    color var(--saf0o-success)
 
   .transactionReviewAssetChangeOutgoing .transactionReviewAssetChangeAmount
-    color var(--wren-warning)
+    color var(--saf0o-warning)
 
   .transactionReviewAssetChangesDisclaimer
-    padding-top var(--wren-space-1)
-    color var(--wren-text-muted)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    padding-top var(--saf0o-space-1)
+    color var(--saf0o-text-muted)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
 
   .transactionReviewAssetChangesDisclaimerWarning
-    color var(--wren-warning)
+    color var(--saf0o-warning)
 
   .transactionReviewTokenApproval
     .clusterValue
@@ -624,12 +624,12 @@
     width 100%
     min-height var(--transaction-review-row-height)
     box-sizing border-box
-    grid-template-columns var(--wren-review-label-column) minmax(0, 1fr)
+    grid-template-columns var(--saf0o-review-label-column) minmax(0, 1fr)
     align-items center
-    column-gap var(--wren-space-4)
+    column-gap var(--saf0o-space-4)
 
   .transactionReviewApprovalLimit
-    grid-template-columns var(--wren-review-label-column) minmax(0, 1fr) auto
+    grid-template-columns var(--saf0o-review-label-column) minmax(0, 1fr) auto
 
   .transactionReviewApprovalAdjust
     display grid
@@ -637,25 +637,25 @@
     height 32px
     box-sizing border-box
     place-items center
-    border 1px solid var(--wren-border-default)
-    border-radius var(--wren-radius-sm)
-    color var(--wren-text-secondary)
-    background var(--wren-control-texture-dark), var(--wren-bg-elevated)
-    box-shadow var(--wren-control-shadow)
-    font-family var(--wren-font-ui)
-    font-size var(--wren-type-caption)
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-sm)
+    color var(--saf0o-text-secondary)
+    background var(--saf0o-control-texture-dark), var(--saf0o-bg-elevated)
+    box-shadow var(--saf0o-control-shadow)
+    font-family var(--saf0o-font-ui)
+    font-size var(--saf0o-type-caption)
     font-weight 600
 
   .transactionReviewApprovalLimit strong
-    color var(--wren-text-primary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-body)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-body)
     font-weight 550
 
   .transactionReviewApprovalSpender
     .clusterAddress
       min-width 0
-      padding var(--wren-space-1) 0
+      padding var(--saf0o-space-1) 0
 
       .clusterAddressRecipient,
       .clusterAddressRecipientLabeled
@@ -666,8 +666,8 @@
 
   .clusterTag,
   ._txFeeValueDefault
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-small)
     text-align left
 
   .clusterFocus
@@ -676,14 +676,14 @@
     text-align left
 
   .clusterAddress
-    padding var(--wren-space-3) 0
+    padding var(--saf0o-space-3) 0
 
   .clusterValueClickable .clusterAddressRecipient,
   .clusterValueClickable .clusterAddressEvidence
-    color var(--wren-accent-primary-hover)
+    color var(--saf0o-accent-primary-hover)
 
   .clusterValueClickable .clusterAddressLabel
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
 
   .transactionReviewMeta
     border-top 0
@@ -697,25 +697,25 @@
     padding 0
     border 0
     border-bottom 0
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
     background transparent
-    grid-template-columns var(--wren-review-label-column) minmax(0, 1fr)
+    grid-template-columns var(--saf0o-review-label-column) minmax(0, 1fr)
     align-items center
-    column-gap var(--wren-space-4)
+    column-gap var(--saf0o-space-4)
     text-align left
 
   .transactionReviewAddress
     cursor pointer
-    transition background var(--wren-motion-fast) var(--wren-ease)
+    transition background var(--saf0o-motion-fast) var(--saf0o-ease)
 
     &:hover
-      background var(--wren-ledger-hover)
+      background var(--saf0o-ledger-hover)
 
     &:active
-      background var(--wren-surface-active)
+      background var(--saf0o-surface-active)
 
     &:focus-visible
-      outline 2px solid var(--wren-focus)
+      outline 2px solid var(--saf0o-focus)
       outline-offset -2px
 
   .transactionReviewAddressValue
@@ -731,46 +731,46 @@
       gap 2px
 
     .clusterAddressEvidence
-      color var(--wren-accent-primary-hover)
+      color var(--saf0o-accent-primary-hover)
 
   .transactionReviewCopyFeedback
     position absolute
-    top var(--wren-space-2)
+    top var(--saf0o-space-2)
     right 0
     min-width 88px
-    padding-left var(--wren-space-2)
-    color var(--wren-success)
-    background var(--wren-bg-canvas)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    padding-left var(--saf0o-space-2)
+    color var(--saf0o-success)
+    background var(--saf0o-bg-canvas)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
     text-align right
     opacity 0
-    transition opacity var(--wren-motion-fast) var(--wren-ease)
+    transition opacity var(--saf0o-motion-fast) var(--saf0o-ease)
 
   .transactionReviewCopyFeedbackVisible
     opacity 1
 
   .transactionReviewMetaLabel
-    color var(--wren-text-tertiary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-tertiary)
+    font-size var(--saf0o-type-small)
 
   .transactionReviewDeployment
     display grid
     gap 0
 
   .transactionReviewDeploymentTitle
-    padding var(--wren-space-2) 0 var(--wren-space-1)
-    color var(--wren-text-primary)
-    font-family var(--wren-font-ui)
-    font-size var(--wren-type-small)
+    padding var(--saf0o-space-2) 0 var(--saf0o-space-1)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-ui)
+    font-size var(--saf0o-type-small)
     font-weight 620
 
   .transactionReviewDeploymentRow
     display grid
     min-height var(--transaction-review-row-height)
-    grid-template-columns var(--wren-review-label-column) minmax(0, 1fr)
+    grid-template-columns var(--saf0o-review-label-column) minmax(0, 1fr)
     align-items baseline
-    column-gap var(--wren-space-4)
+    column-gap var(--saf0o-space-4)
 
     > .transactionReviewMetaLabel
       padding-top 0
@@ -778,15 +778,15 @@
   .transactionReviewDeploymentValue
     display grid
     min-width 0
-    gap var(--wren-space-1)
-    padding 0 0 var(--wren-space-1)
-    color var(--wren-text-primary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-small)
+    gap var(--saf0o-space-1)
+    padding 0 0 var(--saf0o-space-1)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-small)
 
   .transactionReviewDeploymentHash
     overflow-wrap anywhere
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
 
   .transactionReviewDeploymentCopyValue
     overflow-wrap anywhere
@@ -811,30 +811,30 @@
     cursor pointer
 
     &:hover
-      color var(--wren-text-primary)
+      color var(--saf0o-text-primary)
 
     &:focus-visible
-      outline 2px solid var(--wren-focus)
+      outline 2px solid var(--saf0o-focus)
       outline-offset 3px
 
   .transactionReviewDeploymentCopyStatus
     min-height 15px
-    color var(--wren-success)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-success)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
 
     &:empty
       display none
       min-height 0
 
   .transactionReviewDeploymentNote
-    color var(--wren-text-tertiary)
-    font-family var(--wren-font-ui)
+    color var(--saf0o-text-tertiary)
+    font-family var(--saf0o-font-ui)
     line-height 1.4
 
   .transactionNonceActions
     display flex
-    gap var(--wren-space-2)
+    gap var(--saf0o-space-2)
 
   .transactionNonceButton
     display flex
@@ -843,40 +843,40 @@
     padding 0
     align-items center
     justify-content center
-    border 1px solid var(--wren-border-default)
-    border-radius var(--wren-radius-sm)
-    color var(--wren-text-secondary)
-    background var(--wren-control-texture-dark), var(--wren-bg-elevated)
-    box-shadow var(--wren-control-shadow)
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-sm)
+    color var(--saf0o-text-secondary)
+    background var(--saf0o-control-texture-dark), var(--saf0o-bg-elevated)
+    box-shadow var(--saf0o-control-shadow)
     cursor pointer
 
     &:hover
-      border-color var(--wren-border-strong)
-      background var(--wren-control-texture-dark), var(--wren-surface-hover)
+      border-color var(--saf0o-border-strong)
+      background var(--saf0o-control-texture-dark), var(--saf0o-surface-hover)
 
     &:active
-      background var(--wren-control-texture-dark), var(--wren-surface-active)
-      box-shadow var(--wren-control-shadow-pressed)
+      background var(--saf0o-control-texture-dark), var(--saf0o-surface-active)
+      box-shadow var(--saf0o-control-shadow-pressed)
 
     &:focus-visible
-      outline 2px solid var(--wren-focus)
+      outline 2px solid var(--saf0o-focus)
       outline-offset 2px
 
   .transactionNonceReset
-    margin-left var(--wren-space-1)
-    color var(--wren-accent-primary-hover)
+    margin-left var(--saf0o-space-1)
+    color var(--saf0o-accent-primary-hover)
 
   .transactionNonceGlyph
     position relative
     top -1px
-    font-family var(--wren-font-ui)
+    font-family var(--saf0o-font-ui)
     font-size 18px
     font-weight 650
     line-height 1
 
 .approvePermit
   ._txBody > ._txMain:last-child
-    padding-top var(--wren-space-2)
+    padding-top var(--saf0o-space-2)
 
   .clusterAddress
     min-width 0
@@ -888,8 +888,8 @@
       text-align right
 
 .requestNoticeTransactionReview
-  height var(--wren-request-review-shelf-height, 114px)
-  background linear-gradient(180deg, rgba(14, 18, 16, .72), var(--wren-bg-subtle) 30px)
+  height var(--saf0o-request-review-shelf-height, 114px)
+  background linear-gradient(180deg, rgba(14, 18, 16, .72), var(--saf0o-bg-subtle) 30px)
   box-shadow 0 -14px 28px rgba(0, 0, 0, .16)
   animation none
 
@@ -899,7 +899,7 @@
 .requestNoticeTransactionStatus
   height 114px
   min-height 114px
-  background var(--wren-bg-subtle)
+  background var(--saf0o-bg-subtle)
 
   .requestNoticeInner
     position relative
@@ -925,13 +925,13 @@
 
 .requestNoticeDeclined
   height 114px
-  background var(--wren-bg-subtle)
+  background var(--saf0o-bg-subtle)
 
   .requestNoticeDeclinedInner
     align-items flex-start
     padding 16px 24px
-    color var(--wren-text-secondary)
-    font-family var(--wren-font-ui)
+    color var(--saf0o-text-secondary)
+    font-family var(--saf0o-font-ui)
     text-align left
 
     strong,
@@ -939,7 +939,7 @@
       display block
 
     strong
-      color var(--wren-text-primary)
+      color var(--saf0o-text-primary)
       font-size 14px
       font-weight 650
       letter-spacing 0
@@ -947,9 +947,9 @@
 
     span
       margin-top 4px
-      color var(--wren-text-muted)
-      font-family var(--wren-font-utility)
-      font-size var(--wren-type-caption)
+      color var(--saf0o-text-muted)
+      font-family var(--saf0o-font-utility)
+      font-size var(--saf0o-type-caption)
       letter-spacing 0
       line-height 16px
       text-transform none
@@ -961,20 +961,20 @@
   width 100%
   height 114px
   margin 0
-  padding var(--wren-space-4) var(--wren-space-5)
+  padding var(--saf0o-space-4) var(--saf0o-space-5)
   border 0
   border-radius 0
-  background var(--wren-bg-subtle)
+  background var(--saf0o-bg-subtle)
   box-shadow none
   grid-template-columns minmax(0, 1fr) auto
   align-items center
-  gap var(--wren-space-6)
+  gap var(--saf0o-space-6)
   animation 0.24s fadeUp ease-out
 
 .requestApproveTransaction
-  height var(--wren-request-review-shelf-height, 114px)
-  padding var(--wren-space-3) var(--wren-space-5)
-  gap var(--wren-space-4)
+  height var(--saf0o-request-review-shelf-height, 114px)
+  padding var(--saf0o-space-3) var(--saf0o-space-5)
+  gap var(--saf0o-space-4)
   animation none
 
   .requestDecline
@@ -996,7 +996,7 @@
     display flex
     min-width 0
     align-items center
-    gap var(--wren-space-3)
+    gap var(--saf0o-space-3)
 
   .requestActionContextIcon
     display grid
@@ -1005,10 +1005,10 @@
     height 40px
     box-sizing border-box
     place-items center
-    border 1px solid var(--wren-border-default)
-    border-radius var(--wren-radius-md)
-    color var(--wren-accent-primary-hover)
-    background var(--wren-bg-elevated)
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-md)
+    color var(--saf0o-accent-primary-hover)
+    background var(--saf0o-bg-elevated)
     line-height 0
 
     > svg
@@ -1027,7 +1027,7 @@
       display block
 
     strong
-      color var(--wren-text-primary)
+      color var(--saf0o-text-primary)
       font-size 14px
       font-weight 650
 
@@ -1035,18 +1035,18 @@
       margin-top 2px
       max-width 360px
       overflow-wrap anywhere
-      color var(--wren-text-muted)
-      font-family var(--wren-font-utility)
-      font-size var(--wren-type-caption)
+      color var(--saf0o-text-muted)
+      font-family var(--saf0o-font-utility)
+      font-size var(--saf0o-type-caption)
       line-height 16px
       white-space normal
 
     span.requestActionError
-      color var(--wren-danger)
+      color var(--saf0o-danger)
 
   .requestActionButtons
     display flex
-    gap var(--wren-space-2)
+    gap var(--saf0o-space-2)
 
   .requestDecline,
   .requestSign
@@ -1066,56 +1066,56 @@
   .requestSignButton
     position absolute
     inset 0
-    padding 0 var(--wren-space-4)
-    border 1px solid var(--wren-border-default)
-    border-radius var(--wren-radius-md)
+    padding 0 var(--saf0o-space-4)
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-md)
     font-size 14px
     font-weight 650
     letter-spacing 0
     white-space nowrap
     transform none
     animation none
-    box-shadow var(--wren-control-shadow)
-    transition background var(--wren-motion-fast) var(--wren-ease), border-color var(--wren-motion-fast) var(--wren-ease), box-shadow var(--wren-motion-fast) var(--wren-ease)
+    box-shadow var(--saf0o-control-shadow)
+    transition background var(--saf0o-motion-fast) var(--saf0o-ease), border-color var(--saf0o-motion-fast) var(--saf0o-ease), box-shadow var(--saf0o-motion-fast) var(--saf0o-ease)
 
     &::before,
     &::after
       display none
 
   .requestDeclineButton
-    color var(--wren-text-primary)
-    background var(--wren-control-texture-dark), var(--wren-bg-elevated)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-control-texture-dark), var(--saf0o-bg-elevated)
 
     &._txButtonBad
-      color var(--wren-danger)
+      color var(--saf0o-danger)
 
   .requestSignButton
-    color var(--wren-text-inverse)
-    background var(--wren-control-texture-light), var(--wren-accent-primary)
-    border-color var(--wren-control-primary-border)
-    box-shadow var(--wren-control-primary-shadow)
+    color var(--saf0o-text-inverse)
+    background var(--saf0o-control-texture-light), var(--saf0o-accent-primary)
+    border-color var(--saf0o-control-primary-border)
+    box-shadow var(--saf0o-control-primary-shadow)
 
   .requestDecline:not(:disabled):hover .requestDeclineButton
-    border-color var(--wren-border-strong)
-    background var(--wren-control-texture-dark), var(--wren-surface-hover)
-    box-shadow var(--wren-control-shadow-hover)
+    border-color var(--saf0o-border-strong)
+    background var(--saf0o-control-texture-dark), var(--saf0o-surface-hover)
+    box-shadow var(--saf0o-control-shadow-hover)
 
   .requestSign:not(:disabled):hover .requestSignButton
-    border-color var(--wren-control-primary-border-hover)
-    background var(--wren-control-texture-light), var(--wren-accent-primary-hover)
-    box-shadow var(--wren-control-primary-shadow-hover)
+    border-color var(--saf0o-control-primary-border-hover)
+    background var(--saf0o-control-texture-light), var(--saf0o-accent-primary-hover)
+    box-shadow var(--saf0o-control-primary-shadow-hover)
 
   .requestDecline:not(:disabled):active .requestDeclineButton
-    background var(--wren-control-texture-dark), var(--wren-surface-active)
-    box-shadow var(--wren-control-shadow-pressed)
+    background var(--saf0o-control-texture-dark), var(--saf0o-surface-active)
+    box-shadow var(--saf0o-control-shadow-pressed)
 
   .requestSign:not(:disabled):active .requestSignButton
-    background var(--wren-control-texture-light), var(--wren-accent-primary-active)
-    box-shadow var(--wren-control-primary-shadow-pressed)
+    background var(--saf0o-control-texture-light), var(--saf0o-accent-primary-active)
+    box-shadow var(--saf0o-control-primary-shadow-pressed)
 
   .requestDecline:focus-visible,
   .requestSign:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
   .requestDecline:disabled,
@@ -1124,10 +1124,10 @@
 
   .requestSign:disabled .requestSignButton,
   .requestSign:disabled .requestSignButton:hover
-    border-color var(--wren-control-primary-border)
-    color var(--wren-text-inverse)
-    background var(--wren-control-texture-light), var(--wren-accent-primary)
-    box-shadow var(--wren-control-primary-shadow)
+    border-color var(--saf0o-control-primary-border)
+    color var(--saf0o-text-inverse)
+    background var(--saf0o-control-texture-light), var(--saf0o-accent-primary)
+    box-shadow var(--saf0o-control-primary-shadow)
 
 .requestApproveLightweight.requestApproveCompact
   .requestActionButtons
@@ -1147,55 +1147,55 @@
 .requestNoticeApproval
   height 154px
   border-top 0
-  background var(--wren-bg-subtle)
+  background var(--saf0o-bg-subtle)
 
   .requestNoticeInnerApproval
     height 100%
 
   .approveTransactionWarningBody .approveTransactionWarningTitle
-    color var(--wren-warning)
+    color var(--saf0o-warning)
 
   .approveTransactionWarningBody .approveTransactionWarningMessage
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
 
   ._txActionButton
     height 44px
     margin 0
-    border 1px solid var(--wren-border-default)
-    border-radius var(--wren-radius-md)
-    background var(--wren-control-texture-dark), var(--wren-bg-elevated)
-    font-family var(--wren-font-ui)
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-md)
+    background var(--saf0o-control-texture-dark), var(--saf0o-bg-elevated)
+    font-family var(--saf0o-font-ui)
     font-size 14px
     font-weight 650
     text-transform none
 
     &:hover
       transform none
-      background var(--wren-control-texture-dark), var(--wren-surface-hover)
-      box-shadow var(--wren-control-shadow-hover)
+      background var(--saf0o-control-texture-dark), var(--saf0o-surface-hover)
+      box-shadow var(--saf0o-control-shadow-hover)
 
     &:active
       transform none
-      background var(--wren-control-texture-dark), var(--wren-surface-active)
-      box-shadow var(--wren-control-shadow-pressed)
+      background var(--saf0o-control-texture-dark), var(--saf0o-surface-active)
+      box-shadow var(--saf0o-control-shadow-pressed)
 
   ._txActionButtonGood
-    color var(--wren-text-inverse)
-    border-color var(--wren-control-primary-border)
-    background var(--wren-control-texture-light), var(--wren-accent-primary)
+    color var(--saf0o-text-inverse)
+    border-color var(--saf0o-control-primary-border)
+    background var(--saf0o-control-texture-light), var(--saf0o-accent-primary)
 
     &:hover
-      border-color var(--wren-control-primary-border-hover)
-      background var(--wren-control-texture-light), var(--wren-accent-primary-hover)
-      box-shadow var(--wren-control-primary-shadow-hover)
+      border-color var(--saf0o-control-primary-border-hover)
+      background var(--saf0o-control-texture-light), var(--saf0o-accent-primary-hover)
+      box-shadow var(--saf0o-control-primary-shadow-hover)
 
     &:active
-      border-color var(--wren-control-primary-border)
-      background var(--wren-control-texture-light), var(--wren-accent-primary-active)
-      box-shadow var(--wren-control-primary-shadow-pressed)
+      border-color var(--saf0o-control-primary-border)
+      background var(--saf0o-control-texture-light), var(--saf0o-accent-primary-active)
+      box-shadow var(--saf0o-control-primary-shadow-pressed)
 
   ._txActionButtonBad
-    color var(--wren-danger)
+    color var(--saf0o-danger)
 
 @media (max-width: 560px)
   .requestNoticeTransactionReview
@@ -1206,9 +1206,9 @@
   .requestApproveLightweight
     height auto
     min-height 132px
-    padding var(--wren-space-4)
+    padding var(--saf0o-space-4)
     grid-template-columns 1fr
-    gap var(--wren-space-3)
+    gap var(--saf0o-space-3)
 
     .requestActionButtons
       display grid
@@ -1254,10 +1254,10 @@
   flex 0 0 36px
   width 36px
   height 36px
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-md)
-  color var(--wren-accent-primary-hover)
-  background var(--wren-bg-elevated)
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-md)
+  color var(--saf0o-accent-primary-hover)
+  background var(--saf0o-bg-elevated)
   place-items center
   box-sizing border-box
   line-height 0
@@ -1269,10 +1269,10 @@
     transform translateX(1px)
 
 .txLifecycle-success .txLifecycleMark
-  color var(--wren-success)
+  color var(--saf0o-success)
 
 .txLifecycle-failure .txLifecycleMark
-  color var(--wren-danger)
+  color var(--saf0o-danger)
 
 .txLifecycleCopy
   position relative
@@ -1284,7 +1284,7 @@
     display block
 
   strong
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
     font-size 14px
     font-weight 650
 
@@ -1309,9 +1309,9 @@
     margin 0
     overflow visible
     clip auto
-    color var(--wren-warning)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-warning)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
     line-height 15px
     white-space normal
 
@@ -1328,8 +1328,8 @@
   position relative
   min-width 0
   height 28px
-  color var(--wren-text-muted)
-  font-family var(--wren-font-utility)
+  color var(--saf0o-text-muted)
+  font-family var(--saf0o-font-utility)
   font-size 0
 
   &::before
@@ -1338,7 +1338,7 @@
     right 50%
     left -50%
     height 1px
-    background var(--wren-border-default)
+    background var(--saf0o-border-default)
     content ''
 
   &:first-child::before
@@ -1355,9 +1355,9 @@
   margin-left -12px
   padding 0
   box-sizing border-box
-  border 1px solid var(--wren-border-strong)
-  border-radius var(--wren-radius-sm)
-  background var(--wren-bg-subtle)
+  border 1px solid var(--saf0o-border-strong)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-bg-subtle)
   place-items center
 
   > svg
@@ -1365,38 +1365,38 @@
 
 .txLifecycleStep-complete,
 .txLifecycleStep-current
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
 
   &::before
-    background var(--wren-accent-primary)
+    background var(--saf0o-accent-primary)
 
   .txLifecycleStepMarker
-    color var(--wren-text-inverse)
-    border-color var(--wren-accent-primary)
-    background var(--wren-accent-primary)
+    color var(--saf0o-text-inverse)
+    border-color var(--saf0o-accent-primary)
+    background var(--saf0o-accent-primary)
 
 .txLifecycle-success
   .txLifecycleStep-complete::before,
   .txLifecycleStep-current::before
-    background var(--wren-success)
+    background var(--saf0o-success)
 
   .txLifecycleStep-complete .txLifecycleStepMarker,
   .txLifecycleStep-current .txLifecycleStepMarker
-    border-color var(--wren-success)
-    background var(--wren-success)
+    border-color var(--saf0o-success)
+    background var(--saf0o-success)
 
 .txLifecycle-failure .txLifecycleStep-current .txLifecycleStepMarker
-  border-color var(--wren-danger)
-  background var(--wren-danger)
+  border-color var(--saf0o-danger)
+  background var(--saf0o-danger)
 
 .txLifecycle-warning .txLifecycleMark
-  color var(--wren-warning)
-  border-color var(--wren-warning)
+  color var(--saf0o-warning)
+  border-color var(--saf0o-warning)
 
 .txLifecycle-warning .txLifecycleStep-current .txLifecycleStepMarker
-  color var(--wren-warning)
-  border-color var(--wren-warning)
-  background var(--wren-bg-elevated)
+  color var(--saf0o-warning)
+  border-color var(--saf0o-warning)
+  background var(--saf0o-bg-elevated)
 
 .requestApproveRecoverable
   height auto
@@ -1466,15 +1466,15 @@
   gap 10px
 
   dt
-    color var(--wren-text-muted)
+    color var(--saf0o-text-muted)
     font-size 12px
     text-transform uppercase
 
   dd
     margin 2px 0 0
     overflow-wrap anywhere
-    color var(--wren-text-primary)
-    font-family var(--wren-font-mono)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-mono)
     font-size 12px
     line-height 16px
 
@@ -1488,9 +1488,9 @@
     min-height 44px
     padding 0 8px
     border 0
-    color var(--wren-accent-primary-hover)
+    color var(--saf0o-accent-primary-hover)
     background transparent
-    font-family var(--wren-font-utility)
+    font-family var(--saf0o-font-utility)
     font-size 12px
     align-items center
     cursor pointer
@@ -1527,18 +1527,18 @@
   dd
     display block
     margin 0
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
     line-height 18px
     white-space nowrap
 
   dt
-    color var(--wren-text-muted)
+    color var(--saf0o-text-muted)
 
   dd
     min-width 0
     overflow hidden
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
     text-overflow ellipsis
 
   div:first-child dd
@@ -1559,34 +1559,34 @@
   min-height 44px
   height 44px
   padding 0 13px
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-secondary)
-  background var(--wren-control-texture-dark), var(--wren-bg-elevated)
-  box-shadow var(--wren-control-shadow)
-  font-family var(--wren-font-ui)
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-secondary)
+  background var(--saf0o-control-texture-dark), var(--saf0o-bg-elevated)
+  box-shadow var(--saf0o-control-shadow)
+  font-family var(--saf0o-font-ui)
   font-size 12px
   font-weight 620
 
   &:hover
-    color var(--wren-text-primary)
-    border-color var(--wren-border-strong)
-    background var(--wren-control-texture-dark), var(--wren-surface-hover)
+    color var(--saf0o-text-primary)
+    border-color var(--saf0o-border-strong)
+    background var(--saf0o-control-texture-dark), var(--saf0o-surface-hover)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
 .txLifecycleActionBad
-  color var(--wren-danger)
+  color var(--saf0o-danger)
 
 .txLifecycleActionGood
-  color var(--wren-accent-primary-hover)
+  color var(--saf0o-accent-primary-hover)
 
 .txLifecycleActionVerify
   min-width 132px
-  color var(--wren-text-primary)
-  border-color var(--wren-border-strong)
+  color var(--saf0o-text-primary)
+  border-color var(--saf0o-border-strong)
 
 .txLifecycleActionIcon
   display grid
@@ -1636,7 +1636,7 @@
   .approveTransaction .transactionReviewMain
     ._txDescription
       grid-template-columns minmax(0, 1fr)
-      gap var(--wren-space-2)
+      gap var(--saf0o-space-2)
 
     ._txDescriptionSummaryMain
       font-size 22px
@@ -1646,20 +1646,20 @@
       width 100%
       max-width none
       min-height 0
-      padding 0 0 var(--wren-space-2)
+      padding 0 0 var(--saf0o-space-2)
       justify-self stretch
 
 
 // Transaction evidence is a continuation of the review ledger, not a stack of cards.
 .transactionEvidenceView
-  padding 0 var(--wren-space-5) var(--wren-space-8)
+  padding 0 var(--saf0o-space-5) var(--saf0o-space-8)
   box-sizing border-box
 
   .txViewData
     margin 0
-    padding var(--wren-space-4) 0
+    padding var(--saf0o-space-4) 0
     border 0
-    border-top 1px solid var(--wren-ledger-rule)
+    border-top 1px solid var(--saf0o-ledger-rule)
     border-radius 0
     background transparent
     box-shadow none
@@ -1668,12 +1668,12 @@
       border-top 0
 
   .txViewDataHeader
-    margin 0 0 var(--wren-space-2)
+    margin 0 0 var(--saf0o-space-2)
     padding 0
-    color var(--wren-text-primary)
-    font-family var(--wren-font-ui)
-    font-size var(--wren-type-body)
-    font-variation-settings var(--wren-font-heading-settings)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-ui)
+    font-size var(--saf0o-type-body)
+    font-variation-settings var(--saf0o-font-heading-settings)
     font-weight 650
     letter-spacing 0
     line-height 22px
@@ -1683,30 +1683,30 @@
   .simulationEffectsNotice,
   .simulationEffectsEmpty,
   .simulationEffectsTruncated
-    margin 0 0 var(--wren-space-2)
-    color var(--wren-text-secondary)
-    font-family var(--wren-font-ui)
-    font-size var(--wren-type-caption)
+    margin 0 0 var(--saf0o-space-2)
+    color var(--saf0o-text-secondary)
+    font-family var(--saf0o-font-ui)
+    font-size var(--saf0o-type-caption)
     line-height 18px
     text-align left
 
   .simulationEffectsTruncated
-    color var(--wren-danger)
+    color var(--saf0o-danger)
 
   .accountDelegationEvidence + .accountDelegationEvidence
-    margin-top var(--wren-space-5)
+    margin-top var(--saf0o-space-5)
 
   .simulationEffect
     margin 0
-    padding var(--wren-space-4) 0
-    border-top 1px solid var(--wren-ledger-rule)
+    padding var(--saf0o-space-4) 0
+    border-top 1px solid var(--saf0o-ledger-rule)
     border-radius 0
     background transparent
 
   .simulationEffectTitle
-    margin 0 0 var(--wren-space-3)
-    font-family var(--wren-font-ui)
-    font-size var(--wren-type-small)
+    margin 0 0 var(--saf0o-space-3)
+    font-family var(--saf0o-font-ui)
+    font-size var(--saf0o-type-small)
     font-weight 650
     letter-spacing 0
     text-align left
@@ -1716,20 +1716,20 @@
     display grid
     width 100%
     margin 0
-    padding var(--wren-space-2) 0
+    padding var(--saf0o-space-2) 0
     box-sizing border-box
-    grid-template-columns var(--wren-review-label-column) minmax(0, 1fr)
+    grid-template-columns var(--saf0o-review-label-column) minmax(0, 1fr)
     align-items start
-    column-gap var(--wren-space-5)
+    column-gap var(--saf0o-space-5)
 
   .simpleJsonKey,
   .simpleJsonKeyTx
     width auto
     max-width none
     padding 0
-    color var(--wren-text-secondary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-secondary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
     font-weight 500
     letter-spacing 0
     line-height 18px
@@ -1742,9 +1742,9 @@
     margin 0
     padding 0
     border 0
-    color var(--wren-text-primary)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
     font-weight 400
     line-height 18px
     overflow-wrap anywhere
@@ -1767,8 +1767,8 @@
   z-index 2
   width max-content
   padding 4px 8px
-  color var(--wren-text-primary)
-  background var(--wren-bg-elevated)
+  color var(--saf0o-text-primary)
+  background var(--saf0o-bg-elevated)
   font-size 12px
   line-height 16px
   white-space nowrap
@@ -1796,7 +1796,7 @@
     margin 4px 0 0
     overflow visible
     clip auto
-    font-family var(--wren-font-ui)
+    font-family var(--saf0o-font-ui)
     line-height 16px
 
   .txLifecycleFacts
@@ -1811,7 +1811,7 @@
 
   .requestActionContextCopy span
     max-width none
-    font-family var(--wren-font-ui)
+    font-family var(--saf0o-font-ui)
     line-height 18px
 
   .requestActionButtons
@@ -1852,11 +1852,11 @@
   dd
     margin 0 0 8px
     overflow-wrap anywhere
-    font-family var(--wren-font-mono)
+    font-family var(--saf0o-font-mono)
 
 .transactionEvidenceSource
   margin 16px 20px
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   font-size 12px
 
 .footerModule:has(.walletCallsFundingRecovery)
@@ -1868,7 +1868,7 @@
   padding 12px 0
 
 .walletCallsFundingRecovery .requestActionContextCopy span
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
   line-height 18px
 
 // Keep the status title and icon on one row; detail length cannot move either.
@@ -1940,16 +1940,16 @@ button.fundingExactAmounts
   padding 8px 0
   border 0
   background transparent
-  color var(--wren-text-secondary)
-  font-family var(--wren-font-ui)
+  color var(--saf0o-text-secondary)
+  font-family var(--saf0o-font-ui)
   font-size 12px
   cursor pointer
 
   &[aria-pressed='true']
-    color var(--wren-accent-primary-hover)
+    color var(--saf0o-accent-primary-hover)
     text-decoration underline
     text-underline-offset 4px
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px

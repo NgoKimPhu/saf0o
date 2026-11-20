@@ -91,7 +91,7 @@ const failure = <T extends Record<string, unknown> = Record<string, never>>(
 function providerAdmissionFailure(error: unknown): SendResult<{ handlerId: string }> {
   if (!error || typeof error !== 'object') return { success: false, error: 'send-unavailable' }
   const { code, message } = error as { code?: unknown; message?: unknown }
-  if (code === 4100 && typeof message === 'string' && message.includes('Managed Wren Send origin')) {
+  if (code === 4100 && typeof message === 'string' && message.includes('Managed Saf0o Send origin')) {
     return { success: false, error: SEND_ERROR.OriginUnavailable }
   }
   if (code === -32602 || code === 4200) {

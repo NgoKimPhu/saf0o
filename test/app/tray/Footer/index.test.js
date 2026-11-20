@@ -203,7 +203,7 @@ it('confirms stopping ambiguous-submission monitoring and restores focus on Esca
   expect(screen.getByText('Submission status unclear')).toBeTruthy()
   expect(
     screen.getByText(
-      'Wren is monitoring the expected transaction hash, and this account’s request queue is paused until its status is known.'
+      'Saf0o is monitoring the expected transaction hash, and this account’s request queue is paused until its status is known.'
     )
   ).toBeTruthy()
   expect(screen.queryByRole('button', { name: 'Revoke delegation' })).toBeNull()
@@ -215,7 +215,7 @@ it('confirms stopping ambiguous-submission monitoring and restores focus on Esca
   expect(screen.getByText('Stop monitoring this revocation?')).toBeTruthy()
   expect(
     screen.getByText(
-      'Wren does not yet know whether this revocation was submitted. Stopping monitoring cannot cancel a transaction that may already be on the network.'
+      'Saf0o does not yet know whether this revocation was submitted. Stopping monitoring cannot cancel a transaction that may already be on the network.'
     )
   ).toBeTruthy()
   await waitFor(() =>
@@ -266,7 +266,7 @@ it('stops known-submission monitoring once and reports the unverified terminal s
   expect(screen.getByText('Stop monitoring this submitted revocation?')).toBeTruthy()
   expect(
     screen.getByText(
-      'Wren knows the revocation was submitted but can’t verify whether delegation was cleared. Stopping monitoring cannot cancel the transaction or prove that delegation was cleared. Your account request queue will continue.'
+      'Saf0o knows the revocation was submitted but can’t verify whether delegation was cleared. Stopping monitoring cannot cancel the transaction or prove that delegation was cleared. Your account request queue will continue.'
     )
   ).toBeTruthy()
 
@@ -528,14 +528,14 @@ it.each([
   [
     'failed',
     'Simulation failed',
-    'Wren could not verify what this wallet call may do. Review the call details before deciding.'
+    'Saf0o could not verify what this wallet call may do. Review the call details before deciding.'
   ],
   [
     'reverted',
     'Simulation reverted',
     'The simulated call reverted. The result may differ from an onchain submission.'
   ],
-  ['unavailable', 'Simulation unavailable', 'Wren could not run a simulation for this wallet call.']
+  ['unavailable', 'Simulation unavailable', 'Saf0o could not run a simulation for this wallet call.']
 ])('guards a %s simulation with a separate acknowledgement', async (status, title, detail) => {
   const req = request({
     account: '0x0000000000000000000000000000000000000001',

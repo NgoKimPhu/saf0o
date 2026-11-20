@@ -208,9 +208,9 @@ class AddAddress extends React.Component {
                       <label htmlFor='addressInput' className='addAccountItemOptionTitle'>
                         Enter an address or ENS name
                       </label>
-                      <div className='addAccountItemOptionInput address wrenInputGroup'>
+                      <div className='addAccountItemOptionInput address saf0oInputGroup'>
                         <input
-                          className='wrenInput'
+                          className='saf0oInput'
                           autoFocus
                           id='addressInput'
                           value={address}
@@ -223,7 +223,7 @@ class AddAddress extends React.Component {
                       </div>
                       <button
                         type='button'
-                        className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+                        className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
                         disabled={!normalizeInput(address) || resolvingEnsName || creating}
                         onClick={() => this.create()}
                       >
@@ -238,7 +238,7 @@ class AddAddress extends React.Component {
                       </div>
                       <button
                         type='button'
-                        className='addAccountItemOptionSubmit wrenControl wrenControlSecondary'
+                        className='addAccountItemOptionSubmit saf0oControl saf0oControlSecondary'
                         onClick={() => this.restart()}
                       >
                         Cancel
@@ -259,7 +259,7 @@ class AddAddress extends React.Component {
                       </div>
                       <button
                         type='button'
-                        className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+                        className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
                         onClick={() => this.restart()}
                       >
                         Try again
@@ -276,7 +276,7 @@ class AddAddress extends React.Component {
                       <div className='addAccountItemOptionTitle'>{'Account added successfully'}</div>
                       <button
                         type='button'
-                        className='addAccountItemOptionSubmit wrenControl wrenControlSecondary'
+                        className='addAccountItemOptionSubmit saf0oControl saf0oControlSecondary'
                         onClick={() => link.send('nav:back', 'dash', 2)}
                       >
                         Back

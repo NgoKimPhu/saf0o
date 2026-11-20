@@ -3,7 +3,7 @@ import {
   MAX_OPERATION_LIFECYCLES,
   MAX_OPERATION_LIFECYCLE_AGE_MS
 } from '../../../main/store/state/types/operationLifecycle'
-import { WREN_DEPLOY_ORIGIN, WREN_INTERNAL_ORIGIN, originIdForName } from '../../../resources/domain/origin'
+import { SAF0O_DEPLOY_ORIGIN, SAF0O_INTERNAL_ORIGIN, originIdForName } from '../../../resources/domain/origin'
 
 const operation = (updatedAt = 10) => ({
   id: '00000000-0000-4000-8000-000000000001',
@@ -101,7 +101,7 @@ test('does not allow durable deployment evidence to change after admission', () 
   }
   const admitted = {
     ...operation(),
-    origin: originIdForName(WREN_DEPLOY_ORIGIN),
+    origin: originIdForName(SAF0O_DEPLOY_ORIGIN),
     transaction: { ...operation().transaction, deployment }
   }
   ledger.put(admitted, 10)
@@ -150,7 +150,7 @@ test('accepts only exact managed speed-up lineage or internal cancellation', () 
   }
   const original = {
     ...operation(),
-    origin: originIdForName(WREN_DEPLOY_ORIGIN),
+    origin: originIdForName(SAF0O_DEPLOY_ORIGIN),
     transaction: { ...operation().transaction, deployment }
   }
   ledger.put(original, 10)
@@ -158,7 +158,7 @@ test('accepts only exact managed speed-up lineage or internal cancellation', () 
   const speed = {
     ...operation(11),
     id: '00000000-0000-4000-8000-000000000002',
-    origin: originIdForName(WREN_DEPLOY_ORIGIN),
+    origin: originIdForName(SAF0O_DEPLOY_ORIGIN),
     transaction: {
       hash: `0x${'d'.repeat(64)}`,
       nonce: original.transaction.nonce,
@@ -171,14 +171,14 @@ test('accepts only exact managed speed-up lineage or internal cancellation', () 
   const cancel = {
     ...operation(12),
     id: '00000000-0000-4000-8000-000000000003',
-    origin: originIdForName(WREN_INTERNAL_ORIGIN),
+    origin: originIdForName(SAF0O_INTERNAL_ORIGIN),
     transaction: {
       hash: `0x${'e'.repeat(64)}`,
       nonce: original.transaction.nonce,
       replacementOf: original.id
     }
   }
-  expect(ledger.put(cancel, 12)).toMatchObject({ origin: originIdForName(WREN_INTERNAL_ORIGIN) })
+  expect(ledger.put(cancel, 12)).toMatchObject({ origin: originIdForName(SAF0O_INTERNAL_ORIGIN) })
 
   expect(() =>
     ledger.put(
@@ -405,8 +405,8 @@ test('capacity eviction retains verification-referenced rows until their job is 
 
 test.each([
   ['ordinary replacement', 'app.example', undefined],
-  ['managed speed-up', originIdForName(WREN_DEPLOY_ORIGIN), 'deployment'],
-  ['internal cancellation', originIdForName(WREN_INTERNAL_ORIGIN), undefined]
+  ['managed speed-up', originIdForName(SAF0O_DEPLOY_ORIGIN), 'deployment'],
+  ['internal cancellation', originIdForName(SAF0O_INTERNAL_ORIGIN), undefined]
 ] as const)('retains a referenced parent until its %s descendant is removed', (_label, origin, marker) => {
   const deployment = {
     version: 1 as const,
@@ -417,8 +417,8 @@ test.each([
   }
   const parent = {
     ...operation(),
-    ...(marker || origin === originIdForName(WREN_INTERNAL_ORIGIN)
-      ? { origin: originIdForName(WREN_DEPLOY_ORIGIN) }
+    ...(marker || origin === originIdForName(SAF0O_INTERNAL_ORIGIN)
+      ? { origin: originIdForName(SAF0O_DEPLOY_ORIGIN) }
       : {}),
     state: 'replaced' as const,
     notification: { terminalHandledAt: 10 },
@@ -455,8 +455,8 @@ test.each([
 
 test.each([
   ['ordinary replacement', 'app.example', undefined],
-  ['managed speed-up', originIdForName(WREN_DEPLOY_ORIGIN), 'deployment'],
-  ['internal cancellation', originIdForName(WREN_INTERNAL_ORIGIN), undefined]
+  ['managed speed-up', originIdForName(SAF0O_DEPLOY_ORIGIN), 'deployment'],
+  ['internal cancellation', originIdForName(SAF0O_INTERNAL_ORIGIN), undefined]
 ] as const)('retains an expired %s ancestor while its descendant is active', (_label, origin, marker) => {
   const deployment = {
     version: 1 as const,
@@ -467,8 +467,8 @@ test.each([
   }
   const parent = {
     ...operation(),
-    ...(marker || origin === originIdForName(WREN_INTERNAL_ORIGIN)
-      ? { origin: originIdForName(WREN_DEPLOY_ORIGIN) }
+    ...(marker || origin === originIdForName(SAF0O_INTERNAL_ORIGIN)
+      ? { origin: originIdForName(SAF0O_DEPLOY_ORIGIN) }
       : {}),
     state: 'replaced' as const,
     createdAt: 0,

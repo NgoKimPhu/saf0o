@@ -16,9 +16,9 @@ import type { ChainId } from '../store/state'
 import { rendererRoleForWindow } from '../../resources/bridge/roles'
 import type { ContractVerificationDestination } from '../../resources/domain/contractVerification'
 import {
-  WREN_COMPANION_RELEASES_URL,
-  WREN_LICENSE_URL,
-  WREN_SUPPORT_URL,
+  SAF0O_COMPANION_RELEASES_URL,
+  SAF0O_LICENSE_URL,
+  SAF0O_SUPPORT_URL,
   LEDGER_SHOP_URL,
   TREZOR_SHOP_URL
 } from '../../resources/constants'
@@ -250,9 +250,9 @@ export function createViewInstance(
 }
 
 const externalWhitelist = [
-  WREN_COMPANION_RELEASES_URL,
-  WREN_LICENSE_URL,
-  WREN_SUPPORT_URL,
+  SAF0O_COMPANION_RELEASES_URL,
+  SAF0O_LICENSE_URL,
+  SAF0O_SUPPORT_URL,
   LEDGER_SHOP_URL,
   TREZOR_SHOP_URL,
   'https://opensea.io'

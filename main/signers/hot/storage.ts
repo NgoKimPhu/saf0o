@@ -4,9 +4,9 @@ import path from 'path'
 import { z } from 'zod'
 
 const MARKER_NAME = '.os-signer-protection.json'
-const MARKER_FORMAT = 'wren-os-signer-protection'
-const WRAPPER_FORMAT = 'wren-os-protected-signer'
-const PAYLOAD_FORMAT = 'wren-os-protected-signer-payload'
+const MARKER_FORMAT = 'saf0o-os-signer-protection'
+const WRAPPER_FORMAT = 'saf0o-os-protected-signer'
+const PAYLOAD_FORMAT = 'saf0o-os-protected-signer-payload'
 const VERSION = 1
 const MAX_SIGNER_BYTES = 2 * 1024 * 1024
 const MAX_WRAPPER_BYTES = 4 * 1024 * 1024
@@ -262,7 +262,7 @@ export class OsSignerStorage {
     if (!fs.existsSync(this.signerRoot)) return []
     const root = fs.lstatSync(this.signerRoot)
     if (!root.isDirectory() || root.isSymbolicLink()) {
-      throw new Error('Wren signer directory is not a regular directory')
+      throw new Error('Saf0o signer directory is not a regular directory')
     }
     const names = fs
       .readdirSync(this.signerRoot, { withFileTypes: true })
@@ -274,7 +274,7 @@ export class OsSignerStorage {
         return entry.name
       })
       .sort((left, right) => left.localeCompare(right))
-    if (names.length > MAX_SIGNER_FILES) throw new Error('Wren profile contains too many signer files')
+    if (names.length > MAX_SIGNER_FILES) throw new Error('Saf0o profile contains too many signer files')
     return names
   }
 

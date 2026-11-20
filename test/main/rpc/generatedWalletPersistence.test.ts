@@ -19,7 +19,7 @@ const flush = async () => {
 
 test('durably commits a sanitized generated account before the periodic queue flush', async () => {
   jest.useFakeTimers()
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-generated-wallet-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-generated-wallet-'))
 
   try {
     const persisted = new PersistStore({ configName: 'config', cwd: directory })
@@ -113,7 +113,7 @@ test('durably commits a sanitized generated account before the periodic queue fl
 
 test('preserves unrelated queued updates when an immediate profile commit throws', () => {
   jest.useFakeTimers()
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-generated-wallet-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-generated-wallet-'))
   const baseSet = jest.spyOn(Conf.prototype, 'set')
 
   try {

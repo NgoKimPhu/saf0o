@@ -95,7 +95,7 @@ test('orders contact actions as Copy, Edit, then Remove and exposes an explicit 
       .closest('.addressBookToolbar')
       .hasAttribute('inert')
   ).toBe(true)
-  expect(screen.getByText('This removes the saved contact from Wren. Funds are not affected.')).toBeTruthy()
+  expect(screen.getByText('This removes the saved contact from Saf0o. Funds are not affected.')).toBeTruthy()
   expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Cancel' }))
   await user.tab({ shift: true })
   expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Confirm removing Yearn Treasury' }))
@@ -134,14 +134,14 @@ test('resolves ENS once, saves its address, and returns through Dash navigation'
   expect(link.send).toHaveBeenCalledWith('tray:action', 'backDash')
 })
 
-test('records an explicit outside-Wren check without letting the renderer set its timestamp', async () => {
+test('records an explicit outside-Saf0o check without letting the renderer set its timestamp', async () => {
   saveAddressBookEntry.mockResolvedValue({ success: true, entry })
   const { user } = render(<AddressBookEditor />)
 
   await user.type(screen.getByLabelText('Address or ENS name'), address)
   await user.type(screen.getByLabelText('Name'), 'Yearn Treasury')
-  await user.click(screen.getByRole('radio', { name: 'Checked outside Wren' }))
-  expect(screen.getByText('Checked by you, outside Wren.')).toBeTruthy()
+  await user.click(screen.getByRole('radio', { name: 'Checked outside Saf0o' }))
+  expect(screen.getByText('Checked by you, outside Saf0o.')).toBeTruthy()
   await user.type(screen.getByLabelText(/Verification note/), 'Compared during a voice call')
   await user.click(screen.getByRole('button', { name: 'Save contact' }))
 

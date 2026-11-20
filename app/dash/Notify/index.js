@@ -8,8 +8,8 @@ import { usesBaseFee } from '../../../resources/domain/transaction'
 
 import Confirm from '../../../resources/Components/Confirm'
 import DialogSurface from '../../../resources/Components/DialogSurface'
-import wrenIcon from '../../../asset/brand/exports/app/wren-app-icon-512.png'
-import { WREN_LICENSE_URL, WREN_SUPPORT_URL } from '../../../resources/constants'
+import saf0oIcon from '../../../asset/brand/exports/app/saf0o-app-icon-512.png'
+import { SAF0O_LICENSE_URL, SAF0O_SUPPORT_URL } from '../../../resources/constants'
 import { notificationIdentity, requestReference } from '../../../resources/store/notifications'
 import { safeNetworkMetadata } from '../../../resources/domain/networkMetadata'
 
@@ -83,7 +83,7 @@ export class Notify extends React.Component {
         className='notify cardShow'
         modal
         ariaLabel={ariaLabel}
-        labelledBy={ariaLabel ? undefined : 'wren-dash-notify-title'}
+        labelledBy={ariaLabel ? undefined : 'saf0o-dash-notify-title'}
         onCancel={
           dismissible
             ? () => {
@@ -109,24 +109,24 @@ export class Notify extends React.Component {
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBoxSlide'>
           <div className='notifyBox'>
-            <div className='notifyWrenIcon'>
-              <img alt='' aria-hidden='true' src={wrenIcon} />
+            <div className='notifySaf0oIcon'>
+              <img alt='' aria-hidden='true' src={saf0oIcon} />
             </div>
-            <div id='wren-dash-notify-title' className='notifyTitle'>
-              About Wren
+            <div id='saf0o-dash-notify-title' className='notifyTitle'>
+              About Saf0o
             </div>
             <div className='notifyBody'>
               <button
                 type='button'
                 className='notifyBodyLink'
-                onClick={() => link.send('tray:openExternal', WREN_LICENSE_URL)}
+                onClick={() => link.send('tray:openExternal', SAF0O_LICENSE_URL)}
               >
                 License
               </button>
               <button
                 type='button'
                 className='notifyBodyLink'
-                onClick={() => link.send('tray:openExternal', WREN_SUPPORT_URL)}
+                onClick={() => link.send('tray:openExternal', SAF0O_SUPPORT_URL)}
               >
                 GitHub Issues
               </button>
@@ -156,7 +156,7 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <div id='wren-dash-notify-title' className='notifyTitle'>
+          <div id='saf0o-dash-notify-title' className='notifyTitle'>
             High network fee
           </div>
           <div className='notifyBody'>
@@ -167,7 +167,7 @@ export class Notify extends React.Component {
               </>
             ) : (
               <div className='notifyBodyLine'>
-                Wren could not estimate this transaction&apos;s fee in USD.
+                Saf0o could not estimate this transaction&apos;s fee in USD.
               </div>
             )}
             <div className='notifyBodyQuestion'>Are you sure you want to proceed?</div>
@@ -219,7 +219,7 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <div id='wren-dash-notify-title' className='notifyTitle'>
+          <div id='saf0o-dash-notify-title' className='notifyTitle'>
             Signer unavailable
           </div>
           <div className='notifyBody'>
@@ -246,7 +246,7 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <div id='wren-dash-notify-title' className='notifyTitle'>
+          <div id='saf0o-dash-notify-title' className='notifyTitle'>
             No signer attached
           </div>
           <div className='notifyBody'>
@@ -280,14 +280,14 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <div id='wren-dash-notify-title' className='notifyTitle'>
+          <div id='saf0o-dash-notify-title' className='notifyTitle'>
             Signer compatibility
           </div>
           <div className='notifyBody'>
             <div className='notifyBodyLine'>
               {`Your ${capitalize(signer)} cannot sign ${capitalize(tx)} ${
                 tx === 'london' ? '(EIP-1559) ' : ''
-              }transactions. Wren will convert this request to a legacy transaction before signing.`}
+              }transactions. Saf0o will convert this request to a legacy transaction before signing.`}
             </div>
             {['lattice', 'ledger'].includes(signer) ? (
               <div className='notifyBodyUpdate'>
@@ -395,7 +395,7 @@ export class Notify extends React.Component {
         }
       >
         <div className='notifyBox'>
-          <div id='wren-dash-notify-title' className='notifyTitle'>
+          <div id='saf0o-dash-notify-title' className='notifyTitle'>
             <div>Blind signing is disabled</div>
           </div>
           <div className='notifyBody'>
@@ -439,12 +439,12 @@ export class Notify extends React.Component {
         }
       >
         <div className='notifyBox'>
-          <div id='wren-dash-notify-title' className='notifyTitle'>
+          <div id='saf0o-dash-notify-title' className='notifyTitle'>
             <div>Experimental hot signer</div>
           </div>
           <div className='notifyBody'>
             <div className='notifyBodyLine'>
-              Wren hot signers are experimental. Do not use them for high-value accounts. Confirm that your
+              Saf0o hot signers are experimental. Do not use them for high-value accounts. Confirm that your
               backups work before relying on them.
             </div>
           </div>
@@ -477,12 +477,12 @@ export class Notify extends React.Component {
         }
       >
         <div className='notifyBox'>
-          <div id='wren-dash-notify-title' className='notifyTitle'>
+          <div id='saf0o-dash-notify-title' className='notifyTitle'>
             <div>Hot signer address mismatch</div>
           </div>
           <div className='notifyBody'>
             <div className='notifyBodyLine'>
-              The unlocked hot signer did not match the address shown in Wren and has been relocked.
+              The unlocked hot signer did not match the address shown in Saf0o and has been relocked.
             </div>
           </div>
           <div className='notifyInput'>
@@ -506,7 +506,7 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <div id='wren-dash-notify-title' className='notifyTitle'>
+          <div id='saf0o-dash-notify-title' className='notifyTitle'>
             Open external link
           </div>
           <div className='notifyBody'>
@@ -544,7 +544,7 @@ export class Notify extends React.Component {
     return (
       <div className='notifyBoxWrap' onMouseDown={(e) => e.stopPropagation()}>
         <div className='notifyBox'>
-          <div id='wren-dash-notify-title' className='notifyTitle'>
+          <div id='saf0o-dash-notify-title' className='notifyTitle'>
             Open block explorer
           </div>
           <div className='notifyBody'>
@@ -629,7 +629,7 @@ export class Notify extends React.Component {
             <div className='notifyBoxSlide'>
               <Confirm
                 prompt={`Remove ${chain.name}?`}
-                description='This removes the network from Wren. Your assets are not affected.'
+                description='This removes the network from Saf0o. Your assets are not affected.'
                 acceptText='Remove network'
                 declineText='Cancel'
                 onAccept={onAccept}

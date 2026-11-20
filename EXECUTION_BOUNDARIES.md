@@ -2,12 +2,12 @@
 
 ## Purpose and status
 
-Wren supports execution only when it can review, sign, submit, and track the
+Saf0o supports execution only when it can review, sign, submit, and track the
 result. It must preserve protocol data and reject untrusted execution code.
-The features below remain deliberately limited until Wren selects their product
+The features below remain deliberately limited until Saf0o selects their product
 and trust boundaries.
 
-**Planning status:** This reference records why Wren rejects these requests.
+**Planning status:** This reference records why Saf0o rejects these requests.
 The unsupported features below are not active tasks.
 Generic delegation creation, atomic batches without an account-owned executor,
 and wallet-authored blob transactions are not planned under the current product
@@ -17,7 +17,7 @@ model. Revisit them only after their named trust and deployment choices exist.
 
 ### Current behavior
 
-Wren detects configured-RPC delegation indicators and offers one wallet-owned
+Saf0o detects configured-RPC delegation indicators and offers one wallet-owned
 operation: a selected, unlocked Ring or Seed account can authorize the zero
 address to revoke its current delegation. The request is self-funded, has no
 value or calldata, uses one chain-specific authorization, rechecks code, nonce,
@@ -31,7 +31,7 @@ for app-suggested authorizations.
 
 ### Why creation and replacement remain unsupported
 
-Software creation needs a Wren-selected delegate registry containing, per chain:
+Software creation needs a Saf0o-selected delegate registry containing, per chain:
 
 - an audited delegate version, address, runtime code hash, deployment provenance,
   and activation policy;
@@ -45,10 +45,10 @@ Software creation needs a Wren-selected delegate registry containing, per chain:
 Creation cannot be inferred from bytecode or accepted from an external client. EIP-7702 has
 no initcode or atomic initialization, and authorization effects are not rolled
 back when outer execution fails. Replacement must model the outer transaction
-nonce and each authority nonce separately; Wren's ordinary speed-up/cancel path
+nonce and each authority nonce separately; Saf0o's ordinary speed-up/cancel path
 cannot safely copy a type-4 payload.
 
-General type-4 support remains blocked until Wren selects that registry and
+General type-4 support remains blocked until Saf0o selects that registry and
 policy. Hardware expansion remains separately blocked on vendor support and
 physical qualification.
 
@@ -56,7 +56,7 @@ physical qualification.
 
 ### Current behavior
 
-Wren executes accepted wallet-call batches as explicitly non-atomic sequential
+Saf0o executes accepted wallet-call batches as explicitly non-atomic sequential
 transactions. It advertises `atomic.status: "unsupported"`, rejects
 `atomicRequired: true` before creating a review or ledger entry, and rejects
 sequential batches from delegated senders.
@@ -83,7 +83,7 @@ Atomic support needs one selected account-owned executor:
 - tests for code/nonce drift, all-call revert, no interleaving, ambiguous
   submission, restart recovery, permission revocation, and receipt/log scoping.
 
-Wren must not advertise `supported` or `ready` until it selects this executor
+Saf0o must not advertise `supported` or `ready` until it selects this executor
 and the complete path passes. Installing a delegation during the requested batch
 does not make the batch safely atomic: a failed outer call does not undo the
 authorization.
@@ -92,7 +92,7 @@ authorization.
 
 ### Current behavior
 
-Wren rejects type-3 transactions and blob fields before review, including signed
+Saf0o rejects type-3 transactions and blob fields before review, including signed
 type-3 payloads submitted through `eth_sendRawTransaction`. Its transaction
 domain, fee model, replacement logic, generic software serializer, and hardware
 capabilities currently cover only legacy, type-1, and type-2 transactions.
@@ -123,7 +123,7 @@ Support requires all of the following as one coherent path:
 - authoritative codec/KZG vectors, malformed-sidecar tests, node compatibility,
   review coverage, and end-to-end submission/reconciliation evidence.
 
-Ethers can represent type-3 bodies. Wren has no KZG dependency or sidecar
+Ethers can represent type-3 bodies. Saf0o has no KZG dependency or sidecar
 validation policy. Parsing the body alone would omit required evidence and
 does not provide type-3 support.
 

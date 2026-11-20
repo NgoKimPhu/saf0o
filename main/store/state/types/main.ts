@@ -49,18 +49,18 @@ const PendingSignerRemovalsSchema = z
 
 // these are individual keys on the main state object
 const PreferencesSchema = {
-  launch: z.boolean().default(false).describe('Launch Wren on system start'),
-  reveal: z.boolean().default(false).describe('Show Wren when user glides mouse to edge of screen'),
+  launch: z.boolean().default(false).describe('Launch Saf0o on system start'),
+  reveal: z.boolean().default(false).describe('Show Saf0o when user glides mouse to edge of screen'),
   glideSide: z.enum(['left', 'right']).default('right').describe('Display edge used by Glide'),
   interfaceScale: z
     .union([z.literal(1), z.literal(1.25), z.literal(1.5)])
     .default(1)
     .describe('Requested interface scale'),
-  autohide: z.boolean().default(false).describe('Automatically hide Wren when it loses focus'),
+  autohide: z.boolean().default(false).describe('Automatically hide Saf0o when it loses focus'),
   transactionNotifications: z
     .boolean()
     .default(true)
-    .describe('Show privacy-safe terminal transaction notifications while Wren is hidden'),
+    .describe('Show privacy-safe terminal transaction notifications while Saf0o is hidden'),
   rememberRecentRecipients: z
     .boolean()
     .default(false)
@@ -68,7 +68,7 @@ const PreferencesSchema = {
   accountCloseLock: z
     .boolean()
     .default(false)
-    .describe("Lock an account when it's closed instead of when Wren restarts"),
+    .describe("Lock an account when it's closed instead of when Saf0o restarts"),
   showLocalNameWithENS: z.boolean(),
   menubarGasPrice: z.boolean().default(false).describe('Show gas price in menu bar'),
   hardwareDerivation: z.string()

@@ -36,7 +36,7 @@ export class NativeControls extends React.Component {
             <div className='windowsControls'>
               <button
                 type='button'
-                className='windowsControlsButton wrenControl wrenControlSecondary wrenControlChrome'
+                className='windowsControlsButton saf0oControl saf0oControlSecondary saf0oControlChrome'
                 aria-label='Minimize window'
                 onClick={this.handleMin}
               >
@@ -45,7 +45,7 @@ export class NativeControls extends React.Component {
               {maximized || fullscreen ? (
                 <button
                   type='button'
-                  className='windowsControlsButton wrenControl wrenControlSecondary wrenControlChrome'
+                  className='windowsControlsButton saf0oControl saf0oControlSecondary saf0oControlChrome'
                   aria-label='Restore window'
                   onClick={this.handleUnmax}
                 >
@@ -54,7 +54,7 @@ export class NativeControls extends React.Component {
               ) : (
                 <button
                   type='button'
-                  className='windowsControlsButton wrenControl wrenControlSecondary wrenControlChrome'
+                  className='windowsControlsButton saf0oControl saf0oControlSecondary saf0oControlChrome'
                   aria-label='Maximize window'
                   onClick={this.handleMax}
                 >
@@ -63,7 +63,7 @@ export class NativeControls extends React.Component {
               )}
               <button
                 type='button'
-                className='windowsControlsButton wrenControl wrenControlSecondary wrenControlChrome'
+                className='windowsControlsButton saf0oControl saf0oControlSecondary saf0oControlChrome'
                 aria-label='Close window'
                 onClick={this.handleClose}
               >
@@ -77,7 +77,7 @@ export class NativeControls extends React.Component {
             <div className='linuxControls'>
               <button
                 type='button'
-                className='linuxControlsButton wrenControl wrenControlSecondary wrenControlChrome'
+                className='linuxControlsButton saf0oControl saf0oControlSecondary saf0oControlChrome'
                 aria-label='Minimize window'
                 onClick={this.handleMin}
               >
@@ -86,7 +86,7 @@ export class NativeControls extends React.Component {
               {maximized || fullscreen ? (
                 <button
                   type='button'
-                  className='linuxControlsButton wrenControl wrenControlSecondary wrenControlChrome'
+                  className='linuxControlsButton saf0oControl saf0oControlSecondary saf0oControlChrome'
                   aria-label='Restore window'
                   onClick={this.handleUnmax}
                 >
@@ -95,7 +95,7 @@ export class NativeControls extends React.Component {
               ) : (
                 <button
                   type='button'
-                  className='linuxControlsButton wrenControl wrenControlSecondary wrenControlChrome'
+                  className='linuxControlsButton saf0oControl saf0oControlSecondary saf0oControlChrome'
                   aria-label='Maximize window'
                   onClick={this.handleMax}
                 >
@@ -104,7 +104,7 @@ export class NativeControls extends React.Component {
               )}
               <button
                 type='button'
-                className='linuxControlsButton wrenControl wrenControlSecondary wrenControlChrome'
+                className='linuxControlsButton saf0oControl saf0oControlSecondary saf0oControlChrome'
                 aria-label='Close window'
                 onClick={this.handleClose}
               >

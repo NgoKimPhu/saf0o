@@ -320,12 +320,12 @@ async function inspectTransactionSubject(
     simulation = projectInspectorSimulation(inspected)
     const sourceDisclosure =
       subject.source.kind === 'json-rpc'
-        ? `Pasted ${subject.source.method}${subject.source.block ? ` block ${subject.source.block}` : ''} was mapped to inspection and not forwarded; simulation used Wren's current configured-RPC review path`
+        ? `Pasted ${subject.source.method}${subject.source.block ? ` block ${subject.source.block}` : ''} was mapped to inspection and not forwarded; simulation used Saf0o's current configured-RPC review path`
         : undefined
     evidence.push(simulationEvidence(inspected, sourceDisclosure))
   } else {
     const reason = requestedNonLatestBlock
-      ? `Wren does not simulate requested block ${requestedBlock}; only current configured-RPC state is available, so no simulation result is shown`
+      ? `Saf0o does not simulate requested block ${requestedBlock}; only current configured-RPC state is available, so no simulation result is shown`
       : `Simulation requires ${missingContext.join(', ') || 'complete transaction context'}`
     evidence.push({
       kind: 'simulation',

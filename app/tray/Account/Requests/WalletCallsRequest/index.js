@@ -174,7 +174,7 @@ export class WalletCallsRequest extends React.Component {
               <span>Nonce</span>
               <input
                 id='wallet-calls-starting-nonce'
-                className='walletCallsNonceInput wrenInput'
+                className='walletCallsNonceInput saf0oInput'
                 aria-label='Starting nonce'
                 inputMode='numeric'
                 value={draft?.startingNonce || ''}
@@ -211,7 +211,7 @@ export class WalletCallsRequest extends React.Component {
                       <label>
                         <span>Gas limit</span>
                         <input
-                          className='wrenInput'
+                          className='saf0oInput'
                           aria-label={`${identity.label} gas limit`}
                           inputMode='numeric'
                           value={call.gasLimit}
@@ -224,9 +224,9 @@ export class WalletCallsRequest extends React.Component {
                         <>
                           <label>
                             <span>Max fee</span>
-                            <span className='walletCallsUnitInput wrenInputGroup'>
+                            <span className='walletCallsUnitInput saf0oInputGroup'>
                               <input
-                                className='wrenInput'
+                                className='saf0oInput'
                                 aria-label={`${identity.label} maximum fee per gas`}
                                 inputMode='decimal'
                                 value={call.maxFeePerGas}
@@ -241,9 +241,9 @@ export class WalletCallsRequest extends React.Component {
                           </label>
                           <label>
                             <span>Priority fee</span>
-                            <span className='walletCallsUnitInput wrenInputGroup'>
+                            <span className='walletCallsUnitInput saf0oInputGroup'>
                               <input
-                                className='wrenInput'
+                                className='saf0oInput'
                                 aria-label={`${identity.label} priority fee`}
                                 inputMode='decimal'
                                 value={call.maxPriorityFeePerGas}
@@ -260,9 +260,9 @@ export class WalletCallsRequest extends React.Component {
                       ) : (
                         <label>
                           <span>Gas price</span>
-                          <span className='walletCallsUnitInput wrenInputGroup'>
+                          <span className='walletCallsUnitInput saf0oInputGroup'>
                             <input
-                              className='wrenInput'
+                              className='saf0oInput'
                               aria-label={`${identity.label} gas price`}
                               inputMode='decimal'
                               value={call.gasPrice}

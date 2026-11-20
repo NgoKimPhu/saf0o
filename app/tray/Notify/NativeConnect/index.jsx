@@ -47,15 +47,15 @@ const NativeConnectNotification = ({ fingerprint, pairingCode, requestId, onClos
       <div className='notifyBoxWrap' onMouseDown={(event) => event.stopPropagation()}>
         <div className='notifyBoxSlide'>
           <div className='notifyBox extensionConnectBox'>
-            <h2 id='wren-notify-title' className='notifyTitle'>
+            <h2 id='saf0o-notify-title' className='notifyTitle'>
               Could not connect to the local app
             </h2>
-            <div className='notifyBody'>Wren could not complete this local pairing.</div>
+            <div className='notifyBody'>Saf0o could not complete this local pairing.</div>
             <div className='notifyInput'>
               <button
                 ref={errorCancelRef}
                 type='button'
-                className='notifyInputOption notifyInputDeny wrenControl wrenControlSecondary'
+                className='notifyInputOption notifyInputDeny saf0oControl saf0oControlSecondary'
                 data-dialog-initial-focus
                 disabled={responding}
                 onClick={onClose}
@@ -64,7 +64,7 @@ const NativeConnectNotification = ({ fingerprint, pairingCode, requestId, onClos
               </button>
               <button
                 type='button'
-                className='notifyInputOption notifyInputProceed wrenControl wrenControlPrimary'
+                className='notifyInputOption notifyInputProceed saf0oControl saf0oControlPrimary'
                 disabled={responding}
                 onClick={() => respond(lastResponseRef.current)}
               >
@@ -81,7 +81,7 @@ const NativeConnectNotification = ({ fingerprint, pairingCode, requestId, onClos
     <div className='notifyBoxWrap' onMouseDown={(event) => event.stopPropagation()}>
       <div className='notifyBoxSlide'>
         <div className='notifyBox extensionConnectBox'>
-          <h2 id='wren-notify-title' className='notifyTitle'>
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
             Allow local app to connect?
           </h2>
           <div className='notifyBody'>
@@ -89,7 +89,7 @@ const NativeConnectNotification = ({ fingerprint, pairingCode, requestId, onClos
             <div className='extensionPairingCode'>{pairingCode}</div>
             <button
               type='button'
-              className='extensionOriginButton nativeConnectTarget wrenControl wrenControlSecondary'
+              className='extensionOriginButton nativeConnectTarget saf0oControl saf0oControlSecondary'
               aria-label='Copy full connection ID'
               onClick={copyConnectionId}
             >
@@ -102,7 +102,7 @@ const NativeConnectNotification = ({ fingerprint, pairingCode, requestId, onClos
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption nativeConnectTarget notifyInputDeny wrenControl wrenControlSecondary'
+              className='notifyInputOption nativeConnectTarget notifyInputDeny saf0oControl saf0oControlSecondary'
               aria-label='Not now'
               data-dialog-initial-focus
               disabled={responding}
@@ -112,7 +112,7 @@ const NativeConnectNotification = ({ fingerprint, pairingCode, requestId, onClos
             </button>
             <button
               type='button'
-              className='notifyInputOption nativeConnectTarget notifyInputProceed wrenControl wrenControlPrimary'
+              className='notifyInputOption nativeConnectTarget notifyInputProceed saf0oControl saf0oControlPrimary'
               aria-label='Codes match, connect'
               disabled={responding}
               onClick={() => respond(true)}

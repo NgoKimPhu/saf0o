@@ -19,7 +19,7 @@ import TrezorConnect, {
 } from '@trezor/connect'
 import { closeFrameNodeUsbTransports, FrameNodeUsbTransport } from './nodeUsbTransport'
 import { trezorSignerId } from './deviceId'
-import { WREN_REPOSITORY_URL } from '../../../resources/constants'
+import { SAF0O_REPOSITORY_URL } from '../../../resources/constants'
 
 export class DeviceError extends Error {
   readonly code: string | undefined
@@ -40,8 +40,8 @@ type DeviceReference = {
 
 const manifest = {
   email: 'NgoKimPhu@users.noreply.github.com',
-  appName: 'Wren',
-  appUrl: WREN_REPOSITORY_URL
+  appName: 'Saf0o',
+  appUrl: SAF0O_REPOSITORY_URL
 }
 
 const config = {
@@ -93,7 +93,7 @@ class TrezorBridge extends EventEmitter {
         // Connect 10 vendors a second private AbstractTransport identity in its declarations.
         // The packaged runtime probe verifies this real guarded transport instance.
         // @ts-expect-error Upstream vendored private class differs from @trezor/transport-common.
-        transports: [new FrameNodeUsbTransport({ id: 'Wren' })]
+        transports: [new FrameNodeUsbTransport({ id: 'Saf0o' })]
       })
 
       if (generation !== this.lifecycleGeneration) return
@@ -270,13 +270,13 @@ class TrezorBridge extends EventEmitter {
   cancelCurrentRequest() {
     this.pendingPrompts.clear()
     this.emit('trezor:authenticationCancelled')
-    TrezorConnect.cancel('Transaction signing cancelled in Wren')
+    TrezorConnect.cancel('Transaction signing cancelled in Saf0o')
   }
 
   cancelAuthentication() {
     this.pendingPrompts.clear()
     this.emit('trezor:authenticationCancelled')
-    TrezorConnect.cancel('Authentication dismissed in Wren')
+    TrezorConnect.cancel('Authentication dismissed in Saf0o')
   }
 
   private makeRequest<T>(fn: () => Response<T>, retries = 20) {
@@ -423,11 +423,11 @@ class TrezorBridge extends EventEmitter {
         this.emit('trezor:needPhrase', e.payload.device, e.requestId)
       else this.emit('trezor:needPairing', { ...e.payload, requestId: e.requestId })
     } else {
-      // Wren does not provide firmware/recovery or host confirmation UI.
+      // Saf0o does not provide firmware/recovery or host confirmation UI.
       // Never silently approve a newly introduced SDK confirmation.
       this.pendingPrompts.clear()
       this.emit('trezor:authenticationCancelled')
-      TrezorConnect.cancel('Unsupported Trezor authentication request in Wren')
+      TrezorConnect.cancel('Unsupported Trezor authentication request in Saf0o')
     }
   }
 

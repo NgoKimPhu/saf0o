@@ -164,7 +164,7 @@ it.each([
     'unexpected source identity',
     { name: FRAME_SEND_ORIGIN, provenance: 'managed', sourceId: 'untrusted-source' }
   ]
-])('rejects an existing Wren Send origin with %s', async (_label, invalidOrigin) => {
+])('rejects an existing Saf0o Send origin with %s', async (_label, invalidOrigin) => {
   const originalStore = store.getMockImplementation()
   store.mockImplementation((...path) => {
     if (path.join('.') === `main.origins.${originIdForName(FRAME_SEND_ORIGIN)}`) {
@@ -194,7 +194,7 @@ it('returns a bounded generic failure instead of exposing provider error text', 
 })
 
 it.each([
-  [{ code: 4100, message: 'Managed Wren Send origin is not authorized' }, 'origin-unavailable'],
+  [{ code: 4100, message: 'Managed Saf0o Send origin is not authorized' }, 'origin-unavailable'],
   [{ code: -32602, message: 'private validation payload' }, 'validation-failed'],
   [{ code: 4200, message: 'private unsupported detail' }, 'validation-failed'],
   [{ code: -32603, message: 'Chain 0x1 not connected' }, 'network-unavailable'],

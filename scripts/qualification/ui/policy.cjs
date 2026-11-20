@@ -111,7 +111,7 @@ const RPC_WARNING_SCENARIOS = Object.freeze([
   {
     variant: 'execution-failed',
     title: 'Execution Check Failed',
-    message: 'Wren could not determine whether this transaction will execute successfully.',
+    message: 'Saf0o could not determine whether this transaction will execute successfully.',
     confirmLabel: 'Sign anyway'
   },
   {
@@ -169,22 +169,22 @@ const generatedWalletVerificationAction = (kind) => ({
 
 const COMPACT_TARGET_EXCEPTIONS = Object.freeze([
   {
-    selector: '.wrenControlChrome',
+    selector: '.saf0oControlChrome',
     minimum: 24,
     reason: 'Native window chrome is a compact desktop-only control.'
   },
   {
-    selector: '.wrenControlCompact',
+    selector: '.saf0oControlCompact',
     minimum: 32,
     reason: 'Explicit compact controls are secondary actions inside dense ledgers.'
   },
   {
-    selector: '.wrenControlIcon',
+    selector: '.saf0oControlIcon',
     minimum: 38,
     reason: 'Icon-only shell utilities use the established compact optical target.'
   },
   {
-    selector: '.wrenShellNav',
+    selector: '.saf0oShellNav',
     minimum: 38,
     reason: 'Paired shell navigation controls use the established compact optical target.'
   },
@@ -239,7 +239,7 @@ const transactionDeploymentScenario = (geometry, scale, logicalHeight) => ({
   ],
   requiredText: [
     'Deploy contract',
-    'Wren Deploy',
+    'Saf0o Deploy',
     'Deployment details',
     'Contract code',
     '4 bytes',
@@ -392,7 +392,7 @@ const updateDialogScenarios = () =>
         ready: '.updateDialog',
         expectedInitialFocus: 'Get update',
         requiredControls: ['Get update', 'Later', 'Skip this version'],
-        requiredText: ['Update available', 'Wren 0.1.3']
+        requiredText: ['Update available', 'Saf0o 0.1.3']
       },
       {
         id: `tray-update-ready-${geometry}-${scale}`,
@@ -404,7 +404,7 @@ const updateDialogScenarios = () =>
         ready: '.updateDialog',
         expectedInitialFocus: 'Restart and install',
         requiredControls: ['Restart and install', 'Later'],
-        requiredText: ['Update ready', 'Wren 0.1.3']
+        requiredText: ['Update ready', 'Saf0o 0.1.3']
       }
     ])
   )
@@ -741,20 +741,28 @@ const reviewScenarios = () => [
     requiredControls: ['Cancel', 'Revoke delegation', 'Adjust'],
     requiredText: ['Advanced fee limits', 'Base fee', 'Priority fee', 'Gas limit']
   },
-  ...['transaction', 'permit'].flatMap((kind) => [
-    ['full', FULL_SHELL_HEIGHT, 1], ['short', SHORT_SHELL_HEIGHT, 1], ['short', SHORT_SHELL_HEIGHT, 1.5]
-  ].map(([height, logicalHeight, scale]) => ({
-    id: `tray-${kind}-use-balance-${height}-${scale}`,
-    renderer: 'tray',
-    state: kind === 'permit' ? 'signature-permit-amount-editor' : 'transaction-responsive',
-    ...(kind === 'transaction' ? { variant: 'approval', adjustApproval: true } : {}),
-    scale, logicalWidth: 620, logicalHeight,
-    action: { type: 'clickText', text: 'Use balance' },
-    ready: 'input[aria-label="Custom amount"]',
-    requiredControls: ['Back', 'Use balance', 'Requested', 'Unlimited', 'Custom'],
-    requiredText: ['Your balance', 'Custom limit'],
-    layoutExpectations: [{ kind: 'input-value', selector: 'input[aria-label="Custom amount"]', value: '123.456789' }]
-  }))),
+  ...['transaction', 'permit'].flatMap((kind) =>
+    [
+      ['full', FULL_SHELL_HEIGHT, 1],
+      ['short', SHORT_SHELL_HEIGHT, 1],
+      ['short', SHORT_SHELL_HEIGHT, 1.5]
+    ].map(([height, logicalHeight, scale]) => ({
+      id: `tray-${kind}-use-balance-${height}-${scale}`,
+      renderer: 'tray',
+      state: kind === 'permit' ? 'signature-permit-amount-editor' : 'transaction-responsive',
+      ...(kind === 'transaction' ? { variant: 'approval', adjustApproval: true } : {}),
+      scale,
+      logicalWidth: 620,
+      logicalHeight,
+      action: { type: 'clickText', text: 'Use balance' },
+      ready: 'input[aria-label="Custom amount"]',
+      requiredControls: ['Back', 'Use balance', 'Requested', 'Unlimited', 'Custom'],
+      requiredText: ['Your balance', 'Custom limit'],
+      layoutExpectations: [
+        { kind: 'input-value', selector: 'input[aria-label="Custom amount"]', value: '123.456789' }
+      ]
+    }))
+  ),
   {
     id: 'tray-permit-amount-editor-full-1',
     renderer: 'tray',
@@ -763,19 +771,19 @@ const reviewScenarios = () => [
     logicalWidth: 620,
     logicalHeight: FULL_SHELL_HEIGHT,
     action: { type: 'clickText', text: 'Custom' },
-    ready: '.wrenTokenApprovalEditor input[aria-label="Custom amount"]',
+    ready: '.saf0oTokenApprovalEditor input[aria-label="Custom amount"]',
     requiredControls: ['Back', 'Requested', 'Unlimited', 'Custom'],
     requiredText: ['Token approval', 'Spending limit', 'Custom limit'],
     layoutExpectations: [
       {
         kind: 'computed-style',
-        selector: '.wrenTokenApprovalContext',
+        selector: '.saf0oTokenApprovalContext',
         property: 'borderTopWidth',
         value: '0px'
       },
       {
         kind: 'computed-style',
-        selector: '.wrenTokenApprovalContext > div',
+        selector: '.saf0oTokenApprovalContext > div',
         property: 'borderTopWidth',
         value: '0px'
       }
@@ -796,7 +804,7 @@ const reviewScenarios = () => [
         { type: 'inputLabel', label: 'Custom amount', value: 'invalid' }
       ]
     },
-    ready: '.wrenTokenApprovalStatusDanger',
+    ready: '.saf0oTokenApprovalStatusDanger',
     requiredText: ['Token approval', 'Custom limit', 'Invalid amount']
   },
   {
@@ -817,7 +825,7 @@ const reviewScenarios = () => [
         { type: 'clickText', text: 'Update' }
       ]
     },
-    ready: '.wrenTokenApprovalStatusSuccess',
+    ready: '.saf0oTokenApprovalStatusSuccess',
     requiredControls: ['Back', 'Requested', 'Unlimited', 'Custom'],
     requiredText: ['Token approval', 'Custom limit', 'USDC'],
     layoutExpectations: [
@@ -973,7 +981,7 @@ const reviewScenarios = () => [
         },
         {
           kind: 'edge-clearance',
-          selector: '.contractVerification .wrenInput',
+          selector: '.contractVerification .saf0oInput',
           container: '.contractsPanel',
           inset: 2
         },
@@ -1070,7 +1078,7 @@ const reviewScenarios = () => [
       'Verification status',
       'Etherscan · direct',
       'Status unknown',
-      'Etherscan’s response was not confirmed. Wren will not submit this publication again; check the contract on Etherscan later.'
+      'Etherscan’s response was not confirmed. Saf0o will not submit this publication again; check the contract on Etherscan later.'
     ]
   })),
   ...INTERFACE_SCALES.flatMap((scale) =>
@@ -1126,7 +1134,7 @@ const reviewScenarios = () => [
         },
         {
           kind: 'edge-clearance',
-          selector: '.deploymentForm .wrenInput',
+          selector: '.deploymentForm .saf0oInput',
           container: '.contractsPanel',
           inset: 2
         },
@@ -1341,7 +1349,7 @@ const reviewScenarios = () => [
     requiredControls: ['Cancel', 'Confirm revoke'],
     requiredText: [
       'Revoke access for https://treasury.workshop.example?',
-      'Revocation confirmation is unavailable. Wren will keep checking for the access change.'
+      'Revocation confirmation is unavailable. Saf0o will keep checking for the access change.'
     ]
   },
   ...['left', 'right'].map((glideSide) => ({
@@ -1417,7 +1425,7 @@ const reviewScenarios = () => [
     captureScroll: 'bottom',
     captureScrollSelector: '.permissionsLedgerView',
     requiredControls: ['Remove guardrail', 'Save changes'],
-    requiredText: ['Wren could not save this guardrail. Nothing changed. Try again.']
+    requiredText: ['Saf0o could not save this guardrail. Nothing changed. Try again.']
   },
   ...INTERFACE_SCALES.flatMap((scale) => [
     transactionLookalikeScenario('full', scale, FULL_SHELL_HEIGHT),
@@ -1512,7 +1520,7 @@ const reviewScenarios = () => [
         logicalHeight,
         ready: '.addressBookEditor',
         requiredControls: ['Save contact'],
-        requiredText: ['Address check', 'Checked outside Wren', 'Address check · optional']
+        requiredText: ['Address check', 'Checked outside Saf0o', 'Address check · optional']
       },
       {
         id: `dash-send-recipient-picker-${geometry}-${scale}`,
@@ -1544,7 +1552,7 @@ const reviewScenarios = () => [
         scale,
         logicalWidth: 620,
         logicalHeight,
-        ready: '#wren-settings-privacy',
+        ready: '#saf0o-settings-privacy',
         requiredControls: ['Save recent recipients', 'Clear'],
         requiredText: [
           'PRIVACY',
@@ -1553,7 +1561,7 @@ const reviewScenarios = () => [
           'Excluded from backups.'
         ],
         captureScroll: 'target',
-        captureScrollSelector: '#wren-settings-privacy'
+        captureScrollSelector: '#saf0o-settings-privacy'
       },
       {
         id: `dash-send-confirmed-${geometry}-${scale}`,
@@ -1651,7 +1659,7 @@ const reviewScenarios = () => [
     requiredControls: ['Cancel', 'Confirm removing Operations multisig with a deliberately long label'],
     requiredText: [
       'Remove Operations multisig with a deliberately long label?',
-      'This removes the saved contact from Wren. Funds are not affected.'
+      'This removes the saved contact from Saf0o. Funds are not affected.'
     ]
   },
   {
@@ -1845,25 +1853,25 @@ const reviewScenarios = () => [
         { type: 'clickText', text: 'Revoke' }
       ]
     },
-    ready: '.wrenTokenApprovalEditor',
+    ready: '.saf0oTokenApprovalEditor',
     requiredControls: ['Back', 'Requested', 'Unlimited', 'Custom', 'Revoke'],
     requiredText: ['Token approval', 'Spending limit', '0', 'Changes apply to this transaction immediately.'],
     layoutExpectations: [
       {
         kind: 'computed-style',
-        selector: '.wrenTokenApprovalContext',
+        selector: '.saf0oTokenApprovalContext',
         property: 'borderTopWidth',
         value: '0px'
       },
       {
         kind: 'computed-style',
-        selector: '.wrenTokenApprovalContext > div',
+        selector: '.saf0oTokenApprovalContext > div',
         property: 'borderTopWidth',
         value: '0px'
       },
       {
         kind: 'computed-style',
-        selector: '.wrenTokenApprovalRevoke',
+        selector: '.saf0oTokenApprovalRevoke',
         property: 'minHeight',
         value: '44px'
       }
@@ -1938,7 +1946,7 @@ const reviewScenarios = () => [
     ready: '[role="dialog"][aria-label="Remove Optimism Mainnet?"]',
     expectedInitialFocus: 'Cancel',
     requiredControls: ['Cancel', 'Remove network'],
-    requiredText: ['Remove Optimism Mainnet?', 'This removes the network from Wren.']
+    requiredText: ['Remove Optimism Mainnet?', 'This removes the network from Saf0o.']
   },
   {
     id: 'tray-transaction-method-verified-full-1.5',
@@ -1975,7 +1983,13 @@ const reviewScenarios = () => [
     logicalWidth: 620,
     logicalHeight: FULL_SHELL_HEIGHT,
     ready: '.addAccountsChooser',
-    requiredControls: ['Create wallet', 'Import wallet', 'Connect hardware wallet', 'Watch address', 'Create private key'],
+    requiredControls: [
+      'Create wallet',
+      'Import wallet',
+      'Connect hardware wallet',
+      'Watch address',
+      'Create private key'
+    ],
     requiredText: ['Add account', 'Advanced']
   },
   {
@@ -1994,10 +2008,7 @@ const reviewScenarios = () => [
     },
     ready: '.addAccountItemOptionPasswordConsent',
     requiredControls: ['Continue'],
-    requiredText: [
-      'Repeats like "aaa" are easy to guess',
-      'I understand this password may be weak.'
-    ],
+    requiredText: ['Repeats like "aaa" are easy to guess', 'I understand this password may be weak.'],
     layoutExpectations: [
       { kind: 'scroll-fits', selector: '.addAccountItemOptionSetupFrame[aria-hidden="false"]' }
     ]
@@ -2019,7 +2030,7 @@ const reviewScenarios = () => [
         requiredControls: ['Copy recovery phrase', "I've written it down"],
         requiredText: [
           'Your recovery phrase',
-          'Write these 12 words down in order. Wren will not show them again.',
+          'Write these 12 words down in order. Saf0o will not show them again.',
           'Clipboard clears after 60 seconds; clipboard history may retain it.',
           'Wallet setup expires in 10 minutes.',
           'Leaving now deletes this new wallet.'
@@ -2180,7 +2191,7 @@ const reviewScenarios = () => [
     scale: 1,
     logicalWidth: 620,
     logicalHeight: FULL_SHELL_HEIGHT,
-    ready: '.wrenSettings',
+    ready: '.saf0oSettings',
     requiredText: ['DESKTOP BEHAVIOR', 'ACCOUNTS AND SIGNING']
   },
   {
@@ -2191,11 +2202,11 @@ const reviewScenarios = () => [
     scale: 1,
     logicalWidth: 620,
     logicalHeight: FULL_SHELL_HEIGHT,
-    ready: '#wren-settings-local-connections',
+    ready: '#saf0o-settings-local-connections',
     requiredControls: ['Copy full connection ID', 'Revoke'],
     requiredText: ['LOCAL CONNECTIONS', 'Authenticated software on this computer.'],
     captureScroll: 'target',
-    captureScrollSelector: '#wren-settings-local-connections'
+    captureScrollSelector: '#saf0o-settings-local-connections'
   },
   {
     id: 'dash-settings-wallet-notifications-full-1',
@@ -2205,14 +2216,14 @@ const reviewScenarios = () => [
     scale: 1,
     logicalWidth: 620,
     logicalHeight: FULL_SHELL_HEIGHT,
-    ready: '#wren-settings-wallet-notifications',
+    ready: '#saf0o-settings-wallet-notifications',
     requiredControls: ['Wallet activity notifications'],
     requiredText: [
       'Wallet activity notifications',
-      'Show activity alerts while Wren is hidden. Wallet details stay private.'
+      'Show activity alerts while Saf0o is hidden. Wallet details stay private.'
     ],
     captureScroll: 'target',
-    captureScrollSelector: '#wren-settings-wallet-notifications'
+    captureScrollSelector: '#saf0o-settings-wallet-notifications'
   },
   {
     id: 'dash-settings-recovery-full-1',
@@ -2226,7 +2237,7 @@ const reviewScenarios = () => [
     requiredControls: ['Export backup', 'Restore backup'],
     requiredText: ['RECOVERY', 'Live balances, rates, and pending requests are left out'],
     captureScroll: 'target',
-    captureScrollSelector: '#wren-settings-recovery'
+    captureScrollSelector: '#saf0o-settings-recovery'
   },
   {
     id: 'dash-settings-contract-verification-short-1.5',
@@ -2247,7 +2258,7 @@ const reviewScenarios = () => [
       'Excluded from backups.'
     ],
     captureScroll: 'target',
-    captureScrollSelector: '#wren-settings-contract-verification'
+    captureScrollSelector: '#saf0o-settings-contract-verification'
   },
   {
     id: 'dash-settings-contract-verification-unavailable-short-1.5',
@@ -2266,7 +2277,7 @@ const reviewScenarios = () => [
       'Credential status unavailable.'
     ],
     captureScroll: 'target',
-    captureScrollSelector: '#wren-settings-contract-verification'
+    captureScrollSelector: '#saf0o-settings-contract-verification'
   },
   {
     id: 'dash-settings-about-full-1',
@@ -2277,10 +2288,10 @@ const reviewScenarios = () => [
     logicalWidth: 620,
     logicalHeight: FULL_SHELL_HEIGHT,
     ready: '.appInfo',
-    requiredControls: ['View License', 'Reset Wren'],
+    requiredControls: ['View License', 'Reset Saf0o'],
     requiredText: ['ABOUT'],
     captureScroll: 'target',
-    captureScrollSelector: '#wren-settings-about',
+    captureScrollSelector: '#saf0o-settings-about',
     layoutExpectations: [
       {
         kind: 'computed-style',
@@ -2301,9 +2312,9 @@ const reviewScenarios = () => [
     action: { type: 'clickText', text: 'Export backup' },
     ready: '[role="dialog"][aria-label="Export encrypted backup"]',
     requiredControls: ['Cancel', 'Choose save location'],
-    requiredText: ['Wren cannot recover it if you forget it', 'Backup password', 'Confirm password'],
+    requiredText: ['Saf0o cannot recover it if you forget it', 'Backup password', 'Confirm password'],
     captureScroll: 'target',
-    captureScrollSelector: '#wren-settings-recovery'
+    captureScrollSelector: '#saf0o-settings-recovery'
   },
   {
     id: 'dash-settings-recovery-restore-full-1',
@@ -2318,7 +2329,7 @@ const reviewScenarios = () => [
     requiredControls: ['Cancel', 'Choose backup to inspect'],
     requiredText: ['Choose a backup to preview before restoring.', 'Backup password'],
     captureScroll: 'target',
-    captureScrollSelector: '#wren-settings-recovery'
+    captureScrollSelector: '#saf0o-settings-recovery'
   },
   {
     id: 'dash-settings-recovery-restore-confirm-full-1',
@@ -2338,10 +2349,10 @@ const reviewScenarios = () => [
     },
     ready: '[role="alertdialog"][aria-labelledby="recovery-replace-title"]',
     expectedInitialFocus: 'Cancel',
-    requiredControls: ['Cancel', 'Replace this Wren profile'],
+    requiredControls: ['Cancel', 'Replace this Saf0o profile'],
     requiredText: ['Version 1', 'Wallet sources', 'replace this device’s current profile'],
     captureScroll: 'target',
-    captureScrollSelector: '#wren-settings-recovery'
+    captureScrollSelector: '#saf0o-settings-recovery'
   },
   {
     id: 'dash-networks-full-1',
@@ -2975,10 +2986,7 @@ const reviewScenarios = () => [
     logicalHeight: SHORT_SHELL_HEIGHT,
     ready: '.requestApproveRecoverable',
     requiredControls: ['Close request', 'Recheck'],
-    requiredText: [
-      'Safety check unavailable',
-      'Nothing signed or sent.'
-    ]
+    requiredText: ['Safety check unavailable', 'Nothing signed or sent.']
   },
   {
     id: 'tray-transaction-funding-unavailable-short-1',
@@ -3246,7 +3254,7 @@ const reviewScenarios = () => [
     scale: 1,
     logicalWidth: 620,
     logicalHeight: FULL_SHELL_HEIGHT,
-    ready: '[role="dialog"][aria-labelledby="wren-notify-title"]',
+    ready: '[role="dialog"][aria-labelledby="saf0o-notify-title"]',
     expectedInitialFocus: 'Not now',
     requiredControls: ['Copy full connection ID', 'Not now', 'Codes match, connect'],
     requiredText: ['Allow local app to connect?', 'Compare with the code in your local app.', 'Connection ID']
@@ -3443,7 +3451,7 @@ const reviewScenarios = () => [
     scale: 1,
     logicalWidth: 620,
     logicalHeight: FULL_SHELL_HEIGHT,
-    ready: '.accountSettingsExpandedView #wren-account-name',
+    ready: '.accountSettingsExpandedView #saf0o-account-name',
     expectedInitialFocus: 'Account name',
     requiredControls: ['Back', 'Account name'],
     requiredText: ['Account settings', 'Account', 'Address'],
@@ -3589,7 +3597,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
               logicalHeight: FULL_SHELL_HEIGHT,
               ready: '.lightweightRequest',
               requiredControls: ['Back', 'Copy proposed RPC endpoint', 'Decline', 'Review network'],
-              requiredText: ['Add Base to Wren?', 'Base', '8453', 'https://mainnet.base.org'],
+              requiredText: ['Add Base to Saf0o?', 'Base', '8453', 'https://mainnet.base.org'],
               layoutExpectations: [{ kind: 'viewport-bottom', selector: '.requestApproveLightweight' }]
             },
             {
@@ -4037,7 +4045,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
         logicalHeight: 405,
         ready: 'button',
         requiredControls: ['Create wallet', 'Import wallet', 'Connect hardware wallet', 'Watch address'],
-        requiredText: ['Meet Wren']
+        requiredText: ['Meet Saf0o']
       }
     ]),
     {
@@ -4294,7 +4302,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
       ...base,
       id: 'tray-account-external-activity-full-1',
       externalActivity: true,
-      requiredText: ['Received assets', 'Approve', 'Deposit', 'Outside Wren', 'Ethereum']
+      requiredText: ['Received assets', 'Approve', 'Deposit', 'Outside Saf0o', 'Ethereum']
     })
   }
   if (includeReview) {
@@ -4318,28 +4326,57 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
     }
   }
   if (includeReview) {
-    for (const id of ['dash-network-add-full-1', 'dash-network-editor-full-1', 'dash-network-details-full-1', 'dash-send-sweep-review-full-1']) {
+    for (const id of [
+      'dash-network-add-full-1',
+      'dash-network-editor-full-1',
+      'dash-network-details-full-1',
+      'dash-send-sweep-review-full-1'
+    ]) {
       const base = selected.find((scenario) => scenario.id === id)
-      if (base && !selected.some((scenario) => scenario.id === id.replace('-full-', '-short-'))) selected.push({ ...base, id: id.replace('-full-', '-short-'), logicalHeight: SHORT_SHELL_HEIGHT })
+      if (base && !selected.some((scenario) => scenario.id === id.replace('-full-', '-short-')))
+        selected.push({ ...base, id: id.replace('-full-', '-short-'), logicalHeight: SHORT_SHELL_HEIGHT })
     }
     const receive = selected.find((scenario) => scenario.id === 'tray-receive-short-1')
     for (const scale of [1.25, 1.5]) selected.push({ ...receive, id: 'tray-receive-short-' + scale, scale })
     selected.push({
-      id: 'tray-account-guardrail-remove-confirm-short-1', renderer: 'tray', state: 'account-permissions', scale: 1,
-      logicalWidth: 620, logicalHeight: SHORT_SHELL_HEIGHT,
-      action: { type: 'sequence', steps: [{ type: 'clickText', text: 'Edit guardrail · Ethereum (0x1)' }, { type: 'clickText', text: 'Remove guardrail' }] },
-      ready: '.dappGuardrailConfirm', requiredText: ['Remove this guardrail?'], requiredControls: ['Cancel', 'Confirm remove']
+      id: 'tray-account-guardrail-remove-confirm-short-1',
+      renderer: 'tray',
+      state: 'account-permissions',
+      scale: 1,
+      logicalWidth: 620,
+      logicalHeight: SHORT_SHELL_HEIGHT,
+      action: {
+        type: 'sequence',
+        steps: [
+          { type: 'clickText', text: 'Edit guardrail · Ethereum (0x1)' },
+          { type: 'clickText', text: 'Remove guardrail' }
+        ]
+      },
+      ready: '.dappGuardrailConfirm',
+      requiredText: ['Remove this guardrail?'],
+      requiredControls: ['Cancel', 'Confirm remove']
     })
     for (const state of ['account-add-seed', 'account-add-watch']) {
       const base = selected.find((scenario) => scenario.state === state)
-      for (const scale of [1, 1.25, 1.5]) selected.push({ ...base, id: 'dash-' + state + '-short-' + scale, logicalHeight: SHORT_SHELL_HEIGHT, scale })
+      for (const scale of [1, 1.25, 1.5])
+        selected.push({
+          ...base,
+          id: 'dash-' + state + '-short-' + scale,
+          logicalHeight: SHORT_SHELL_HEIGHT,
+          scale
+        })
     }
     const funding = selected.find((scenario) => scenario.id === 'tray-wallet-calls-funding-full-1')
     const permit = selected.find((scenario) => scenario.id === 'tray-signature-permit-review-full-1')
     selected.push(
       { ...permit, id: 'tray-signature-permit-review-short-1', logicalHeight: SHORT_SHELL_HEIGHT },
-      { ...funding, id: 'tray-wallet-calls-funding-exact-short-1', logicalHeight: SHORT_SHELL_HEIGHT,
-        action: { type: 'clickText', text: 'Exact amounts' }, ready: '.fundingExactAmounts[aria-pressed="true"]' }
+      {
+        ...funding,
+        id: 'tray-wallet-calls-funding-exact-short-1',
+        logicalHeight: SHORT_SHELL_HEIGHT,
+        action: { type: 'clickText', text: 'Exact amounts' },
+        ready: '.fundingExactAmounts[aria-pressed="true"]'
+      }
     )
     for (const variant of ['loading', 'unavailable', 'partial', 'empty', 'privacy'])
       selected.push({
@@ -4392,7 +4429,11 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
         requiredText: ['Advanced details', 'Network fee', 'Gas limit', 'Signing with'],
         layoutExpectations: [
           { kind: 'viewport-bottom', selector: '.signingDecisionShelf' },
-          { kind: 'contained', selector: '.txAdjustFeeInline input[aria-label="Base Fee Cap (GWEI)"]', container: '.approveTransaction' }
+          {
+            kind: 'contained',
+            selector: '.txAdjustFeeInline input[aria-label="Base Fee Cap (GWEI)"]',
+            container: '.approveTransaction'
+          }
         ]
       })
     }
@@ -4493,17 +4534,34 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
     })
   }
   if (includeReview) {
-    for (const [geometry, scale, logicalHeight] of [['full', 1, FULL_SHELL_HEIGHT], ['short', 1.5, SHORT_SHELL_HEIGHT]]) {
+    for (const [geometry, scale, logicalHeight] of [
+      ['full', 1, FULL_SHELL_HEIGHT],
+      ['short', 1.5, SHORT_SHELL_HEIGHT]
+    ]) {
       const base = selected.find((scenario) => scenario.id === 'tray-transaction-approval-full-1')
-      selected.push({ ...base, id: `tray-transaction-approval-named-${geometry}-${scale}`, scale, logicalHeight, namedSpender: true,
-        requiredText: [...base.requiredText, 'SwapRouter', 'sourcify'] })
+      selected.push({
+        ...base,
+        id: `tray-transaction-approval-named-${geometry}-${scale}`,
+        scale,
+        logicalHeight,
+        namedSpender: true,
+        requiredText: [...base.requiredText, 'SwapRouter', 'sourcify']
+      })
     }
     for (const authority of ['permit2', 'erc3009']) {
       for (const geometry of ['full', 'short']) {
         for (const scale of [1, 1.5]) {
-          const base = selected.find((scenario) => scenario.id === `tray-${authority}-authority-${geometry}-${scale}`)
-          selected.push({ ...base, id: `tray-${authority}-rpc-metadata-${geometry}-${scale}`, rpcMetadata: true,
-            requiredText: authority === 'permit2' ? ['USDC', '1.000001', 'USDT', '0.000042', 'SwapRouter', 'sourcify'] : ['1.000001 USDC'],
+          const base = selected.find(
+            (scenario) => scenario.id === `tray-${authority}-authority-${geometry}-${scale}`
+          )
+          selected.push({
+            ...base,
+            id: `tray-${authority}-rpc-metadata-${geometry}-${scale}`,
+            rpcMetadata: true,
+            requiredText:
+              authority === 'permit2'
+                ? ['USDC', '1.000001', 'USDT', '0.000042', 'SwapRouter', 'sourcify']
+                : ['1.000001 USDC'],
             requiredControls: [...(base.requiredControls || [])]
           })
         }
@@ -4564,32 +4622,73 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
   return [...selected, ...disclosures].map((scenario) => {
     const layout = [...(scenario.layoutExpectations || [])]
     if (scenario.state?.startsWith('account-add-') || scenario.state?.startsWith('account-create-')) {
-      layout.push({ kind: 'centered-horizontal', selector: '.addAccountItemTopTitle', container: '.dash', tolerance: 1 })
+      layout.push({
+        kind: 'centered-horizontal',
+        selector: '.addAccountItemTopTitle',
+        container: '.dash',
+        tolerance: 1
+      })
     }
     if (scenario.id.includes('account-verify-phrase')) {
-      layout.push({ kind: 'centered-horizontal', selector: '.generatedWalletVerifyField .wrenInputGroup', container: '.generatedWalletVerifyField', tolerance: 1 })
+      layout.push({
+        kind: 'centered-horizontal',
+        selector: '.generatedWalletVerifyField .saf0oInputGroup',
+        container: '.generatedWalletVerifyField',
+        tolerance: 1
+      })
     }
     if (scenario.id.includes('account-create-private-key')) {
-      layout.push({ kind: 'computed-style', selector: '.generatedWalletFrameBody', property: 'scrollbarWidth', value: 'auto' })
+      layout.push({
+        kind: 'computed-style',
+        selector: '.generatedWalletFrameBody',
+        property: 'scrollbarWidth',
+        value: 'auto'
+      })
     }
     if (scenario.id.includes('settings-recent-clear')) {
-      layout.push({ kind: 'centered-horizontal', selector: '.recentRecipientsDialog', container: '.recentRecipientsOverlay', tolerance: 1 })
-      layout.push({ kind: 'contained', selector: '.recentRecipientsDialog', container: '.recentRecipientsOverlay' })
+      layout.push({
+        kind: 'centered-horizontal',
+        selector: '.recentRecipientsDialog',
+        container: '.recentRecipientsOverlay',
+        tolerance: 1
+      })
+      layout.push({
+        kind: 'contained',
+        selector: '.recentRecipientsDialog',
+        container: '.recentRecipientsOverlay'
+      })
     }
-    if (['transaction-confirming', 'transaction-confirmed', 'transaction-submitted'].includes(scenario.state)) {
-      layout.push({ kind: 'centered-horizontal', selector: '.txLifecycleStepMarker svg', container: '.txLifecycleStepMarker', tolerance: 0.5 })
+    if (
+      ['transaction-confirming', 'transaction-confirmed', 'transaction-submitted'].includes(scenario.state)
+    ) {
+      layout.push({
+        kind: 'centered-horizontal',
+        selector: '.txLifecycleStepMarker svg',
+        container: '.txLifecycleStepMarker',
+        tolerance: 0.5
+      })
     }
     if (scenario.state === 'account-home') {
-      layout.push({ kind: 'contained', selector: '.accountPortfolioActions button', container: '.accountPortfolioCard' })
+      layout.push({
+        kind: 'contained',
+        selector: '.accountPortfolioActions button',
+        container: '.accountPortfolioCard'
+      })
     }
     if (scenario.id.includes('dash-token-expanded') || scenario.id.includes('dash-token-removal')) {
-      layout.push({ kind: 'computed-style', selector: '.customTokensListItemExpanded', property: 'backgroundColor', value: 'rgba(0, 0, 0, 0)' })
+      layout.push({
+        kind: 'computed-style',
+        selector: '.customTokensListItemExpanded',
+        property: 'backgroundColor',
+        value: 'rgba(0, 0, 0, 0)'
+      })
     }
 
     if (['account-add-seed', 'account-add-watch'].includes(scenario.state)) {
       layout.push({
         kind: 'centered-horizontal',
-        selector: '.addAccountItemOptionSetupFrame:not([aria-hidden="true"]) .addAccountItemOptionInput, .addAccountItemOptionSetupFrame:not([aria-hidden="true"]) .addAccountItemOptionTitle',
+        selector:
+          '.addAccountItemOptionSetupFrame:not([aria-hidden="true"]) .addAccountItemOptionInput, .addAccountItemOptionSetupFrame:not([aria-hidden="true"]) .addAccountItemOptionTitle',
         container: '.dash',
         tolerance: 1
       })
@@ -4607,19 +4706,28 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
     if (scenario.id.includes('transaction-safety-unavailable')) {
       layout.push({ kind: 'contained', selector: '.requestActionButtons', container: '.footerModule' })
     }
-    const shelfSelector = scenario.state === 'transaction-safety-unavailable' || scenario.state === 'transaction-funding-unavailable'
-      ? '.requestApproveRecoveryStatus'
-      : scenario.state === 'wallet-calls-adjustment'
-        ? '.walletCallsAdjustActions'
-        : ['transaction-confirming', 'transaction-confirmed', 'transaction-submitted'].includes(scenario.state)
-          ? '.requestNoticeTransactionStatus'
-          : null
+    const shelfSelector =
+      scenario.state === 'transaction-safety-unavailable' ||
+      scenario.state === 'transaction-funding-unavailable'
+        ? '.requestApproveRecoveryStatus'
+        : scenario.state === 'wallet-calls-adjustment'
+          ? '.walletCallsAdjustActions'
+          : ['transaction-confirming', 'transaction-confirmed', 'transaction-submitted'].includes(
+                scenario.state
+              )
+            ? '.requestNoticeTransactionStatus'
+            : null
     if (shelfSelector) {
       layout.push({ kind: 'size', selector: shelfSelector, width: scenario.logicalWidth, height: 114 })
       layout.push({ kind: 'viewport-bottom', selector: shelfSelector })
     }
     if (scenario.state === 'address-book-editor') {
-      layout.push({ kind: 'computed-style', selector: '.dashMainScroll', property: 'overflowY', value: 'hidden' })
+      layout.push({
+        kind: 'computed-style',
+        selector: '.dashMainScroll',
+        property: 'overflowY',
+        value: 'hidden'
+      })
       layout.push({ kind: 'viewport-bottom', selector: '.addressBookActionShelf' })
       layout.push({ kind: 'stacked', selector: '.addressBookEditorScroll, .addressBookActionShelf' })
     }

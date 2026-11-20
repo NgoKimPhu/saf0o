@@ -1,6 +1,6 @@
 .network
   position relative
-  margin 0 var(--wren-space-2)
+  margin 0 var(--saf0o-space-2)
   overflow hidden
   border 0
   border-radius 0
@@ -17,8 +17,8 @@
     flex 1 1 auto
     min-width 0
     justify-content flex-start
-    gap var(--wren-space-3)
-    padding var(--wren-space-3) var(--wren-space-4)
+    gap var(--saf0o-space-3)
+    padding var(--saf0o-space-3) var(--saf0o-space-4)
     border 0
     outline none
     color inherit
@@ -26,15 +26,15 @@
     font inherit
     text-align left
     cursor pointer
-    transition background var(--wren-motion-fast) var(--wren-ease)
+    transition background var(--saf0o-motion-fast) var(--saf0o-ease)
 
     .signerName
       width auto
       min-width 0
       height auto
       padding 0
-      color var(--wren-text-primary)
-      font-size var(--wren-type-body)
+      color var(--saf0o-text-primary)
+      font-size var(--saf0o-type-body)
       font-weight 560
       line-height 1.35
 
@@ -44,20 +44,20 @@
 
     .networkChainId
       overflow hidden
-      color var(--wren-text-tertiary)
-      font-size var(--wren-type-caption)
+      color var(--saf0o-text-tertiary)
+      font-size var(--saf0o-type-caption)
       line-height 1.35
       text-overflow ellipsis
       white-space nowrap
 
   .networkDetailsTrigger:hover
-    background var(--wren-ledger-hover)
+    background var(--saf0o-ledger-hover)
 
   .networkDetailsTrigger:active
-    background var(--wren-surface-active)
+    background var(--saf0o-surface-active)
 
   .networkDetailsTrigger:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset -2px
 
   .networkDetailsChevron
@@ -65,17 +65,17 @@
     flex none
     align-items center
     justify-content center
-    color var(--wren-text-muted)
-    transition color var(--wren-motion-fast) var(--wren-ease), transform var(--wren-motion-fast) var(--wren-ease)
+    color var(--saf0o-text-muted)
+    transition color var(--saf0o-motion-fast) var(--saf0o-ease), transform var(--saf0o-motion-fast) var(--saf0o-ease)
 
   .networkDetailsTrigger:hover .networkDetailsChevron
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
     transform translateX(1px)
 
   .signerMenuItems
     align-self stretch
     flex none
-    padding-right var(--wren-space-4)
+    padding-right var(--saf0o-space-4)
 
   .chainModules
     .cluster
@@ -101,14 +101,14 @@
 
     .clusterValueClickable:not(.clusterValueDisabled):hover
       border-color transparent
-      background var(--wren-ledger-hover)
+      background var(--saf0o-ledger-hover)
 
     .clusterValueClickable:not(.clusterValueDisabled):active
       border-color transparent
-      background var(--wren-surface-active)
+      background var(--saf0o-surface-active)
 
 .network + .network
-  margin-top var(--wren-space-2)
+  margin-top var(--saf0o-space-2)
 
 .phaseNetworkLine
   position relative
@@ -120,7 +120,7 @@
   display flex
   flex-direction column
   justify-content center
-  background var(--wren-bg-canvas)
+  background var(--saf0o-bg-canvas)
 
   .customInput
     width 100%
@@ -128,14 +128,14 @@
     box-sizing border-box
     border 0
     outline none
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
     background transparent
-    font-family var(--wren-font-ui)
-    font-size var(--wren-type-body)
+    font-family var(--saf0o-font-ui)
+    font-size var(--saf0o-type-body)
     text-align center
 
   .phaseNetworkRemove:hover
-    background var(--wren-danger)
+    background var(--saf0o-danger)
 
   .phaseNetworkSubmit
     position absolute
@@ -152,7 +152,7 @@
     left 0
 
     input
-      font-size var(--wren-type-heading)
+      font-size var(--saf0o-type-heading)
       text-align left
 
   .phaseNetworkSymbol, .phaseNetworkId
@@ -162,8 +162,8 @@
     width 60px
 
     input
-      font-family var(--wren-font-mono)
-      font-size var(--wren-type-body)
+      font-family var(--saf0o-font-mono)
+      font-size var(--saf0o-type-body)
 
   .phaseNetworkSymbol
     right 0
@@ -190,15 +190,15 @@
     width 28px
     height 28px
     padding 0
-    border 1px solid var(--wren-border-default)
-    border-radius var(--wren-radius-sm)
-    color var(--wren-text-primary)
-    background var(--wren-bg-elevated)
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-sm)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-bg-elevated)
     font-size 20px
     cursor pointer
 
   .localSettingsAddNetwork:hover
-    background var(--wren-surface-hover)
+    background var(--saf0o-surface-hover)
 
   .localSettingsWrapFadeTop, .localSettingsWrapFadeBot
     display none
@@ -213,9 +213,9 @@
     display flex
     align-items flex-start
     margin 0
-    padding var(--wren-space-4)
-    color var(--wren-text-primary)
-    font-size var(--wren-type-title)
+    padding var(--saf0o-space-4)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-title)
     font-weight 500
 
 .signerSetting
@@ -223,7 +223,7 @@
   flex-direction column
   align-items center
   justify-content center
-  padding-bottom var(--wren-space-5)
+  padding-bottom var(--saf0o-space-5)
 
 .settingsTitle, .settingsItems
   display flex
@@ -231,15 +231,15 @@
   align-items center
   justify-content center
   width 100%
-  padding var(--wren-space-5)
+  padding var(--saf0o-space-5)
   box-sizing border-box
-  background var(--wren-bg-subtle)
+  background var(--saf0o-bg-subtle)
 
 .settingsItem
   display flex
   align-items center
   width 100%
-  padding var(--wren-space-5)
+  padding var(--saf0o-space-5)
   box-sizing border-box
 
 .discordInvite
@@ -249,26 +249,26 @@
   justify-content center
   width calc(100% - 16px)
   min-height 44px
-  margin var(--wren-space-4) var(--wren-space-2)
-  padding var(--wren-space-3) var(--wren-space-2)
+  margin var(--saf0o-space-4) var(--saf0o-space-2)
+  padding var(--saf0o-space-3) var(--saf0o-space-2)
   border 0
   border-radius 0
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   background transparent
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-small)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-small)
   cursor pointer
-  transition background var(--wren-motion-fast) var(--wren-ease)
+  transition background var(--saf0o-motion-fast) var(--saf0o-ease)
 
   .discordLink
-    margin-left var(--wren-space-1)
-    color var(--wren-accent-primary-hover)
+    margin-left var(--saf0o-space-1)
+    color var(--saf0o-accent-primary-hover)
 
 .discordInvite:hover
-  background var(--wren-surface-hover)
+  background var(--saf0o-surface-hover)
 
 .discordInvite:focus-visible
-  outline 2px solid var(--wren-focus)
+  outline 2px solid var(--saf0o-focus)
   outline-offset -2px
 
 .connectionLevels
@@ -283,18 +283,18 @@
     align-items center
     justify-content center
     min-height 28px
-    padding 0 var(--wren-space-4)
-    color var(--wren-text-tertiary)
-    font-size var(--wren-type-caption)
+    padding 0 var(--saf0o-space-4)
+    color var(--saf0o-text-tertiary)
+    font-size var(--saf0o-type-caption)
     font-weight 500
     letter-spacing 0
     text-transform none
 
 .infoContainer
   position relative
-  margin var(--wren-space-2)
-  border-radius var(--wren-radius-sm)
-  font-size var(--wren-type-small)
+  margin var(--saf0o-space-2)
+  border-radius var(--saf0o-radius-sm)
+  font-size var(--saf0o-type-small)
 
 .chainCurrencyItem
   display flex
@@ -303,28 +303,28 @@
   position relative
 
 .chainCurrencyItemSymbol, .sliceChainIdNumber
-  font-size var(--wren-type-small)
+  font-size var(--saf0o-type-small)
   font-weight 500
 
 .chainCurrencyItemAt
-  margin 0 var(--wren-space-2)
-  color var(--wren-success)
-  font-size var(--wren-type-caption)
+  margin 0 var(--saf0o-space-2)
+  color var(--saf0o-success)
+  font-size var(--saf0o-type-caption)
 
 .sliceContainer
   position relative
-  margin 0 var(--wren-space-2) var(--wren-space-3)
-  padding var(--wren-space-1)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
-  background var(--wren-surface-inset)
+  margin 0 var(--saf0o-space-2) var(--saf0o-space-3)
+  padding var(--saf0o-space-1)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-surface-inset)
 
   .sliceContainerClose
     display flex
     align-items center
     justify-content center
     min-height 28px
-    color var(--wren-text-tertiary)
+    color var(--saf0o-text-tertiary)
     cursor pointer
 
   .sliceTile
@@ -332,16 +332,16 @@
     align-items center
     justify-content space-between
     min-height 56px
-    border-radius var(--wren-radius-sm)
-    background var(--wren-bg-elevated)
+    border-radius var(--saf0o-radius-sm)
+    background var(--saf0o-bg-elevated)
 
   .sliceTileHighlight, .sliceTileClickable:hover
-    background var(--wren-surface-hover)
+    background var(--saf0o-surface-hover)
 
 .sliceTileConnectionName
-  padding 0 var(--wren-space-3)
-  color var(--wren-text-primary)
-  font-size var(--wren-type-small)
+  padding 0 var(--saf0o-space-3)
+  color var(--saf0o-text-primary)
+  font-size var(--saf0o-type-small)
   font-weight 500
   letter-spacing 0
   text-transform none
@@ -351,10 +351,10 @@
   width 100%
   min-height 46px
   box-sizing border-box
-  padding 0 var(--wren-space-4)
+  padding 0 var(--saf0o-space-4)
   align-items center
   justify-content space-between
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
 
 .networkConnectionState
   display flex
@@ -365,36 +365,36 @@
   .sliceTileConnectionName
     min-width 0
     overflow hidden
-    padding 0 0 0 var(--wren-space-2)
+    padding 0 0 0 var(--saf0o-space-2)
     text-overflow ellipsis
     white-space nowrap
 
 .networkConnectionActive
   flex none
-  margin-left var(--wren-space-2)
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  margin-left var(--saf0o-space-2)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
 
 .networkConnectionStats
   display flex
   flex none
   align-items center
-  gap var(--wren-space-4)
+  gap var(--saf0o-space-4)
 
 .networkConnectionStat
   display flex
   align-items baseline
-  gap var(--wren-space-1)
+  gap var(--saf0o-space-1)
   white-space nowrap
 
 .networkConnectionStatLabel
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
 
 .networkConnectionStatValue
-  color var(--wren-text-secondary)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-secondary)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
   font-variant-numeric tabular-nums
 
 .networkConnectionGas
@@ -406,30 +406,30 @@
 
   .sliceTileGasPriceNumber,
   .sliceTileGasPriceUnit
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
     font-variant-numeric tabular-nums
 
 .sliceTileIndicator, .sliceTileIndicatorLarge
   width 8px
   height 8px
   border-radius 50%
-  background var(--wren-success)
+  background var(--saf0o-success)
 
 .sliceTileIndicatorLarge
-  margin-left var(--wren-space-2)
+  margin-left var(--saf0o-space-2)
 
 .sliceTileIndicatorActive, .sliceTileIndicatorGood
-  background var(--wren-success)
+  background var(--saf0o-success)
 
 .sliceTileIndicatorPending
-  background var(--wren-info)
+  background var(--saf0o-info)
 
 .sliceTileIndicatorWarning
-  background var(--wren-warning)
+  background var(--saf0o-warning)
 
 .sliceTileIndicatorBad
-  background var(--wren-danger)
+  background var(--saf0o-danger)
 
 .sliceTileChangeChain
   display flex
@@ -437,23 +437,23 @@
   justify-content center
   width 40px
   height 40px
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-secondary)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-secondary)
   cursor pointer
 
 .sliceTileChangeChain:hover
-  background var(--wren-surface-hover)
+  background var(--saf0o-surface-hover)
 
 .sliceTileChangeConnected
-  color var(--wren-success)
-  background var(--wren-success-soft)
+  color var(--saf0o-success)
+  background var(--saf0o-success-soft)
 
 .connectionOption
-  margin var(--wren-space-1) var(--wren-space-2)
-  padding var(--wren-space-3)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
-  background var(--wren-bg-elevated)
+  margin var(--saf0o-space-1) var(--saf0o-space-2)
+  padding var(--saf0o-space-3)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-bg-elevated)
 
   .connectionOptionToggle, .connectionOptionDetailsInset
     display flex
@@ -461,24 +461,24 @@
     justify-content space-between
 
   .connectionOptionDetails
-    padding-top var(--wren-space-3)
+    padding-top var(--saf0o-space-3)
 
   .connectionOptionDetailsInset
     min-height 28px
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-small)
     text-transform none
 
   .connectionOptionStatus
     display flex
     align-items center
     min-width 86px
-    font-family var(--wren-font-utility)
+    font-family var(--saf0o-font-utility)
 
   .connectionOptionStatusIndicator
     display flex
     align-items center
-    margin-right var(--wren-space-2)
+    margin-right var(--saf0o-space-2)
 
     div
       width 8px
@@ -486,24 +486,24 @@
       border-radius 50%
 
   .connectionOptionStatusIndicatorGood
-    background var(--wren-success)
+    background var(--saf0o-success)
 
   .connectionOptionStatusIndicatorBad
-    background var(--wren-danger)
+    background var(--saf0o-danger)
 
   .connectionOptionStatusIndicatorPending
-    background var(--wren-info)
+    background var(--saf0o-info)
 
   .connectionOptionStatusIndicatorWarning
-    background var(--wren-warning)
+    background var(--saf0o-warning)
 
   .signerOptionSet
     display flex
     height 26px
     padding 2px
-    border 1px solid var(--wren-border-subtle)
-    border-radius var(--wren-radius-sm)
-    background var(--wren-surface-inset)
+    border 1px solid var(--saf0o-border-subtle)
+    border-radius var(--saf0o-radius-sm)
+    background var(--saf0o-surface-inset)
 
     .signerOptionSetButton
       display flex
@@ -514,33 +514,33 @@
 
 .connectionCustomInput
   height 0
-  margin 0 var(--wren-space-2)
+  margin 0 var(--saf0o-space-2)
   overflow hidden
-  border-radius var(--wren-radius-sm)
-  background var(--wren-surface-inset)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-surface-inset)
   opacity 0
-  transition height var(--wren-motion-standard) var(--wren-ease), opacity var(--wren-motion-fast) var(--wren-ease)
+  transition height var(--saf0o-motion-standard) var(--saf0o-ease), opacity var(--saf0o-motion-fast) var(--saf0o-ease)
 
   input
     width 100%
     box-sizing border-box
-    padding var(--wren-space-2) var(--wren-space-3)
-    border 1px solid var(--wren-border-default)
-    border-radius var(--wren-radius-sm)
+    padding var(--saf0o-space-2) var(--saf0o-space-3)
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-sm)
     outline none
-    color var(--wren-text-primary)
-    background var(--wren-surface-inset)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-inset)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-small)
 
   input:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
 .connectionCustomInputOn
   height 40px
-  margin-top var(--wren-space-2)
-  margin-bottom var(--wren-space-2)
+  margin-top var(--saf0o-space-2)
+  margin-bottom var(--saf0o-space-2)
   opacity 1
 
 .mainnetToggleLock
@@ -549,11 +549,11 @@
   justify-content center
   width 40px
   height 20px
-  border-radius var(--wren-radius-sm)
-  background var(--wren-surface-inset)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-surface-inset)
 
   svg
-    color var(--wren-text-muted)
+    color var(--saf0o-text-muted)
 
 .chainIdBadgeBackground
   display none
@@ -563,28 +563,28 @@
   align-items center
   justify-content center
   min-height 24px
-  padding 0 var(--wren-space-2)
-  border-radius var(--wren-radius-sm)
-  background var(--wren-surface-inset)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  padding 0 var(--saf0o-space-2)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-surface-inset)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
 
 .chainSettings
   cursor pointer
 
 .chainSettings:hover
-  background var(--wren-surface-hover)
+  background var(--saf0o-surface-hover)
 
 .networkBreak
-  margin-top var(--wren-space-5)
-  margin-bottom var(--wren-space-2)
-  padding 0 var(--wren-space-4)
+  margin-top var(--saf0o-space-5)
+  margin-bottom var(--saf0o-space-2)
+  padding 0 var(--saf0o-space-4)
 
 .networkBreakLayer
   padding-bottom 0
-  color var(--wren-text-secondary)
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-small)
+  color var(--saf0o-text-secondary)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-small)
   font-weight 500
   letter-spacing 0
   text-transform none
@@ -593,17 +593,17 @@
   padding-top 0
 
 .networkAdd
-  padding var(--wren-space-6) 0 var(--wren-space-4)
+  padding var(--saf0o-space-6) 0 var(--saf0o-space-4)
 
   .networkAddButton
     min-height 44px
-    margin 0 var(--wren-space-2)
-    padding var(--wren-space-3)
-    border 1px solid var(--wren-border-subtle)
-    border-radius var(--wren-radius-sm)
-    color var(--wren-text-secondary)
-    background var(--wren-bg-elevated)
-    font-size var(--wren-type-small)
+    margin 0 var(--saf0o-space-2)
+    padding var(--saf0o-space-3)
+    border 1px solid var(--saf0o-border-subtle)
+    border-radius var(--saf0o-radius-sm)
+    color var(--saf0o-text-secondary)
+    background var(--saf0o-bg-elevated)
+    font-size var(--saf0o-type-small)
     font-weight 500
     letter-spacing 0
     text-align center
@@ -611,9 +611,9 @@
     cursor pointer
 
   .networkAddButton:hover
-    border-color var(--wren-border-default)
-    color var(--wren-text-primary)
-    background var(--wren-surface-hover)
+    border-color var(--saf0o-border-default)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-hover)
 
 // Perch Networks landing
 .dashNetworksPerch
@@ -638,7 +638,7 @@
   h2
     margin 0
 
-button.dashNetworksAdd.wrenControl
+button.dashNetworksAdd.saf0oControl
   position relative
   isolation isolate
   display flex
@@ -700,10 +700,10 @@ button.dashNetworksAdd.wrenControl
   .network .signerTop
     min-height 62px
     padding 0
-    transition background var(--wren-motion-fast) var(--wren-ease)
+    transition background var(--saf0o-motion-fast) var(--saf0o-ease)
 
   .network .signerTop:has(.networkDetailsTrigger:hover)
-    background var(--wren-ledger-hover)
+    background var(--saf0o-ledger-hover)
 
   .networkDetailsTrigger
     min-height 62px
@@ -723,7 +723,7 @@ button.dashNetworksAdd.wrenControl
 
   .networkDetailsTrigger .networkChainId
     color #97917f
-    font-family var(--wren-font-mono)
+    font-family var(--saf0o-font-mono)
     font-size 12px
 
   .networkDetailsChevron
@@ -738,7 +738,7 @@ button.dashNetworksAdd.wrenControl
     flex none
     min-width 68px
     color #97917f
-    font-family var(--wren-font-mono)
+    font-family var(--saf0o-font-mono)
     font-size 12px
     text-align right
 
@@ -759,7 +759,7 @@ button.dashNetworksAdd.wrenControl
 
   .networkBreakLayer
     color #97917f
-    font-family var(--wren-font-mono)
+    font-family var(--saf0o-font-mono)
     font-size 10px
     font-weight 600
     letter-spacing 1.2px
@@ -793,7 +793,7 @@ button.dashNetworksAdd.wrenControl
   border 0
   color #777c70
   background transparent
-  font-family var(--wren-font-mono)
+  font-family var(--saf0o-font-mono)
   font-size 12px
   font-weight 500
   cursor pointer
@@ -814,7 +814,7 @@ button.dashNetworksAdd.wrenControl
       background rgba(150, 182, 150, .035)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 1px
 
 .dashNetworkScopeButtonSelected
@@ -826,17 +826,17 @@ button.dashNetworksAdd.wrenControl
     box-shadow inset 0 1px 0 rgba(255, 255, 255, .025), 0 2px 5px rgba(0, 0, 0, .16)
 
 .chainConfig
-  margin var(--wren-space-1)
-  padding var(--wren-space-2)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
-  background var(--wren-bg-elevated)
+  margin var(--saf0o-space-1)
+  padding var(--saf0o-space-2)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-bg-elevated)
 
   .chainConfigRow
     display flex
     justify-content space-between
-    gap var(--wren-space-2)
-    margin-bottom var(--wren-space-2)
+    gap var(--saf0o-space-2)
+    margin-bottom var(--saf0o-space-2)
 
     .chainIdInput
       width 80px
@@ -848,28 +848,28 @@ button.dashNetworksAdd.wrenControl
     input
       height 30px
       box-sizing border-box
-      padding 0 var(--wren-space-2)
-      border 1px solid var(--wren-border-default)
-      border-radius var(--wren-radius-sm)
-      color var(--wren-text-primary)
-      background var(--wren-surface-inset)
-      font-size var(--wren-type-small)
+      padding 0 var(--saf0o-space-2)
+      border 1px solid var(--saf0o-border-default)
+      border-radius var(--saf0o-radius-sm)
+      color var(--saf0o-text-primary)
+      background var(--saf0o-surface-inset)
+      font-size var(--saf0o-type-small)
 
 .chainData
-  padding var(--wren-space-3)
+  padding var(--saf0o-space-3)
 
 .chainConfigSave, .chainMore
-  padding var(--wren-space-2)
+  padding var(--saf0o-space-2)
   cursor pointer
 
 .appInfo
   display flex
   flex-direction column
   align-items center
-  padding var(--wren-space-6) var(--wren-space-4) var(--wren-space-8)
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-small)
+  padding var(--saf0o-space-6) var(--saf0o-space-4) var(--saf0o-space-8)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-small)
 
   button
     appearance none
@@ -880,10 +880,10 @@ button.dashNetworksAdd.wrenControl
     cursor pointer
 
   button:hover
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
 
   button:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
   .appInfoLine
@@ -893,28 +893,28 @@ button.dashNetworksAdd.wrenControl
     text-align center
 
   .appInfoViewLicense, .appInfoLineReset
-    margin-top var(--wren-space-3)
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-caption)
+    margin-top var(--saf0o-space-3)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-caption)
     font-weight 500
     text-transform none
 
   .appInfoLineResetConfirmButton:hover, .appInfoLineResetButton:hover
-    color var(--wren-danger)
+    color var(--saf0o-danger)
 
   .appInfoLineVersion, .appInfoLineInstanceId
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
 
   .appInfoLineInstanceId
     max-width 100%
     overflow hidden
-    color var(--wren-text-tertiary)
+    color var(--saf0o-text-tertiary)
     text-overflow ellipsis
     white-space nowrap
 
   .instanceIdCopied
-    color var(--wren-success)
+    color var(--saf0o-success)
     text-transform none
 
 @import '../Chain/style/index.styl'

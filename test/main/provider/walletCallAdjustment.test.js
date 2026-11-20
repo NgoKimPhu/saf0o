@@ -84,7 +84,7 @@ it.each([
   expect(() => snapshotWalletCallBatchAdjustment(value, preparation([transaction()]))).toThrow(message)
 })
 
-it('enforces the existing Wren fee hard limit before mutation', () => {
+it('enforces the existing Saf0o fee hard limit before mutation', () => {
   expect(() =>
     snapshotWalletCallBatchAdjustment(
       {

@@ -22,7 +22,7 @@ export const ReviewAddress = ({ address, label, name, source, emphasizeEnds = fa
       {label ? <span className='signingReviewLabel'>{label}</span> : null}
       <button
         type='button'
-        className='signingReviewAddress wrenControlCompact'
+        className='signingReviewAddress saf0oControlCompact'
         aria-label={`Copy ${name || label?.toLowerCase() || 'address'}`}
         onClick={copy}
       >

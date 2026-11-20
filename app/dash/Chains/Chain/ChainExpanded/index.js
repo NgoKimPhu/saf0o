@@ -161,7 +161,7 @@ const ChainExpanded = ({
       <div className='networkEditorSections' role='group' aria-label='Network settings'>
         <button
           type='button'
-          className='wrenControl wrenControlGhost'
+          className='saf0oControl saf0oControlGhost'
           aria-pressed={section === 'details'}
           onClick={() => setSection('details')}
         >
@@ -169,7 +169,7 @@ const ChainExpanded = ({
         </button>
         <button
           type='button'
-          className='wrenControl wrenControlGhost'
+          className='saf0oControl saf0oControlGhost'
           disabled={section === 'details' && detailsChanged}
           title={detailsChanged ? 'Save or cancel network details first' : undefined}
           aria-pressed={section === 'connections'}
@@ -210,7 +210,7 @@ const ChainExpanded = ({
             <div className='networkEditorFooterActions'>
               <button
                 type='button'
-                className='networkEditorSubmit wrenControl wrenControlSecondary wrenControlLarge'
+                className='networkEditorSubmit saf0oControl saf0oControlSecondary saf0oControlLarge'
                 onClick={() => link.send('tray:action', 'backDash')}
               >
                 Done

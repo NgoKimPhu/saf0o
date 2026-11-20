@@ -53,7 +53,7 @@ export interface FrameExtension {
   role: 'control' | 'page'
 }
 
-// Allows Wren Companion to request specific methods.
+// Allows Saf0o Companion to request specific methods.
 const trustedInternalMethods = ['wallet_getEthereumChains']
 
 const isTrustedOrigin = (origin: string) => origin === 'frame-extension' || origin === 'frame-internal'
@@ -383,7 +383,7 @@ export function parseFrameExtension(req: IncomingMessage): FrameExtension | unde
 }
 
 export async function isTrusted(payload: RPCRequestPayload, signal?: AbortSignal) {
-  // Permissions granted to unknown origins persist only until Wren closes.
+  // Permissions granted to unknown origins persist only until Saf0o closes.
   const origin = store('main.origins', payload._origin)
   if (!origin) return false
 

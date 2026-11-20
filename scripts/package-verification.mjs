@@ -8,34 +8,34 @@ import { lockedVersion, readPnpmLock } from './pnpm-lock.mjs'
 import { readSourceIdentity } from './source-identity.mjs'
 
 const platformNames = { darwin: 'macOS', linux: 'Linux', win32: 'Windows' }
-const sevenZip = process.env.WREN_7Z ?? '7z'
+const sevenZip = process.env.SAF0O_7Z ?? '7z'
 
 export const packageTargets = Object.freeze({
   'linux-x64': {
     platform: 'linux',
     arch: 'x64',
     unpackedDirectory: 'linux-unpacked',
-    executable: ['wren'],
+    executable: ['saf0o'],
     artifacts: [
-      { name: 'AppImage', kind: 'appimage', fileName: ({ version }) => `Wren-${version}.AppImage` },
-      { name: 'amd64 deb', kind: 'deb', fileName: ({ version }) => `wren_${version}_amd64.deb` }
+      { name: 'AppImage', kind: 'appimage', fileName: ({ version }) => `Saf0o-${version}.AppImage` },
+      { name: 'amd64 deb', kind: 'deb', fileName: ({ version }) => `saf0o_${version}_amd64.deb` }
     ]
   },
   'linux-arm64': {
     platform: 'linux',
     arch: 'arm64',
     unpackedDirectory: 'linux-arm64-unpacked',
-    executable: ['wren'],
+    executable: ['saf0o'],
     artifacts: [
       {
         name: 'arm64 AppImage',
         kind: 'appimage',
-        fileName: ({ version }) => `Wren-${version}-arm64.AppImage`
+        fileName: ({ version }) => `Saf0o-${version}-arm64.AppImage`
       },
       {
         name: 'arm64 tarball',
         kind: 'tar',
-        fileName: ({ version }) => `wren-${version}-arm64.tar.gz`
+        fileName: ({ version }) => `saf0o-${version}-arm64.tar.gz`
       }
     ]
   },
@@ -43,17 +43,17 @@ export const packageTargets = Object.freeze({
     platform: 'darwin',
     arch: 'x64',
     unpackedDirectory: 'mac',
-    executable: ['Wren.app', 'Contents', 'MacOS', 'Wren'],
+    executable: ['Saf0o.app', 'Contents', 'MacOS', 'Saf0o'],
     artifacts: [
       {
         name: 'x64 unnotarized DMG',
         kind: 'dmg',
-        fileName: ({ version }) => `Wren-${version}-macos-x64-unnotarized.dmg`
+        fileName: ({ version }) => `Saf0o-${version}-macos-x64-unnotarized.dmg`
       },
       {
         name: 'x64 unnotarized ZIP',
         kind: 'zip',
-        fileName: ({ version }) => `Wren-${version}-macos-x64-unnotarized.zip`
+        fileName: ({ version }) => `Saf0o-${version}-macos-x64-unnotarized.zip`
       }
     ]
   },
@@ -61,17 +61,17 @@ export const packageTargets = Object.freeze({
     platform: 'darwin',
     arch: 'arm64',
     unpackedDirectory: 'mac-arm64',
-    executable: ['Wren.app', 'Contents', 'MacOS', 'Wren'],
+    executable: ['Saf0o.app', 'Contents', 'MacOS', 'Saf0o'],
     artifacts: [
       {
         name: 'arm64 unnotarized DMG',
         kind: 'dmg',
-        fileName: ({ version }) => `Wren-${version}-macos-arm64-unnotarized.dmg`
+        fileName: ({ version }) => `Saf0o-${version}-macos-arm64-unnotarized.dmg`
       },
       {
         name: 'arm64 unnotarized ZIP',
         kind: 'zip',
-        fileName: ({ version }) => `Wren-${version}-macos-arm64-unnotarized.zip`
+        fileName: ({ version }) => `Saf0o-${version}-macos-arm64-unnotarized.zip`
       }
     ]
   },
@@ -80,12 +80,12 @@ export const packageTargets = Object.freeze({
     arch: 'x64',
     nsisPayload: 'app-64.7z',
     unpackedDirectory: 'win-unpacked',
-    executable: ['Wren.exe'],
+    executable: ['Saf0o.exe'],
     artifacts: [
       {
         name: 'x64 NSIS installer',
         kind: 'nsis',
-        fileName: ({ version }) => `Wren-Setup-${version}-unsigned-x64.exe`
+        fileName: ({ version }) => `Saf0o-Setup-${version}-unsigned-x64.exe`
       }
     ]
   }
@@ -320,7 +320,7 @@ export async function verifyNativePackage(targetName, options = {}) {
   })
   assert.ok(result.runtime.esmModuleExports.every((exports) => exports > 0))
 
-  const temporaryRoot = await mkdtemp(path.join(tmpdir(), `wren-${targetName}-`))
+  const temporaryRoot = await mkdtemp(path.join(tmpdir(), `saf0o-${targetName}-`))
   try {
     for (const [index, artifact] of artifacts.entries()) {
       const artifactResult = await probeArtifact(

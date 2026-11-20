@@ -24,7 +24,7 @@ const source = readSourceIdentity()
 const epoch = parseSourceDateEpoch(
   execFileSync('git', ['show', '-s', '--format=%ct', source.commit], { encoding: 'utf8' }).trim()
 )
-const temporaryRoot = await mkdtemp(path.join(tmpdir(), 'wren-repro-'))
+const temporaryRoot = await mkdtemp(path.join(tmpdir(), 'saf0o-repro-'))
 const worktrees = ['build-a', 'build-b'].map((name) => path.join(temporaryRoot, name))
 const extracted = ['extract-a', 'extract-b'].map((name) => path.join(temporaryRoot, name))
 const environment = {
@@ -125,7 +125,7 @@ try {
   )
   succeeded = true
 } finally {
-  if (process.env.WREN_REPRO_KEEP !== '1') {
+  if (process.env.SAF0O_REPRO_KEEP !== '1') {
     for (const worktree of worktrees) {
       try {
         run('git', ['worktree', 'remove', '--force', worktree], process.cwd(), 'ignore')

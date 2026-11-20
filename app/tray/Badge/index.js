@@ -27,7 +27,7 @@ export class Bridge extends React.Component {
     const ready = badge.type === 'updateReady'
     if (!available && !ready) return null
 
-    const versionSubject = badge.version ? `Wren ${badge.version}` : 'The Wren update'
+    const versionSubject = badge.version ? `Saf0o ${badge.version}` : 'The Saf0o update'
     const heading = available ? 'Update available' : 'Update ready'
     const body = versionSubject
 
@@ -36,21 +36,21 @@ export class Bridge extends React.Component {
         <DialogSurface
           as='section'
           className='updateDialog cardShow'
-          describedBy='wren-update-body'
+          describedBy='saf0o-update-body'
           initialFocusRef={this.primaryRef}
           key={`${badge.type}:${badge.version || ''}`}
-          labelledBy='wren-update-heading'
+          labelledBy='saf0o-update-heading'
           modal
           onCancel={() => this.dismiss(badge)}
         >
           <div className='updateDialogCopy'>
-            <span className='updateDialogEyebrow'>Wren desktop</span>
-            <h2 id='wren-update-heading'>{heading}</h2>
-            <p id='wren-update-body'>{body}</p>
+            <span className='updateDialogEyebrow'>Saf0o desktop</span>
+            <h2 id='saf0o-update-heading'>{heading}</h2>
+            <p id='saf0o-update-body'>{body}</p>
           </div>
           <div className='updateDialogActions'>
             <button
-              className='wrenControl wrenControlPrimary wrenControlLarge wrenHeroPrimary'
+              className='saf0oControl saf0oControlPrimary saf0oControlLarge saf0oHeroPrimary'
               onClick={() =>
                 available ? link.send('tray:installAvailableUpdate') : link.send('tray:updateRestart')
               }
@@ -60,7 +60,7 @@ export class Bridge extends React.Component {
               {available ? 'Get update' : 'Restart and install'}
             </button>
             <button
-              className='wrenControl wrenControlSecondary wrenControlLarge'
+              className='saf0oControl saf0oControlSecondary saf0oControlLarge'
               onClick={() => this.dismiss(badge)}
               type='button'
             >
@@ -69,7 +69,7 @@ export class Bridge extends React.Component {
           </div>
           {available ? (
             <button
-              className='updateDialogSkip wrenControl wrenControlGhost wrenControlCompact'
+              className='updateDialogSkip saf0oControl saf0oControlGhost saf0oControlCompact'
               onClick={() => link.send('tray:dismissUpdate', badge.version, false)}
               type='button'
             >

@@ -4,7 +4,7 @@ import Restore from 'react-restore'
 import AccountController from './AccountController'
 
 import emptyAccounts from 'url:../../../asset/ui/empty-accounts-v2.png'
-import wrenMark from 'url:../../../asset/brand/exports/mark/wren-mark-color-32.png'
+import saf0oMark from 'url:../../../asset/brand/exports/mark/saf0o-mark-color-32.png'
 import Icon from '../../../resources/Components/Icon'
 import DialogSurface from '../../../resources/Components/DialogSurface'
 import { accountDisplayIdentity, accountSort as byCreation } from '../../../resources/domain/account'
@@ -52,7 +52,7 @@ export class AccountSelector extends React.Component {
         <div className='panelFilterInput'>
           <input
             aria-label='Filter accounts'
-            className='wrenInput wrenInputQuiet'
+            className='saf0oInput saf0oInputQuiet'
             data-dialog-initial-focus
             spellCheck='false'
             onChange={(e) => {
@@ -67,7 +67,7 @@ export class AccountSelector extends React.Component {
           <button
             type='button'
             aria-label='Clear account filter'
-            className='panelFilterClear wrenControl wrenControlGhost wrenControlIcon'
+            className='panelFilterClear saf0oControl saf0oControlGhost saf0oControlIcon'
             onClick={() => {
               this.setState({ accountFilter: '' })
               link.send('tray:action', 'setAccountFilter', '')
@@ -126,7 +126,7 @@ export class AccountSelector extends React.Component {
               <div className='accountSelectorEmptyCopy'>Add an account to connect, review, or sign.</div>
               <button
                 type='button'
-                className='newAccountButton wrenControl wrenControlPrimary wrenControlLarge wrenHeroPrimary'
+                className='newAccountButton saf0oControl saf0oControlPrimary saf0oControlLarge saf0oHeroPrimary'
                 onClick={() => {
                   link.send('tray:action', 'navDash', {
                     view: 'accounts',
@@ -169,12 +169,12 @@ export class AccountSelector extends React.Component {
         <button
           type='button'
           ref={this.accountTriggerRef}
-          className='accountSwitcherTrigger wrenControl wrenControlGhost'
+          className='accountSwitcherTrigger saf0oControl saf0oControlGhost'
           aria-expanded={this.store('selected.showAccounts')}
           aria-controls='account-switcher-panel'
           onClick={() => this.store.toggleShowAccounts()}
         >
-          <img alt='' aria-hidden='true' className='accountSwitcherBrand' src={wrenMark} />
+          <img alt='' aria-hidden='true' className='accountSwitcherBrand' src={saf0oMark} />
           <span className='accountSwitcherIdentity'>
             <span className='accountSwitcherName'>{displayName}</span>
             <span className='accountSwitcherAddress'>{identity.secondary || shortAddress}</span>
@@ -187,8 +187,8 @@ export class AccountSelector extends React.Component {
               type='button'
               className={
                 hideBalances
-                  ? 'accountPrivacyToggle accountPrivacyToggleHidden wrenControl wrenControlGhost wrenControlIcon'
-                  : 'accountPrivacyToggle wrenControl wrenControlGhost wrenControlIcon'
+                  ? 'accountPrivacyToggle accountPrivacyToggleHidden saf0oControl saf0oControlGhost saf0oControlIcon'
+                  : 'accountPrivacyToggle saf0oControl saf0oControlGhost saf0oControlIcon'
               }
               aria-label={hideBalances ? 'Show balances' : 'Hide balances'}
               aria-pressed={hideBalances}
@@ -199,7 +199,7 @@ export class AccountSelector extends React.Component {
           </div>
           <button
             type='button'
-            className='accountCopyAddress wrenControl wrenControlGhost wrenControlIcon'
+            className='accountCopyAddress saf0oControl saf0oControlGhost saf0oControlIcon'
             aria-label='Copy account address'
             onClick={() => link.send('tray:clipboardData', address)}
           >
@@ -207,7 +207,7 @@ export class AccountSelector extends React.Component {
           </button>
           <button
             type='button'
-            className='accountWorkspaceToggle wrenControl wrenControlGhost wrenControlIcon wrenShellNav'
+            className='accountWorkspaceToggle saf0oControl saf0oControlGhost saf0oControlIcon saf0oShellNav'
             aria-label={workspaceOpen ? 'Close dashboard' : 'Open dashboard'}
             aria-pressed={workspaceOpen}
             onClick={() => link.send('tray:action', 'setDash', { showing: !workspaceOpen })}
@@ -236,7 +236,7 @@ export class AccountSelector extends React.Component {
           <div className='accountDrawerFooter'>
             <button
               type='button'
-              className='accountDrawerAdd wrenControl wrenControlPrimary'
+              className='accountDrawerAdd saf0oControl saf0oControlPrimary'
               onClick={() => this.addAccount()}
             >
               <Icon name='add' size={14} />

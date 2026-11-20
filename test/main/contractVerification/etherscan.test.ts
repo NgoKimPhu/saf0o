@@ -209,7 +209,7 @@ test('checks status with the documented GET query and no request body', async ()
 })
 
 test.each([100, 747474])(
-  'supports Wren network %s through the official Etherscan V2 endpoint',
+  'supports Saf0o network %s through the official Etherscan V2 endpoint',
   async (chainId) => {
     const fetchImpl = jest.fn(async () => acceptedResponse()) as unknown as typeof fetch
 

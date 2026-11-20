@@ -6,7 +6,7 @@ import {
   OperationLifecycleSchema,
   pruneOperationLifecycles
 } from '../../../../main/store/state/types/operationLifecycle'
-import { FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN, originIdForName } from '../../../../resources/domain/origin'
+import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../../../resources/domain/origin'
 
 const id = (index: number) => `00000000-0000-4000-8000-${index.toString().padStart(12, '0')}`
 const transaction = (index = 1) => ({
@@ -106,7 +106,7 @@ test('keeps managed deployment evidence bounded, private, and paired with deploy
   }
   const managed = {
     ...transaction(),
-    origin: originIdForName(WREN_DEPLOY_ORIGIN),
+    origin: originIdForName(SAF0O_DEPLOY_ORIGIN),
     transaction: { ...transaction().transaction, deployment }
   }
   expect(OperationLifecycleSchema.parse(managed).transaction?.deployment).toEqual(deployment)

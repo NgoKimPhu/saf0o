@@ -115,7 +115,7 @@ export class Settings extends React.Component {
               </div>
               <button
                 type='button'
-                className='dashNetworksAdd wrenControl wrenControlGhost'
+                className='dashNetworksAdd saf0oControl saf0oControlGhost'
                 onClick={this.addNetwork}
               >
                 <Icon name='add' size={15} />

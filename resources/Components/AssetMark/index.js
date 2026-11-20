@@ -96,7 +96,7 @@ export const resolveAssetArtwork = (asset = {}) => {
 const AssetMark = ({ appearance = 'framed', asset, className = '', showChain = true, size = 'default' }) => {
   const symbol = asset?.symbol || '?'
   const chainColor =
-    asset?.chainColor || (asset?.primaryColor ? `var(--${asset.primaryColor})` : 'var(--wren-chain-custom)')
+    asset?.chainColor || (asset?.primaryColor ? `var(--${asset.primaryColor})` : 'var(--saf0o-chain-custom)')
   const artwork = resolveAssetArtwork(asset)
 
   return (

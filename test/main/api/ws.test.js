@@ -23,7 +23,7 @@ import {
   peerAuthFingerprint
 } from '../../../main/api/peerAuth'
 import { createDesktopAuthIdentity } from '../../../main/api/desktopAuthIdentity'
-import { WREN_EXTENSION_ORIGIN, originIdForInvoker, originIdForName } from '../../../resources/domain/origin'
+import { SAF0O_EXTENSION_ORIGIN, originIdForInvoker, originIdForName } from '../../../resources/domain/origin'
 import migration73 from '../../../main/store/migrate/migrations/73'
 
 let socketConnection, mockSocket, authenticatedResponse
@@ -1081,11 +1081,11 @@ it('returns a recovered network catalog through the authenticated Companion cont
 })
 
 it('restores authenticated wallet_getEthereumChains after migrating a schema-72 legacy Companion origin', async () => {
-  const originId = originIdForName(WREN_EXTENSION_ORIGIN)
+  const originId = originIdForName(SAF0O_EXTENSION_ORIGIN)
   accounts.getSelectedAddresses.mockReturnValue(['0x0000000000000000000000000000000000000001'])
   store.addOriginRequest = jest.fn()
   const legacyOrigin = {
-    name: WREN_EXTENSION_ORIGIN,
+    name: SAF0O_EXTENSION_ORIGIN,
     chain: { type: 'ethereum', id: 1 },
     provenance: 'legacy'
   }
@@ -1147,7 +1147,7 @@ it.each([
     id: 9,
     error: {
       code: 4100,
-      message: 'Wren requires a paired native protocol 3 client for local requests.'
+      message: 'Saf0o requires a paired native protocol 3 client for local requests.'
     }
   })
   expect(socket.close).toHaveBeenCalledWith(1008, 'Native protocol 3 pairing required')

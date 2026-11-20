@@ -56,7 +56,7 @@ class GeneratedWalletSessions {
   }
 
   digest(key, kind, value) {
-    return crypto.createHmac('sha256', key).update(`wren-generated-wallet-v1\0${kind}\0${value}`).digest()
+    return crypto.createHmac('sha256', key).update(`saf0o-generated-wallet-v1\0${kind}\0${value}`).digest()
   }
 
   newSessionId() {

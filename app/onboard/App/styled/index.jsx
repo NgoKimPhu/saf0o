@@ -10,7 +10,7 @@ export const Onboard = styled.div`
   bottom: 0;
   left: 0;
   color: var(--outerspace);
-  background: var(--wren-bg-canvas);
+  background: var(--saf0o-bg-canvas);
   font-family: 'MainFont';
   font-size: 20px;
   overflow: hidden;
@@ -24,7 +24,7 @@ export const SlideContainer = styled.div`
   left: 0;
   min-height: 0;
   overflow: hidden;
-  background: var(--wren-bg-canvas);
+  background: var(--saf0o-bg-canvas);
 `
 
 export const Slide = styled.div`

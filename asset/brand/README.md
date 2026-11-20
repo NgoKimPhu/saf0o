@@ -1,6 +1,6 @@
-# Wren brand library
+# Saf0o brand library
 
-`wren-mark.svg` is the deterministic vector master. Do not edit generated PNGs
+`saf0o-mark.svg` is the deterministic vector master. Do not edit generated PNGs
 or SVGs in `exports/` directly. Regenerate them with:
 
 ```sh
@@ -19,8 +19,8 @@ npm run brand:verify
   and Linux light tray assets at native 24px and 48px source sizes.
 - `exports/web/` — 16px and 32px favicons, a 180px Apple touch icon, and 192px
   and 512px web-app icons.
-- `wren-brand-sheet.png` — visual proof of the family at full and native sizes.
-- `source/wren-character-flat-reference.png` — approved generated concept kept
+- `saf0o-brand-sheet.png` — visual proof of the family at full and native sizes.
+- `source/saf0o-character-flat-reference.png` — approved generated concept kept
   as provenance only.
 
 The generated runtime copies under `main/windows/` and `build/icons/` must be

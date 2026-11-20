@@ -1,7 +1,7 @@
 import { app, dialog } from 'electron'
 import log from 'electron-log'
 
-import { configureApplicationIdentity, requestWrenSingleInstanceLock } from './applicationIdentity'
+import { configureApplicationIdentity, requestSaf0oSingleInstanceLock } from './applicationIdentity'
 import { rollbackImportedProfile, runRequestedProfileMigration } from './profileMigration'
 import { runPendingProfileRestore, type ProfileRestoreBootstrapResult } from './profileBackup'
 
@@ -10,7 +10,7 @@ let profileRestore: ProfileRestoreBootstrapResult = { status: 'not-requested' }
 try {
   configureApplicationIdentity(app)
 
-  if (!requestWrenSingleInstanceLock(app)) {
+  if (!requestSaf0oSingleInstanceLock(app)) {
     app.exit(1)
   } else {
     const userDataPath = app.getPath('userData')
@@ -32,9 +32,9 @@ try {
         void dialog.showMessageBox({
           type: 'info',
           title: 'Frame profile imported',
-          message: 'Your Frame wallet data was copied into Wren.',
+          message: 'Your Frame wallet data was copied into Saf0o.',
           detail:
-            'The original Frame profile was not changed. Wren will now finish migrating its private copy.',
+            'The original Frame profile was not changed. Saf0o will now finish migrating its private copy.',
           buttons: ['Continue'],
           defaultId: 0
         })
@@ -46,7 +46,7 @@ try {
       app.once('ready', () => {
         void dialog.showMessageBox({
           type: 'info',
-          title: 'Wren profile restored',
+          title: 'Saf0o profile restored',
           message: 'Your encrypted profile backup was restored.',
           detail: `Restored ${appliedRestore.signerCount} encrypted signer record${appliedRestore.signerCount === 1 ? '' : 's'}.`,
           buttons: ['Continue'],
@@ -58,11 +58,11 @@ try {
       app.once('ready', () => {
         void dialog.showMessageBox({
           type: 'warning',
-          title: 'Wren profile restore canceled',
-          message: 'Wren kept your existing profile.',
+          title: 'Saf0o profile restore canceled',
+          message: 'Saf0o kept your existing profile.',
           detail:
             canceledRestore.reason === 'expired'
-              ? 'The restore confirmation expired before Wren restarted.'
+              ? 'The restore confirmation expired before Saf0o restarted.'
               : 'The staged backup could not be applied safely.',
           buttons: ['Continue'],
           defaultId: 0
@@ -75,6 +75,6 @@ try {
 } catch (error) {
   if (importedProfileId) rollbackImportedProfile(app.getPath('userData'), importedProfileId)
   const message = error instanceof Error ? error.message : 'Unknown profile import error'
-  dialog.showErrorBox('Wren startup failed', message)
+  dialog.showErrorBox('Saf0o startup failed', message)
   app.exit(1)
 }

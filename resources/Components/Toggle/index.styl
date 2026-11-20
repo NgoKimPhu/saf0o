@@ -1,4 +1,4 @@
-.wrenToggle
+.saf0oToggle
   appearance none
   position relative
   width 44px
@@ -18,21 +18,21 @@
     width 44px
     height 24px
     box-sizing border-box
-    border 1px solid var(--wren-border-default)
+    border 1px solid var(--saf0o-border-default)
     border-radius 2px
     content ''
-    background var(--wren-surface-inset)
-    box-shadow var(--wren-shadow-inset)
-    transition background var(--wren-motion-fast), border-color var(--wren-motion-fast)
+    background var(--saf0o-surface-inset)
+    box-shadow var(--saf0o-shadow-inset)
+    transition background var(--saf0o-motion-fast), border-color var(--saf0o-motion-fast)
 
   &:hover:not(:disabled)
     &::before
-      border-color var(--wren-border-strong)
-      background var(--wren-surface-hover)
+      border-color var(--saf0o-border-strong)
+      background var(--saf0o-surface-hover)
 
   &:active:not(:disabled)
     &::before
-      background var(--wren-surface-active)
+      background var(--saf0o-surface-active)
 
   &:disabled
     cursor default
@@ -40,35 +40,35 @@
     &::before
       opacity .55
 
-    .wrenToggleThumb
+    .saf0oToggleThumb
       opacity .72
 
-  .wrenToggleThumb
+  .saf0oToggleThumb
     position absolute
     top 14px
     left 4px
     width 16px
     height 16px
     box-sizing border-box
-    border-bottom 2px solid var(--wren-border-strong)
+    border-bottom 2px solid var(--saf0o-border-strong)
     border-radius 1px
-    background var(--wren-text-secondary)
-    box-shadow var(--wren-shadow-sm)
-    transition transform var(--wren-motion-fast), background var(--wren-motion-fast)
+    background var(--saf0o-text-secondary)
+    box-shadow var(--saf0o-shadow-sm)
+    transition transform var(--saf0o-motion-fast), background var(--saf0o-motion-fast)
 
-.wrenToggleOn
+.saf0oToggleOn
   &::before
-    border-color var(--wren-success)
-    background var(--wren-success-soft)
+    border-color var(--saf0o-success)
+    background var(--saf0o-success-soft)
 
   &:hover:not(:disabled)
     &::before
-      border-color var(--wren-accent-secondary-hover)
-      background var(--wren-accent-secondary-soft)
+      border-color var(--saf0o-accent-secondary-hover)
+      background var(--saf0o-accent-secondary-soft)
 
-  .wrenToggleThumb
-    background var(--wren-success)
+  .saf0oToggleThumb
+    background var(--saf0o-success)
     transform translateX(20px)
 
-  &:disabled .wrenToggleThumb
+  &:disabled .saf0oToggleThumb
     opacity 1

@@ -2,12 +2,12 @@
   width 100%
   box-sizing border-box
   overflow hidden
-  color var(--wren-text-primary)
+  color var(--saf0o-text-primary)
 
 .activityList
   display flex
   margin 0
-  padding 0 var(--wren-space-2)
+  padding 0 var(--saf0o-space-2)
   flex-direction column
   gap 0
   overflow hidden
@@ -26,27 +26,27 @@
   display grid
   width 100%
   min-height 58px
-  padding var(--wren-space-2)
+  padding var(--saf0o-space-2)
   grid-template-columns 32px minmax(0, 1fr) auto 18px
   align-items center
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
   box-sizing border-box
   border 0
-  border-bottom 1px solid var(--wren-border-subtle)
+  border-bottom 1px solid var(--saf0o-border-subtle)
   border-radius 0
   color inherit
   background transparent
   font inherit
   text-align left
   cursor pointer
-  transition background var(--wren-motion-fast) var(--wren-ease), color var(--wren-motion-fast) var(--wren-ease)
+  transition background var(--saf0o-motion-fast) var(--saf0o-ease), color var(--saf0o-motion-fast) var(--saf0o-ease)
 
   &:hover
-    background var(--wren-surface-hover)
+    background var(--saf0o-surface-hover)
 
   &:focus-visible
     z-index 1
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset -2px
 
 .activityItem:last-child .activityRow
@@ -59,10 +59,10 @@
   height 28px
   align-items center
   justify-content center
-  border 1px solid var(--wren-border-subtle)
+  border 1px solid var(--saf0o-border-subtle)
   border-radius 2px
-  color var(--wren-text-secondary)
-  background var(--wren-surface-inset)
+  color var(--saf0o-text-secondary)
+  background var(--saf0o-surface-inset)
 
 .activityIdentity,
 .activityResult
@@ -71,22 +71,22 @@
   flex-direction column
 
 .activityRowSelected
-  background var(--wren-surface-active)
+  background var(--saf0o-surface-active)
 
 .activityRowChevron
   display flex
   align-items center
   justify-content center
-  color var(--wren-text-muted)
-  transition color var(--wren-motion-fast) var(--wren-ease)
+  color var(--saf0o-text-muted)
+  transition color var(--saf0o-motion-fast) var(--saf0o-ease)
 
 .activityRow:hover .activityRowChevron,
 .activityRow:focus-visible .activityRowChevron
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
 
 .activityTitle
   overflow hidden
-  font-size var(--wren-type-small)
+  font-size var(--saf0o-type-small)
   font-weight 560
   text-overflow ellipsis
   white-space nowrap
@@ -94,143 +94,143 @@
 .activityContext
   overflow hidden
   margin-top 2px
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-utility)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-utility)
+  font-size var(--saf0o-type-caption)
   text-overflow ellipsis
   white-space nowrap
 
 .activityResult
   align-items flex-end
-  color var(--wren-text-muted)
-  font-family var(--wren-font-utility)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-muted)
+  font-family var(--saf0o-font-utility)
+  font-size var(--saf0o-type-caption)
 
 .activityOutcome
   margin-bottom 2px
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   font-weight 550
 
 .activityOutcome-confirmed,
 .activityOutcome-completed
-  color var(--wren-success)
+  color var(--saf0o-success)
 
 .activityOutcome-failed,
 .activityOutcome-replaced
-  color var(--wren-danger)
+  color var(--saf0o-danger)
 
 .activityOutcomeDetail
   max-width 260px
   margin-bottom 2px
-  color var(--wren-text-tertiary)
+  color var(--saf0o-text-tertiary)
   white-space normal
   text-align right
 
 .activityFilters
   display grid
-  padding var(--wren-space-1)
+  padding var(--saf0o-space-1)
   grid-template-columns repeat(4, minmax(0, 1fr))
-  gap var(--wren-space-1)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-md)
-  background var(--wren-surface-inset)
+  gap var(--saf0o-space-1)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-md)
+  background var(--saf0o-surface-inset)
 
 .activityFilter
   min-width 0
-  padding 0 var(--wren-space-2)
+  padding 0 var(--saf0o-space-2)
   border 1px solid transparent
-  border-radius var(--wren-radius-sm)
-  font-size var(--wren-type-caption)
-  transition background var(--wren-motion-fast) var(--wren-ease), color var(--wren-motion-fast) var(--wren-ease),
-    border-color var(--wren-motion-fast) var(--wren-ease), box-shadow var(--wren-motion-fast) var(--wren-ease)
+  border-radius var(--saf0o-radius-sm)
+  font-size var(--saf0o-type-caption)
+  transition background var(--saf0o-motion-fast) var(--saf0o-ease), color var(--saf0o-motion-fast) var(--saf0o-ease),
+    border-color var(--saf0o-motion-fast) var(--saf0o-ease), box-shadow var(--saf0o-motion-fast) var(--saf0o-ease)
 
-  &.wrenControl[aria-pressed='true']
-    color var(--wren-text-primary)
-    background var(--wren-surface-active)
-    border-color var(--wren-border-default)
-    box-shadow var(--wren-shadow-sm), var(--wren-shadow-inset)
+  &.saf0oControl[aria-pressed='true']
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-active)
+    border-color var(--saf0o-border-default)
+    box-shadow var(--saf0o-shadow-sm), var(--saf0o-shadow-inset)
 
   &:not([aria-pressed='true']):hover:not(:disabled)
-    color var(--wren-text-secondary)
-    background var(--wren-surface-hover)
+    color var(--saf0o-text-secondary)
+    background var(--saf0o-surface-hover)
 
 .activityEmpty
   display flex
   min-height 64px
-  padding 4px var(--wren-space-4) var(--wren-space-2)
+  padding 4px var(--saf0o-space-4) var(--saf0o-space-2)
   box-sizing border-box
   flex-direction column
   align-items flex-start
   justify-content flex-start
   gap 1px
-  color var(--wren-text-tertiary)
+  color var(--saf0o-text-tertiary)
 
   strong
-    color var(--wren-text-primary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-small)
     font-weight 600
     line-height 18px
 
   span
     max-width 100%
-    font-size var(--wren-type-caption)
+    font-size var(--saf0o-type-caption)
     line-height 18px
     text-wrap pretty
 
 .activityClear
-  padding var(--wren-space-4) 0 var(--wren-space-2)
+  padding var(--saf0o-space-4) 0 var(--saf0o-space-2)
 
 .activityClearButton
   width 100%
 
 .activityClearDialog
   display flex
-  padding var(--wren-space-3)
+  padding var(--saf0o-space-3)
   flex-direction column
-  gap var(--wren-space-3)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
-  background var(--wren-surface-inset)
+  gap var(--saf0o-space-3)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
+  background var(--saf0o-surface-inset)
 
 .activityClearCopy
   display flex
   flex-direction column
-  gap var(--wren-space-1)
+  gap var(--saf0o-space-1)
 
   strong
-    color var(--wren-text-primary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-small)
 
   span
-    color var(--wren-text-tertiary)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-tertiary)
+    font-size var(--saf0o-type-caption)
     line-height 1.45
 
 .activityClearActions
   display grid
   grid-template-columns repeat(2, minmax(0, 1fr))
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
 .activityClearStatus
-  margin-top var(--wren-space-3)
-  padding var(--wren-space-3)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-secondary)
-  background var(--wren-surface-inset)
-  font-size var(--wren-type-small)
+  margin-top var(--saf0o-space-3)
+  padding var(--saf0o-space-3)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-secondary)
+  background var(--saf0o-surface-inset)
+  font-size var(--saf0o-type-small)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
 .activityDetail
   display flex
   width 100%
   min-width 0
-  padding-bottom var(--wren-space-5)
+  padding-bottom var(--saf0o-space-5)
   flex-direction column
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
   box-sizing border-box
 
 .activityDetailHeader,
@@ -244,15 +244,15 @@
 .activityDetailHeader
   display grid
   min-height 68px
-  padding var(--wren-space-3)
+  padding var(--saf0o-space-3)
   grid-template-columns 36px minmax(0, 1fr) auto
   align-items center
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
   box-sizing border-box
-  border 1px solid var(--wren-border-default)
+  border 1px solid var(--saf0o-border-default)
   border-radius 10px
-  background var(--wren-surface-card)
-  box-shadow var(--wren-shadow-sm), var(--wren-shadow-inset)
+  background var(--saf0o-surface-card)
+  box-shadow var(--saf0o-shadow-sm), var(--saf0o-shadow-inset)
 
 .activityDetailMark
   display flex
@@ -260,10 +260,10 @@
   height 34px
   align-items center
   justify-content center
-  border 1px solid var(--wren-border-subtle)
+  border 1px solid var(--saf0o-border-subtle)
   border-radius 3px
-  color var(--wren-text-secondary)
-  background var(--wren-surface-inset)
+  color var(--saf0o-text-secondary)
+  background var(--saf0o-surface-inset)
 
 .activityDetailIdentity
   display flex
@@ -272,8 +272,8 @@
 
 .activityDetailTitle
   overflow hidden
-  color var(--wren-text-primary)
-  font-size var(--wren-type-body)
+  color var(--saf0o-text-primary)
+  font-size var(--saf0o-type-body)
   font-weight 600
   text-overflow ellipsis
   white-space nowrap
@@ -281,41 +281,41 @@
 .activityDetailContext
   overflow hidden
   margin-top 2px
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-utility)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-utility)
+  font-size var(--saf0o-type-caption)
   text-overflow ellipsis
   white-space nowrap
 
 .activityDetailOutcome
-  color var(--wren-text-secondary)
-  font-family var(--wren-font-utility)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-secondary)
+  font-family var(--saf0o-font-utility)
+  font-size var(--saf0o-type-caption)
   font-weight 550
 
 .activityDetailOutcomeCopy,
 .activityDetailUnavailable
-  padding var(--wren-space-3)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-secondary)
-  background var(--wren-surface-inset)
-  font-size var(--wren-type-small)
+  padding var(--saf0o-space-3)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-secondary)
+  background var(--saf0o-surface-inset)
+  font-size var(--saf0o-type-small)
   line-height 1.45
 
 .activityDetailSection
   overflow hidden
-  border 1px solid var(--wren-border-default)
+  border 1px solid var(--saf0o-border-default)
   border-radius 10px
-  background var(--wren-surface-card)
-  box-shadow var(--wren-shadow-sm), var(--wren-shadow-inset)
+  background var(--saf0o-surface-card)
+  box-shadow var(--saf0o-shadow-sm), var(--saf0o-shadow-inset)
 
   > h2
     margin 0
-    padding var(--wren-space-3)
-    border-bottom 1px solid var(--wren-border-subtle)
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-small)
+    padding var(--saf0o-space-3)
+    border-bottom 1px solid var(--saf0o-border-subtle)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-small)
     font-weight 600
 
 .activityDetailGrid
@@ -331,7 +331,7 @@
 .activityDetailSummaryRow
   display grid
   grid-template-columns repeat(2, minmax(0, 1fr))
-  border-bottom 1px solid var(--wren-border-subtle)
+  border-bottom 1px solid var(--saf0o-border-subtle)
 
   &:last-child
     border-bottom 0
@@ -341,18 +341,18 @@
     border-bottom 0
 
     &:not(:last-child)
-      border-right 1px solid var(--wren-border-subtle)
+      border-right 1px solid var(--saf0o-border-subtle)
 
     &:only-child
       grid-column 1 / -1
 
 .activityDetailValue
   min-width 0
-  padding var(--wren-space-3)
-  border-bottom 1px solid var(--wren-border-subtle)
+  padding var(--saf0o-space-3)
+  border-bottom 1px solid var(--saf0o-border-subtle)
 
   &:nth-child(odd)
-    border-right 1px solid var(--wren-border-subtle)
+    border-right 1px solid var(--saf0o-border-subtle)
 
   &:nth-last-child(-n + 2)
     border-bottom 0
@@ -362,20 +362,20 @@
     border-right 0
 
   &:last-child:nth-child(odd):not(:only-child)
-    border-top 1px solid var(--wren-border-subtle)
+    border-top 1px solid var(--saf0o-border-subtle)
 
   dt
     margin 0 0 3px
-    color var(--wren-text-muted)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
 
   dd
     overflow hidden
     margin 0
-    color var(--wren-text-primary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-small)
     font-weight 400
     line-height 1.35
     text-overflow ellipsis
@@ -388,71 +388,71 @@
 
 .activityDetailActions
   display grid
-  padding var(--wren-space-3)
+  padding var(--saf0o-space-3)
   grid-template-columns repeat(2, minmax(0, 1fr))
-  gap var(--wren-space-2)
-  border-top 1px solid var(--wren-border-subtle)
+  gap var(--saf0o-space-2)
+  border-top 1px solid var(--saf0o-border-subtle)
 
   button
-    gap var(--wren-space-2)
+    gap var(--saf0o-space-2)
 
 .activityDetailAction
   min-width 0
 
   + .activityDetailAction
-    border-top 1px solid var(--wren-border-subtle)
+    border-top 1px solid var(--saf0o-border-subtle)
 
   > h3
     margin 0
-    padding var(--wren-space-2) var(--wren-space-3)
-    border-bottom 1px solid var(--wren-border-subtle)
-    color var(--wren-text-tertiary)
-    background var(--wren-surface-inset)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    padding var(--saf0o-space-2) var(--saf0o-space-3)
+    border-bottom 1px solid var(--saf0o-border-subtle)
+    color var(--saf0o-text-tertiary)
+    background var(--saf0o-surface-inset)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
     font-weight 550
 
 .activityDetailAssetChanges
-  border-top 1px solid var(--wren-border-subtle)
+  border-top 1px solid var(--saf0o-border-subtle)
 
   > h4
     margin 0
-    padding var(--wren-space-2) var(--wren-space-3)
-    border-bottom 1px solid var(--wren-border-subtle)
-    color var(--wren-text-secondary)
-    background var(--wren-surface-inset)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    padding var(--saf0o-space-2) var(--saf0o-space-3)
+    border-bottom 1px solid var(--saf0o-border-subtle)
+    color var(--saf0o-text-secondary)
+    background var(--saf0o-surface-inset)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
     font-weight 560
 
 .activityDetailActionNote,
 .activityDetailActionPartial
-  padding var(--wren-space-3)
-  border-top 1px solid var(--wren-border-subtle)
-  color var(--wren-text-tertiary)
-  background var(--wren-surface-inset)
-  font-size var(--wren-type-caption)
+  padding var(--saf0o-space-3)
+  border-top 1px solid var(--saf0o-border-subtle)
+  color var(--saf0o-text-tertiary)
+  background var(--saf0o-surface-inset)
+  font-size var(--saf0o-type-caption)
   line-height 1.45
 
 .activityDetailActionNote
-  padding-top var(--wren-space-2)
-  padding-bottom var(--wren-space-2)
+  padding-top var(--saf0o-space-2)
+  padding-bottom var(--saf0o-space-2)
 
 .activityDetailTransactions
   margin 0
   padding 0
-  border-top 1px solid var(--wren-border-subtle)
+  border-top 1px solid var(--saf0o-border-subtle)
   list-style none
 
   > li
     display grid
     min-height 58px
-    padding var(--wren-space-2) var(--wren-space-3)
+    padding var(--saf0o-space-2) var(--saf0o-space-3)
     grid-template-columns minmax(0, 1fr) auto auto
     align-items center
-    gap var(--wren-space-3)
+    gap var(--saf0o-space-3)
     box-sizing border-box
-    border-bottom 1px solid var(--wren-border-subtle)
+    border-bottom 1px solid var(--saf0o-border-subtle)
 
     &:last-child
       border-bottom 0
@@ -463,54 +463,54 @@
   flex-direction column
 
   strong
-    color var(--wren-text-primary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-small)
     font-weight 560
 
   span
     overflow hidden
     margin-top 2px
-    color var(--wren-text-muted)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
     text-overflow ellipsis
     white-space nowrap
 
 .activityDetailTransactionResult
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-utility)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-utility)
+  font-size var(--saf0o-type-caption)
   white-space nowrap
 
 .activityDetailTransactionActions
   display flex
-  gap var(--wren-space-1)
+  gap var(--saf0o-space-1)
 
 .activityModuleExpanded
   position absolute
   inset 0
-  padding 0 var(--wren-space-3) var(--wren-space-5)
+  padding 0 var(--saf0o-space-3) var(--saf0o-space-5)
   box-sizing border-box
   overflow-y auto
 
   .activityFilters
-    margin-bottom var(--wren-space-3)
+    margin-bottom var(--saf0o-space-3)
 
   .activityList
     padding 0
     overflow hidden
-    border 1px solid var(--wren-border-default)
+    border 1px solid var(--saf0o-border-default)
     border-radius 10px
-    background var(--wren-surface-card)
-    box-shadow var(--wren-shadow-sm), var(--wren-shadow-inset)
+    background var(--saf0o-surface-card)
+    box-shadow var(--saf0o-shadow-sm), var(--saf0o-shadow-inset)
 
   .activityRow
     min-height 58px
-    padding-right var(--wren-space-3)
-    padding-left var(--wren-space-3)
+    padding-right var(--saf0o-space-3)
+    padding-left var(--saf0o-space-3)
 
   .activityClear
-    padding-top var(--wren-space-3)
+    padding-top var(--saf0o-space-3)
 
   .activityDetail
     padding-top 0
@@ -551,7 +551,7 @@
     > .activityDetailValue
       grid-column auto
       border-right 0
-      border-bottom 1px solid var(--wren-border-subtle)
+      border-bottom 1px solid var(--saf0o-border-subtle)
 
       &:last-child
         border-bottom 0
@@ -561,7 +561,7 @@
   .activityDetailValue:nth-last-child(-n + 2)
     grid-column auto
     border-right 0
-    border-bottom 1px solid var(--wren-border-subtle)
+    border-bottom 1px solid var(--saf0o-border-subtle)
 
   .activityDetailValue:last-child
     border-bottom 0

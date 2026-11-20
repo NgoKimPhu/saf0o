@@ -6,7 +6,7 @@ import migrations from '../../../../main/store/migrate'
 import { assertSafeMigrationFixture } from './fixtureValidation'
 import {
   FRAME_SEND_ORIGIN,
-  WREN_EXTENSION_ORIGIN,
+  SAF0O_EXTENSION_ORIGIN,
   originIdForName
 } from '../../../../resources/domain/origin'
 
@@ -301,7 +301,7 @@ it('migrates the published version 68 release boundary through the latest migrat
   const source = clone(fixture.state)
   const accountId = '0x000000000000000000000000000000000000dead'
   const sendId = originIdForName(FRAME_SEND_ORIGIN)
-  const extensionId = originIdForName(WREN_EXTENSION_ORIGIN)
+  const extensionId = originIdForName(SAF0O_EXTENSION_ORIGIN)
 
   const after69 = migrations.apply(clone(source), 69)
   expect(after69.main._version).toBe(69)
@@ -351,7 +351,7 @@ it('migrates the published version 68 release boundary through the latest migrat
       }
     },
     origins: {
-      [extensionId]: expect.objectContaining({ name: WREN_EXTENSION_ORIGIN, provenance: 'internal' }),
+      [extensionId]: expect.objectContaining({ name: SAF0O_EXTENSION_ORIGIN, provenance: 'internal' }),
       'fixture-direct-origin': source.main.origins['fixture-direct-origin']
     }
   })
@@ -473,7 +473,7 @@ it('recovers a persisted dapp missing lifecycle fields', async () => {
 })
 
 it('rejects a newer persisted snapshot instead of loading an older fallback', async () => {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-future-state-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-future-state-'))
   const fixture = loadFixture('v41-current-state.json')
   const configPath = path.join(directory, 'config.json')
   fs.writeFileSync(
@@ -490,7 +490,7 @@ it('rejects a newer persisted snapshot instead of loading an older fallback', as
 
   try {
     await expect(loadApplicationState(configPath)).rejects.toThrow(
-      `Saved state version ${migrations.latest + 1} is newer than Wren supports`
+      `Saved state version ${migrations.latest + 1} is newer than Saf0o supports`
     )
   } finally {
     fs.rmSync(directory, { recursive: true, force: true })

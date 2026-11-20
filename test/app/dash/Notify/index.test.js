@@ -3,7 +3,7 @@ import { Notify } from '../../../../app/dash/Notify'
 import link from '../../../../resources/link'
 
 jest.mock('../../../../resources/link', () => ({ rpc: jest.fn(), send: jest.fn() }))
-jest.mock('../../../../asset/brand/exports/app/wren-app-icon-512.png', () => 'wren-icon.png')
+jest.mock('../../../../asset/brand/exports/app/saf0o-app-icon-512.png', () => 'saf0o-icon.png')
 
 const createStore = () =>
   jest.fn((...path) => (path.join('.') === 'main.mute.gasFeeWarning' ? false : undefined))
@@ -149,7 +149,7 @@ test('exposes disclosure links and acceptance as native actions', () => {
   notify.store = jest.fn()
   render(notify.betaDisclosure())
 
-  expect(screen.getByText('About Wren')).toBeTruthy()
+  expect(screen.getByText('About Saf0o')).toBeTruthy()
   fireEvent.click(screen.getByRole('button', { name: 'License' }))
   expect(link.send).toHaveBeenCalledWith('tray:openExternal', expect.any(String))
 

@@ -512,7 +512,7 @@ export class Signers extends EventEmitter {
 
   private lockHotSignersOnClose() {
     if (!store('main.accountCloseLock')) return
-    this.lockHotSigners('closing Wren')
+    this.lockHotSigners('closing Saf0o')
   }
 
   unsetSigner() {

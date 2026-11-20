@@ -115,7 +115,7 @@ export class TokenApprovalsService {
     const id = identifier(entry)
     const previous = observations.find((item) => item.id === id)
     if (previous?.transactionHash === hash) return observations
-    // Catch-up may observe an older external call after a newer Wren submission.
+    // Catch-up may observe an older external call after a newer Saf0o submission.
     // Keep its hash so execution/reorg evidence still refreshes this pair after restart.
     const submittedTransactionHash =
       source === 'submitted' ? hash : previous?.submittedTransactionHash || previous?.transactionHash

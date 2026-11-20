@@ -5,7 +5,7 @@ import { EventEmitter } from 'events'
 import ts from 'typescript'
 
 export function saveIssueEvidence(name, evidence) {
-  const directory = process.env.WREN_E2E_EVIDENCE_DIR
+  const directory = process.env.SAF0O_E2E_EVIDENCE_DIR
   if (!directory) return
   fs.mkdirSync(directory, { recursive: true })
   fs.writeFileSync(path.join(directory, `${name}.json`), `${JSON.stringify(evidence, null, 2)}\n`)

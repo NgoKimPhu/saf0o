@@ -8,9 +8,9 @@ const { values } = parseArgs({ options: { 'output-dir': { type: 'string' } } })
 const outputRoot = path.resolve(values['output-dir'] || root)
 const jobs = []
 const copies = []
-const masterPath = path.join(root, 'asset/brand/wren-mark.svg')
-const grainPath = path.join(root, 'resources/svg/wren-grain.svg')
-const socialHeaderSourcePath = path.join(root, 'asset/social/source/wren-night-rounds-v1.png')
+const masterPath = path.join(root, 'asset/brand/saf0o-mark.svg')
+const grainPath = path.join(root, 'resources/svg/saf0o-grain.svg')
+const socialHeaderSourcePath = path.join(root, 'asset/social/source/saf0o-night-rounds-v1.png')
 const brandDirectory = path.join(outputRoot, 'asset/brand')
 const exportDirectory = path.join(brandDirectory, 'exports')
 const socialDirectory = path.join(outputRoot, 'asset/social')
@@ -42,26 +42,26 @@ const svg = ({ content, viewBox = '0 0 1000 1000', extraDefs = '' }) => `
   </svg>
 `
 
-const mark = ({ fill, symbol = 'wren-silhouette', scale = 1, x = 0, y = 0 }) => {
+const mark = ({ fill, symbol = 'saf0o-silhouette', scale = 1, x = 0, y = 0 }) => {
   const offset = (1000 - 1000 * scale) / 2
   return svg({
     content: `<g transform="translate(${offset + x} ${offset + y}) scale(${scale})"><use href="#${symbol}" fill="${fill}" /></g>`
   })
 }
 
-const colorMark = () => svg({ content: '<use href="#wren-color" />' })
+const colorMark = () => svg({ content: '<use href="#saf0o-color" />' })
 
 const appIcon = () => {
   const markOffset = (1000 - 1000 * appMarkScale) / 2
   return svg({
-    content: `<rect width="1000" height="1000" rx="220" fill="${palette.tile}" /><g transform="translate(${markOffset} ${markOffset}) scale(${appMarkScale})"><use href="#wren-color" /></g>`
+    content: `<rect width="1000" height="1000" rx="220" fill="${palette.tile}" /><g transform="translate(${markOffset} ${markOffset}) scale(${appMarkScale})"><use href="#saf0o-color" /></g>`
   })
 }
 
 const monoLightMark = () =>
-  mark({ fill: palette.light, symbol: 'wren-silhouette', scale: 0.985, x: -8, y: -51 })
+  mark({ fill: palette.light, symbol: 'saf0o-silhouette', scale: 0.985, x: -8, y: -51 })
 
-const monoDarkMark = () => mark({ fill: palette.dark, symbol: 'wren-silhouette', x: -8, y: -51 })
+const monoDarkMark = () => mark({ fill: palette.dark, symbol: 'saf0o-silhouette', x: -8, y: -51 })
 
 const socialTextureDefs = ({ gradientId, centerX, centerY }) => `
   <radialGradient id="${gradientId}" cx="${centerX}" cy="${centerY}" r="72%">
@@ -69,11 +69,11 @@ const socialTextureDefs = ({ gradientId, centerX, centerY }) => `
     <stop offset="0.52" stop-color="${palette.elevated}" />
     <stop offset="1" stop-color="${palette.canvas}" />
   </radialGradient>
-  <radialGradient id="wren-social-glow" cx="50%" cy="50%" r="50%">
+  <radialGradient id="saf0o-social-glow" cx="50%" cy="50%" r="50%">
     <stop offset="0" stop-color="${palette.accent}" stop-opacity="0.1" />
     <stop offset="1" stop-color="${palette.accent}" stop-opacity="0" />
   </radialGradient>
-  <pattern id="wren-social-grain" width="144" height="144" patternUnits="userSpaceOnUse">
+  <pattern id="saf0o-social-grain" width="144" height="144" patternUnits="userSpaceOnUse">
     <image href="${grainDataUrl}" width="144" height="144" />
   </pattern>
 `
@@ -81,13 +81,13 @@ const socialTextureDefs = ({ gradientId, centerX, centerY }) => `
 const socialAvatar = () =>
   svg({
     viewBox: '0 0 400 400',
-    extraDefs: socialTextureDefs({ gradientId: 'wren-avatar-field', centerX: '50%', centerY: '44%' }),
+    extraDefs: socialTextureDefs({ gradientId: 'saf0o-avatar-field', centerX: '50%', centerY: '44%' }),
     content: `
       <rect width="400" height="400" fill="${palette.canvas}" />
-      <rect width="400" height="400" fill="url(#wren-avatar-field)" />
-      <ellipse cx="200" cy="190" rx="175" ry="155" fill="url(#wren-social-glow)" />
-      <rect width="400" height="400" fill="url(#wren-social-grain)" />
-      <g transform="translate(20 22) scale(0.36)"><use href="#wren-color" /></g>
+      <rect width="400" height="400" fill="url(#saf0o-avatar-field)" />
+      <ellipse cx="200" cy="190" rx="175" ry="155" fill="url(#saf0o-social-glow)" />
+      <rect width="400" height="400" fill="url(#saf0o-social-grain)" />
+      <g transform="translate(20 22) scale(0.36)"><use href="#saf0o-color" /></g>
     `
   })
 
@@ -119,7 +119,7 @@ const writeProductionAssets = async () => {
   await mkdir(markExportDirectory, { recursive: true })
 
   for (const size of appSizes) {
-    await render(appIcon(), path.join(appExportDirectory, `wren-app-icon-${size}.png`), size)
+    await render(appIcon(), path.join(appExportDirectory, `saf0o-app-icon-${size}.png`), size)
   }
 
   const markExports = [
@@ -129,67 +129,67 @@ const writeProductionAssets = async () => {
   ]
 
   for (const [name, source] of markExports) {
-    await writeFile(path.join(markExportDirectory, `wren-mark-${name}.svg`), source.trimStart())
+    await writeFile(path.join(markExportDirectory, `saf0o-mark-${name}.svg`), source.trimStart())
     for (const size of markSizes) {
-      await render(source, path.join(markExportDirectory, `wren-mark-${name}-${size}.png`), size)
+      await render(source, path.join(markExportDirectory, `saf0o-mark-${name}-${size}.png`), size)
     }
   }
 
   const webExports = [
-    ['wren-favicon-16.png', 16],
-    ['wren-favicon-32.png', 32],
-    ['wren-apple-touch-icon-180.png', 180],
-    ['wren-web-app-192.png', 192],
-    ['wren-web-app-512.png', 512]
+    ['saf0o-favicon-16.png', 16],
+    ['saf0o-favicon-32.png', 32],
+    ['saf0o-apple-touch-icon-180.png', 180],
+    ['saf0o-web-app-192.png', 192],
+    ['saf0o-web-app-512.png', 512]
   ]
 
   for (const [name, size] of webExports) {
     await render(appIcon(), path.join(webExportDirectory, name), size)
   }
 
-  const appOutput = path.join(appExportDirectory, 'wren-app-icon-512.png')
+  const appOutput = path.join(appExportDirectory, 'saf0o-app-icon-512.png')
 
   for (const outputPath of ['main/windows/AppIcon.png', 'build/icons/512x512.png', 'build/icons/icon.png']) {
     copies.push([appOutput, path.join(outputRoot, outputPath)])
   }
 
   const trayAssets = [
-    ['wren-tray-windows-24.png', 'Icon.png', 24, palette.tray, 'wren-silhouette-24', 1.17, -42],
-    ['wren-tray-windows-48.png', 'Icon@2x.png', 48, palette.tray, 'wren-silhouette-32', 1.17, -42],
+    ['saf0o-tray-windows-24.png', 'Icon.png', 24, palette.tray, 'saf0o-silhouette-24', 1.17, -42],
+    ['saf0o-tray-windows-48.png', 'Icon@2x.png', 48, palette.tray, 'saf0o-silhouette-32', 1.17, -42],
     [
-      'wren-tray-macos-template-24.png',
+      'saf0o-tray-macos-template-24.png',
       'IconTemplate.png',
       24,
       '#000000',
-      'wren-silhouette-24',
+      'saf0o-silhouette-24',
       1.15245,
       -42
     ],
     [
-      'wren-tray-macos-template-48.png',
+      'saf0o-tray-macos-template-48.png',
       'IconTemplate@2x.png',
       48,
       '#000000',
-      'wren-silhouette-32',
+      'saf0o-silhouette-32',
       1.15245,
       -42
     ],
     [
-      'wren-tray-linux-light-24.png',
+      'saf0o-tray-linux-light-24.png',
       'LinuxTray.png',
       24,
       palette.light,
-      'wren-silhouette-16',
+      'saf0o-silhouette-16',
       1.28,
       -42,
       -10
     ],
     [
-      'wren-tray-linux-light-48.png',
+      'saf0o-tray-linux-light-48.png',
       'LinuxTray@2x.png',
       48,
       palette.light,
-      'wren-silhouette-16',
+      'saf0o-silhouette-16',
       1.28,
       -42,
       -10
@@ -202,8 +202,8 @@ const writeProductionAssets = async () => {
     copies.push([exportPath, path.join(outputRoot, 'main/windows', runtimeName)])
   }
 
-  await render(socialAvatar(), path.join(socialDirectory, 'wren-profile-400.png'), 400)
-  await render(socialHeader(), path.join(socialDirectory, 'wren-x-header-1500x500.png'), 1500, 500)
+  await render(socialAvatar(), path.join(socialDirectory, 'saf0o-profile-400.png'), 400)
+  await render(socialHeader(), path.join(socialDirectory, 'saf0o-x-header-1500x500.png'), 1500, 500)
 }
 
 const proofTile = ({ label, background, fill, size, symbol, scale = 1, x = 0, y = 0 }) => `
@@ -237,23 +237,23 @@ const writeProofSheet = async () => {
       .crop-guide{position:absolute;left:0;right:0;height:29px;background:rgba(166,138,97,.08);border-color:rgba(166,138,97,.28);pointer-events:none}
       .crop-guide.top{top:0;border-bottom:1px dashed}.crop-guide.bottom{bottom:0;border-top:1px dashed}
     </style>
-    <h1>Wren Character-flat release proof</h1>
+    <h1>Saf0o Character-flat release proof</h1>
     <p>One shared contour · flat production palette · optically corrected mono and native-size reductions</p>
     <h2>Primary marks</h2>
     <div class="row large">
       <figure><div class="sample" style="background:#cbc8c0"><div style="width:230px;height:230px">${app}</div></div><figcaption>App icon · 512 source</figcaption></figure>
       <figure><div class="sample checker"><div style="width:230px;height:230px">${color}</div></div><figcaption>Full-color transparent mark</figcaption></figure>
-      ${proofTile({ label: 'Mono light · optically centered', background: palette.tile, fill: palette.light, size: 230, symbol: 'wren-silhouette', scale: 0.985, x: -8, y: -51 })}
-      ${proofTile({ label: 'Mono dark · optically centered', background: '#f4f1e9', fill: palette.dark, size: 230, symbol: 'wren-silhouette', x: -8, y: -51 })}
+      ${proofTile({ label: 'Mono light · optically centered', background: palette.tile, fill: palette.light, size: 230, symbol: 'saf0o-silhouette', scale: 0.985, x: -8, y: -51 })}
+      ${proofTile({ label: 'Mono dark · optically centered', background: '#f4f1e9', fill: palette.dark, size: 230, symbol: 'saf0o-silhouette', x: -8, y: -51 })}
     </div>
     <h2>Native-size silhouette checks</h2>
     <div class="row">
-      ${proofTile({ label: '48 px · color tray', background: palette.tile, fill: palette.tray, size: 48, symbol: 'wren-silhouette-32', scale: 1.17, y: -42 })}
-      ${proofTile({ label: '32 px · hinted', background: palette.tile, fill: palette.light, size: 32, symbol: 'wren-silhouette-32', scale: 1.15245, y: -42 })}
-      ${proofTile({ label: '24 px · hinted', background: palette.tile, fill: palette.light, size: 24, symbol: 'wren-silhouette-24', scale: 1.15245, y: -42 })}
-      ${proofTile({ label: '16 px · Linux panel', background: palette.tile, fill: palette.light, size: 16, symbol: 'wren-silhouette-16', scale: 1.28, x: -10, y: -42 })}
-      ${proofTile({ label: '24 px · dark polarity', background: '#f4f1e9', fill: palette.dark, size: 24, symbol: 'wren-silhouette-24', scale: 1.17, y: -42 })}
-      ${proofTile({ label: '16 px · dark polarity', background: '#f4f1e9', fill: palette.dark, size: 16, symbol: 'wren-silhouette-16', scale: 1.17, y: -42 })}
+      ${proofTile({ label: '48 px · color tray', background: palette.tile, fill: palette.tray, size: 48, symbol: 'saf0o-silhouette-32', scale: 1.17, y: -42 })}
+      ${proofTile({ label: '32 px · hinted', background: palette.tile, fill: palette.light, size: 32, symbol: 'saf0o-silhouette-32', scale: 1.15245, y: -42 })}
+      ${proofTile({ label: '24 px · hinted', background: palette.tile, fill: palette.light, size: 24, symbol: 'saf0o-silhouette-24', scale: 1.15245, y: -42 })}
+      ${proofTile({ label: '16 px · Linux panel', background: palette.tile, fill: palette.light, size: 16, symbol: 'saf0o-silhouette-16', scale: 1.28, x: -10, y: -42 })}
+      ${proofTile({ label: '24 px · dark polarity', background: '#f4f1e9', fill: palette.dark, size: 24, symbol: 'saf0o-silhouette-24', scale: 1.17, y: -42 })}
+      ${proofTile({ label: '16 px · dark polarity', background: '#f4f1e9', fill: palette.dark, size: 16, symbol: 'saf0o-silhouette-16', scale: 1.17, y: -42 })}
     </div>
     <h2>Social surfaces</h2>
     <div class="row">
@@ -263,7 +263,7 @@ const writeProofSheet = async () => {
   `
   jobs.push({
     html,
-    outputPath: path.join(brandDirectory, 'wren-brand-sheet.png'),
+    outputPath: path.join(brandDirectory, 'saf0o-brand-sheet.png'),
     width: 1240,
     height: 1380,
     fullPage: true
@@ -279,4 +279,4 @@ for (const [source, destination] of copies) {
   await copyFile(source, destination)
 }
 
-console.log('Wren brand assets generated')
+console.log('Saf0o brand assets generated')

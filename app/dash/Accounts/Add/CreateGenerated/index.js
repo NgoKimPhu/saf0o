@@ -54,7 +54,7 @@ const CopyControl = ({ copied, focusRef, label, onCopy }) => {
       <button
         type='button'
         ref={focusRef}
-        className='generatedWalletQuietControl wrenControl wrenControlSecondary'
+        className='generatedWalletQuietControl saf0oControl saf0oControlSecondary'
         onClick={copy}
       >
         <Icon name='copy' size={16} />
@@ -114,7 +114,7 @@ const PhrasePresentation = ({ active, onContinue, presentation }) => {
           Your recovery phrase
         </div>
         <p className='generatedWalletGuidance'>
-          Write these 12 words down in order. Wren will not show them again.
+          Write these 12 words down in order. Saf0o will not show them again.
         </p>
         <ol className='generatedWalletPhrase' aria-label='Recovery phrase'>
           {presentation.secret.split(' ').map((word, index) => (
@@ -134,7 +134,7 @@ const PhrasePresentation = ({ active, onContinue, presentation }) => {
       <div className='generatedWalletActionShelf'>
         <button
           type='button'
-          className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+          className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
           onClick={onContinue}
         >
           {"I've written it down"}
@@ -193,7 +193,7 @@ const PrivateKeyPresentation = ({ active, onContinue, presentation }) => {
               <button
                 type='button'
                 ref={revealRef}
-                className='generatedWalletQuietControl wrenControl wrenControlSecondary'
+                className='generatedWalletQuietControl saf0oControl saf0oControlSecondary'
                 aria-controls='generated-private-key-value'
                 aria-pressed={revealed}
                 onClick={() => {
@@ -216,7 +216,7 @@ const PrivateKeyPresentation = ({ active, onContinue, presentation }) => {
       <div className='generatedWalletActionShelf'>
         <button
           type='button'
-          className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+          className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
           disabled={!secretAccessed}
           onClick={onContinue}
         >
@@ -251,14 +251,14 @@ const PhraseVerification = ({ active, challenge, expiresAt, onComplete, onEdit, 
         {challenge.map((position, index) => (
           <label className='generatedWalletVerifyField' key={position}>
             <span>Word {position}</span>
-            <span className={error ? 'wrenInputGroup wrenInputGroupError' : 'wrenInputGroup'}>
+            <span className={error ? 'saf0oInputGroup saf0oInputGroupError' : 'saf0oInputGroup'}>
               <input
                 autoCapitalize='none'
                 autoComplete='off'
                 ref={index === 0 ? firstInputRef : undefined}
                 aria-invalid={Boolean(error)}
                 aria-describedby={error ? errorId : undefined}
-                className={error ? 'wrenInput wrenInputError' : 'wrenInput'}
+                className={error ? 'saf0oInput saf0oInputError' : 'saf0oInput'}
                 disabled={submitting}
                 spellCheck={false}
                 value={words[index]}
@@ -280,13 +280,13 @@ const PhraseVerification = ({ active, challenge, expiresAt, onComplete, onEdit, 
         ) : null}
         <SetupExpiry expiresAt={expiresAt} />
         <p className='generatedWalletConsequence'>
-          {submitting ? 'Wren is finishing this wallet setup.' : 'Leaving now deletes this new wallet.'}
+          {submitting ? 'Saf0o is finishing this wallet setup.' : 'Leaving now deletes this new wallet.'}
         </p>
       </div>
       <div className='generatedWalletActionShelf'>
         <button
           type='button'
-          className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+          className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
           disabled={!ready || submitting}
           onClick={() => onComplete({ words })}
         >
@@ -322,8 +322,8 @@ const PrivateKeyVerification = ({ active, expiresAt, onComplete, onEdit, submitt
         <div
           className={
             error
-              ? 'generatedWalletKeyInput wrenInputGroup wrenInputGroupError'
-              : 'generatedWalletKeyInput wrenInputGroup'
+              ? 'generatedWalletKeyInput saf0oInputGroup saf0oInputGroupError'
+              : 'generatedWalletKeyInput saf0oInputGroup'
           }
         >
           <textarea
@@ -333,7 +333,7 @@ const PrivateKeyVerification = ({ active, expiresAt, onComplete, onEdit, submitt
             ref={inputRef}
             aria-invalid={Boolean(error)}
             aria-describedby={error ? errorId : undefined}
-            className={error ? 'wrenInput wrenInputError' : 'wrenInput'}
+            className={error ? 'saf0oInput saf0oInputError' : 'saf0oInput'}
             disabled={submitting}
             spellCheck={false}
             value={privateKey}
@@ -355,13 +355,13 @@ const PrivateKeyVerification = ({ active, expiresAt, onComplete, onEdit, submitt
         ) : null}
         <SetupExpiry expiresAt={expiresAt} />
         <p className='generatedWalletConsequence'>
-          {submitting ? 'Wren is finishing this account setup.' : 'Leaving now deletes this new account.'}
+          {submitting ? 'Saf0o is finishing this account setup.' : 'Leaving now deletes this new account.'}
         </p>
       </div>
       <div className='generatedWalletActionShelf'>
         <button
           type='button'
-          className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+          className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
           disabled={!validPrivateKey(privateKey) || submitting}
           onClick={() => onComplete({ privateKey })}
         >
@@ -391,7 +391,7 @@ const ErrorFrame = ({ active, actionLabel, detail, error, onAction }) => {
         <button
           ref={retryRef}
           type='button'
-          className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+          className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
           onClick={onAction}
         >
           {actionLabel}
@@ -406,8 +406,8 @@ const messageFor = (error) => (typeof error === 'string' ? error : error?.messag
 const terminalMessageFor = (error, noun) => {
   const message = messageFor(error)
   if (/no longer available|expired/iu.test(message)) return `This ${noun} setup expired.`
-  if (/already exists/iu.test(message)) return 'This account already exists in Wren.'
-  return `Wren could not finish creating this ${noun} safely.`
+  if (/already exists/iu.test(message)) return 'This account already exists in Saf0o.'
+  return `Saf0o could not finish creating this ${noun} safely.`
 }
 
 const terminalRecoveryFor = (error) =>
@@ -555,7 +555,7 @@ export default function CreateGenerated({ kind }) {
       const id = sessionId.current
       sessionId.current = null
       if (id) link.rpc('discardGeneratedWallet', id, () => {})
-      setError(`Wren could not create this ${createdNoun} safely.`)
+      setError(`Saf0o could not create this ${createdNoun} safely.`)
       setErrorAction('restart')
       setErrorDetail('No account was added.')
       setStep(4)
@@ -570,7 +570,7 @@ export default function CreateGenerated({ kind }) {
         clearTimeout(generationTimer.current)
         generationTimer.current = null
         beginning.current = false
-        setError(`Wren could not create this ${createdNoun} safely.`)
+        setError(`Saf0o could not create this ${createdNoun} safely.`)
         setErrorAction('restart')
         setErrorDetail('No account was added.')
         setStep(4)
@@ -596,7 +596,7 @@ export default function CreateGenerated({ kind }) {
           if (creationError || result?.sessionId !== reservedId) {
             sessionId.current = null
             link.rpc('discardGeneratedWallet', reservedId, () => {})
-            setError(`Wren could not create this ${createdNoun} safely.`)
+            setError(`Saf0o could not create this ${createdNoun} safely.`)
             setErrorAction('restart')
             setErrorDetail('No account was added.')
             setStep(4)
@@ -781,14 +781,14 @@ export default function CreateGenerated({ kind }) {
                 </div>
                 <p id='generated-wallet-abandon-description' className='generatedWalletAbandonDescription'>
                   {submitting
-                    ? 'Wait for Wren to finish before leaving.'
+                    ? 'Wait for Saf0o to finish before leaving.'
                     : `Your backup has not been verified. Leaving now permanently deletes this ${createdNoun}.`}
                 </p>
                 <div className='generatedWalletAbandonActions'>
                   <button
                     ref={abandonCancelRef}
                     type='button'
-                    className='wrenControl wrenControlSecondary'
+                    className='saf0oControl saf0oControlSecondary'
                     onClick={() => {
                       pendingNavigationRef.current = null
                       setPendingNavigation(null)
@@ -797,7 +797,11 @@ export default function CreateGenerated({ kind }) {
                     Keep creating
                   </button>
                   {!submitting ? (
-                    <button type='button' className='wrenControl wrenControlDanger' onClick={confirmAbandon}>
+                    <button
+                      type='button'
+                      className='saf0oControl saf0oControlDanger'
+                      onClick={confirmAbandon}
+                    >
                       Delete and leave
                     </button>
                   ) : null}

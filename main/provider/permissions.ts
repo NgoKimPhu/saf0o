@@ -10,7 +10,7 @@ import { parseRpcQuantity, toRpcQuantity } from '../../resources/domain/transact
 import type { Permission } from '../store/state'
 import type { PermissionScope } from '../store/state/types/permission'
 
-export const PERMISSION_SCOPE_CAVEAT = 'wren:permissionScope' as const
+export const PERMISSION_SCOPE_CAVEAT = 'saf0o:permissionScope' as const
 export const PERMISSION_LIFETIME_MS = 30 * 24 * 60 * 60 * 1000
 
 const emptyParamsSchema = z.tuple([])

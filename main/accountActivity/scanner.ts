@@ -318,7 +318,7 @@ export function createAccountActivityScanner(deps: ActivityScannerDependencies) 
               id: observedActivityId(chainId, account, hash),
               account,
               chainId,
-              origin: local?.origin ?? 'wren:external',
+              origin: local?.origin ?? 'saf0o:external',
               type: 'transaction',
               outcome: receipt.status === '0x1' ? 'confirmed' : 'failed',
               createdAt: timestamp,
@@ -328,7 +328,7 @@ export function createAccountActivityScanner(deps: ActivityScannerDependencies) 
                 from: tx.from,
                 blockHash: block.hash,
                 blockNumber: number,
-                source: local ? 'wren' : 'external',
+                source: local ? 'saf0o' : 'external',
                 action
               }
             }

@@ -1,6 +1,6 @@
 # RPC Compatibility Reference
 
-This reference describes Wren’s local JSON-RPC and EIP-1193 provider for app
+This reference describes Saf0o’s local JSON-RPC and EIP-1193 provider for app
 developers. The [browser companion](https://github.com/NgoKimPhu/saf0o-companion)
 is documented separately.
 
@@ -15,7 +15,7 @@ is documented separately.
 
 ## Scope and routes
 
-Wren serves browser-compatible JSON-RPC on:
+Saf0o serves browser-compatible JSON-RPC on:
 
 ```text
 http://127.0.0.1:1248/
@@ -29,7 +29,7 @@ described in [Transport and origin boundaries](#transport-and-origin-boundaries)
 Unknown routes, malformed origins, reserved internal labels, and protocol-version
 mismatches fail before provider dispatch or consent UI. See the [Threat Model](THREAT_MODEL.md).
 
-Wren either owns a method listed below or forwards it to the configured RPC for
+Saf0o either owns a method listed below or forwards it to the configured RPC for
 the selected chain.
 
 ## Wallet-owned methods
@@ -49,12 +49,12 @@ the selected chain.
 
 `eth_accounts` and `eth_coinbase` do not prompt. Before permission they return
 `[]` and `null`. `eth_requestAccounts` requests access. After permission, all
-expose only the selected Wren account. Watch-only accounts can read but cannot
+expose only the selected Saf0o account. Watch-only accounts can read but cannot
 sign.
 
 ### Permissions
 
-EIP-2255 `eth_accounts` with a Wren-issued finite caveat that binds the
+EIP-2255 `eth_accounts` with a Saf0o-issued finite caveat that binds the
 selected account, permitted wallet methods, enabled-chain snapshot, invoker
 identity, and 30-day expiry. A bounded `requiredMethods` hint checks signer
 compatibility before prompting. It does not widen the persisted grant. Users
@@ -67,7 +67,7 @@ For transaction preview fallbacks and tested RPC support, see
 [Simulation fallback](SIMULATION_FALLBACK.md).
 
 Normalizes, decodes, checks, simulates, reviews, signs, and broadcasts legacy,
-type-1, and type-2 transactions. Immediately before invoking a signer, Wren
+type-1, and type-2 transactions. Immediately before invoking a signer, Saf0o
 checks the configured RPC's pending native balance against value plus the
 reviewed worst-case execution fee and any available Optimism L1 data fee. A
 shortfall retains the original request with exact evidence, funding-address
@@ -76,9 +76,9 @@ native Max is not an RPC extension.
 
 Its opaque quote can be used once and expires after 60 seconds. The quote
 binds the account, chain, recipient, pending nonce and balance, gas, and
-Optimism fee evidence. Wren checks it again before queueing and signing. Speed
+Optimism fee evidence. Saf0o checks it again before queueing and signing. Speed
 Up and Cancel open a new review and keep the saved gas preference unchanged.
-Wren rejects them if the original receipt, nonce, or minimum replacement fee
+Saf0o rejects them if the original receipt, nonce, or minimum replacement fee
 has changed.
 
 Type 3+, EIP-7702 authorization lists, and unknown fields are rejected.
@@ -99,7 +99,7 @@ Adds a chain after metadata validation and confirmation. A known origin can
 switch its own route to a known enabled chain without approval or account
 exposure; untouched requests on the old route are cancelled. Unknown origins
 return `4100`, unknown chains return `4902`, and disabled chains return
-`4901`. The non-standard getter returns enabled Wren chains.
+`4901`. The non-standard getter returns enabled Saf0o chains.
 
 ### Assets
 
@@ -108,20 +108,20 @@ Supports legacy ERC-20 and bounded ERC-1046 ERC-20 suggestions. Parameterized
 native/ERC-20 assets, including explicit-asset, asset-type, and chain filters;
 all results are restricted to the invoker's granted chains. The historical
 no-parameter response is preserved. The passive getter does not prompt and
-returns `4100` before permission. Wren does not index NFTs or arbitrary asset
+returns `4100` before permission. Saf0o does not index NFTs or arbitrary asset
 types. ERC-1046 accepts inline JSON and IPFS metadata only and never fetches
 HTTP(S) metadata or images.
 
 ### Wallet calls
 
 Supports EIP-5792 `2.0.0` non-atomic sequential calls only. Before returning a
-batch ID or invoking any signer, Wren repeats configured-RPC nonce,
+batch ID or invoking any signer, Saf0o repeats configured-RPC nonce,
 account-code/stateful-simulation, pending-balance, worst-case execution-fee,
 and Optimism L1 data-fee checks. A funding shortfall keeps the transient
 authorized review open with aggregate available/required/missing evidence and
 explicit Reject/Recheck actions; it never signs, broadcasts, funds, bridges,
 sponsors, or auto-retries. Dashboard Sweep uses the same lifecycle through a
-narrowly validated managed Wren Send origin; it does not create a dapp
+narrowly validated managed Saf0o Send origin; it does not create a dapp
 permission or change the public EIP-5792 capability.
 
 Only explicitly selected positive ERC-20 balances are transferred, followed by
@@ -136,7 +136,7 @@ after restart and are never automatically rebroadcast.
 
 ### Identity
 
-Return Wren's target-chain and client identity. Wren does not blindly forward
+Return Saf0o's target-chain and client identity. Saf0o does not blindly forward
 these values.
 
 ### Shared permission checks
@@ -156,7 +156,7 @@ revalidates the exact current permission, method, chain, origin provenance,
 and Companion/native credential.
 
 User-initiated Cancel remains available as a recovery action; Speed Up retains
-the original dapp intent. These signer checks apply to requests that Wren
+the original dapp intent. These signer checks apply to requests that Saf0o
 signs. For already signed transactions, see [Forwarded
 methods](#forwarded-methods).
 
@@ -168,7 +168,7 @@ explicit optional context, EIP-712 V3/V4 data, and only `eth_sendTransaction`,
 `eth_call`, `eth_estimateGas`, or typed-data V3/V4 JSON-RPC wrappers. A pasted method
 is mapped to an inspection subject and is never forwarded. Local standard-ABI decode
 and typed-data risks are labeled as local evidence; simulation and trace evidence run
-through Wren's current configured-RPC review path only when sender and chain context
+through Saf0o's current configured-RPC review path only when sender and chain context
 are sufficient. Missing context remains explicit, and inspected payloads are neither
 queued nor persisted.
 
@@ -180,14 +180,14 @@ uses only the selected configured RPC for gas estimation, simulation, and
 pending-nonce lookup. Evidence is short-lived and one-use; it is bound to the
 exact account, chain, creation-data hash and length, and value.
 
-Queueing creates a no-destination `eth_sendTransaction` under Wren's distinct
+Queueing creates a no-destination `eth_sendTransaction` under Saf0o's distinct
 managed Deploy principal, then uses the ordinary native review, permission
 recheck, signer, single-attempt broadcast, and reconciliation lifecycle. The
 provisional CREATE address can change when the pending nonce changes. The tool
 does not compile, decode constructor arguments, verify
 source/compiler/bytecode, or guarantee safety or deployment.
 
-Contract source verification is also a dashboard-only Wren tool, not a
+Contract source verification is also a dashboard-only Saf0o tool, not a
 JSON-RPC provider method or dapp capability. It accepts bounded Solidity/Vyper
 standard JSON, checksum-validated Vyper `solc_json`, full Foundry/Hardhat 2
 build info, or paired Hardhat 3 build-info/output files through a main-process
@@ -196,7 +196,7 @@ Vyper `solc_json` have no compiler output and are matched by Sourcify only
 after explicit consent to permanent public publication.
 
 The target is revalidated through the configured RPC and bound to chain,
-address, runtime-code hash, and confirmed Wren deployment evidence when
+address, runtime-code hash, and confirmed Saf0o deployment evidence when
 present. Source publication does not sign, broadcast, or change transaction
 success. Sourcify and explorer calls are fixed external HTTPS services, not
 forwarded through the selected RPC. Direct Etherscan fallback requires
@@ -212,30 +212,30 @@ Profiles upgraded from the former unscoped boolean model require fresh consent.
 
 The historical `caip_request` and `wallet_request` envelopes are removed and
 always return `4200`. Send the inner EIP-1193 method directly and put a
-canonical hexadecimal `chainId` at the top level. Wren does not claim current
+canonical hexadecimal `chainId` at the top level. Saf0o does not claim current
 CAIP-27 `wallet_invokeMethod` session or scope support.
 
 ## Forwarded methods
 
 Other names, including ordinary reads such as `eth_call`, `eth_getBalance`, and
-`eth_getBlockByNumber`, are forwarded to the configured connection after Wren
+`eth_getBlockByNumber`, are forwarded to the configured connection after Saf0o
 removes internal origin and routing fields. Read-only trace extensions can also
 be forwarded.
 
-Wren never forwards unknown `wallet_*`, `personal_*`, `account_*`, or
+Saf0o never forwards unknown `wallet_*`, `personal_*`, `account_*`, or
 `eth_sign*` methods. It blocks `admin_*`, `engine_*`, and `miner_*`. Only a
 fixed set of raw-inspection and trace `debug_*` methods is forwarded. Other
 debug methods fail closed with EIP-1193 `4200`.
 
 `eth_sendRawTransaction` is permission-gated and then forwarded unchanged for
-supported transaction families. Wren cannot review or sign an already signed
+supported transaction families. Saf0o cannot review or sign an already signed
 transaction. It rejects type-3 and type-4 payloads. Forwarding a method does
-not imply Wren wallet support.
+not imply Saf0o wallet support.
 
 ## Routing and errors
 
 - A top-level `chainId` must be a canonical hexadecimal quantity and must
-  route to an enabled Wren chain. If it is omitted, Wren uses the requesting
+  route to an enabled Saf0o chain. If it is omitted, Saf0o uses the requesting
   origin's assigned chain.
 - An unknown or disconnected chain returns `4901`. An unauthorized wallet
   method returns `4100`. User rejection returns `4001`.
@@ -249,14 +249,14 @@ not imply Wren wallet support.
 
 The EIP-1193 wrapper emits `connect`, `disconnect`, `chainChanged`,
 `accountsChanged`, and `message` only for actual state changes. Account
-compatibility properties update before listeners run. Legacy or custom Wren
+compatibility properties update before listeners run. Legacy or custom Saf0o
 events include `networkChanged`, `chainsChanged`, and `assetsChanged`.
 
-Wren owns subscriptions named `accountsChanged`, `chainChanged`,
+Saf0o owns subscriptions named `accountsChanged`, `chainChanged`,
 `chainsChanged`, `networkChanged`, and `assetsChanged`. Delivery requires
 account permission. Other `eth_subscribe` requests are forwarded.
 
-Wren returns a transport-generated opaque subscription ID and rewrites
+Saf0o returns a transport-generated opaque subscription ID and rewrites
 notifications to it. It translates `eth_unsubscribe` only for the owning
 socket or HTTP origin and original chain. HTTP clients can use non-standard
 `eth_pollSubscriptions` with a bounded `pollId` scoped to the canonical origin.
@@ -288,7 +288,7 @@ The poll token is not process authentication.
   metadata. Direct-client permission remains consent and capability scope, not
   process authentication. It cannot consume a grant issued through an
   authenticated Companion credential.
-- Companion protocol v3 mutually authenticates Wren and the control/page key
+- Companion protocol v3 mutually authenticates Saf0o and the control/page key
   bundle with signed, role-bound, expiring transcripts. New keys require
   six-digit comparison. Browser/runtime identity fields are transport evidence
   only and are not stored as durable identity. Legacy v3 hellos must match the
@@ -299,5 +299,5 @@ The poll token is not process authentication.
 
 The [browser companion](https://github.com/NgoKimPhu/saf0o-companion) is a separate
 project with its own compatibility artifact. Browser-wide injection and EIP-6963
-discovery are qualified there. Wren's embedded-dapp injector announces EIP-6963
+discovery are qualified there. Saf0o's embedded-dapp injector announces EIP-6963
 and keeps the same object as legacy `window.ethereum`.

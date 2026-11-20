@@ -54,7 +54,7 @@ const assertSandboxHelper = async (root, description) => {
 
 await assertSandboxHelper(path.join(dist, 'linux-unpacked'), 'linux-unpacked')
 
-const packagedExecutable = path.join(dist, 'linux-unpacked', 'wren')
+const packagedExecutable = path.join(dist, 'linux-unpacked', 'saf0o')
 const packagedModuleProbe = `
 const { createRequire } = require('node:module')
 const fs = require('node:fs')
@@ -146,7 +146,7 @@ try {
 } catch {
   signerTamperingRejected = true
 }
-const osSignerStorage = new OsSignerStorage(path.join(process.resourcesPath, '.wren-package-probe'), {
+const osSignerStorage = new OsSignerStorage(path.join(process.resourcesPath, '.saf0o-package-probe'), {
   platform: 'linux',
   safeStorage: {
     decryptString: () => { throw new Error('unexpected decrypt') },
@@ -268,8 +268,8 @@ const runPackagedProbe = (description, executable) => {
 }
 
 const probeResult = runPackagedProbe('linux-unpacked', packagedExecutable)
-const appImageExtraction = await mkdtemp(path.join(tmpdir(), 'wren-appimage-'))
-const debExtraction = await mkdtemp(path.join(tmpdir(), 'wren-deb-'))
+const appImageExtraction = await mkdtemp(path.join(tmpdir(), 'saf0o-appimage-'))
+const debExtraction = await mkdtemp(path.join(tmpdir(), 'saf0o-deb-'))
 let appImageProbeResult
 let appImageDesktopEntry
 let debProbeResult
@@ -286,14 +286,14 @@ try {
   })
 
   await assertSandboxHelper(path.join(appImageExtraction, 'squashfs-root'), 'AppImage')
-  await assertSandboxHelper(path.join(debExtraction, 'opt', 'Wren'), 'deb')
+  await assertSandboxHelper(path.join(debExtraction, 'opt', 'Saf0o'), 'deb')
 
-  appImageProbeResult = runPackagedProbe('AppImage', path.join(appImageExtraction, 'squashfs-root', 'wren'))
+  appImageProbeResult = runPackagedProbe('AppImage', path.join(appImageExtraction, 'squashfs-root', 'saf0o'))
   appImageDesktopEntry = await readFile(
     path.join(appImageExtraction, 'squashfs-root', packageJson.desktopName),
     'utf8'
   )
-  debProbeResult = runPackagedProbe('deb', path.join(debExtraction, 'opt', 'Wren', 'wren'))
+  debProbeResult = runPackagedProbe('deb', path.join(debExtraction, 'opt', 'Saf0o', 'saf0o'))
   debDesktopEntry = await readFile(
     path.join(debExtraction, 'usr', 'share', 'applications', packageJson.desktopName),
     'utf8'
@@ -332,8 +332,8 @@ assert.deepEqual(probeResult.workerEnvironment, {
 })
 assert.match(appImageDesktopEntry, /^Exec=AppRun %U$/m)
 assert.doesNotMatch(appImageDesktopEntry, /--no-sandbox/)
-assert.match(debDesktopEntry, /^Exec=\/opt\/Wren\/wren %U$/m)
-assert.match(debDesktopEntry, /^StartupWMClass=wren$/m)
+assert.match(debDesktopEntry, /^Exec=\/opt\/Saf0o\/saf0o %U$/m)
+assert.match(debDesktopEntry, /^StartupWMClass=saf0o$/m)
 assert.match(debDesktopEntry, /^Categories=Office;Finance;$/m)
 assert.doesNotMatch(debDesktopEntry, /^Categories=Utility;$/m)
 assert.deepEqual(probeResult.modules, ['node-hid', 'usb', 'usb via @trezor/transport'])

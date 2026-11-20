@@ -6,7 +6,7 @@ limits, invalid parameters, and malformed replies remain errors.
 
 ## Trace events
 
-After a successful fallback, Wren can collect token events from its existing
+After a successful fallback, Saf0o can collect token events from its existing
 `callTracer` request. Execution stays labelled `eth_call`; token details show
 **RPC trace** and the block number. The summary uses the existing Estimated
 changes section. Broad-approval consent uses these events too.
@@ -18,7 +18,7 @@ without merged traces. A reorg or execution failure does not trigger a retry
 against a different block.
 
 Accepted logs require a matching sender, destination, value, calldata, and gas.
-Wren excludes reverted subtrees and retains the execution address for delegate
+Saf0o excludes reverted subtrees and retains the execution address for delegate
 calls. Ordering uses consistent global indices or validated child-call positions.
 Mixed or ambiguous ordering leaves token evidence unavailable.
 
@@ -36,7 +36,7 @@ describes log collection.
 
 ## Public endpoint checks
 
-Checked 26 October 2026 with synthetic, zero-value read calls. Compiled Wren
+Checked 26 October 2026 with synthetic, zero-value read calls. Compiled Saf0o
 completed a preview on all ten endpoints. These are endpoint measurements;
 other providers on the same chain can differ.
 
@@ -54,7 +54,7 @@ other providers on the same chain can differ.
 | Linea           | rpc.linea.build                 | Unsupported      | Available; uses child positions |
 
 A separate read-only token approval on Linea produced the expected event through
-Wren's fallback. No transaction was signed or broadcast. RPCs without usable
+Saf0o's fallback. No transaction was signed or broadcast. RPCs without usable
 simulation or tracing retain limited previews.
 
 ## Verification
@@ -64,7 +64,7 @@ errors, canonical snapshots, unchanged call fields, reverts, emitters, ordering,
 missing evidence, caps, deadlines, and the Wallet Calls boundary. The suite writes
 `compiled/simulation-fallback-e2e.json`; retain its Jest result with that artifact.
 
-Four additional cases ran compiled Wren against isolated Geth 1.17.10: nested
+Four additional cases ran compiled Saf0o against isolated Geth 1.17.10: nested
 logs, child reverts, root reverts, and delegate-call emitters. Synthetic state
 overrides supplied fixtures only; no deployment or broadcast was used. The image
 was pinned to `ethereum/client-go@sha256:5015dcab74ec5c9ef6584ada930ea353264a1c4e72383f256802e3178e10918c`.

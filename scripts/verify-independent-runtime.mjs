@@ -76,4 +76,4 @@ if (failures.length > 0) {
   process.exit(1)
 }
 
-console.log('Verified active Wren source and dependencies contain no inherited Frame/Pylon runtime service.')
+console.log('Verified active Saf0o source and dependencies contain no inherited Frame/Pylon runtime service.')

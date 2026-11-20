@@ -5,15 +5,15 @@ import { lstat, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 export function releaseArtifactNames(version, { includeMacos = false, includeWindows = false } = {}) {
-  const artifacts = [`Wren-${version}.AppImage`, `wren_${version}_amd64.deb`]
-  if (includeWindows) artifacts.push(`Wren-Setup-${version}-unsigned-x64.exe`)
+  const artifacts = [`Saf0o-${version}.AppImage`, `saf0o_${version}_amd64.deb`]
+  if (includeWindows) artifacts.push(`Saf0o-Setup-${version}-unsigned-x64.exe`)
   if (includeMacos) {
     artifacts.push(
-      `Wren-${version}-macos-x64-unnotarized.dmg`,
-      `Wren-${version}-macos-arm64-unnotarized.dmg`
+      `Saf0o-${version}-macos-x64-unnotarized.dmg`,
+      `Saf0o-${version}-macos-arm64-unnotarized.dmg`
     )
   }
-  artifacts.push('wren.cdx.json')
+  artifacts.push('saf0o.cdx.json')
   return artifacts.sort()
 }
 
@@ -29,12 +29,7 @@ async function assertReleaseFile(file) {
   assert.ok(stats.size > 0, `Empty release artifact: ${path.basename(file)}`)
 }
 
-export async function writeReleaseChecksums({
-  dist,
-  version,
-  includeMacos = false,
-  includeWindows = false
-}) {
+export async function writeReleaseChecksums({ dist, version, includeMacos = false, includeWindows = false }) {
   const artifacts = releaseArtifactNames(version, { includeMacos, includeWindows })
   const lines = []
   for (const artifact of artifacts) {

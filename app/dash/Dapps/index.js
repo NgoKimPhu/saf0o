@@ -168,7 +168,7 @@ export class Dapps extends React.Component {
             <div className='connectedAppsEmpty'>
               <img alt='' aria-hidden='true' className='connectedAppsEmptyArtwork' src={emptyConnections} />
               <strong>No connected apps</strong>
-              <span>Open a dapp with the Wren Companion to see it here.</span>
+              <span>Open a dapp with the Saf0o Companion to see it here.</span>
             </div>
           )}
         </div>

@@ -2,12 +2,12 @@ import { toTokenId } from '../../../resources/domain/balance'
 import { tokenAmountPresentation } from '../../../resources/domain/token/display'
 import React from 'react'
 import Restore from 'react-restore'
-import emptyBalances from 'url:../../../asset/ui/wren-empty-balances-v2.png'
+import emptyBalances from 'url:../../../asset/ui/saf0o-empty-balances-v2.png'
 
 import Icon from '../../../resources/Components/Icon'
 import AssetMark from '../../../resources/Components/AssetMark'
 import { resolveChainIdentityColor } from '../../../resources/Components/ChainIdentityMark'
-import WrenEmptyState from '../../../resources/Components/WrenEmptyState'
+import Saf0oEmptyState from '../../../resources/Components/Saf0oEmptyState'
 import link from '../../../resources/link'
 import { createBalance, isNativeCurrency, sortByTotalValue } from '../../../resources/domain/balance'
 import {
@@ -39,31 +39,31 @@ const COPY = Object.freeze({
   currentAccount: 'Current account',
   declinedBody: 'You declined this transaction. Nothing was signed or sent.',
   declinedHeading: 'Transaction declined',
-  errorBody: 'Wren could not prepare this transaction.',
+  errorBody: 'Saf0o could not prepare this transaction.',
   errorHeading: 'Transaction failed',
   fee: 'Network fee',
   feeReview: 'Calculated during review',
-  maxNeedsRecipient: 'Enter a recipient to use Max; Wren needs it to estimate gas.',
+  maxNeedsRecipient: 'Enter a recipient to use Max; Saf0o needs it to estimate gas.',
   maxQuoteExpired: 'Maximum-send quote expired. Request a fresh quote.',
   maxQuoteFailed: 'Maximum-send quote unavailable. No amount was kept.',
   noAccount: 'Select an account to send',
   noAssets: 'No sendable assets on this network',
-  noAssetsCopy: 'Wren found no positive balances available to send.',
+  noAssetsCopy: 'Saf0o found no positive balances available to send.',
   assetsChecking: 'Checking balances…',
-  assetsCheckingCopy: 'Wren is refreshing this account before showing sendable assets.',
+  assetsCheckingCopy: 'Saf0o is refreshing this account before showing sendable assets.',
   assetsDisconnected: 'Asset networks unavailable',
   assetsDisconnectedCopy: 'Reconnect the networks holding these assets before sending.',
   noAssetsFound: 'No assets found',
   noContacts: 'No matching accounts or contacts.',
   noRecipients: 'No matching accounts, contacts, or recent recipients.',
   activeAccounts: 'Active accounts',
-  activeWrenAccount: 'Active Wren account',
+  activeSaf0oAccount: 'Active Saf0o account',
   primaryDisabled: 'Enter send details',
   primaryReady: 'Review send',
   primarySubmitting: 'Sending…',
   quoteMax: 'Use Max',
   quotingMax: 'Calculating safe maximum…',
-  queuedBody: 'Review and sign in Wren.',
+  queuedBody: 'Review and sign in Saf0o.',
   queuedHeading: 'Awaiting your review',
   recipient: 'To',
   recipientInvalid: 'Enter a valid address',
@@ -72,7 +72,7 @@ const COPY = Object.freeze({
   recipientPlaceholder: 'Enter an address',
   recipientResolved: 'Unsaved address',
   recipientResolving: 'Checking address…',
-  reviewFee: 'Wren estimates gas before anything is signed.',
+  reviewFee: 'Saf0o estimates gas before anything is signed.',
   savedContacts: 'Saved contacts',
   recentRecipients: 'Recent recipients',
   recentRecipientContext: 'Previously used on this device',
@@ -86,7 +86,7 @@ const COPY = Object.freeze({
   viewContact: 'View contact',
   submittedBody: 'Waiting for network confirmation.',
   submittedHeading: 'Transaction submitted',
-  unconfirmedBody: 'Checking network acceptance. Wren will not resend automatically.',
+  unconfirmedBody: 'Checking network acceptance. Saf0o will not resend automatically.',
   unconfirmedHeading: 'Broadcast unconfirmed',
   tryAgain: 'Try again',
   watchOnly: 'Watch-only accounts cannot sign transactions.'
@@ -99,13 +99,13 @@ const errorCopy = Object.freeze({
   'asset-unavailable': COPY.assetUnavailable,
   'fee-unavailable': 'Fee estimate unavailable',
   'network-unavailable': 'Network unavailable. Check your connection and try again.',
-  'origin-unavailable': 'Wren could not prepare Send’s local authorization. Restart Wren, then try again.',
+  'origin-unavailable': 'Saf0o could not prepare Send’s local authorization. Restart Saf0o, then try again.',
   'pending-chain': 'Finish or decline the pending Send transaction before sending on another network.',
   'recipient-invalid': COPY.recipientInvalid,
   'recipient-lookup-unavailable': COPY.recipientLookupUnavailable,
   'sweep-quote-changed': 'Balances, fees, or nonce changed. Scan a fresh Sweep. Nothing was sent.',
   'sweep-quote-expired': 'Sweep quote expired. Scan again before queueing.',
-  'validation-failed': 'Wren could not validate this transfer. Check the recipient, amount, and network.',
+  'validation-failed': 'Saf0o could not validate this transfer. Check the recipient, amount, and network.',
   'watch-only': COPY.watchOnly
 })
 
@@ -519,7 +519,7 @@ export class Send extends React.Component {
       recipientSource: matchedAccount
         ? isCurrentAccount
           ? COPY.currentAccount
-          : COPY.activeWrenAccount
+          : COPY.activeSaf0oAccount
         : identity?.source || (recentRecipient ? COPY.recentRecipientSource : fallbackSource),
       recipientResolved: result.address,
       recipientStatus: 'resolved'
@@ -943,12 +943,12 @@ export class Send extends React.Component {
     )
     return (
       <section className='sendPicker cardShow' aria-label={COPY.chooseAsset}>
-        <div className='sendPickerSearch wrenInputGroup'>
+        <div className='sendPickerSearch saf0oInputGroup'>
           <Icon name='search' size={15} />
           <input
             autoFocus
             aria-label='Search assets'
-            className='wrenInput'
+            className='saf0oInput'
             onChange={(event) => this.setState({ assetFilter: event.target.value })}
             placeholder={COPY.searchAssets}
             value={this.state.assetFilter}
@@ -1048,12 +1048,12 @@ export class Send extends React.Component {
 
     return (
       <section className='sendPicker sendContactPicker cardShow' aria-label={COPY.chooseAContact}>
-        <div className='sendPickerSearch wrenInputGroup'>
+        <div className='sendPickerSearch saf0oInputGroup'>
           <Icon name='search' size={15} />
           <input
             autoFocus
             aria-label='Search recipients'
-            className='wrenInput'
+            className='saf0oInput'
             onChange={(event) => this.setState({ contactFilter: event.target.value })}
             placeholder={COPY.searchContacts}
             value={this.state.contactFilter}
@@ -1087,7 +1087,7 @@ export class Send extends React.Component {
                       <span>{address}</span>
                     </span>
                     <span className='sendContactContext'>
-                      {current ? COPY.currentAccount : COPY.activeWrenAccount}
+                      {current ? COPY.currentAccount : COPY.activeSaf0oAccount}
                     </span>
                   </button>
                 )
@@ -1116,7 +1116,7 @@ export class Send extends React.Component {
                     <span>{contact.address}</span>
                   </span>
                   <span className='sendContactContext'>
-                    {contact.provenance.status === 'verified-out-of-band' ? 'Checked outside Wren' : 'Saved'}
+                    {contact.provenance.status === 'verified-out-of-band' ? 'Checked outside Saf0o' : 'Saved'}
                   </span>
                 </button>
               ))}
@@ -1199,7 +1199,7 @@ export class Send extends React.Component {
           <span className='sendQuoteBadge'>Expires {expiryLabel(maxQuote.expiresAt)}</span>
         </div>
         <button
-          className='wrenControl wrenControlGhost wrenControlCompact sendQuoteEdit'
+          className='saf0oControl saf0oControlGhost saf0oControlCompact sendQuoteEdit'
           onClick={() => {
             this.clearDerivedReview({ clearAmount: true })
             setTimeout(() => this.amountRef.current?.focus(), 0)
@@ -1284,7 +1284,7 @@ export class Send extends React.Component {
                 <code>{quote.recipient || this.state.recipientResolved}</code>
                 <button
                   aria-label='Copy full sweep recipient address'
-                  className='wrenControl wrenControlGhost wrenControlCompact'
+                  className='saf0oControl saf0oControlGhost saf0oControlCompact'
                   onClick={() =>
                     this.copySweepValue('Recipient address', quote.recipient || this.state.recipientResolved)
                   }
@@ -1312,7 +1312,7 @@ export class Send extends React.Component {
                       <span className='sendSweepCopies'>
                         <button
                           aria-label={`Copy full token ${index + 1} address`}
-                          className='wrenControl wrenControlGhost wrenControlCompact'
+                          className='saf0oControl saf0oControlGhost saf0oControlCompact'
                           onClick={() => this.copySweepValue(`Token ${index + 1} address`, asset.address)}
                           type='button'
                         >
@@ -1321,7 +1321,7 @@ export class Send extends React.Component {
                         <button
                           aria-label={`Copy full token ${index + 1} amount`}
                           aria-describedby={hideBalances ? 'sendSweepPrivacyCopy' : undefined}
-                          className='wrenControl wrenControlGhost wrenControlCompact'
+                          className='saf0oControl saf0oControlGhost saf0oControlCompact'
                           disabled={hideBalances}
                           onClick={() => this.copySweepValue(`Token ${index + 1} amount`, asset.balance)}
                           type='button'
@@ -1345,7 +1345,7 @@ export class Send extends React.Component {
                   <button
                     aria-label='Copy full native amount'
                     aria-describedby={hideBalances ? 'sendSweepPrivacyCopy' : undefined}
-                    className='wrenControl wrenControlGhost wrenControlCompact'
+                    className='saf0oControl saf0oControlGhost saf0oControlCompact'
                     disabled={hideBalances}
                     onClick={() => this.copySweepValue('Native amount', quote.native.value)}
                     type='button'
@@ -1418,7 +1418,7 @@ export class Send extends React.Component {
           </div>
           <div className='sendSweepReviewActions'>
             <button
-              className='wrenControl wrenControlGhost wrenControlLarge'
+              className='saf0oControl saf0oControlGhost saf0oControlLarge'
               disabled={this.state.queueing}
               onClick={() => this.clearDerivedReview()}
               type='button'
@@ -1426,7 +1426,7 @@ export class Send extends React.Component {
               Back to selection
             </button>
             <button
-              className='wrenControl wrenControlPrimary wrenControlLarge wrenHeroPrimary'
+              className='saf0oControl saf0oControlPrimary saf0oControlLarge saf0oHeroPrimary'
               disabled={this.state.queueing}
               onClick={() => this.submitSweep(context)}
               type='button'
@@ -1448,7 +1448,7 @@ export class Send extends React.Component {
           </label>
           <div className='dropdownWrap'>
             <select
-              className='dropdown wrenInput'
+              className='dropdown saf0oInput'
               disabled={busy}
               id='send-sweep-chain'
               onChange={(event) => this.setSweepChain(event.target.value)}
@@ -1474,7 +1474,7 @@ export class Send extends React.Component {
               <span aria-live='polite'>Scanning fresh balances…</span>
             ) : null}
             <button
-              className='sendSweepSelectAll wrenControl wrenControlGhost wrenControlCompact'
+              className='sendSweepSelectAll saf0oControl saf0oControlGhost saf0oControlCompact'
               disabled={busy || (tokens.length === 0 && !native)}
               onClick={() => this.selectSweepAssets(tokens, native)}
               type='button'
@@ -1540,7 +1540,7 @@ export class Send extends React.Component {
         </p>
         <div className='sendActionShelf sendSweepShelf'>
           <button
-            className='wrenControl wrenControlPrimary wrenControlLarge wrenHeroPrimary'
+            className='saf0oControl saf0oControlPrimary saf0oControlLarge saf0oHeroPrimary'
             disabled={!canReview}
             type='submit'
           >
@@ -1600,7 +1600,7 @@ export class Send extends React.Component {
             {savedContact ? <strong>{savedContact.name}</strong> : null}
             <code>{this.state.requestRecipient}</code>
             <button
-              className='wrenControl wrenControlGhost wrenControlCompact'
+              className='saf0oControl saf0oControlGhost saf0oControlCompact'
               onClick={() => this.copyAddress(this.state.requestRecipient)}
               type='button'
             >
@@ -1619,7 +1619,7 @@ export class Send extends React.Component {
         !failed ? (
           <button
             type='button'
-            className='wrenControl wrenControlPrimary wrenControlLarge'
+            className='saf0oControl saf0oControlPrimary saf0oControlLarge'
             onClick={() => {
               link.send('nav:forward', 'panel', {
                 view: 'requestView',
@@ -1639,22 +1639,22 @@ export class Send extends React.Component {
         ) : null}
         {declined || failed ? (
           <button
-            className='wrenControl wrenControlPrimary wrenControlLarge'
+            className='saf0oControl saf0oControlPrimary saf0oControlLarge'
             disabled={retainedFailure && this.state.queueing}
             onClick={() => {
               if (changedSweep) {
                 this.closeRetainedRequest(
                   'walletCalls',
                   request,
-                  'Could not close the stale Sweep request. Open Wren and try again.'
+                  'Could not close the stale Sweep request. Open Saf0o and try again.'
                 )
               } else if (retainedTransactionFailure) {
                 this.closeRetainedRequest(
                   'transaction',
                   request,
                   changedMax
-                    ? 'Could not close the stale Max request. Open Wren and try again.'
-                    : 'Could not close the failed transaction request. Open Wren and try again.'
+                    ? 'Could not close the stale Max request. Open Saf0o and try again.'
+                    : 'Could not close the failed transaction request. Open Saf0o and try again.'
                 )
               } else {
                 this.resetRequest(false)
@@ -1667,14 +1667,14 @@ export class Send extends React.Component {
         ) : confirmed ? (
           <div className='sendConfirmedActions'>
             <button
-              className='wrenControl wrenControlGhost wrenControlLarge'
+              className='saf0oControl saf0oControlGhost saf0oControlLarge'
               onClick={() => this.openConfirmedContact()}
               type='button'
             >
               {savedContact ? COPY.viewContact : COPY.saveContact}
             </button>
             <button
-              className='wrenControl wrenControlSecondary wrenControlLarge'
+              className='saf0oControl saf0oControlSecondary saf0oControlLarge'
               onClick={() => this.closeRequestPanel()}
               type='button'
             >
@@ -1683,7 +1683,7 @@ export class Send extends React.Component {
           </div>
         ) : (
           <button
-            className='wrenControl wrenControlGhost wrenControlLarge'
+            className='saf0oControl saf0oControlGhost saf0oControlLarge'
             onClick={() => this.closeRequestPanel()}
             type='button'
           >
@@ -1726,7 +1726,7 @@ export class Send extends React.Component {
               : COPY.noAssetsCopy
       return (
         <div className='sendUnavailable'>
-          <WrenEmptyState
+          <Saf0oEmptyState
             copy={unavailableCopy}
             expanded={true}
             image={emptyBalances}
@@ -1741,7 +1741,7 @@ export class Send extends React.Component {
         <div className='sendUnavailable sendUnavailableAsset'>
           <span>{COPY.assetUnavailable}</span>
           <button
-            className='wrenControl wrenControlSecondary wrenControlLarge'
+            className='saf0oControl saf0oControlSecondary saf0oControlLarge'
             ref={this.assetTriggerRef}
             onClick={() => this.openPicker('assetPicker', COPY.chooseAsset)}
             type='button'
@@ -1831,14 +1831,14 @@ export class Send extends React.Component {
               {COPY.recipient}
             </label>
             <span
-              className={`sendInputWrap wrenInputGroup ${this.state.recipientError ? 'wrenInputGroupError' : ''}`}
+              className={`sendInputWrap saf0oInputGroup ${this.state.recipientError ? 'saf0oInputGroupError' : ''}`}
             >
               <input
                 autoComplete='off'
                 aria-label='Recipient'
                 aria-describedby='sendRecipientFeedback'
                 aria-invalid={this.state.recipientError ? 'true' : undefined}
-                className='sendRecipientInput wrenInput'
+                className='sendRecipientInput saf0oInput'
                 disabled={derivationBusy || this.state.queueing || this.state.sweepReview}
                 id='send-recipient'
                 maxLength={255}
@@ -1914,7 +1914,7 @@ export class Send extends React.Component {
               <label className='sendRowLabel' htmlFor='send-amount'>
                 {COPY.amount}
               </label>
-              <span className={`sendInputWrap wrenInputGroup ${amountError ? 'wrenInputGroupError' : ''}`}>
+              <span className={`sendInputWrap saf0oInputGroup ${amountError ? 'saf0oInputGroupError' : ''}`}>
                 <input
                   autoComplete='off'
                   aria-describedby={[
@@ -1925,7 +1925,7 @@ export class Send extends React.Component {
                     .filter(Boolean)
                     .join(' ')}
                   aria-invalid={amountError ? 'true' : undefined}
-                  className='sendAmountInput wrenInput'
+                  className='sendAmountInput saf0oInput'
                   disabled={derivationBusy || this.state.queueing || Boolean(this.state.maxQuote)}
                   id='send-amount'
                   inputMode='decimal'
@@ -1948,7 +1948,7 @@ export class Send extends React.Component {
                 <span className='sendAmountSymbol'>{selected.symbol}</span>
                 <button
                   aria-describedby={maxNeedsRecipient && !amountError ? 'sendMaxReason' : undefined}
-                  className='sendMaxAction wrenControl wrenControlGhost wrenControlCompact'
+                  className='sendMaxAction saf0oControl saf0oControlGhost saf0oControlCompact'
                   disabled={
                     maxNeedsRecipient || derivationBusy || this.state.queueing || Boolean(this.state.maxQuote)
                   }
@@ -2004,7 +2004,7 @@ export class Send extends React.Component {
         {this.state.mode === 'send' ? (
           <div className='sendActionShelf'>
             <button
-              className='wrenControl wrenControlPrimary wrenControlLarge wrenHeroPrimary'
+              className='saf0oControl saf0oControlPrimary saf0oControlLarge saf0oHeroPrimary'
               disabled={!canSubmit}
               type='submit'
             >

@@ -7,11 +7,11 @@ import link from '../../../../../resources/link'
 let revokeDescriptionIndex = 0
 
 export const REVOKE_CONFIRMATION_UNAVAILABLE =
-  'Revocation confirmation is unavailable. Wren will keep checking for the access change.'
+  'Revocation confirmation is unavailable. Saf0o will keep checking for the access change.'
 export const REVOKE_ACCESS_UNCERTAIN =
-  'Access is blocked for this session, but Wren could not confirm the saved change. Restarting may restore access.'
+  'Access is blocked for this session, but Saf0o could not confirm the saved change. Restarting may restore access.'
 export const REVOKE_ACCESS_SESSION_ONLY =
-  'Access is blocked for this session, but Wren could not save the change. Restarting may restore access.'
+  'Access is blocked for this session, but Saf0o could not save the change. Restarting may restore access.'
 export const isSessionOnlyPersistenceFailure = (result) =>
   result?.success === false &&
   result?.uncertain === true &&
@@ -158,7 +158,7 @@ export class RevokeAccess extends React.Component {
             <button
               ref={this.cancelRef}
               type='button'
-              className='wrenControl wrenControlSecondary'
+              className='saf0oControl saf0oControlSecondary'
               disabled={this.state.pending}
               onClick={() => this.cancel()}
             >
@@ -167,7 +167,7 @@ export class RevokeAccess extends React.Component {
             <button
               ref={this.confirmRef}
               type='button'
-              className='wrenControl wrenControlDanger'
+              className='saf0oControl saf0oControlDanger'
               disabled={this.state.pending}
               onClick={() => this.revoke()}
             >
@@ -187,7 +187,7 @@ export class RevokeAccess extends React.Component {
           ref={this.triggerRef}
           type='button'
           data-permission-id={this.props.permissionId}
-          className='revokeAccessButton wrenControl wrenControlGhost'
+          className='revokeAccessButton saf0oControl saf0oControlGhost'
           aria-label='Revoke access'
           disabled={this.state.pending}
           onClick={() => this.open()}

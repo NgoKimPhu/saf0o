@@ -1,14 +1,14 @@
 const baseConfig = require('./electron-builder-base.js')
 const { readSigningMode } = require('./signing-mode.js')
 
-const signingMode = readSigningMode('WREN_WINDOWS_SIGNING')
+const signingMode = readSigningMode('SAF0O_WINDOWS_SIGNING')
 
 module.exports = {
   ...baseConfig,
   artifactName:
     signingMode === 'required'
-      ? 'Wren-Setup-${version}-x64.${ext}'
-      : 'Wren-Setup-${version}-unsigned-x64.${ext}',
+      ? 'Saf0o-Setup-${version}-x64.${ext}'
+      : 'Saf0o-Setup-${version}-unsigned-x64.${ext}',
   forceCodeSigning: signingMode === 'required',
   win: {
     signAndEditExecutable: true,

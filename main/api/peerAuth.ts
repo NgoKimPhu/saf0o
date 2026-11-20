@@ -9,9 +9,9 @@ import {
 } from 'crypto'
 import { z } from 'zod'
 
-export const PEER_AUTH_PROTOCOL = 'wren-companion-auth'
+export const PEER_AUTH_PROTOCOL = 'saf0o-companion-auth'
 export const PEER_AUTH_VERSION = 3
-export const PEER_AUTH_DOMAIN = 'wren-companion-auth-v3\0'
+export const PEER_AUTH_DOMAIN = 'saf0o-companion-auth-v3\0'
 export const PEER_AUTH_MAX_TRANSCRIPT_BYTES = 4 * 1024
 
 const canonicalBase64Url = (bytes: number) =>
@@ -70,7 +70,7 @@ export const PeerAuthPrivateKeySchema = z
         key: { kty: key.kty, crv: key.crv, x: key.x, y: key.y },
         format: 'jwk'
       })
-      const probe = Buffer.from('wren-peer-auth-key-consistency-v3', 'utf8')
+      const probe = Buffer.from('saf0o-peer-auth-key-consistency-v3', 'utf8')
       const signature = sign('sha256', probe, { key: privateKey, dsaEncoding: 'ieee-p1363' })
       if (!verify('sha256', probe, { key: publicKey, dsaEncoding: 'ieee-p1363' }, signature)) {
         throw new Error('Private scalar does not match public coordinates')
@@ -112,7 +112,7 @@ export function peerAuthClientBundleFingerprint(input: PeerAuthClientKeyBundle) 
   const bundle = PeerAuthClientKeyBundleSchema.parse(input)
   return createHash('sha256')
     .update(
-      `wren-companion-key-bundle-v3\0${peerAuthFingerprint(bundle.control)}.${peerAuthFingerprint(bundle.page)}`,
+      `saf0o-companion-key-bundle-v3\0${peerAuthFingerprint(bundle.control)}.${peerAuthFingerprint(bundle.page)}`,
       'utf8'
     )
     .digest('base64url')

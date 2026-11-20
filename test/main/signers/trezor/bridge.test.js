@@ -46,7 +46,7 @@ describe('connect events', () => {
     expect(TrezorConnect.init).toHaveBeenCalledWith(
       expect.objectContaining({
         manifest: {
-          appName: 'Wren',
+          appName: 'Saf0o',
           appUrl: 'https://github.com/NgoKimPhu/saf0o',
           email: 'NgoKimPhu@users.noreply.github.com'
         },
@@ -164,7 +164,7 @@ describe('ui events', () => {
   it('cancels a passive authentication request without using the transaction cancellation reason', () => {
     TrezorBridge.cancelAuthentication()
 
-    expect(TrezorConnect.cancel).toHaveBeenCalledWith('Authentication dismissed in Wren')
+    expect(TrezorConnect.cancel).toHaveBeenCalledWith('Authentication dismissed in Saf0o')
   })
 
   it('emits a needPin event when a pin is requested', (done) => {
@@ -378,7 +378,7 @@ describe('requests', () => {
   it('forwards an active transaction cancellation to Trezor Connect', () => {
     TrezorBridge.cancelCurrentRequest()
 
-    expect(TrezorConnect.cancel).toHaveBeenCalledWith('Transaction signing cancelled in Wren')
+    expect(TrezorConnect.cancel).toHaveBeenCalledWith('Transaction signing cancelled in Saf0o')
   })
 
   it('sends a pairing response back to trezor connect', () => {
@@ -455,7 +455,7 @@ describe('requests', () => {
     })
     TrezorConnect.emit(UI_REQUEST, { type: 'ui-request_confirmation', requestId: 'unsupported' })
     TrezorBridge.pinEntered(trezorSignerId('27'), 'stale', 'pin-27')
-    expect(TrezorConnect.cancel).toHaveBeenCalledWith('Unsupported Trezor authentication request in Wren')
+    expect(TrezorConnect.cancel).toHaveBeenCalledWith('Unsupported Trezor authentication request in Saf0o')
     expect(TrezorConnect.uiResponse).not.toHaveBeenCalled()
   })
 

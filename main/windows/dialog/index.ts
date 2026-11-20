@@ -10,8 +10,8 @@ export const showUnhandledExceptionDialog = (message: string, code?: string) => 
 
   if (code === 'EADDRINUSE') {
     dialog.showErrorBox(
-      'Wren is already running',
-      'Wren is already running or another application is using port 1248.'
+      'Saf0o is already running',
+      'Saf0o is already running or another application is using port 1248.'
     )
   } else {
     exitAction = dialog.showMessageBoxSync(undefined as unknown as BrowserWindow, {
@@ -61,9 +61,9 @@ export const saveAddressBookDialog = async () => {
 export const openProfileBackupDialog = async () => {
   const browserWindow = BrowserWindow.getFocusedWindow() as BrowserWindow
   const result = await dialog.showOpenDialog(browserWindow, {
-    title: 'Inspect Wren Profile Backup',
+    title: 'Inspect Saf0o Profile Backup',
     properties: ['openFile'],
-    filters: [{ name: 'Wren profile backup', extensions: ['wrenbackup'] }]
+    filters: [{ name: 'Saf0o profile backup', extensions: ['saf0obackup'] }]
   })
   return result.canceled ? undefined : result.filePaths[0]
 }
@@ -72,9 +72,9 @@ export const saveProfileBackupDialog = async (now = new Date()) => {
   const browserWindow = BrowserWindow.getFocusedWindow() as BrowserWindow
   const date = now.toISOString().slice(0, 10)
   const result = await dialog.showSaveDialog(browserWindow, {
-    title: 'Export Encrypted Wren Profile',
-    defaultPath: `wren-profile-${date}.wrenbackup`,
-    filters: [{ name: 'Wren profile backup', extensions: ['wrenbackup'] }]
+    title: 'Export Encrypted Saf0o Profile',
+    defaultPath: `saf0o-profile-${date}.saf0obackup`,
+    filters: [{ name: 'Saf0o profile backup', extensions: ['saf0obackup'] }]
   })
   return result.canceled ? undefined : result.filePath
 }

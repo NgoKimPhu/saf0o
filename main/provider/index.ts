@@ -120,7 +120,7 @@ import { parseMessageRequest } from '../signatures/message'
 import { hasAddress } from '../../resources/domain/account'
 import { isLegacyRequestEnvelope, normalizeTransactionChainId } from '../requests'
 import { chainUsesOptimismFees } from '../../resources/utils/chains'
-import { FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN, originIdForName } from '../../resources/domain/origin'
+import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../resources/domain/origin'
 import {
   buildSweepBalanceCall,
   createSweepEvidence,
@@ -389,7 +389,7 @@ export class Provider extends EventEmitter {
     const isManagedSend =
       request.type === 'transaction' && request.origin === originIdForName(FRAME_SEND_ORIGIN)
     const isManagedDeployment =
-      request.type === 'transaction' && request.origin === originIdForName(WREN_DEPLOY_ORIGIN)
+      request.type === 'transaction' && request.origin === originIdForName(SAF0O_DEPLOY_ORIGIN)
     if (
       !isNativeMax &&
       !hasRecentRecipient &&
@@ -414,12 +414,12 @@ export class Provider extends EventEmitter {
           ? this.managedDeploymentOriginAuthorized(request.account, chainId, request.origin)
           : this.managedSendOriginAuthorized(request.account, chainId, request.origin)
     if (!authorized) {
-      const managedName = hasDeployment || isManagedDeployment ? 'Wren Deploy' : 'Wren Send'
+      const managedName = hasDeployment || isManagedDeployment ? 'Saf0o Deploy' : 'Saf0o Send'
       throw Object.assign(new Error(`Managed ${managedName} request is no longer authorized`), { code: 4100 })
     }
     if (isManagedDeployment) {
       if (!request.deployment) {
-        throw Object.assign(new Error('Managed Wren Deploy request is missing deployment evidence'), {
+        throw Object.assign(new Error('Managed Saf0o Deploy request is missing deployment evidence'), {
           code: 4100
         })
       }
@@ -523,7 +523,7 @@ export class Provider extends EventEmitter {
     const chain = store('main.networks.ethereum', targetChain.id)
     if (!chain?.on) {
       return resError(
-        { message: `Wren is not connected to chain ${targetChain.id}`, code: 4901 },
+        { message: `Saf0o is not connected to chain ${targetChain.id}`, code: 4901 },
         payload,
         res
       )
@@ -536,7 +536,7 @@ export class Provider extends EventEmitter {
     const chain = store('main.networks.ethereum', targetChain.id)
     if (!chain?.on) {
       return resError(
-        { message: `Wren is not connected to chain ${targetChain.id}`, code: 4901 },
+        { message: `Saf0o is not connected to chain ${targetChain.id}`, code: 4901 },
         payload,
         res
       )
@@ -558,7 +558,7 @@ export class Provider extends EventEmitter {
     getSignedAddress(signed, message, (err, verifiedAddress) => {
       if (err) return cb(err)
       if ((verifiedAddress || '').toLowerCase() !== address.toLowerCase())
-        return cb(new Error('Wren verifySignature: Failed ecRecover check'))
+        return cb(new Error('Saf0o verifySignature: Failed ecRecover check'))
       cb(null, true)
     })
   }
@@ -818,7 +818,7 @@ export class Provider extends EventEmitter {
                   if (transportSettled) return
                   markSubmissionUnclear()
                   const error = submissionUnconfirmedError(
-                    'Transaction submission response timed out. Wren is checking the signed transaction hash.',
+                    'Transaction submission response timed out. Saf0o is checking the signed transaction hash.',
                     signedHash
                   )
                   resError(error, payload, res)
@@ -1873,13 +1873,13 @@ export class Provider extends EventEmitter {
   }
 
   private managedDeploymentOriginAuthorized(account: string, chainId: number, requestOrigin?: string) {
-    const originId = originIdForName(WREN_DEPLOY_ORIGIN)
+    const originId = originIdForName(SAF0O_DEPLOY_ORIGIN)
     const origin = store('main.origins', originId)
     const currentAccount = accounts.current()
     return Boolean(
       origin &&
       requestOrigin === originId &&
-      origin.name === WREN_DEPLOY_ORIGIN &&
+      origin.name === SAF0O_DEPLOY_ORIGIN &&
       origin.provenance === 'managed' &&
       !origin.sourceId &&
       currentAccount &&
@@ -1896,7 +1896,7 @@ export class Provider extends EventEmitter {
     const existing = store('main.origins', originId)
     if (existing) {
       if (existing.name !== FRAME_SEND_ORIGIN || existing.provenance !== 'managed' || existing.sourceId) {
-        throw new ManagedSweepError('managed-sweep-unavailable', 'Wren Send origin is not trusted')
+        throw new ManagedSweepError('managed-sweep-unavailable', 'Saf0o Send origin is not trusted')
       }
       requireStoreAction('addOriginRequest')(originId)
       if (existing.chain?.type !== 'ethereum' || existing.chain?.id !== chainId) {
@@ -2236,13 +2236,17 @@ export class Provider extends EventEmitter {
         payload._origin
       )
       if (payload._origin === originIdForName(FRAME_SEND_ORIGIN) && !managedSendOriginAuthorized) {
-        return resError({ code: 4100, message: 'Managed Wren Send origin is not authorized' }, payload, res)
+        return resError({ code: 4100, message: 'Managed Saf0o Send origin is not authorized' }, payload, res)
       }
-      if (payload._origin === originIdForName(WREN_DEPLOY_ORIGIN) && !managedDeploymentOriginAuthorized) {
-        return resError({ code: 4100, message: 'Managed Wren Deploy origin is not authorized' }, payload, res)
+      if (payload._origin === originIdForName(SAF0O_DEPLOY_ORIGIN) && !managedDeploymentOriginAuthorized) {
+        return resError(
+          { code: 4100, message: 'Managed Saf0o Deploy origin is not authorized' },
+          payload,
+          res
+        )
       }
-      if (payload._origin === originIdForName(WREN_DEPLOY_ORIGIN) && !trustedMetadata?.deployment) {
-        return resError('Managed Wren Deploy origin requires deployment evidence', payload, res)
+      if (payload._origin === originIdForName(SAF0O_DEPLOY_ORIGIN) && !trustedMetadata?.deployment) {
+        return resError('Managed Saf0o Deploy origin requires deployment evidence', payload, res)
       }
       if (
         trustedMetadata?.deployment &&
@@ -2257,13 +2261,17 @@ export class Provider extends EventEmitter {
         )
       }
       if (trustedMetadata?.nativeMax && !managedSendOriginAuthorized) {
-        return resError('Native Max metadata requires the exact managed Wren Send origin', payload, res)
+        return resError('Native Max metadata requires the exact managed Saf0o Send origin', payload, res)
       }
       if (trustedMetadata?.recentRecipient && !managedSendOriginAuthorized) {
-        return resError('Recent recipient metadata requires the exact managed Wren Send origin', payload, res)
+        return resError(
+          'Recent recipient metadata requires the exact managed Saf0o Send origin',
+          payload,
+          res
+        )
       }
       if (trustedMetadata?.deployment && !managedDeploymentOriginAuthorized) {
-        return resError('Deployment metadata requires the exact managed Wren Deploy origin', payload, res)
+        return resError('Deployment metadata requires the exact managed Saf0o Deploy origin', payload, res)
       }
       const recentRecipientMetadata = trustedMetadata?.recentRecipient
         ? snapshotRecentRecipientMetadata(trustedMetadata.recentRecipient)
@@ -2292,7 +2300,7 @@ export class Provider extends EventEmitter {
               )
             ) {
               return resError(
-                { code: 4100, message: 'Managed Wren Deploy origin is no longer authorized' },
+                { code: 4100, message: 'Managed Saf0o Deploy origin is no longer authorized' },
                 payload,
                 res
               )
@@ -2622,7 +2630,7 @@ export class Provider extends EventEmitter {
   }
 
   clientVersion(payload: RPCRequestPayload, res: RPCSuccessCallback) {
-    res({ id: payload.id, jsonrpc: '2.0', result: `Wren/v${packageFile.version}` })
+    res({ id: payload.id, jsonrpc: '2.0', result: `Saf0o/v${packageFile.version}` })
   }
 
   private switchEthereumChain(payload: RPCRequestPayload, res: RPCRequestCallback) {
@@ -2636,7 +2644,7 @@ export class Provider extends EventEmitter {
         return resError(err, payload, res)
       }
       if (targetChain.on === false) {
-        const err: EVMError = { message: `Wren is not connected to chain ${chainId}`, code: 4901 }
+        const err: EVMError = { message: `Saf0o is not connected to chain ${chainId}`, code: 4901 }
         return resError(err, payload, res)
       }
 
@@ -2701,7 +2709,7 @@ export class Provider extends EventEmitter {
     const targetChain = store('main.networks', request.chain.type, request.chain.id)
     if (!targetChain) return reject({ code: 4902, message: 'Requested chain is no longer available' })
     if (targetChain.on === false) {
-      return reject({ code: 4901, message: `Wren is not connected to chain ${request.chain.id}` })
+      return reject({ code: 4901, message: `Saf0o is not connected to chain ${request.chain.id}` })
     }
 
     const origin = storeApi.getOrigin(request.origin)
@@ -2872,7 +2880,7 @@ export class Provider extends EventEmitter {
 
       if (!chain?.on || !connection?.chainConfig) {
         return resError(
-          { code: 4901, message: `Wren is not connected to chain ${request.chainId}` },
+          { code: 4901, message: `Saf0o is not connected to chain ${request.chainId}` },
           payload,
           cb
         )
@@ -3189,11 +3197,11 @@ export class Provider extends EventEmitter {
 
     const unsupportedRawFamily = unsupportedRawTransactionFamily(payload)
     if (unsupportedRawFamily) {
-      return resError({ message: `Wren does not support ${unsupportedRawFamily}`, code: 4200 }, payload, res)
+      return resError({ message: `Saf0o does not support ${unsupportedRawFamily}`, code: 4200 }, payload, res)
     }
 
     if (isUnsafeRpcForwardingMethod(method)) {
-      return resError({ message: `Wren does not support ${method}`, code: 4200 }, payload, res)
+      return resError({ message: `Saf0o does not support ${method}`, code: 4200 }, payload, res)
     }
 
     // remove custom data

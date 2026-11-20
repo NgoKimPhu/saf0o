@@ -166,7 +166,7 @@ export class Recovery extends Component {
           active: '',
           restorePassword: '',
           restorePending: false,
-          restoreStatus: 'Restore staged. Wren is restarting to replace this profile atomically.',
+          restoreStatus: 'Restore staged. Saf0o is restarting to replace this profile atomically.',
           inspected: undefined,
           restoreToken: ''
         },
@@ -205,14 +205,14 @@ export class Recovery extends Component {
         onSubmit={(event) => this.exportBackup(event)}
       >
         <p className='recoveryPanelCopy'>
-          Choose a new password for this backup. Wren cannot recover it if you forget it.
+          Choose a new password for this backup. Saf0o cannot recover it if you forget it.
         </p>
         <div className='recoveryFields'>
           <label htmlFor='recovery-export-password'>Backup password</label>
           <input
             id='recovery-export-password'
             ref={this.exportPasswordRef}
-            className='wrenInput wrenInputQuiet'
+            className='saf0oInput saf0oInputQuiet'
             type='password'
             minLength={MINIMUM_PASSWORD_LENGTH}
             maxLength={1024}
@@ -226,7 +226,7 @@ export class Recovery extends Component {
           <label htmlFor='recovery-export-confirmation'>Confirm password</label>
           <input
             id='recovery-export-confirmation'
-            className='wrenInput wrenInputQuiet'
+            className='saf0oInput saf0oInputQuiet'
             type='password'
             minLength={MINIMUM_PASSWORD_LENGTH}
             maxLength={1024}
@@ -246,7 +246,7 @@ export class Recovery extends Component {
         <div className='recoveryActions'>
           <button
             type='button'
-            className='wrenControl wrenControlSecondary wrenControlLarge'
+            className='saf0oControl saf0oControlSecondary saf0oControlLarge'
             disabled={this.state.exportPending}
             onClick={() => this.cancel('export')}
           >
@@ -254,7 +254,7 @@ export class Recovery extends Component {
           </button>
           <button
             type='submit'
-            className='wrenControl wrenControlPrimary wrenControlLarge'
+            className='saf0oControl saf0oControlPrimary saf0oControlLarge'
             disabled={this.state.exportPending}
           >
             {this.state.exportPending ? 'Saving encrypted backup…' : 'Choose save location'}
@@ -280,7 +280,7 @@ export class Recovery extends Component {
           returnFocusRef={this.restoreTriggerRef}
           onCancel={() => this.cancel('restore')}
         >
-          <strong id='recovery-replace-title'>Replace this Wren profile?</strong>
+          <strong id='recovery-replace-title'>Replace this Saf0o profile?</strong>
           <dl className='recoveryMetadata'>
             <div>
               <dt>Backup format</dt>
@@ -296,14 +296,14 @@ export class Recovery extends Component {
             </div>
           </dl>
           <p id='recovery-replace-description' className='recoveryPanelCopy'>
-            Restart Wren and replace this device’s current profile with the backup. If restoration fails, the
+            Restart Saf0o and replace this device’s current profile with the backup. If restoration fails, the
             current profile stays in place.
           </p>
           <div className='recoveryActions'>
             <button
               ref={this.restoreCancelRef}
               type='button'
-              className='wrenControl wrenControlSecondary wrenControlLarge'
+              className='saf0oControl saf0oControlSecondary saf0oControlLarge'
               disabled={this.state.restorePending}
               onClick={() => this.cancel('restore')}
             >
@@ -311,11 +311,11 @@ export class Recovery extends Component {
             </button>
             <button
               type='button'
-              className='wrenControl wrenControlDanger wrenControlLarge'
+              className='saf0oControl saf0oControlDanger saf0oControlLarge'
               disabled={this.state.restorePending}
               onClick={() => this.stageRestore()}
             >
-              {this.state.restorePending ? 'Staging restore…' : 'Replace this Wren profile'}
+              {this.state.restorePending ? 'Staging restore…' : 'Replace this Saf0o profile'}
             </button>
           </div>
         </DialogSurface>
@@ -341,7 +341,7 @@ export class Recovery extends Component {
           <input
             id='recovery-restore-password'
             ref={this.restorePasswordRef}
-            className='wrenInput wrenInputQuiet'
+            className='saf0oInput saf0oInputQuiet'
             type='password'
             minLength={MINIMUM_PASSWORD_LENGTH}
             maxLength={1024}
@@ -361,7 +361,7 @@ export class Recovery extends Component {
         <div className='recoveryActions'>
           <button
             type='button'
-            className='wrenControl wrenControlSecondary wrenControlLarge'
+            className='saf0oControl saf0oControlSecondary saf0oControlLarge'
             disabled={this.state.restorePending}
             onClick={() => this.cancel('restore')}
           >
@@ -369,7 +369,7 @@ export class Recovery extends Component {
           </button>
           <button
             type='submit'
-            className='wrenControl wrenControlPrimary wrenControlLarge'
+            className='saf0oControl saf0oControlPrimary saf0oControlLarge'
             disabled={this.state.restorePending}
           >
             {this.state.restorePending ? 'Inspecting backup…' : 'Choose backup to inspect'}
@@ -393,7 +393,7 @@ export class Recovery extends Component {
           <button
             ref={this.exportTriggerRef}
             type='button'
-            className='wrenControl wrenControlSecondary wrenControlLarge'
+            className='saf0oControl saf0oControlSecondary saf0oControlLarge'
             disabled={Boolean(this.state.active)}
             onClick={() => this.begin('export')}
           >
@@ -410,12 +410,12 @@ export class Recovery extends Component {
         <div className='recoveryOption'>
           <div className='recoveryOptionCopy'>
             <strong>Restore encrypted backup</strong>
-            <span>Inspect a backup before replacing this device’s current Wren profile.</span>
+            <span>Inspect a backup before replacing this device’s current Saf0o profile.</span>
           </div>
           <button
             ref={this.restoreTriggerRef}
             type='button'
-            className='wrenControl wrenControlSecondary wrenControlLarge'
+            className='saf0oControl saf0oControlSecondary saf0oControlLarge'
             disabled={Boolean(this.state.active)}
             onClick={() => this.begin('restore')}
           >

@@ -20,7 +20,7 @@ function jsonClone(value) {
 }
 
 export function profileStorage(filename = 'wallet-call-batches.json') {
-  const target = path.join(process.env.WREN_E2E_PROFILE, filename)
+  const target = path.join(process.env.SAF0O_E2E_PROFILE, filename)
   if (!fs.existsSync(target)) fs.writeFileSync(target, '{}', { mode: 0o600, flag: 'wx' })
 
   return {
@@ -29,7 +29,7 @@ export function profileStorage(filename = 'wallet-call-batches.json') {
       return JSON.parse(fs.readFileSync(target, 'utf8'))
     },
     save(value) {
-      const temporary = `${target}.${process.env.WREN_E2E_NAMESPACE}.tmp`
+      const temporary = `${target}.${process.env.SAF0O_E2E_NAMESPACE}.tmp`
       fs.writeFileSync(temporary, JSON.stringify(value), { mode: 0o600 })
       fs.renameSync(temporary, target)
     }

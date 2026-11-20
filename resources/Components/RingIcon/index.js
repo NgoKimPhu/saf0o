@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import Restore from 'react-restore'
 import svg from '../../../resources/svg'
 import { safeRemoteImageUrl } from '../../utils/image'
-import WrenIcon from '../Icon'
+import Saf0oIcon from '../Icon'
 
-const wrenIconNames = Object.freeze({
+const saf0oIconNames = Object.freeze({
   accounts: 'accounts',
   alert: 'alert',
   chain: 'network',
@@ -44,8 +44,8 @@ export const RingIconGlyph = ({ svgName, alt = '', fallback = '', svgSize, img, 
       return svg.eth(svgSize || (small ? 13 : 16))
     }
 
-    if (wrenIconNames[iconName]) {
-      return <WrenIcon label={alt || undefined} name={wrenIconNames[iconName]} size={resolvedSvgSize} />
+    if (saf0oIconNames[iconName]) {
+      return <Saf0oIcon label={alt || undefined} name={saf0oIconNames[iconName]} size={resolvedSvgSize} />
     }
 
     const svgIcon = svg[iconName]

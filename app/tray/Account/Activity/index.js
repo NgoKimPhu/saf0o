@@ -7,7 +7,7 @@ import Icon from '../../../../resources/Components/Icon'
 import DialogSurface from '../../../../resources/Components/DialogSurface'
 import link from '../../../../resources/link'
 import {
-  WREN_INTERNAL_ORIGIN,
+  SAF0O_INTERNAL_ORIGIN,
   getManagedOriginNameForId,
   getOriginDisplayName,
   isManagedOriginName
@@ -55,10 +55,10 @@ const OUTCOME_DETAILS = Object.freeze({
   submitted: 'Not yet confirmed',
   confirming: 'Included; waiting for final confirmation',
   replaced: 'A submitted wallet activity was replaced',
-  reorged: 'A prior confirmation changed; Wren is checking again',
-  stopped: 'Wren stopped checking. The network may still process it.',
-  'clearance-unverified': 'Transaction confirmed. Wren could not verify that the delegation is cleared.',
-  'verified-clearance': 'Wren verified this account no longer delegates execution.'
+  reorged: 'A prior confirmation changed; Saf0o is checking again',
+  stopped: 'Saf0o stopped checking. The network may still process it.',
+  'clearance-unverified': 'Transaction confirmed. Saf0o could not verify that the delegation is cleared.',
+  'verified-clearance': 'Saf0o verified this account no longer delegates execution.'
 })
 
 const submittedPresentation = (entry) => {
@@ -66,14 +66,14 @@ const submittedPresentation = (entry) => {
   if (entry.broadcastPhase === 'broadcasting') {
     return {
       label: 'Submission unconfirmed',
-      detail: 'Broadcast may not have started; Wren is checking the signed transaction hash.'
+      detail: 'Broadcast may not have started; Saf0o is checking the signed transaction hash.'
     }
   }
   if (entry.broadcastPhase === 'unconfirmed') {
     return {
       label: 'Submission unconfirmed',
       detail:
-        'Broadcast was attempted, but the network response was not confirmed. Wren is checking the network.'
+        'Broadcast was attempted, but the network response was not confirmed. Saf0o is checking the network.'
     }
   }
   return null
@@ -92,11 +92,11 @@ const activityEntryMeta = (entry) => {
 }
 
 export const activityOriginLabel = (origin, knownName) => {
-  if (origin === 'wren:external') return 'Outside Wren'
+  if (origin === 'saf0o:external') return 'Outside Saf0o'
   if (knownName) return getOriginDisplayName(knownName)
   const managedOriginName = getManagedOriginNameForId(origin)
   if (managedOriginName) return getOriginDisplayName(managedOriginName)
-  if (isManagedOriginName(origin) || origin === WREN_INTERNAL_ORIGIN) return getOriginDisplayName(origin)
+  if (isManagedOriginName(origin) || origin === SAF0O_INTERNAL_ORIGIN) return getOriginDisplayName(origin)
 
   try {
     const parsed = new URL(origin)
@@ -558,7 +558,7 @@ const ActivityDetail = ({
           <div className='activityDetailActions'>
             <button
               type='button'
-              className='wrenControl wrenControlSecondary wrenControlLarge'
+              className='saf0oControl saf0oControlSecondary saf0oControlLarge'
               onClick={() => onCopyHash(transactionHash)}
             >
               <Icon name='copy' size={15} />
@@ -567,7 +567,7 @@ const ActivityDetail = ({
             {explorerAvailable ? (
               <button
                 type='button'
-                className='wrenControl wrenControlSecondary wrenControlLarge'
+                className='saf0oControl saf0oControlSecondary saf0oControlLarge'
                 onClick={() => onOpenExplorer(transactionHash)}
               >
                 <Icon name='external' size={15} />
@@ -613,7 +613,7 @@ const ActivityDetail = ({
                       <button
                         type='button'
                         aria-label={`Copy transaction ${index + 1} hash`}
-                        className='wrenControl wrenControlGhost wrenControlIcon'
+                        className='saf0oControl saf0oControlGhost saf0oControlIcon'
                         onClick={() => onCopyHash(transaction.hash)}
                       >
                         <Icon name='copy' size={14} />
@@ -622,7 +622,7 @@ const ActivityDetail = ({
                         <button
                           type='button'
                           aria-label={`View transaction ${index + 1} on explorer`}
-                          className='wrenControl wrenControlGhost wrenControlIcon'
+                          className='saf0oControl saf0oControlGhost saf0oControlIcon'
                           onClick={() => onOpenExplorer(transaction.hash)}
                         >
                           <Icon name='external' size={14} />
@@ -812,13 +812,13 @@ export class Activity extends React.Component {
         status = 'Activity history and address memory cleared from this device.'
       } else if (result?.success === false && result.sessionOnly === true) {
         status =
-          'Activity history and address memory are cleared for this session, but Wren could not confirm the change was saved. Restart may restore prior data.'
+          'Activity history and address memory are cleared for this session, but Saf0o could not confirm the change was saved. Restart may restore prior data.'
       }
     } catch {
       status = undefined
     }
     if (!status) {
-      status = 'Wren could not confirm that Activity history and address memory were cleared. Try again.'
+      status = 'Saf0o could not confirm that Activity history and address memory were cleared. Try again.'
     }
     if (!this.mounted) return
     this.setState({ clearConfirm: false, clearing: false, clearStatus: status }, () =>
@@ -912,7 +912,7 @@ export class Activity extends React.Component {
               <button
                 type='button'
                 aria-pressed={this.state.category === id}
-                className='activityFilter wrenControl wrenControlGhost wrenControlLarge'
+                className='activityFilter saf0oControl saf0oControlGhost saf0oControlLarge'
                 key={id}
                 onClick={() => this.setState({ category: id })}
               >
@@ -1000,7 +1000,7 @@ export class Activity extends React.Component {
                 <div className='activityClearActions'>
                   <button
                     type='button'
-                    className='wrenControl wrenControlSecondary wrenControlLarge'
+                    className='saf0oControl saf0oControlSecondary saf0oControlLarge'
                     disabled={this.state.clearing}
                     onClick={() => this.cancelClear()}
                     ref={this.cancelClearRef}
@@ -1009,7 +1009,7 @@ export class Activity extends React.Component {
                   </button>
                   <button
                     type='button'
-                    className='wrenControl wrenControlDanger wrenControlLarge'
+                    className='saf0oControl saf0oControlDanger saf0oControlLarge'
                     disabled={this.state.clearing}
                     onClick={() => this.confirmClear()}
                   >
@@ -1020,7 +1020,7 @@ export class Activity extends React.Component {
             ) : (
               <button
                 type='button'
-                className='activityClearButton wrenControl wrenControlGhost wrenControlLarge'
+                className='activityClearButton saf0oControl saf0oControlGhost saf0oControlLarge'
                 onClick={() => this.beginClear()}
                 ref={this.clearButtonRef}
               >

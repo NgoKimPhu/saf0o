@@ -278,7 +278,7 @@ describe('#send', () => {
     expect(res).toHaveBeenCalledWith({
       id: payload.id,
       jsonrpc: payload.jsonrpc,
-      error: { message: 'Wren is not connected to ethereum chain 999', code: 4901 }
+      error: { message: 'Saf0o is not connected to ethereum chain 999', code: 4901 }
     })
   })
 
@@ -291,7 +291,7 @@ describe('#send', () => {
     expect(res).toHaveBeenCalledWith({
       id: payload.id,
       jsonrpc: payload.jsonrpc,
-      error: { message: 'Wren is not connected to chain 137', code: 4901 }
+      error: { message: 'Saf0o is not connected to chain 137', code: 4901 }
     })
   })
 
@@ -316,12 +316,12 @@ describe('#send', () => {
   })
 })
 
-it('identifies Wren when creating an upstream RPC provider', (done) => {
+it('identifies Saf0o when creating an upstream RPC provider', (done) => {
   mockEthProvider.mockClear()
   chains.once('connect', () => {
     expect(mockEthProvider).toHaveBeenCalledWith('https://polygon-bor-rpc.publicnode.com', {
       name: 'rpc-1',
-      origin: 'wren'
+      origin: 'saf0o'
     })
     done()
   })
@@ -353,7 +353,7 @@ it('creates a standby provider only after the active endpoint loses connectivity
         expect(mockEthProvider).toHaveBeenLastCalledWith(fallbackTarget, expect.any(Object))
         expect(mockNotification).toHaveBeenCalledWith({
           title: 'Connection switched',
-          body: 'Wren lost connection to RPC 1 on Polygon and switched to RPC 2. Manage endpoint order and availability in the network editor.'
+          body: 'Saf0o lost connection to RPC 1 on Polygon and switched to RPC 2. Manage endpoint order and availability in the network editor.'
         })
       } catch (error) {
         return done(error)

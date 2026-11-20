@@ -109,7 +109,7 @@ const bridge = loadSource('main/signers/trezor/bridge.ts', {
   '../../../resources/constants': constants
 }).default
 
-const device = { path: 'wren-isolated-no-device' }
+const device = { path: 'saf0o-isolated-no-device' }
 const derivation = "m/44'/60'/0'/0/0"
 const contract = '1111111111111111111111111111111111111111'
 const base = '/firmware/definitions/eth/chain-id/1'
@@ -140,11 +140,11 @@ async function initialize() {
   nock('https://data.trezor.io').get('/firmware/config/releases.v1.json').reply(404)
   await sdk.init({
     manifest: {
-      appName: 'Wren isolated qualification',
-      appUrl: constants.WREN_REPOSITORY_URL,
+      appName: 'Saf0o isolated qualification',
+      appUrl: constants.SAF0O_REPOSITORY_URL,
       email: 'test@example.invalid'
     },
-    transports: [new EmptyTransport({ id: 'Wren isolated qualification' })],
+    transports: [new EmptyTransport({ id: 'Saf0o isolated qualification' })],
     transportReconnect: false,
     pendingTransportEvent: false
   })
@@ -291,7 +291,7 @@ try {
   sdkSources.forEach(source)
   const report = {
     scope:
-      'Wren bridge source + released Connect public method factory/in-process core, empty in-memory transport',
+      'Saf0o bridge source + released Connect public method factory/in-process core, empty in-memory transport',
     connect: JSON.parse(source('node_modules/@trezor/connect/package.json')).version,
     core: JSON.parse(source('node_modules/@trezor/connect-core/package.json')).version,
     liveNetwork: false,

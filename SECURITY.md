@@ -1,22 +1,22 @@
 # Security policy
 
-This policy covers vulnerability reports and security updates for Wren.
+This policy covers vulnerability reports and security updates for Saf0o.
 
 ## Policy scope
 
 Only the latest release published by
 [`NgoKimPhu/saf0o`](https://github.com/NgoKimPhu/saf0o/releases) receives security
-fixes. Wren has not had an independent security audit. Wren is maintained
+fixes. Saf0o has not had an independent security audit. Saf0o is maintained
 separately from Frame Labs.
 
 For implementation details and limits, see
 [`THREAT_MODEL.md`](THREAT_MODEL.md). See [`HARDWARE_SUPPORT.md`](HARDWARE_SUPPORT.md)
 for physical-device claims. See [`SUPPORTED_EIPS.md`](SUPPORTED_EIPS.md) and
 [`RPC_COMPATIBILITY.md`](RPC_COMPATIBILITY.md) for the standards and local-provider
-surface. Wren Companion is released separately and has its own
+surface. Saf0o Companion is released separately and has its own
 [security boundary](https://github.com/NgoKimPhu/saf0o-companion/blob/main/SECURITY.md).
 
-Frame-profile import is opt-in. It works only before the Wren destination exists.
+Frame-profile import is opt-in. It works only before the Saf0o destination exists.
 It uses a private staging directory and a bounded allowlist. It never changes
 the source profile. Close both applications and keep a verified backup until
 you have checked the imported state.
@@ -44,6 +44,6 @@ asset.
 
 ## What to expect after a report
 
-Volunteers maintain Wren, so response times vary. Maintainers aim to confirm
+Volunteers maintain Saf0o, so response times vary. Maintainers aim to confirm
 reports, reproduce the issue, agree on a disclosure plan, and publish a fix
 and advisory before public discussion.

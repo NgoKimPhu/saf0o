@@ -107,12 +107,12 @@ const EnterSecret = ({ newAccountType, validateSecret, title, autofocus, active,
       <div
         className={
           newAccountType === 'keyring'
-            ? 'addAccountItemOptionInput phrase addAccountItemOptionInputSingleLine wrenInputGroup'
-            : 'addAccountItemOptionInput phrase wrenInputGroup'
+            ? 'addAccountItemOptionInput phrase addAccountItemOptionInputSingleLine saf0oInputGroup'
+            : 'addAccountItemOptionInput phrase saf0oInputGroup'
         }
       >
         <textarea
-          className='wrenInput'
+          className='saf0oInput'
           ref={inputRef}
           aria-label={title}
           autoCapitalize='none'
@@ -135,7 +135,7 @@ const EnterSecret = ({ newAccountType, validateSecret, title, autofocus, active,
       </div>
       <button
         type='button'
-        className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+        className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
         disabled={Boolean(error) || submitting}
         onClick={() => handleSubmit()}
       >
@@ -154,7 +154,7 @@ const Error = ({ error, active }) => {
         </div>
         <button
           type='button'
-          className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+          className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
           onClick={() => link.send('nav:back', 'dash', 3)}
         >
           Try again

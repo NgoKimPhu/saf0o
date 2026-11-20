@@ -101,7 +101,7 @@ it('inspects a selected backup before exposing the destructive replacement confi
   await screen.findByRole('alertdialog')
 
   expect(link.invoke).toHaveBeenCalledWith('profile:inspectBackup', password)
-  const confirmation = screen.getByRole('alertdialog', { name: 'Replace this Wren profile?' })
+  const confirmation = screen.getByRole('alertdialog', { name: 'Replace this Saf0o profile?' })
   expect(confirmation.hasAttribute('aria-modal')).toBe(false)
   expect(confirmation.textContent).toContain('Version 1')
   expect(confirmation.textContent).toContain('Wallet sources3')
@@ -167,7 +167,7 @@ it('stages the exact inspected backup token only after explicit replacement conf
   fireEvent.submit(screen.getByRole('dialog', { name: 'Inspect encrypted backup' }))
   await screen.findByRole('alertdialog')
 
-  fireEvent.click(screen.getByRole('button', { name: 'Replace this Wren profile' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Replace this Saf0o profile' }))
   await screen.findByRole('status')
 
   expect(link.invoke).toHaveBeenLastCalledWith(
@@ -200,7 +200,7 @@ it('keeps the current profile in place after inspect or staging failure', async 
 
   fireEvent.submit(screen.getByRole('dialog', { name: 'Inspect encrypted backup' }))
   await screen.findByRole('alertdialog')
-  fireEvent.click(screen.getByRole('button', { name: 'Replace this Wren profile' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Replace this Saf0o profile' }))
   await screen.findByRole('status')
   expect(screen.getByRole('status').textContent).toBe(
     'Couldn’t stage this restore. Your current profile is unchanged. Inspect the backup again.'

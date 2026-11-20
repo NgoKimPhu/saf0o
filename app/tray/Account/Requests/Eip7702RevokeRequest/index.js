@@ -36,7 +36,7 @@ export const revokeLifecyclePresentation = (req, active = true) => {
     return {
       kind: 'signing',
       title: 'Ready to sign',
-      detail: 'Confirm this revocation with your Wren software signer.'
+      detail: 'Confirm this revocation with your Saf0o software signer.'
     }
   }
 
@@ -45,7 +45,7 @@ export const revokeLifecyclePresentation = (req, active = true) => {
       kind: 'unclear',
       title: 'Submission status unclear',
       detail:
-        'Wren is monitoring the expected transaction hash, and this account’s request queue is paused until its status is known.'
+        'Saf0o is monitoring the expected transaction hash, and this account’s request queue is paused until its status is known.'
     }
   }
 
@@ -62,7 +62,7 @@ export const revokeLifecyclePresentation = (req, active = true) => {
       kind: 'verified',
       title: 'Delegation cleared',
       detail:
-        'Transaction confirmed. Wren’s latest RPC check reports no EIP-7702 delegation for this account.'
+        'Transaction confirmed. Saf0o’s latest RPC check reports no EIP-7702 delegation for this account.'
     }
   }
 
@@ -86,7 +86,7 @@ export const revokeLifecyclePresentation = (req, active = true) => {
     return {
       kind: 'unverified',
       title: 'Clearance not verified',
-      detail: 'Transaction confirmed. Wren could not verify that the delegation is cleared.'
+      detail: 'Transaction confirmed. Saf0o could not verify that the delegation is cleared.'
     }
   }
 
@@ -155,7 +155,7 @@ export class RevocationFee extends React.Component {
           </span>
           <button
             type='button'
-            className='wrenControl wrenControlSecondary wrenControlCompact'
+            className='saf0oControl saf0oControlSecondary saf0oControlCompact'
             aria-expanded={this.state.expanded}
             disabled={interactionLocked}
             onClick={() => {

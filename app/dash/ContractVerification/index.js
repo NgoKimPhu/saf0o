@@ -30,7 +30,7 @@ const ERROR_COPY = Object.freeze({
   'artifact-mismatch': 'This source artifact does not match the deployed contract.',
   'credential-unavailable': 'Secure API-key storage is unavailable on this system.',
   'invalid-artifact-bundle': 'These files do not form a valid artifact bundle.',
-  'invalid-artifact': 'Wren could not use this verification artifact.',
+  'invalid-artifact': 'Saf0o could not use this verification artifact.',
   'invalid-file': 'This artifact file could not be read safely.',
   'invalid-file-selection': 'Choose one or two JSON artifact files.',
   'invalid-json': 'This artifact does not contain valid JSON.',
@@ -73,7 +73,7 @@ const ERROR_COPY = Object.freeze({
   'session-expired': 'This checked source expired. Check it again before publishing.',
   'source-reselection-required': 'Choose the same source artifact again to submit directly.',
   'target-changed': 'The deployed contract evidence changed. Check the target again.',
-  'unstable-chain': 'The network changed while Wren checked the contract. Try again.',
+  'unstable-chain': 'The network changed while Saf0o checked the contract. Try again.',
   'etherscan-unsupported': 'Direct Etherscan submission is unavailable for this network.',
   'already-submitted': 'This submission is already in progress.'
 })
@@ -163,12 +163,12 @@ const hasActiveJobObservation = (job) =>
 const destinationGuidance = (entry) => {
   if (entry?.destination !== 'etherscan-direct' || entry.status !== 'unknown') return ''
   if (entry.reasonCode === 'transport-failure') {
-    return 'Etherscan’s response was not confirmed. Wren will not submit this publication again; check the contract on Etherscan later.'
+    return 'Etherscan’s response was not confirmed. Saf0o will not submit this publication again; check the contract on Etherscan later.'
   }
   if (entry.reasonCode === 'status-unavailable') {
-    return 'Wren cannot confirm whether direct publication began. It will not submit this publication again; check the contract on Etherscan later.'
+    return 'Saf0o cannot confirm whether direct publication began. It will not submit this publication again; check the contract on Etherscan later.'
   }
-  return 'Wren cannot confirm this direct submission. It will not be submitted again; check the contract on Etherscan later.'
+  return 'Saf0o cannot confirm this direct submission. It will not be submitted again; check the contract on Etherscan later.'
 }
 
 const preparedEvidenceReady = (prepared) =>
@@ -204,7 +204,7 @@ const ArtifactSummary = ({ artifact, busy, buttonRef, frozen = false, onReplace 
           <button
             type='button'
             ref={buttonRef}
-            className='wrenControl wrenControlGhost'
+            className='saf0oControl saf0oControlGhost'
             disabled={busy}
             onClick={onReplace}
           >
@@ -684,7 +684,7 @@ export class ContractVerification extends React.Component {
           <span>Network</span>
           <select
             id='contract-verification-network'
-            className='wrenInput'
+            className='saf0oInput'
             value={this.state.chainId}
             disabled={Boolean(this.state.busy) || !networks.length}
             onChange={(event) => this.update('chainId', Number(event.target.value))}
@@ -703,7 +703,7 @@ export class ContractVerification extends React.Component {
             id='contract-verification-address'
             ref={this.addressInput}
             aria-label='Contract address'
-            className='wrenInput contractVerificationMono'
+            className='saf0oInput contractVerificationMono'
             type='text'
             value={this.state.address}
             placeholder='0x…'
@@ -733,7 +733,7 @@ export class ContractVerification extends React.Component {
           <button
             type='button'
             ref={this.artifactButton}
-            className='wrenControl wrenControlSecondary wrenControlLarge'
+            className='saf0oControl saf0oControlSecondary saf0oControlLarge'
             disabled={Boolean(this.state.busy)}
             onClick={() => this.chooseArtifact()}
           >
@@ -759,7 +759,7 @@ export class ContractVerification extends React.Component {
             <span>Exact compiler version</span>
             <input
               id='contract-verification-compiler'
-              className='wrenInput contractVerificationMono'
+              className='saf0oInput contractVerificationMono'
               value={this.state.compilerVersion}
               placeholder={summary.language === 'Vyper' ? '0.3.10' : '0.8.28+commit…'}
               disabled={Boolean(this.state.busy)}
@@ -772,7 +772,7 @@ export class ContractVerification extends React.Component {
             <span>Contract</span>
             <select
               id='contract-verification-contract'
-              className='wrenInput contractVerificationMono'
+              className='saf0oInput contractVerificationMono'
               value={this.state.contractIdentifier}
               disabled={Boolean(this.state.busy)}
               onChange={(event) => this.selectContract(event.target.value)}
@@ -791,7 +791,7 @@ export class ContractVerification extends React.Component {
             <span>Contract identifier</span>
             <input
               id='contract-verification-identifier'
-              className='wrenInput contractVerificationMono'
+              className='saf0oInput contractVerificationMono'
               value={this.state.contractIdentifier}
               placeholder='src/Contract.sol:Contract'
               disabled={Boolean(this.state.busy)}
@@ -931,7 +931,7 @@ export class ContractVerification extends React.Component {
           <div className='contractVerificationResultActions'>
             <button
               type='button'
-              className='wrenControl wrenControlGhost'
+              className='saf0oControl saf0oControlGhost'
               disabled={Boolean(this.state.busy)}
               onClick={() => this.checkAnother()}
             >
@@ -939,7 +939,7 @@ export class ContractVerification extends React.Component {
             </button>
             <button
               type='button'
-              className='wrenControl wrenControlGhost'
+              className='saf0oControl saf0oControlGhost'
               disabled={Boolean(this.state.busy)}
               onClick={() => this.refresh()}
             >
@@ -961,7 +961,7 @@ export class ContractVerification extends React.Component {
                   {entry.explorerUrl ? (
                     <button
                       type='button'
-                      className='wrenControl wrenControlGhost contractVerificationExternal'
+                      className='saf0oControl saf0oControlGhost contractVerificationExternal'
                       disabled={Boolean(this.state.busy)}
                       onClick={() => this.openResult(entry.destination)}
                     >
@@ -983,7 +983,7 @@ export class ContractVerification extends React.Component {
               <span>Encoded constructor arguments</span>
               <input
                 id='contract-verification-constructor-arguments'
-                className='wrenInput contractVerificationMono'
+                className='saf0oInput contractVerificationMono'
                 value={this.state.constructorArguments}
                 placeholder='Hex without 0x'
                 maxLength={2 * 1024 * 1024}
@@ -1041,7 +1041,7 @@ export class ContractVerification extends React.Component {
             </label>
             <button
               type='button'
-              className='wrenControl wrenControlGhost'
+              className='saf0oControl saf0oControlGhost'
               disabled={
                 Boolean(this.state.busy) ||
                 !this.state.etherscanAcknowledged ||
@@ -1086,12 +1086,12 @@ export class ContractVerification extends React.Component {
         {this.state.recoveringSource ? (
           <section className='contractVerificationRecovery' aria-labelledby='verification-recovery-title'>
             <h3 id='verification-recovery-title'>Restore source for direct submission</h3>
-            <p>Choose the same artifact. Wren checks its identity before restoring it.</p>
+            <p>Choose the same artifact. Saf0o checks its identity before restoring it.</p>
             {this.renderArtifactFields()}
             {this.state.artifact ? (
               <button
                 type='button'
-                className='wrenControl wrenControlSecondary'
+                className='saf0oControl saf0oControlSecondary'
                 disabled={Boolean(this.state.busy) || !this.artifactSelectionValid()}
                 onClick={() => this.reselect()}
               >
@@ -1103,7 +1103,7 @@ export class ContractVerification extends React.Component {
         {this.state.error.includes('Choose the same source artifact') && !this.state.recoveringSource ? (
           <button
             type='button'
-            className='wrenControl wrenControlSecondary'
+            className='saf0oControl saf0oControlSecondary'
             disabled={Boolean(this.state.busy)}
             onClick={() => this.setState({ recoveringSource: true, error: '' })}
           >
@@ -1200,7 +1200,7 @@ export class ContractVerification extends React.Component {
               {prepared ? (
                 <button
                   type='button'
-                  className='wrenControl wrenControlSecondary wrenControlLarge'
+                  className='saf0oControl saf0oControlSecondary saf0oControlLarge'
                   disabled={busy}
                   onClick={() =>
                     this.invalidate(
@@ -1214,7 +1214,7 @@ export class ContractVerification extends React.Component {
               ) : null}
               <button
                 type={prepared ? 'button' : 'submit'}
-                className={`wrenControl ${prepared ? 'wrenControlPrimary' : 'wrenControlSecondary'} wrenControlLarge`}
+                className={`saf0oControl ${prepared ? 'saf0oControlPrimary' : 'saf0oControlSecondary'} saf0oControlLarge`}
                 disabled={prepared ? !canPublish : !canCheck}
                 onClick={prepared ? () => this.publish() : undefined}
               >

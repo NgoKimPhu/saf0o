@@ -5,7 +5,7 @@ import {
   isRequestOriginAuthorized
 } from '../../../main/rpc/requestAuthorization'
 import { createAccountPermission } from '../../../main/provider/permissions'
-import { FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN, originIdForInvoker } from '../../../resources/domain/origin'
+import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN, originIdForInvoker } from '../../../resources/domain/origin'
 import { generatePeerAuthKeyPair, peerAuthClientBundleFingerprint } from '../../../main/api/peerAuth'
 
 const origin = 'https://alpha.example'
@@ -20,7 +20,7 @@ const request = {
 }
 const deploymentRequest = {
   ...request,
-  origin: originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' }),
+  origin: originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' }),
   deployment: { chainId: '0x1' }
 }
 const permission = createAccountPermission({ account, chains: [1], handlerId: originId, origin })
@@ -172,14 +172,14 @@ it('does not grant local authorization to another managed-origin-shaped identity
     isRequestOriginAuthorized(
       {
         ...request,
-        origin: originIdForInvoker('http://other.wren.localhost:8421', { provenance: 'managed' })
+        origin: originIdForInvoker('http://other.saf0o.localhost:8421', { provenance: 'managed' })
       },
       {}
     )
   ).toBe(false)
 })
 
-it.each([FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN])(
+it.each([FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN])(
   'revalidates the exact current managed principal for %s at the final signer boundary',
   (managedOrigin) => {
     const managedId = originIdForInvoker(managedOrigin, { provenance: 'managed' })
@@ -198,11 +198,11 @@ it.each([FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN])(
     const managedRequest = {
       ...request,
       origin: managedId,
-      ...(managedOrigin === WREN_DEPLOY_ORIGIN ? { deployment: { chainId: '0x1' } } : {})
+      ...(managedOrigin === SAF0O_DEPLOY_ORIGIN ? { deployment: { chainId: '0x1' } } : {})
     }
 
     expect(isCurrentRequestOriginAuthorized(managedRequest, {}, state)).toBe(true)
-    if (managedOrigin === WREN_DEPLOY_ORIGIN) {
+    if (managedOrigin === SAF0O_DEPLOY_ORIGIN) {
       expect(isCurrentRequestOriginAuthorized({ ...managedRequest, deployment: undefined }, {}, state)).toBe(
         false
       )
@@ -223,7 +223,7 @@ it.each([FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN])(
         {},
         {
           ...state,
-          origins: { [managedId]: { ...principal, name: 'http://forged.wren.localhost:8421' } }
+          origins: { [managedId]: { ...principal, name: 'http://forged.saf0o.localhost:8421' } }
         }
       )
     ).toBe(false)

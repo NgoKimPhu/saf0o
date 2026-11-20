@@ -190,7 +190,7 @@ describe('#toggleAccess', () => {
 })
 
 describe('#clearPermissions', () => {
-  it('removes external permissions while preserving managed Wren Send access', () => {
+  it('removes external permissions while preserving managed Saf0o Send access', () => {
     const address = '0x1111111111111111111111111111111111111111'
     const permissions = {
       managed: { origin: FRAME_SEND_ORIGIN, provider: true },
@@ -2119,7 +2119,7 @@ describe('#updateTypedDataRequest', () => {
   })
 })
 
-it('merges late Wren references without removing another account’s observed transaction', () => {
+it('merges late Saf0o references without removing another account’s observed transaction', () => {
   const hash = `0x${'a'.repeat(64)}`
   const account = `0x${'1'.repeat(40)}`
   const recipient = `0x${'2'.repeat(40)}`

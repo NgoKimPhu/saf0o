@@ -15,7 +15,7 @@ export const PermissionScopeSchema = z
 
 export const PermissionScopeCaveatSchema = z
   .object({
-    type: z.literal('wren:permissionScope'),
+    type: z.literal('saf0o:permissionScope'),
     value: PermissionScopeSchema
   })
   .strict()

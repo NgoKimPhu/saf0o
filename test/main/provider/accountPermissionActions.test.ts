@@ -1,4 +1,4 @@
-import { FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN, originIdForInvoker } from '../../../resources/domain/origin'
+import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN, originIdForInvoker } from '../../../resources/domain/origin'
 import { applyAccountPermissionRendererAction } from '../../../main/provider/accountPermissionActions'
 
 const account = '0x0000000000000000000000000000000000000001'
@@ -8,7 +8,7 @@ const externalId = originIdForInvoker(externalOrigin, { provenance: 'direct' })
 const disabledId = originIdForInvoker(disabledOrigin, { provenance: 'direct' })
 const permissions = {
   managed: { handlerId: 'managed', origin: FRAME_SEND_ORIGIN, provider: true },
-  deployment: { handlerId: 'deployment', origin: WREN_DEPLOY_ORIGIN, provider: true },
+  deployment: { handlerId: 'deployment', origin: SAF0O_DEPLOY_ORIGIN, provider: true },
   [externalId]: { handlerId: externalId, origin: externalOrigin, provider: true },
   [disabledId]: { handlerId: disabledId, origin: disabledOrigin, provider: false }
 }
@@ -130,7 +130,7 @@ it.each([
   expect(accounts.rejectUnapprovedRequestsForOrigins).not.toHaveBeenCalled()
 })
 
-it('ignores clearing when only managed Wren access remains', () => {
+it('ignores clearing when only managed Saf0o access remains', () => {
   const { accounts, provider, dependencies } = setup({
     managed: permissions.managed,
     deployment: permissions.deployment

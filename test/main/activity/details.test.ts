@@ -414,7 +414,7 @@ it('fails honestly when history, retained evidence, or configured-RPC evidence i
 it('opens incoming observed activity without requiring the account to be the transaction sender', async () => {
   const incoming = entry({
     account: recipient,
-    origin: 'wren:external',
+    origin: 'saf0o:external',
     observed: {
       hash: hash('a'),
       from: account,

@@ -39,7 +39,7 @@ it.each(['success', 'lost reply', 'wrong hash', 'declined'])(
       }
       throw new Error('Unexpected RPC method')
     })
-    const rpc = createDappClient(upstream.url, 'https://wren-test.invalid')
+    const rpc = createDappClient(upstream.url, 'https://saf0o-test.invalid')
     const storage = profileStorage(`broadcast-approvals-${mode}.json`)
     const batchStorage = profileStorage(`broadcast-batch-${mode}.json`)
     const dependencies = {
@@ -52,7 +52,7 @@ it.each(['success', 'lost reply', 'wrong hash', 'declined'])(
     const approvals = new TokenApprovalsService(dependencies)
     const ledger = new WalletCallBatchLedger(batchStorage)
     const id = `approval-${mode}`
-    const origin = 'https://wren-test.invalid'
+    const origin = 'https://saf0o-test.invalid'
     ledger.create({ id, origin, account, chainId: '0x1', callCount: 1 })
     const data = abi.encodeFunctionData('approve', [spender, 100n])
     const transaction = {

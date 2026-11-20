@@ -5,8 +5,8 @@ import { z } from 'zod'
 
 const CREDENTIAL_FILE = '.etherscan-v2-api-key.json'
 const CREDENTIAL_NAME = 'etherscan-v2-api-key'
-const WRAPPER_FORMAT = 'wren-contract-verification-credential'
-const PAYLOAD_FORMAT = 'wren-contract-verification-credential-payload'
+const WRAPPER_FORMAT = 'saf0o-contract-verification-credential'
+const PAYLOAD_FORMAT = 'saf0o-contract-verification-credential-payload'
 const VERSION = 1
 const MAX_API_KEY_LENGTH = 128
 const MAX_CIPHERTEXT_BYTES = 16 * 1024

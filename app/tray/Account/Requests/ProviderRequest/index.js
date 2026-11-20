@@ -22,7 +22,7 @@ export class ProviderRequest extends React.Component {
         icon='apps'
         eyebrow='Connection request'
         title={`Share this account with ${originName}?`}
-        help='This connects one account. Wren will still ask before every signature or transaction.'
+        help='This connects one account. Saf0o will still ask before every signature or transaction.'
       >
         <RequestSection title='Account being shared'>
           <RequestFactGrid>
@@ -46,7 +46,7 @@ export class ProviderRequest extends React.Component {
             />
             <RequestPermission
               icon='send'
-              title='Ask Wren to sign messages and transactions'
+              title='Ask Saf0o to sign messages and transactions'
               detail='Each request appears separately for your review.'
             />
           </div>

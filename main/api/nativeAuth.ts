@@ -282,7 +282,7 @@ export async function proveNativeChallenge(
 
 const requestBytes = (proof: Omit<NativeRequestProof, 'signature'>) =>
   Buffer.from(
-    `wren-native-request-v3\0${JSON.stringify({
+    `saf0o-native-request-v3\0${JSON.stringify({
       protocol: proof.protocol,
       version: proof.version,
       role: proof.role,

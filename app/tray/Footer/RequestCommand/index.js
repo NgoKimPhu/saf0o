@@ -18,7 +18,7 @@ import {
   subscribeToTransactionFeeDraftSafety
 } from '../../../../resources/domain/request'
 import { WATCH_ONLY_SIGNING_ERROR } from '../../../../resources/domain/signer'
-import { WREN_DEPLOY_ORIGIN, originIdForName } from '../../../../resources/domain/origin'
+import { SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../../../resources/domain/origin'
 import { requestReference } from '../../../../resources/store/notifications'
 
 const FEE_WARNING_THRESHOLD_USD = 50
@@ -68,7 +68,7 @@ export function isNoSignerError(error) {
 export function canContinueContractVerification(req) {
   return Boolean(
     req?.status === 'confirmed' &&
-    req.origin === originIdForName(WREN_DEPLOY_ORIGIN) &&
+    req.origin === originIdForName(SAF0O_DEPLOY_ORIGIN) &&
     req.deployment &&
     req.activityId &&
     req.tx?.receipt?.contractAddress
@@ -196,7 +196,7 @@ export class RequestCommand extends React.Component {
         }
         this.setState({
           requestActionPending: false,
-          requestActionError: 'Wren could not update this request. It is still pending.'
+          requestActionError: 'Saf0o could not update this request. It is still pending.'
         })
       } else {
         this.setState({ requestActionPending: false, requestActionError: '', recheckCompleted: false })
@@ -675,7 +675,7 @@ export class RequestCommand extends React.Component {
     const phaseCopy = {
       'preparing-nonce': {
         title: 'Preparing transaction',
-        detail: 'Wren is preparing the transaction nonce.',
+        detail: 'Saf0o is preparing the transaction nonce.',
         button: 'Preparing'
       },
       'rechecking-safety': {
@@ -685,12 +685,12 @@ export class RequestCommand extends React.Component {
       },
       'sending-to-signer': {
         title: 'Sending to signer',
-        detail: `Wren is sending the transaction to your ${signerName}.`,
+        detail: `Saf0o is sending the transaction to your ${signerName}.`,
         button: 'Sending'
       },
       signed: {
         title: 'Transaction signed',
-        detail: 'Wren is preparing to send the signed transaction.',
+        detail: 'Saf0o is preparing to send the signed transaction.',
         button: 'Signed'
       }
     }
@@ -724,7 +724,7 @@ export class RequestCommand extends React.Component {
     }
     presentation ||= {
       title: 'Preparing transaction',
-      detail: 'Wren is preparing the transaction for signing.',
+      detail: 'Saf0o is preparing the transaction for signing.',
       button: 'Preparing'
     }
 

@@ -79,7 +79,7 @@ const fixture = (
   platform: NodeJS.Platform = 'linux',
   fileSystem: typeof fs = fs
 ) => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-verification-credential-'))
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-verification-credential-'))
   roots.push(root)
   return {
     root,
@@ -112,7 +112,7 @@ test('stores one Etherscan V2 key as a strict encrypted 0600 wrapper and never r
   expect(JSON.parse(stored.toString('utf8'))).toEqual({
     backend: 'secret_service',
     ciphertext: expect.stringMatching(/^[A-Za-z0-9+/]+={0,2}$/u),
-    format: 'wren-contract-verification-credential',
+    format: 'saf0o-contract-verification-credential',
     name: 'etherscan-v2-api-key',
     platform: 'linux',
     version: 1
@@ -283,7 +283,7 @@ test.each([
   store.save(API_KEY)
   const wrapper = readWrapper(store.credentialPath)
   const payload = {
-    format: 'wren-contract-verification-credential-payload',
+    format: 'saf0o-contract-verification-credential-payload',
     version: 1,
     name: 'etherscan-v2-api-key',
     apiKey: API_KEY,

@@ -179,7 +179,7 @@ const CopyableAuthorityValue = ({ label, value }) => {
     <button
       type='button'
       aria-label={`Copy ${label}`}
-      className='signingAuthorityCopy wrenControlCompact'
+      className='signingAuthorityCopy saf0oControlCompact'
       onClick={() => copyValue()}
     >
       {value}
@@ -276,7 +276,7 @@ export const TypedDataWarnings = ({ context }) => {
 
 export const getTypedDataDeviceWarning = (signer) => {
   if (signer?.signingCapabilities?.typedDataHashOnly) {
-    return `${signer.model || 'This signer'} will display only the EIP-712 domain and message hashes. Verify every structured field in Wren before approving on-device.`
+    return `${signer.model || 'This signer'} will display only the EIP-712 domain and message hashes. Verify every structured field in Saf0o before approving on-device.`
   }
 
   if (signer?.type?.toLowerCase() === 'trezor') {

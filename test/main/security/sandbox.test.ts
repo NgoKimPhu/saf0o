@@ -6,10 +6,10 @@ const commandLine = (switches: string[] = []) => ({
 
 it('rejects packaged and production processes with Chromium sandboxing disabled', () => {
   expect(() => assertSandboxEnabled(commandLine(['no-sandbox']), undefined)).toThrow(
-    'Wren refuses to run without the Chromium sandbox'
+    'Saf0o refuses to run without the Chromium sandbox'
   )
   expect(() => assertSandboxEnabled(commandLine(['no-sandbox']), 'production')).toThrow(
-    'Wren refuses to run without the Chromium sandbox'
+    'Saf0o refuses to run without the Chromium sandbox'
   )
 })
 

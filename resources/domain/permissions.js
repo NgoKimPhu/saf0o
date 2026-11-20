@@ -8,7 +8,7 @@ export const isPermissionActive = (permission, now = Date.now()) =>
   permission?.provider === true &&
   permission?.parentCapability === 'eth_accounts' &&
   permission?.caveats?.length === 1 &&
-  permission.caveats[0]?.type === 'wren:permissionScope' &&
+  permission.caveats[0]?.type === 'saf0o:permissionScope' &&
   Number.isInteger(permission.caveats[0]?.value?.expiresAt) &&
   permission.caveats[0].value.expiresAt > now
 

@@ -1,6 +1,6 @@
 # Desktop and Companion release qualification checklist
 
-Use this checklist for a paired Wren desktop and Companion release candidate.
+Use this checklist for a paired Saf0o desktop and Companion release candidate.
 Complete the manual checks as well as the automated tests.
 
 Use disposable accounts and Ethereum
@@ -89,11 +89,11 @@ checksums, compatibility metadata, and source-bound SBOM.
 
 The isolated desktop `npm run test:e2e` suite covers permission denial/revocation,
 review rejection, sequential EIP-5792 success and partial failure, restart recovery,
-and origin/account status scoping without using live Wren ports or public networks.
+and origin/account status scoping without using live Saf0o ports or public networks.
 It also covers single-call simulation fallbacks, snapshot-bound trace events,
 provider errors, and partial evidence. Retain the Jest result and
 `compiled/simulation-fallback-e2e.json` before the next compile clears that folder.
-Set `WREN_E2E_EVIDENCE_DIR` to retain typed-data, Lattice and balance-flow reports,
+Set `SAF0O_E2E_EVIDENCE_DIR` to retain typed-data, Lattice and balance-flow reports,
 as shown in the release procedure.
 The native smoke matrix builds real unsigned Linux arm64 and Windows x64 packages
 plus ad-hoc-signed macOS x64/arm64 previews on matching runners, then compares
@@ -144,7 +144,7 @@ The dialogs’ `aria-modal` and focus containment apply only to the wallet panel
 
 When testing joined windows, check that the dialog stays inside the panel
 and keeps focus there. Do not use the dashboard until the dialog is closed.
-Wren does not provide a modal overlay across both windows.
+Saf0o does not provide a modal overlay across both windows.
 
 Companion's `npm run qualify:browser` uses disposable temporary builds and profiles
 to exercise exact protocol 3 mutual authentication, EIP-6963, provider
@@ -154,8 +154,8 @@ archive and active-desktop checks below.
 
 ## 2. Run the required operator checks
 
-1. Back up the closed Wren profile and confirm the backup is readable. Close all
-   Wren and other hardware-wallet apps. Use new disposable software/hardware
+1. Back up the closed Saf0o profile and confirm the backup is readable. Close all
+   Saf0o and other hardware-wallet apps. Use new disposable software/hardware
    accounts with only test funds; do not run AppImage and deb together. Preserve
    logs for diagnosis, but scan them before sharing.
 2. Launch the AppImage in a new mode-`0700` profile:
@@ -163,14 +163,14 @@ archive and active-desktop checks below.
    ```bash
    profile=$(mktemp -d)
    chmod 700 "$profile"
-   ./Wren-<version>.AppImage --user-data-dir="$profile"
+   ./Saf0o-<version>.AppImage --user-data-dir="$profile"
    ```
 
    Check startup, tray/dashboard placement, restart persistence, dark-native
    rendering, clean shutdown, coupled pane movement, no unexpected updater, and
    no second instance or port takeover (`1248`, `8421`). On X11, check Glide on
    both selected/unselected edges of every display: only the selected edge reveals
-   Wren without focus or a stranded edge window. Native Wayland Glide is not
+   Saf0o without focus or a stranded edge window. Native Wayland Glide is not
    qualified.
 
 3. With both apps closed, import a compatible disposable Frame backup into a
@@ -180,8 +180,8 @@ archive and active-desktop checks below.
    ```bash
    source_profile=/absolute/path/to/disposable-frame-backup
    target_parent=$(mktemp -d)
-   target_profile="$target_parent/wren"
-   ./Wren-<version>.AppImage --user-data-dir="$target_profile" \
+   target_profile="$target_parent/saf0o"
+   ./Saf0o-<version>.AppImage --user-data-dir="$target_profile" \
      --import-frame-profile \
      --import-frame-profile-from="$source_profile"
    ```
@@ -198,7 +198,7 @@ archive and active-desktop checks below.
    archives (never interchange them). Run `npm run qualify:serve` in the
    Companion repository, open `http://127.0.0.1:8765/` (a local page that stores
    nothing and makes no network request itself), and require EIP-6963
-   discovery as Wren / `io.github.ngokimphu.saf0o` even if another provider owns
+   discovery as Saf0o / `io.github.ngokimphu.saf0o` even if another provider owns
    `window.ethereum`. In each browser, compare and approve the initial six-digit code. Reject, then
    approve, one account. Check that account and chain events occur once in all
    tabs. Request results and signing payloads must stay in their source tab.
@@ -207,7 +207,7 @@ archive and active-desktop checks below.
    With Companion 0.1.3, delay the first connection reply until a retry starts.
    Confirm the old reply cannot cancel the retry or change its network.
    `npm run qualify:browser` uses an isolated desktop mock and does not satisfy
-   the revoke check: record the real Wren permission-row removal and one
+   the revoke check: record the real Saf0o permission-row removal and one
    `accountsChanged` event with an empty account list in every affected tab.
 5. Complete each signer row through a qualified browser; private-key signing must
    run in Chrome and seed signing in Firefox. Reject each request once before
@@ -243,7 +243,7 @@ archive and active-desktop checks below.
    displayed hash, nonce, block, result, contract, and replacement field that its
    currently retained evidence supports with the independently recorded transaction.
    Opening the detail may make one explicit configured-RPC transaction lookup for
-   each retained hash. Require Wren to derive those hashes, the account, chain, and
+   each retained hash. Require Saf0o to derive those hashes, the account, chain, and
    optional canonical block from its authoritative main-process ledgers; reject a
    mismatched hash, sender, or retained canonical block. Compare the displayed
    native value, recipient or contract, method or unknown selector, and bounded
@@ -278,7 +278,7 @@ archive and active-desktop checks below.
    submitted, confirming, replacement, and terminal lifecycle observations across at
    least one projection interval. None may recreate the cleared row or notification.
    Apply a later authoritative lifecycle update and confirm that only this newer
-   evidence may create a fresh row. Restart Wren after both cases and confirm the
+   evidence may create a fresh row. Restart Saf0o after both cases and confirm the
    clear boundary persists without entering renderer state or profile backup.
 
 ## 3. Qualify EIP-5792 and EIP-7702 boundaries
@@ -293,7 +293,7 @@ and Firefox candidate archives.
    restart, truthful partial-failure status, and no advertised atomic or optional
    capability.
 2. Repeat one successful and one rejected batch through each Companion archive in
-   a clean browser profile. Confirm tab-local results, native Wren review, ordered
+   a clean browser profile. Confirm tab-local results, native Saf0o review, ordered
    calls, status lookup, and no stale request after rejection, reload, reconnect,
    or restart.
 3. With controlled code fixtures or independently recorded testnet state, check a
@@ -309,7 +309,7 @@ and Firefox candidate archives.
 5. With a disposable Ring or Seed account already delegated on the testnet, open
    Accounts, choose the exact account and network, and review the revocation.
    Verify the authority, delegate, code hash, nonce, and EIP-1559 fees before
-   signing. Confirm Wren monitors only the locally inspected transaction hash,
+   signing. Confirm Saf0o monitors only the locally inspected transaction hash,
    survives a restart or temporary RPC failure, and reports clearance only after
    block-bound code evidence and 12 confirmations. Exercise **Stop monitoring** and
    confirm it does not claim to cancel the transaction or clear the delegation.
@@ -361,7 +361,7 @@ API keys, and credential-bearing URLs without printing those fixtures.
 
 After each signer run, relock/disconnect/quit, ensure no pending request after
 restart, scan the isolated profile/logs for exact disposable fixtures without
-printing them, remove accounts/signers in Wren, confirm signer files are gone,
+printing them, remove accounts/signers in Saf0o, confirm signer files are gone,
 then remove test profiles only after recording the result. Public address metadata
 is non-secret and does not prove the scan passed.
 

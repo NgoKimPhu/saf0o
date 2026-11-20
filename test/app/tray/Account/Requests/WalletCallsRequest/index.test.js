@@ -72,7 +72,7 @@ it('shows the approved hierarchy, ordered call identities, values, and disclosed
   )
 
   expect(screen.getByRole('heading', { name: '2 transactions' })).toBeTruthy()
-  expect(screen.queryByText(/Wren will submit these calls in order/)).toBeNull()
+  expect(screen.queryByText(/Saf0o will submit these calls in order/)).toBeNull()
   expect(screen.getByText('example.test')).toBeTruthy()
   expect(screen.getByText('Ethereum')).toBeTruthy()
   expect(screen.queryByText('Main account')).toBeNull()

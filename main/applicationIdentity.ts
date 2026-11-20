@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-export const APPLICATION_NAME = 'Wren'
+export const APPLICATION_NAME = 'Saf0o'
 export const APPLICATION_ID = 'io.github.ngokimphu.saf0o'
 export const PROFILE_DIRECTORY = 'saf0o'
 export const LEGACY_PROFILE_DIRECTORY = 'frame'
@@ -35,7 +35,7 @@ export function configureApplicationIdentity(application: ApplicationIdentityTar
       relativeToFrame !== '..' &&
       !path.isAbsolute(relativeToFrame))
   ) {
-    throw new Error('Wren cannot use a profile inside the Frame profile; use --import-frame-profile instead')
+    throw new Error('Saf0o cannot use a profile inside the Frame profile; use --import-frame-profile instead')
   }
 }
 
@@ -43,13 +43,13 @@ export function legacyProfilePath(appDataPath: string) {
   return path.join(appDataPath, LEGACY_PROFILE_DIRECTORY)
 }
 
-export function requestWrenSingleInstanceLock(application: SingleInstanceTarget) {
+export function requestSaf0oSingleInstanceLock(application: SingleInstanceTarget) {
   const profilePath = application.getPath('userData')
   const lockPath = path.join(application.getPath('appData'), INSTANCE_LOCK_DIRECTORY)
   fs.mkdirSync(lockPath, { recursive: true, mode: 0o700 })
   const lockStats = fs.lstatSync(lockPath)
   if (!lockStats.isDirectory() || lockStats.isSymbolicLink()) {
-    throw new Error('Wren instance lock path is not a regular directory')
+    throw new Error('Saf0o instance lock path is not a regular directory')
   }
   if (process.platform !== 'win32') fs.chmodSync(lockPath, 0o700)
 

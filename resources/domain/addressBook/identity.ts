@@ -23,10 +23,10 @@ export type LocalAddressIdentity =
   | {
       label: string
       kind: 'contact'
-      source: 'Saved contact' | 'Checked outside Wren'
+      source: 'Saved contact' | 'Checked outside Saf0o'
       provenance: LocalAddressBookEntry['provenance']
     }
-  | { label: string; kind: 'account'; source: 'Wren account' }
+  | { label: string; kind: 'account'; source: 'Saf0o account' }
 
 const parseAddress = (address: unknown) => {
   if (typeof address !== 'string' || !ADDRESS.test(address.trim())) return
@@ -149,7 +149,7 @@ export function resolveLocalAddressIdentity(
     return {
       label: saved.name,
       kind: 'contact',
-      source: saved.provenance.status === 'verified-out-of-band' ? 'Checked outside Wren' : 'Saved contact',
+      source: saved.provenance.status === 'verified-out-of-band' ? 'Checked outside Saf0o' : 'Saved contact',
       provenance: saved.provenance
     }
   }
@@ -167,5 +167,5 @@ export function resolveLocalAddressIdentity(
   if (typeof name !== 'string' || !normalizeAddressBookText(name) || hasAddressBookControlCharacters(name)) {
     return
   }
-  return { label: normalizeAddressBookText(name), kind: 'account', source: 'Wren account' }
+  return { label: normalizeAddressBookText(name), kind: 'account', source: 'Saf0o account' }
 }

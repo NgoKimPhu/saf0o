@@ -178,7 +178,7 @@ export class AddAccounts extends React.Component {
         {!this.props.data.accountChooserMode ? (
           <button
             type='button'
-            className='wrenControl wrenControlGhost'
+            className='saf0oControl saf0oControlGhost'
             onClick={() => this.setState({ view: 'default' })}
           >
             Back to account types

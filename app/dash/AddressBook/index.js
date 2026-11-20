@@ -162,7 +162,7 @@ export class AddressBookEditor extends React.Component {
             <span>Address or ENS name</span>
             <input
               aria-readonly={editing ? 'true' : undefined}
-              className='wrenInput'
+              className='saf0oInput'
               autoComplete='off'
               autoFocus={!editing}
               disabled={this.state.saving}
@@ -190,7 +190,7 @@ export class AddressBookEditor extends React.Component {
           <label className='addressBookField'>
             <span>Name</span>
             <input
-              className='wrenInput'
+              className='saf0oInput'
               autoComplete='off'
               disabled={this.state.saving}
               maxLength={80}
@@ -225,14 +225,14 @@ export class AddressBookEditor extends React.Component {
                     type='radio'
                     value='verified-out-of-band'
                   />
-                  <span>Checked outside Wren</span>
+                  <span>Checked outside Saf0o</span>
                 </label>
               </div>
               <small>
                 {clearsVerification
                   ? 'Saving as “Saved” clears the check date and note.'
                   : this.state.provenanceStatus === 'verified-out-of-band'
-                    ? 'Checked by you, outside Wren.'
+                    ? 'Checked by you, outside Saf0o.'
                     : 'Saved label only.'}
               </small>
               {this.state.provenanceStatus === 'verified-out-of-band' ? (
@@ -242,7 +242,7 @@ export class AddressBookEditor extends React.Component {
                   </span>
                   <textarea
                     aria-describedby='addressBookVerificationCount'
-                    className='wrenInput'
+                    className='saf0oInput'
                     disabled={this.state.saving}
                     maxLength={280}
                     onChange={(event) => this.setState({ verificationNote: event.target.value, error: '' })}
@@ -265,7 +265,7 @@ export class AddressBookEditor extends React.Component {
             </span>
             <textarea
               aria-describedby='addressBookNoteCount'
-              className='wrenInput'
+              className='saf0oInput'
               disabled={this.state.saving}
               maxLength={280}
               onChange={(event) => this.setState({ note: event.target.value, error: '' })}
@@ -284,7 +284,7 @@ export class AddressBookEditor extends React.Component {
         </div>
         <div className='addressBookActionShelf'>
           <button
-            className='addressBookPrimaryButton wrenControl wrenControlPrimary wrenControlLarge wrenHeroPrimary'
+            className='addressBookPrimaryButton saf0oControl saf0oControlPrimary saf0oControlLarge saf0oHeroPrimary'
             disabled={
               pending ||
               (!completeAddress(this.state.address) && !completeEnsName(this.state.address)) ||
@@ -429,12 +429,12 @@ export class AddressBook extends React.Component {
     return (
       <div className='addressBook cardShow'>
         <div className='addressBookToolbar'>
-          <label className='addressBookSearch wrenInputGroup'>
+          <label className='addressBookSearch saf0oInputGroup'>
             <Icon name='search' size={15} />
             <input
               ref={this.searchRef}
               aria-label='Search contacts'
-              className='wrenInput'
+              className='saf0oInput'
               onChange={(event) => {
                 clearTimeout(this.statusTimer)
                 this.dismissRemoveConfirmation()
@@ -465,11 +465,11 @@ export class AddressBook extends React.Component {
                 >
                   <span className='addressBookRemovalCopy'>
                     <strong>{`Remove ${entry.name}?`}</strong>
-                    <span>This removes the saved contact from Wren. Funds are not affected.</span>
+                    <span>This removes the saved contact from Saf0o. Funds are not affected.</span>
                   </span>
                   <button
                     ref={this.removeCancelRef}
-                    className='addressBookEdit wrenControl wrenControlGhost wrenControlCompact'
+                    className='addressBookEdit saf0oControl saf0oControlGhost saf0oControlCompact'
                     disabled={this.state.working}
                     onClick={() => this.cancelRemoveConfirmation()}
                     type='button'
@@ -478,7 +478,7 @@ export class AddressBook extends React.Component {
                   </button>
                   <button
                     aria-label={`${this.state.working ? 'Removing' : 'Confirm removing'} ${entry.name}`}
-                    className='addressBookRemove addressBookRemoveConfirm wrenControl wrenControlDanger wrenControlCompact'
+                    className='addressBookRemove addressBookRemoveConfirm saf0oControl saf0oControlDanger saf0oControlCompact'
                     disabled={this.state.working}
                     onClick={() => this.confirmRemove(entry.address)}
                     type='button'
@@ -513,7 +513,7 @@ export class AddressBook extends React.Component {
                   </button>
                   <button
                     aria-label={`Edit ${entry.name}`}
-                    className='addressBookEdit wrenControl wrenControlGhost wrenControlCompact'
+                    className='addressBookEdit saf0oControl saf0oControlGhost saf0oControlCompact'
                     disabled={this.state.working}
                     onClick={() => this.openEditor(entry.address)}
                     type='button'
@@ -523,7 +523,7 @@ export class AddressBook extends React.Component {
                   <button
                     ref={(element) => this.setRemoveButtonRef(entry.address, element)}
                     aria-label={`Remove ${entry.name}`}
-                    className='addressBookRemove wrenControl wrenControlGhost wrenControlCompact'
+                    className='addressBookRemove saf0oControl saf0oControlGhost saf0oControlCompact'
                     disabled={this.state.working}
                     onClick={() => this.openRemoveConfirmation(entry.address)}
                     type='button'
@@ -550,7 +550,7 @@ export class AddressBook extends React.Component {
 
         <div className='addressBookTransfer'>
           <button
-            className='wrenControl wrenControlGhost wrenControlCompact'
+            className='saf0oControl saf0oControlGhost saf0oControlCompact'
             disabled={this.state.working}
             onClick={() => this.transfer('import')}
             type='button'
@@ -558,7 +558,7 @@ export class AddressBook extends React.Component {
             Import JSON
           </button>
           <button
-            className='wrenControl wrenControlGhost wrenControlCompact'
+            className='saf0oControl saf0oControlGhost saf0oControlCompact'
             disabled={this.state.working}
             onClick={() => this.transfer('export')}
             type='button'
@@ -575,7 +575,11 @@ export class AddressBook extends React.Component {
           </div>
         ) : null}
         <div className='addressBookAddAction'>
-          <button className='wrenControl wrenControlPrimary' onClick={() => this.openEditor()} type='button'>
+          <button
+            className='saf0oControl saf0oControlPrimary'
+            onClick={() => this.openEditor()}
+            type='button'
+          >
             Add contact
           </button>
         </div>
@@ -597,7 +601,7 @@ export class AddressBook extends React.Component {
             <strong>Contact not found</strong>
             <span>It may have been removed or replaced by imported contacts.</span>
             <button
-              className='wrenControl wrenControlSecondary'
+              className='saf0oControl saf0oControlSecondary'
               onClick={() => link.send('tray:action', 'backDash')}
               type='button'
             >

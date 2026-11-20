@@ -29,7 +29,7 @@ test('extracts only valid transaction and revocation evidence before discarding 
         activityId: '00000000-0000-4000-8000-000000000002',
         type: 'eip7702Revoke',
         account,
-        origin: 'wren',
+        origin: 'saf0o',
         created: 20,
         status: 'verifying',
         chainId: '0xa',

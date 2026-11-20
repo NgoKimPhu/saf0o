@@ -14,7 +14,7 @@ html, body
 body
   position relative
   border 0
-  border-radius var(--wren-radius-xl)
+  border-radius var(--saf0o-radius-xl)
 
 .frameOverlay
   display none
@@ -27,9 +27,9 @@ body::before
   bottom 0
   width 620px
   max-width 100%
-  border-radius var(--wren-radius-xl)
-  background var(--wren-bg-canvas)
-  box-shadow var(--wren-shadow-lg), var(--wren-shadow-inset)
+  border-radius var(--saf0o-radius-xl)
+  background var(--saf0o-bg-canvas)
+  box-shadow var(--saf0o-shadow-lg), var(--saf0o-shadow-inset)
   pointer-events none
 
 .workspace-edge-left::before
@@ -53,7 +53,7 @@ body::before
   border-bottom-left-radius 0
 
 body::before
-  transition width var(--wren-motion-standard) var(--wren-ease)
+  transition width var(--saf0o-motion-standard) var(--saf0o-ease)
 
 .workspace-joined::before,
 .workspace-open::before
@@ -94,11 +94,11 @@ div
 ::-webkit-scrollbar-thumb
   border 2px solid transparent
   border-radius 2px
-  background-color unquote('color-mix(in srgb, var(--wren-text-muted) 40%, transparent)')
+  background-color unquote('color-mix(in srgb, var(--saf0o-text-muted) 40%, transparent)')
   background-clip content-box
 
 ::-webkit-scrollbar-thumb:hover
-  background-color unquote('color-mix(in srgb, var(--wren-text-muted) 60%, transparent)')
+  background-color unquote('color-mix(in srgb, var(--saf0o-text-muted) 60%, transparent)')
 
 .clip
   *
@@ -157,27 +157,27 @@ div
   
 @import './style'
 
-// Wren wallet shell
+// Saf0o wallet shell
 #panel
-  --wren-window-mode-canvas var(--wren-window-canvas)
-  --wren-window-mode-image var(--wren-window-atmosphere-wallet)
-  --wren-window-mode-repeat var(--wren-window-atmosphere-repeat)
-  --wren-window-mode-size var(--wren-window-atmosphere-wallet-size)
-  --wren-window-mode-blend var(--wren-window-atmosphere-blend)
-  --wren-window-mode-shadow var(--wren-window-atmosphere-wallet-shadow)
+  --saf0o-window-mode-canvas var(--saf0o-window-canvas)
+  --saf0o-window-mode-image var(--saf0o-window-atmosphere-wallet)
+  --saf0o-window-mode-repeat var(--saf0o-window-atmosphere-repeat)
+  --saf0o-window-mode-size var(--saf0o-window-atmosphere-wallet-size)
+  --saf0o-window-mode-blend var(--saf0o-window-atmosphere-blend)
+  --saf0o-window-mode-shadow var(--saf0o-window-atmosphere-wallet-shadow)
   width 620px
   max-width 100vw
   left auto
   right 0
   border 0
-  border-radius var(--wren-radius-xl)
-  color var(--wren-text-primary)
-  background-color var(--wren-window-mode-canvas)
-  background-image var(--wren-window-mode-image)
-  background-repeat var(--wren-window-mode-repeat)
-  background-size var(--wren-window-mode-size)
-  background-blend-mode var(--wren-window-mode-blend)
-  box-shadow var(--wren-window-mode-shadow)
+  border-radius var(--saf0o-radius-xl)
+  color var(--saf0o-text-primary)
+  background-color var(--saf0o-window-mode-canvas)
+  background-image var(--saf0o-window-mode-image)
+  background-repeat var(--saf0o-window-mode-repeat)
+  background-size var(--saf0o-window-mode-size)
+  background-blend-mode var(--saf0o-window-mode-blend)
+  box-shadow var(--saf0o-window-mode-shadow)
 
 .workspace-edge-left #panel
   left 0
@@ -214,8 +214,8 @@ div
   display none
 
 .cardShow
-  animation-duration var(--wren-motion-slow)
-  animation-timing-function var(--wren-ease)
+  animation-duration var(--saf0o-motion-slow)
+  animation-timing-function var(--saf0o-ease)
 
 @import '../../resources/Components/Button'
 @import '../../resources/Components/Input'
@@ -230,15 +230,15 @@ div
   max-width 620px
   height 100%
   box-sizing border-box
-  padding var(--wren-space-6)
+  padding var(--saf0o-space-6)
   display flex
   flex-direction column
   align-items center
   justify-content center
-  gap var(--wren-space-5)
-  background var(--wren-bg-canvas)
-  color var(--wren-text-primary)
-  border-radius var(--wren-radius-xl)
+  gap var(--saf0o-space-5)
+  background var(--saf0o-bg-canvas)
+  color var(--saf0o-text-primary)
+  border-radius var(--saf0o-radius-xl)
 
 .workspace-edge-left .walletRecovery
   right auto
@@ -246,24 +246,24 @@ div
 
 .walletRecoveryActions
   display flex
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
 
   button
     font inherit
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
     padding 12px 18px
-    border 1px solid var(--wren-border-default)
-    border-radius var(--wren-radius-md)
-    background var(--wren-bg-elevated)
-    box-shadow var(--wren-control-shadow)
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-md)
+    background var(--saf0o-bg-elevated)
+    box-shadow var(--saf0o-control-shadow)
     cursor pointer
 
     &:hover
-      box-shadow var(--wren-control-shadow-hover)
+      box-shadow var(--saf0o-control-shadow-hover)
 
     &:active
-      box-shadow var(--wren-control-shadow-pressed)
+      box-shadow var(--saf0o-control-shadow-pressed)
 
     &:focus-visible
-      outline 2px solid var(--wren-text-muted)
+      outline 2px solid var(--saf0o-text-muted)
       outline-offset 3px

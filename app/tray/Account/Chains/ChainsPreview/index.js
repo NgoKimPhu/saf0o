@@ -78,7 +78,7 @@ export class ChainsPreview extends React.Component {
               <button
                 type='button'
                 aria-label={`Previous network from ${name}`}
-                className='chainMonitorSwitchButton wrenControl wrenControlGhost wrenControlIcon wrenControlCompact'
+                className='chainMonitorSwitchButton saf0oControl saf0oControlGhost saf0oControlIcon saf0oControlCompact'
                 onClick={() => this.setIndex(this.state.index - 1)}
               >
                 <Icon name='chevron-left' size={17} />
@@ -88,7 +88,7 @@ export class ChainsPreview extends React.Component {
               <button
                 type='button'
                 aria-label={`Next network from ${name}`}
-                className='chainMonitorSwitchButton wrenControl wrenControlGhost wrenControlIcon wrenControlCompact'
+                className='chainMonitorSwitchButton saf0oControl saf0oControlGhost saf0oControlIcon saf0oControlCompact'
                 onClick={() => this.setIndex(this.state.index + 1)}
               >
                 <Icon name='chevron-right' size={17} />
@@ -101,7 +101,7 @@ export class ChainsPreview extends React.Component {
                   ? `View ${name} account on block explorer`
                   : `Block explorer unavailable for ${name}`
               }
-              className='chainMonitorExplorer wrenControl wrenControlGhost wrenControlIcon'
+              className='chainMonitorExplorer saf0oControl saf0oControlGhost saf0oControlIcon'
               disabled={!explorerAvailable}
               onClick={() => link.send('tray:openExplorer', chain, null, this.props.account)}
             >
@@ -110,7 +110,7 @@ export class ChainsPreview extends React.Component {
             <button
               aria-expanded={this.state.expanded}
               aria-label={`${this.state.expanded ? 'Hide' : 'Show'} gas details for ${name}`}
-              className='chainMonitorDisclosure wrenControl wrenControlGhost'
+              className='chainMonitorDisclosure saf0oControl saf0oControlGhost'
               onClick={() => this.setState(({ expanded }) => ({ expanded: !expanded }))}
               type='button'
             >

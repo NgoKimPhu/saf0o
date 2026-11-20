@@ -4,9 +4,9 @@ import Icon from '../../../resources/Components/Icon'
 import link from '../../../resources/link'
 import svg from '../../../resources/svg'
 import {
-  WREN_COMPANION_CHROME_WEB_STORE_URL,
-  WREN_COMPANION_FIREFOX_ADDONS_URL,
-  WREN_SUPPORT_URL
+  SAF0O_COMPANION_CHROME_WEB_STORE_URL,
+  SAF0O_COMPANION_FIREFOX_ADDONS_URL,
+  SAF0O_SUPPORT_URL
 } from '../../../resources/constants'
 
 const toolDashboardItems = [
@@ -53,7 +53,7 @@ export class Main extends React.Component {
         type='button'
         aria-current={item.current ? 'page' : undefined}
         aria-label={`${item.title} ${item.description}`}
-        className={`dashModule wrenControl ${item.current ? 'dashModuleCurrent' : 'wrenControlGhost'} ${
+        className={`dashModule saf0oControl ${item.current ? 'dashModuleCurrent' : 'saf0oControlGhost'} ${
           compact ? 'dashModuleCompact' : ''
         }`}
         key={item.view || item.title}
@@ -97,8 +97,8 @@ export class Main extends React.Component {
               <button
                 type='button'
                 aria-label='Download Chrome companion'
-                className='wrenControl wrenControlGhost wrenControlIcon'
-                onClick={() => link.send('tray:openExternal', WREN_COMPANION_CHROME_WEB_STORE_URL)}
+                className='saf0oControl saf0oControlGhost saf0oControlIcon'
+                onClick={() => link.send('tray:openExternal', SAF0O_COMPANION_CHROME_WEB_STORE_URL)}
               >
                 {svg.chrome(22)}
                 <span>Chrome</span>
@@ -106,8 +106,8 @@ export class Main extends React.Component {
               <button
                 type='button'
                 aria-label='Download Firefox companion'
-                className='wrenControl wrenControlGhost wrenControlIcon'
-                onClick={() => link.send('tray:openExternal', WREN_COMPANION_FIREFOX_ADDONS_URL)}
+                className='saf0oControl saf0oControlGhost saf0oControlIcon'
+                onClick={() => link.send('tray:openExternal', SAF0O_COMPANION_FIREFOX_ADDONS_URL)}
               >
                 {svg.firefox(22)}
                 <span>Firefox</span>
@@ -117,15 +117,15 @@ export class Main extends React.Component {
           <nav className='dashSupportActions' aria-label='Support'>
             <button
               type='button'
-              className='requestFeatureButton wrenControl wrenControlGhost'
-              onClick={() => link.send('tray:openExternal', WREN_SUPPORT_URL)}
+              className='requestFeatureButton saf0oControl saf0oControlGhost'
+              onClick={() => link.send('tray:openExternal', SAF0O_SUPPORT_URL)}
             >
               <span>Report an issue</span>
               <Icon name='external' size={14} />
             </button>
             <button
               type='button'
-              className='requestFeatureButton wrenControl wrenControlGhost'
+              className='requestFeatureButton saf0oControl saf0oControlGhost'
               onClick={() =>
                 link.send('tray:action', 'navDash', { view: 'accounts', data: { showAddAccounts: true } })
               }
@@ -135,10 +135,10 @@ export class Main extends React.Component {
             </button>
             <button
               type='button'
-              className='requestFeatureButton requestFeatureDanger wrenControl wrenControlGhost'
+              className='requestFeatureButton requestFeatureDanger saf0oControl saf0oControlGhost'
               onClick={() => link.send('tray:quit')}
             >
-              <span>Quit Wren</span>
+              <span>Quit Saf0o</span>
               <Icon name='close' size={14} />
             </button>
           </nav>

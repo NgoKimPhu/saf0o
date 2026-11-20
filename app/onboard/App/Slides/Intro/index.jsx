@@ -81,32 +81,32 @@ const Intro = ({ onProceed }) => (
   <Slide>
     <Welcome>
       <WelcomeContent>
-        <WelcomeTitle>Meet Wren</WelcomeTitle>
+        <WelcomeTitle>Meet Saf0o</WelcomeTitle>
         <WelcomeCopy>Your accounts. Your keys.</WelcomeCopy>
         <WelcomeButton
           type='button'
-          className='wrenControl wrenControlPrimary wrenControlLarge wrenOnboardPrimary'
+          className='saf0oControl saf0oControlPrimary saf0oControlLarge saf0oOnboardPrimary'
           onClick={() => onProceed({ newAccountType: 'create-seed' })}
         >
           Create wallet
         </WelcomeButton>
         <WelcomeButton
           type='button'
-          className='wrenControl wrenControlSecondary'
+          className='saf0oControl saf0oControlSecondary'
           onClick={() => onProceed({ accountChooserMode: 'import' })}
         >
           Import wallet
         </WelcomeButton>
         <WelcomeButton
           type='button'
-          className='wrenControl wrenControlSecondary'
+          className='saf0oControl saf0oControlSecondary'
           onClick={() => onProceed({ accountChooserMode: 'hardware' })}
         >
           Connect hardware wallet
         </WelcomeButton>
         <WelcomeButton
           type='button'
-          className='wrenControl wrenControlGhost'
+          className='saf0oControl saf0oControlGhost'
           onClick={() => onProceed({ newAccountType: 'nonsigning' })}
         >
           Watch address

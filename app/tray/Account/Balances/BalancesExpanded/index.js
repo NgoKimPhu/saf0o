@@ -3,7 +3,7 @@ import React from 'react'
 import Restore from 'react-restore'
 import BigNumber from 'bignumber.js'
 
-import emptyBalances from 'url:../../../../../asset/ui/wren-empty-balances-v2.png'
+import emptyBalances from 'url:../../../../../asset/ui/saf0o-empty-balances-v2.png'
 
 import Icon from '../../../../../resources/Components/Icon'
 import link from '../../../../../resources/link'
@@ -19,7 +19,7 @@ import { matchFilter } from '../../../../../resources/utils'
 import { safeNetworkMetadata } from '../../../../../resources/domain/networkMetadata'
 
 import { Cluster, ClusterRow, ClusterValue } from '../../../../../resources/Components/Cluster'
-import WrenEmptyState from '../../../../../resources/Components/WrenEmptyState'
+import Saf0oEmptyState from '../../../../../resources/Components/Saf0oEmptyState'
 
 export class BalancesExpanded extends React.Component {
   constructor(...args) {
@@ -87,7 +87,7 @@ export class BalancesExpanded extends React.Component {
         <div className='panelFilterInput'>
           <input
             aria-label='Filter balances'
-            className='wrenInput wrenInputQuiet'
+            className='saf0oInput saf0oInputQuiet'
             type='text'
             spellCheck='false'
             onChange={(e) => {
@@ -101,7 +101,7 @@ export class BalancesExpanded extends React.Component {
           <button
             type='button'
             aria-label='Clear balance filter'
-            className='panelFilterClear wrenControl wrenControlGhost wrenControlIcon'
+            className='panelFilterClear saf0oControl saf0oControlGhost saf0oControlIcon'
             onClick={() => {
               this.setState({ balanceFilter: '' })
             }}
@@ -140,13 +140,13 @@ export class BalancesExpanded extends React.Component {
             ) : null}
             {!scanning && balances.length === 0 ? (
               this.state.balanceFilter ? (
-                <div className='wrenEmptyFilter'>No matching balances</div>
+                <div className='saf0oEmptyFilter'>No matching balances</div>
               ) : (
-                <WrenEmptyState
+                <Saf0oEmptyState
                   image={emptyBalances}
                   transparentImage={true}
                   title='No balances yet'
-                  copy='Assets appear here after Wren checks your enabled networks.'
+                  copy='Assets appear here after Saf0o checks your enabled networks.'
                   expanded
                 />
               )
@@ -173,7 +173,7 @@ export class BalancesExpanded extends React.Component {
               <div className='signerBalanceButtons'>
                 <button
                   type='button'
-                  className='signerBalanceButton signerBalanceAddToken wrenControl wrenControlSecondary'
+                  className='signerBalanceButton signerBalanceAddToken saf0oControl saf0oControlSecondary'
                   onClick={() => {
                     link.send('tray:action', 'navDash', { view: 'tokens', data: { notify: 'addToken' } })
                   }}

@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url)
 const { default: createIpfs } = require('../compiled/main/nebula/ipfs')
 const { installDappArchive } = require('../compiled/main/dapps/cache')
 const fixtureCid = 'bafybeib4nfqoovh6nwreq3nsmtakyapnsbxuk7vn643la45zvl4jkw6mgq'
-const fixtureRoot = await mkdtemp(path.join(tmpdir(), 'wren-ipfs-install-'))
+const fixtureRoot = await mkdtemp(path.join(tmpdir(), 'saf0o-ipfs-install-'))
 const bundleRoot = path.join(fixtureRoot, fixtureCid)
 await mkdir(path.join(bundleRoot, 'assets'), { recursive: true })
 await mkdir(path.join(bundleRoot, '.well-known'))
@@ -68,7 +68,7 @@ const collect = async (source) => {
 try {
   for (const base of ['', '/api/v0/', '/custom/api']) {
     const ipfs = createIpfs(undefined, 32, 64, {
-      env: { WREN_IPFS_API_URL: endpoint + base, WREN_IPFS_AUTH_TOKEN: 'fixture-token' },
+      env: { SAF0O_IPFS_API_URL: endpoint + base, SAF0O_IPFS_AUTH_TOKEN: 'fixture-token' },
       timeoutMs: 1000
     })
     assert.deepEqual(await ipfs.getJson(`/ipfs/${cid}/folder%20name/file.json`), { ok: true })
@@ -100,7 +100,7 @@ try {
   assert.equal(requests.at(-1).authorization, `Basic ${Buffer.from('legacy-token:').toString('base64')}`)
 
   const gateway = createIpfs(undefined, 32, 64, {
-    env: { WREN_IPFS_GATEWAY_URL: `${endpoint}/content/` }
+    env: { SAF0O_IPFS_GATEWAY_URL: `${endpoint}/content/` }
   })
   assert.deepEqual(await gateway.getJson(cid), { ok: true })
   assert.equal(requests.at(-1).method, 'GET')
@@ -108,7 +108,7 @@ try {
   assert.equal(requests.at(-1).authorization, undefined)
   assert.equal(await collect(gateway.get(cid, { archive: true })), 'archive-content')
   const timeout = createIpfs(undefined, 32, 64, {
-    env: { WREN_IPFS_API_URL: endpoint },
+    env: { SAF0O_IPFS_API_URL: endpoint },
     timeoutMs: 50
   })
   await assert.rejects(timeout.getJson(`${cid}/hang`), /timed out after 50ms/)
@@ -116,7 +116,7 @@ try {
   assert.deepEqual(await timeout.getJson(cid), { ok: true })
 
   const cacheRoot = path.join(fixtureRoot, 'cache')
-  for (const env of [{ WREN_IPFS_API_URL: endpoint }, { WREN_IPFS_GATEWAY_URL: endpoint }]) {
+  for (const env of [{ SAF0O_IPFS_API_URL: endpoint }, { SAF0O_IPFS_GATEWAY_URL: endpoint }]) {
     const ipfs = createIpfs(undefined, 32, 65536, { env })
     await installDappArchive({
       archive: ipfs.get(`${fixtureCid}/bundle`, { archive: true }),

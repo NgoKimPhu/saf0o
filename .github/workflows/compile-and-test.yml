@@ -82,12 +82,12 @@ jobs:
       - name: Upload package smoke-test artifacts
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: wren-linux-x64-${{ github.sha }}
+          name: saf0o-linux-x64-${{ github.sha }}
           path: |
             dist/*.AppImage
             dist/*_amd64.deb
             dist/SHA256SUMS
-            dist/wren.cdx.json
+            dist/saf0o.cdx.json
           if-no-files-found: error
           retention-days: 7
 
@@ -105,7 +105,7 @@ jobs:
             csc_for_pull_request: false
             package-command: pnpm run package:linux:arm64
             verify-command: pnpm run package:verify:linux:arm64
-            artifact-name: wren-linux-arm64
+            artifact-name: saf0o-linux-arm64
             artifact-path: |
               dist/*.AppImage
               dist/*.tar.gz
@@ -114,7 +114,7 @@ jobs:
             csc_for_pull_request: true
             package-command: pnpm run package:mac:preview:x64
             verify-command: pnpm run package:verify:mac:x64
-            artifact-name: wren-macos-x64
+            artifact-name: saf0o-macos-x64
             artifact-path: |
               dist/*.dmg
               dist/*.zip
@@ -123,7 +123,7 @@ jobs:
             csc_for_pull_request: true
             package-command: pnpm run package:mac:preview:arm64
             verify-command: pnpm run package:verify:mac:arm64
-            artifact-name: wren-macos-arm64
+            artifact-name: saf0o-macos-arm64
             artifact-path: |
               dist/*.dmg
               dist/*.zip
@@ -132,7 +132,7 @@ jobs:
             csc_for_pull_request: false
             package-command: pnpm run package:windows:unsigned:x64
             verify-command: pnpm run package:verify:windows:x64
-            artifact-name: wren-windows-x64
+            artifact-name: saf0o-windows-x64
             artifact-path: dist/*.exe
 
     steps:

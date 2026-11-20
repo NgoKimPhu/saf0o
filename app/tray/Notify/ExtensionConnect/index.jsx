@@ -52,15 +52,15 @@ const ExtensionConnectNotification = ({
       <div className='notifyBoxWrap' onMouseDown={(event) => event.stopPropagation()}>
         <div className='notifyBoxSlide'>
           <div className='notifyBox extensionConnectBox'>
-            <h2 id='wren-notify-title' className='notifyTitle'>
+            <h2 id='saf0o-notify-title' className='notifyTitle'>
               Could not connect to the extension
             </h2>
-            <div className='notifyBody'>Wren could not complete pairing with the extension.</div>
+            <div className='notifyBody'>Saf0o could not complete pairing with the extension.</div>
             <div className='notifyInput'>
               <button
                 ref={errorCancelRef}
                 type='button'
-                className='notifyInputOption notifyInputDeny wrenControl wrenControlSecondary'
+                className='notifyInputOption notifyInputDeny saf0oControl saf0oControlSecondary'
                 data-dialog-initial-focus
                 disabled={responding}
                 onClick={onClose}
@@ -69,7 +69,7 @@ const ExtensionConnectNotification = ({
               </button>
               <button
                 type='button'
-                className='notifyInputOption notifyInputProceed wrenControl wrenControlPrimary'
+                className='notifyInputOption notifyInputProceed saf0oControl saf0oControlPrimary'
                 disabled={responding}
                 onClick={() => respond(lastResponseRef.current)}
               >
@@ -89,11 +89,11 @@ const ExtensionConnectNotification = ({
           <div className='extensionConnectIcon' aria-hidden='true'>
             {svg.handshake(40)}
           </div>
-          <h2 id='wren-notify-title' className='notifyTitle'>
-            Connect Wren Companion
+          <h2 id='saf0o-notify-title' className='notifyTitle'>
+            Connect Saf0o Companion
           </h2>
           <div className='notifyBody'>
-            <div className='notifyBodyLine'>Compare with the code in Wren Companion.</div>
+            <div className='notifyBodyLine'>Compare with the code in Saf0o Companion.</div>
             <div className='extensionPairingCode'>{pairingCode}</div>
             {extensionId && (
               <div className='notifyBodyLine'>
@@ -102,7 +102,7 @@ const ExtensionConnectNotification = ({
             )}
             <button
               type='button'
-              className='extensionOriginButton wrenControl wrenControlSecondary'
+              className='extensionOriginButton saf0oControl saf0oControlSecondary'
               aria-label='Copy pairing fingerprint'
               onClick={copyPairingFingerprint}
             >
@@ -115,7 +115,7 @@ const ExtensionConnectNotification = ({
           <div className='notifyInput'>
             <button
               type='button'
-              className='notifyInputOption notifyInputDeny wrenControl wrenControlSecondary'
+              className='notifyInputOption notifyInputDeny saf0oControl saf0oControlSecondary'
               aria-label='Decline extension connection'
               data-dialog-initial-focus
               disabled={responding}
@@ -125,7 +125,7 @@ const ExtensionConnectNotification = ({
             </button>
             <button
               type='button'
-              className='notifyInputOption notifyInputProceed wrenControl wrenControlPrimary'
+              className='notifyInputOption notifyInputProceed saf0oControl saf0oControlPrimary'
               aria-label='Codes match, connect'
               disabled={responding}
               onClick={() => respond(true)}

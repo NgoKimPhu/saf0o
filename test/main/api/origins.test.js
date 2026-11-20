@@ -13,7 +13,7 @@ import {
 import accounts from '../../../main/accounts'
 import store from '../../../main/store'
 import { createAccountPermission } from '../../../main/provider/permissions'
-import { WREN_EXTENSION_ORIGIN, originIdForInvoker, originIdForName } from '../../../resources/domain/origin'
+import { SAF0O_EXTENSION_ORIGIN, originIdForInvoker, originIdForName } from '../../../resources/domain/origin'
 
 const directOriginId = (origin) => originIdForInvoker(origin, { provenance: 'direct' })
 
@@ -424,10 +424,10 @@ describe('#isTrusted', () => {
   it('does not trust a schema-72 legacy Companion control origin before provenance repair', async () => {
     const payload = {
       method: 'wallet_getEthereumChains',
-      _origin: originIdForName(WREN_EXTENSION_ORIGIN)
+      _origin: originIdForName(SAF0O_EXTENSION_ORIGIN)
     }
     store.set('main.origins', payload._origin, {
-      name: WREN_EXTENSION_ORIGIN,
+      name: SAF0O_EXTENSION_ORIGIN,
       chain: { type: 'ethereum', id: 1 },
       provenance: 'legacy'
     })

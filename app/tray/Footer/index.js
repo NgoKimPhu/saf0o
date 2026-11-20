@@ -28,7 +28,7 @@ const walletCallsSimulationWarning = (simulation) => {
   if (simulation?.status === 'failed') {
     return {
       title: 'Simulation failed',
-      detail: 'Wren could not verify what this wallet call may do. Review the call details before deciding.'
+      detail: 'Saf0o could not verify what this wallet call may do. Review the call details before deciding.'
     }
   }
   if (simulation?.status === 'reverted') {
@@ -40,7 +40,7 @@ const walletCallsSimulationWarning = (simulation) => {
   if (simulation?.status === 'unavailable') {
     return {
       title: 'Simulation unavailable',
-      detail: 'Wren could not run a simulation for this wallet call.'
+      detail: 'Saf0o could not run a simulation for this wallet call.'
     }
   }
 }
@@ -103,7 +103,7 @@ export class Footer extends React.Component {
       const size = measure(this.footerRef)
       this.footerRef.current
         ?.closest('#panel')
-        ?.style.setProperty('--wren-measured-footer-height', `${size.height}px`)
+        ?.style.setProperty('--saf0o-measured-footer-height', `${size.height}px`)
       if (size.height !== this.lastHeight) {
         this.lastHeight = size.height
         link.send('tray:action', 'setFooterHeight', 'panel', size.height)
@@ -381,8 +381,8 @@ export class Footer extends React.Component {
       ? 'Stop monitoring this revocation?'
       : 'Stop monitoring this submitted revocation?'
     const detail = dialog.ambiguous
-      ? 'Wren does not yet know whether this revocation was submitted. Stopping monitoring cannot cancel a transaction that may already be on the network.'
-      : 'Wren knows the revocation was submitted but can’t verify whether delegation was cleared. Stopping monitoring cannot cancel the transaction or prove that delegation was cleared. Your account request queue will continue.'
+      ? 'Saf0o does not yet know whether this revocation was submitted. Stopping monitoring cannot cancel a transaction that may already be on the network.'
+      : 'Saf0o knows the revocation was submitted but can’t verify whether delegation was cleared. Stopping monitoring cannot cancel the transaction or prove that delegation was cleared. Your account request queue will continue.'
 
     return (
       <DialogSurface
@@ -585,7 +585,7 @@ export class Footer extends React.Component {
                         <strong>Sweep changed</strong>
                         <span>
                           Balances, fees, or nonce changed. Close this review and create a fresh Sweep.
-                          Nothing was signed or submitted; Wren will not retry automatically.
+                          Nothing was signed or submitted; Saf0o will not retry automatically.
                         </span>
                       </div>
                     </div>
@@ -641,7 +641,7 @@ export class Footer extends React.Component {
                       <span>
                         {funding
                           ? `Add ${symbol} on ${chainName}. Nothing signed or sent.`
-                          : `Wren could not verify this batch's funding on ${chainName}. ${req.recoverableError.message} Recheck when network data is available.`}
+                          : `Saf0o could not verify this batch's funding on ${chainName}. ${req.recoverableError.message} Recheck when network data is available.`}
                       </span>
                     </div>
                     {evidence ? <span>Amounts at last check</span> : null}

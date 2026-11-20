@@ -41,7 +41,7 @@ export const SigningDecisionSummary = Restore.connect(function SigningDecisionSu
           {!readOnly && preparation.status === 'succeeded' ? (
             <button
               type='button'
-              className='signingDecisionFeeAdjust wrenControlCompact'
+              className='signingDecisionFeeAdjust saf0oControlCompact'
               onClick={() => {
                 const walletCallsDraft = createWalletCallsDraft(req)
                 if (walletCallsDraft)

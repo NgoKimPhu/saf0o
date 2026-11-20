@@ -13,7 +13,7 @@ import {
   type ContractVerificationSubmission,
   type ContractVerificationTarget
 } from '../../resources/domain/contractVerification'
-import { WREN_DEPLOY_ORIGIN, originIdForName } from '../../resources/domain/origin'
+import { SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../resources/domain/origin'
 import type { OperationLifecycle } from '../store/state/types/operationLifecycle'
 import type {
   ContractVerificationArtifactIntake,
@@ -182,7 +182,7 @@ const QUANTITY = /^0x(?:0|[1-9a-f][0-9a-f]*)$/u
 const CODE = /^0x(?:[0-9a-fA-F]{2})+$/u
 const CONSTRUCTOR_ARGUMENTS = /^(?:[0-9a-fA-F]{2})+$/u
 const MAX_CONSTRUCTOR_ARGUMENTS_LENGTH = 2 * 1024 * 1024
-const deployOrigin = originIdForName(WREN_DEPLOY_ORIGIN)
+const deployOrigin = originIdForName(SAF0O_DEPLOY_ORIGIN)
 const supportedEtherscanChains = new Set([1, 10, 100, 137, 8453, 42161, 84532, 747474, 11155111, 11155420])
 
 const hasVerificationSettlement = (operation: OperationLifecycle) =>

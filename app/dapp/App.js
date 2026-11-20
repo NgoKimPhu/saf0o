@@ -15,12 +15,12 @@ export const FailedToLoad = ({ dappId }) => {
     <div className='mainDappState' role='alert'>
       <div className='mainDappLoadingText'>
         <strong>App unavailable</strong>
-        <span>Wren couldn’t load this app.</span>
+        <span>Saf0o couldn’t load this app.</span>
       </div>
       <div className='mainDappStateActions'>
         <button
           type='button'
-          className='mainDappStateAction wrenControl wrenControlPrimary'
+          className='mainDappStateAction saf0oControl saf0oControlPrimary'
           disabled={!dappId}
           onClick={retry}
         >
@@ -28,7 +28,7 @@ export const FailedToLoad = ({ dappId }) => {
         </button>
         <button
           type='button'
-          className='mainDappStateAction wrenControl wrenControlSecondary'
+          className='mainDappStateAction saf0oControl saf0oControlSecondary'
           onClick={() => link.send('frame:close')}
         >
           Close
@@ -43,12 +43,12 @@ export const LoadingDapp = () => {
     <div className='mainDappState' role='status'>
       <div className='mainDappLoadingText'>
         <strong>Loading app</strong>
-        <span>Wren is loading this app.</span>
+        <span>Saf0o is loading this app.</span>
       </div>
       <div className='loader' aria-hidden='true' />
       <button
         type='button'
-        className='mainDappStateAction wrenControl wrenControlSecondary'
+        className='mainDappStateAction saf0oControl saf0oControlSecondary'
         onClick={() => link.send('frame:close')}
       >
         Cancel

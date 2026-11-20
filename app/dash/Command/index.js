@@ -1,6 +1,6 @@
 import React from 'react'
 import Restore from 'react-restore'
-import wrenMark from 'url:../../../asset/brand/exports/mark/wren-mark-color-32.png'
+import saf0oMark from 'url:../../../asset/brand/exports/mark/saf0o-mark-color-32.png'
 import AccountTypeMark from '../../../resources/Components/AccountTypeMark'
 import Icon from '../../../resources/Components/Icon'
 import link from '../../../resources/link'
@@ -10,7 +10,7 @@ export class Command extends React.Component {
   renderSectionChrome(title) {
     return (
       <div className='command commandHome'>
-        <img className='commandHomeMark' src={wrenMark} alt='' aria-hidden='true' />
+        <img className='commandHomeMark' src={saf0oMark} alt='' aria-hidden='true' />
         <span className='commandHomeIdentity'>
           <strong>{title}</strong>
         </span>
@@ -18,7 +18,7 @@ export class Command extends React.Component {
         <button
           type='button'
           aria-label='Close'
-          className='commandHomeClose wrenControl wrenControlGhost wrenControlIcon wrenShellNav'
+          className='commandHomeClose saf0oControl saf0oControlGhost saf0oControlIcon saf0oShellNav'
           onClick={() => {
             requestDashNavigation('close', () => link.send('tray:action', 'closeDash'))
           }}
@@ -74,7 +74,7 @@ export class Command extends React.Component {
       dapps: 'Connected apps',
       deployment: 'Contracts',
       notify: 'Notice',
-      default: 'Wren',
+      default: 'Saf0o',
       settings: 'Settings',
       send: 'Send',
       tokens: 'Tokens'
@@ -90,7 +90,7 @@ export class Command extends React.Component {
           <button
             type='button'
             aria-label='Back'
-            className='commandItem commandItemBack cardShow wrenControl wrenControlSecondary wrenControlIcon wrenShellNav'
+            className='commandItem commandItemBack cardShow saf0oControl saf0oControlSecondary saf0oControlIcon saf0oShellNav'
             onClick={() => {
               requestDashNavigation('back', () => link.send('tray:action', 'backDash'))
             }}
@@ -104,7 +104,7 @@ export class Command extends React.Component {
         <button
           type='button'
           aria-label='Close'
-          className='commandItem commandItemClose wrenControl wrenControlSecondary wrenControlIcon wrenShellNav'
+          className='commandItem commandItemClose saf0oControl saf0oControlSecondary saf0oControlIcon saf0oShellNav'
           onClick={() => {
             requestDashNavigation('close', () => link.send('tray:action', 'closeDash'))
           }}

@@ -14,8 +14,8 @@ Import-Module -Name $securityModule -Force
 
 $package = Get-Content -LiteralPath 'package.json' -Raw | ConvertFrom-Json
 $files = @(
-  'dist\win-unpacked\Wren.exe',
-  "dist\Wren-Setup-$($package.version)-unsigned-x64.exe"
+  'dist\win-unpacked\Saf0o.exe',
+  "dist\Saf0o-Setup-$($package.version)-unsigned-x64.exe"
 )
 
 foreach ($file in $files) {

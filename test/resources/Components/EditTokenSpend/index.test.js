@@ -115,7 +115,7 @@ describe('changing approval amounts', () => {
     const revoke = screen.getByRole('button', { name: 'Revoke' })
     const amountModes = screen.getByLabelText('Spending limit options')
 
-    expect(amountModes.querySelectorAll('.wrenTokenApprovalMode')).toHaveLength(3)
+    expect(amountModes.querySelectorAll('.saf0oTokenApprovalMode')).toHaveLength(3)
     expect(amountModes.contains(revoke)).toBe(false)
     await user.click(revoke)
 
@@ -194,7 +194,7 @@ describe('changing approval amounts', () => {
 
     expect(screen.getByText('Invalid amount')).toBeTruthy()
     expect(
-      enterAmount.closest('.approveTokenSpendAmount').querySelector('.wrenTokenApprovalAmountSymbol')
+      enterAmount.closest('.approveTokenSpendAmount').querySelector('.saf0oTokenApprovalAmountSymbol')
     ).toBeNull()
     expect(screen.queryByText('Update')).toBeNull()
     expect(onUpdate).not.toHaveBeenCalled()
@@ -229,7 +229,7 @@ describe('changing approval amounts', () => {
 
     expect(onUpdate).toHaveBeenCalledWith(maxIntStr, expect.any(Function))
     expect(setUnlimited.getAttribute('aria-pressed')).toBe('true')
-    expect(document.querySelector('.wrenTokenApprovalCurrentValue strong').textContent).toBe('unlimited')
+    expect(document.querySelector('.saf0oTokenApprovalCurrentValue strong').textContent).toBe('unlimited')
   })
 
   it('allows the user to revoke a transaction approval explicitly', async () => {
@@ -261,7 +261,7 @@ describe('changing approval amounts', () => {
 
     expect(onUpdate).toHaveBeenCalledWith('0', expect.any(Function))
     expect(revoke.getAttribute('aria-pressed')).toBe('true')
-    expect(document.querySelector('.wrenTokenApprovalCurrentValue strong').textContent).toBe('0')
+    expect(document.querySelector('.saf0oTokenApprovalCurrentValue strong').textContent).toBe('0')
   })
 
   it('rolls back a rejected preset and suppresses duplicate activation', async () => {
@@ -390,7 +390,7 @@ describe('changing approval amounts', () => {
     expect(input.value).toBe('1e2')
     expect(screen.getByText('Invalid amount')).toBeTruthy()
     expect(
-      input.closest('.approveTokenSpendAmount').querySelector('.wrenTokenApprovalAmountSymbol')
+      input.closest('.approveTokenSpendAmount').querySelector('.saf0oTokenApprovalAmountSymbol')
     ).toBeNull()
     expect(onUpdate).not.toHaveBeenCalled()
   })
@@ -429,7 +429,7 @@ describe('changing approval amounts', () => {
     expect(onUpdate).toHaveBeenNthCalledWith(1, maxIntStr, expect.any(Function))
     expect(onUpdate).toHaveBeenNthCalledWith(2, '70000', expect.any(Function))
     expect(setRequested.getAttribute('aria-pressed')).toBe('true')
-    expect(document.querySelector('.wrenTokenApprovalCurrentValue strong').textContent).toBe('7')
+    expect(document.querySelector('.saf0oTokenApprovalCurrentValue strong').textContent).toBe('7')
   })
 
   it('allows a failed custom update to be retried', async () => {

@@ -34,8 +34,8 @@ import {
 } from '../../../resources/domain/transaction/funding'
 import {
   FRAME_SEND_ORIGIN,
-  WREN_DEPLOY_ORIGIN,
-  WREN_INTERNAL_ORIGIN,
+  SAF0O_DEPLOY_ORIGIN,
+  SAF0O_INTERNAL_ORIGIN,
   originIdForName
 } from '../../../resources/domain/origin'
 
@@ -61,7 +61,7 @@ jest.mock('../../../main/provider', () => ({
 jest.mock('../../../main/signers', () => ({ get: jest.fn() }))
 jest.mock('../../../main/windows', () => ({
   broadcast: jest.fn(),
-  isAnyWrenVisible: jest.fn(() => true),
+  isAnySaf0oVisible: jest.fn(() => true),
   showTray: jest.fn()
 }))
 jest.mock('../../../main/windows/nav', () => ({ on: jest.fn(), forward: jest.fn() }))
@@ -2832,7 +2832,7 @@ describe('ordinary transaction lifecycle outcomes', () => {
     }
   })
 
-  it('registers Wren Send recipient metadata only after its broadcast lifecycle is persisted', () => {
+  it('registers Saf0o Send recipient metadata only after its broadcast lifecycle is persisted', () => {
     jest.useFakeTimers()
     const targetAccount = Accounts.current()
     const hash = `0x${'a'.repeat(64)}`
@@ -3055,7 +3055,7 @@ describe('ordinary transaction lifecycle outcomes', () => {
     const contractAddress = getCreateAddress({ from: targetAccount.address, nonce: 10 })
     Accounts.addRequest({
       ...request,
-      origin: originIdForName(WREN_DEPLOY_ORIGIN),
+      origin: originIdForName(SAF0O_DEPLOY_ORIGIN),
       deployment: {
         version: 1,
         inspectionId: 'a'.repeat(32),
@@ -4019,7 +4019,7 @@ describe('#replaceTx', () => {
     delete installed.original.data.to
     installed.original.data.data = initcode
     installed.original.data.value = '0x0'
-    installed.original.origin = originIdForName(WREN_DEPLOY_ORIGIN)
+    installed.original.origin = originIdForName(SAF0O_DEPLOY_ORIGIN)
     installed.original.deployment = Object.freeze({
       version: 1,
       inspectionId: 'd'.repeat(32),
@@ -4131,7 +4131,7 @@ describe('#replaceTx', () => {
     await expect(Accounts.replaceTx(current.id, original.handlerId, 'speed')).resolves.toBeUndefined()
 
     const [payload, , , , trustedMetadata] = provider.sendTransaction.mock.calls[0]
-    expect(payload._origin).toBe(originIdForName(WREN_DEPLOY_ORIGIN))
+    expect(payload._origin).toBe(originIdForName(SAF0O_DEPLOY_ORIGIN))
     expect(payload.params[0]).not.toHaveProperty('to')
     expect(payload.params[0]).toMatchObject({
       data: original.data.data,
@@ -4158,7 +4158,7 @@ describe('#replaceTx', () => {
     await expect(Accounts.replaceTx(current.id, original.handlerId, 'cancel')).resolves.toBeUndefined()
 
     const [payload, , , , trustedMetadata] = provider.sendTransaction.mock.calls[0]
-    expect(payload._origin).toBe(originIdForName(WREN_INTERNAL_ORIGIN))
+    expect(payload._origin).toBe(originIdForName(SAF0O_INTERNAL_ORIGIN))
     expect(payload.params[0]).toMatchObject({
       to: current.id,
       value: '0x0',
@@ -4893,7 +4893,7 @@ describe('wallet-owned EIP-7702 revocation', () => {
       submission: {
         status: 'unconfirmed',
         detail:
-          'Wren is monitoring the expected transaction hash, and this account’s request queue is paused until its status is known.'
+          'Saf0o is monitoring the expected transaction hash, and this account’s request queue is paused until its status is known.'
       },
       tx: { hash: inspectedHash, confirmations: 0 }
     })

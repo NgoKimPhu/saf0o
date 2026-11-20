@@ -124,12 +124,12 @@ export const PasswordInput = ({
       <div
         className={
           hasBlockingError
-            ? 'addAccountItemOptionInput addAccountItemOptionInputPassword wrenInputGroup wrenInputGroupError'
-            : 'addAccountItemOptionInput addAccountItemOptionInputPassword wrenInputGroup'
+            ? 'addAccountItemOptionInput addAccountItemOptionInputPassword saf0oInputGroup saf0oInputGroupError'
+            : 'addAccountItemOptionInput addAccountItemOptionInputPassword saf0oInputGroup'
         }
       >
         <input
-          className={hasBlockingError ? 'wrenInput wrenInputError' : 'wrenInput'}
+          className={hasBlockingError ? 'saf0oInput saf0oInputError' : 'saf0oInput'}
           role='textbox'
           type={revealed ? 'text' : 'password'}
           aria-label={title}
@@ -149,7 +149,7 @@ export const PasswordInput = ({
         />
         <button
           type='button'
-          className='addAccountItemOptionPasswordReveal wrenControl wrenControlSecondary wrenControlIcon'
+          className='addAccountItemOptionPasswordReveal saf0oControl saf0oControlSecondary saf0oControlIcon'
           aria-label={revealed ? 'Hide password' : 'Show password'}
           aria-pressed={revealed}
           onClick={() => setRevealed((value) => !value)}
@@ -185,7 +185,7 @@ export const PasswordInput = ({
       ) : !error || overrideAvailable ? (
         <button
           type='button'
-          className='addAccountItemOptionSubmit wrenControl wrenControlPrimary'
+          className='addAccountItemOptionSubmit saf0oControl saf0oControlPrimary'
           disabled={disabled || processing || !canSubmit}
           onClick={handleSubmit}
         >

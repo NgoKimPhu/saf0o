@@ -47,7 +47,7 @@ it('does not clear clipboard data that another application replaced', () => {
   expect(read()).toBe('new clipboard value')
 })
 
-it('cancels secret cleanup when Wren performs a later ordinary copy', () => {
+it('cancels secret cleanup when Saf0o performs a later ordinary copy', () => {
   const { clipboard, managed, read } = setup()
 
   managed.writeSecret('sensitive')
@@ -196,9 +196,7 @@ function setupAsync(readDelayMs: number) {
     clear: jest.fn(() => {
       value = ''
     }),
-    readText: jest.fn(
-      () => new Promise<string>((resolve) => setTimeout(() => resolve(value), readDelayMs))
-    ),
+    readText: jest.fn(() => new Promise<string>((resolve) => setTimeout(() => resolve(value), readDelayMs))),
     writeText: jest.fn(async (next: string) => {
       value = next
     })

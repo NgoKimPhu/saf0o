@@ -1,7 +1,7 @@
 import { Activity, activityOriginLabel, filterActivity } from '../../../../../app/tray/Account/Activity'
 import {
-  WREN_DEPLOY_DISPLAY_NAME,
-  WREN_DEPLOY_ORIGIN,
+  SAF0O_DEPLOY_DISPLAY_NAME,
+  SAF0O_DEPLOY_ORIGIN,
   originIdForInvoker
 } from '../../../../../resources/domain/origin'
 import link from '../../../../../resources/link'
@@ -461,7 +461,7 @@ it.each([
   ['submitted', 'Submitted', 'Not yet confirmed'],
   ['confirming', 'Confirming', 'Included; waiting for final confirmation'],
   ['replaced', 'Replaced', 'A submitted wallet activity was replaced'],
-  ['reorged', 'Reorg detected', 'A prior confirmation changed; Wren is checking again'],
+  ['reorged', 'Reorg detected', 'A prior confirmation changed; Saf0o is checking again'],
   ['stopped', 'Monitoring stopped', 'The network may still process it.'],
   ['clearance-unverified', 'Clearance not verified', 'could not verify that the delegation is cleared'],
   ['verified-clearance', 'Delegation removed', 'no longer delegates execution']
@@ -479,10 +479,10 @@ it.each([
 })
 
 it.each([
-  ['broadcasting', 'Broadcast may not have started; Wren is checking the signed transaction hash.'],
+  ['broadcasting', 'Broadcast may not have started; Saf0o is checking the signed transaction hash.'],
   [
     'unconfirmed',
-    'Broadcast was attempted, but the network response was not confirmed. Wren is checking the network.'
+    'Broadcast was attempted, but the network response was not confirmed. Saf0o is checking the network.'
   ]
 ])('truthfully distinguishes the %s transaction submission phase', (broadcastPhase, detail) => {
   render(
@@ -515,14 +515,14 @@ it('does not expose opaque origin identifiers as app names', () => {
 })
 
 it('presents deployment activity with its friendly name and never searches its private origin', () => {
-  expect(activityOriginLabel(WREN_DEPLOY_ORIGIN)).toBe(WREN_DEPLOY_DISPLAY_NAME)
-  expect(activityOriginLabel('managed-id', WREN_DEPLOY_ORIGIN)).toBe(WREN_DEPLOY_DISPLAY_NAME)
+  expect(activityOriginLabel(SAF0O_DEPLOY_ORIGIN)).toBe(SAF0O_DEPLOY_DISPLAY_NAME)
+  expect(activityOriginLabel('managed-id', SAF0O_DEPLOY_ORIGIN)).toBe(SAF0O_DEPLOY_DISPLAY_NAME)
 
-  const deploymentOriginId = originIdForInvoker(WREN_DEPLOY_ORIGIN, { provenance: 'managed' })
-  expect(activityOriginLabel(deploymentOriginId)).toBe(WREN_DEPLOY_DISPLAY_NAME)
+  const deploymentOriginId = originIdForInvoker(SAF0O_DEPLOY_ORIGIN, { provenance: 'managed' })
+  expect(activityOriginLabel(deploymentOriginId)).toBe(SAF0O_DEPLOY_DISPLAY_NAME)
 
   const deployment = [entry({ origin: deploymentOriginId })]
-  expect(filterActivity(deployment, 'transactions', 'Wren Deploy')).toHaveLength(1)
+  expect(filterActivity(deployment, 'transactions', 'Saf0o Deploy')).toHaveLength(1)
   expect(filterActivity(deployment, 'transactions', deploymentOriginId)).toHaveLength(0)
 })
 
@@ -590,7 +590,7 @@ it('announces session-only Activity clearing when persistence is not acknowledge
 
   expect(
     await screen.findByText(
-      'Activity history and address memory are cleared for this session, but Wren could not confirm the change was saved. Restart may restore prior data.'
+      'Activity history and address memory are cleared for this session, but Saf0o could not confirm the change was saved. Restart may restore prior data.'
     )
   ).toBeTruthy()
 })
@@ -604,19 +604,19 @@ it('does not claim clearing when the Activity acknowledgement is unavailable', a
 
   expect(
     await screen.findByText(
-      'Wren could not confirm that Activity history and address memory were cleared. Try again.'
+      'Saf0o could not confirm that Activity history and address memory were cleared. Try again.'
     )
   ).toBeTruthy()
 })
 
 it('shows a concise external action and keeps it searchable by source and action', () => {
   const external = entry({
-    origin: 'wren:external',
+    origin: 'saf0o:external',
     observed: { action: 'deposit', hash: transactionHash, source: 'external' }
   })
   render(<ActivityHarness moduleId='activity' account={account} entries={[external]} />)
-  expect(screen.getByRole('button', { name: 'View Deposit details from Outside Wren' })).toBeTruthy()
-  expect(screen.getByText('Outside Wren · Ethereum')).toBeTruthy()
+  expect(screen.getByRole('button', { name: 'View Deposit details from Outside Saf0o' })).toBeTruthy()
+  expect(screen.getByText('Outside Saf0o · Ethereum')).toBeTruthy()
   expect(filterActivity([external], 'all', 'deposit')).toEqual([external])
-  expect(activityOriginLabel('wren:external')).toBe('Outside Wren')
+  expect(activityOriginLabel('saf0o:external')).toBe('Outside Saf0o')
 })

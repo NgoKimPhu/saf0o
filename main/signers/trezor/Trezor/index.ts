@@ -273,7 +273,7 @@ export default class Trezor extends Signer {
 
       if (reportedAddress !== current) {
         log.error(
-          `address from Wren (${current}) does not match address from Trezor device (${reportedAddress})`
+          `address from Saf0o (${current}) does not match address from Trezor device (${reportedAddress})`
         )
 
         this.handleError(

@@ -1,5 +1,5 @@
 const AutoLaunch = require('auto-launch')
-const launch = new AutoLaunch({ name: 'Wren' })
+const launch = new AutoLaunch({ name: 'Saf0o' })
 module.exports = {
   enable: launch.enable,
   disable: launch.disable,

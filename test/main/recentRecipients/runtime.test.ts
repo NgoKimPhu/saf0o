@@ -36,7 +36,7 @@ const operation = (
     id: operationId,
     kind: 'transaction',
     account: '0x1111111111111111111111111111111111111111',
-    origin: 'wren-send',
+    origin: 'saf0o-send',
     chainId: 1,
     state,
     createdAt: 1,

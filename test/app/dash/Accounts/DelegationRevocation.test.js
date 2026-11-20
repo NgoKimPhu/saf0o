@@ -91,7 +91,7 @@ it('checks the selected software account and queues only an eligible revocation'
   })
 })
 
-it('observes a different account without changing Wren selection', async () => {
+it('observes a different account without changing Saf0o selection', async () => {
   const current = '0x0000000000000000000000000000000000000003'
   const multipleAccounts = {
     ...accounts,

@@ -4,12 +4,12 @@ import ReviewAcknowledgements from '../ReviewAcknowledgements'
 
 const RISK_MESSAGES = {
   'legacy-eth-sign': () =>
-    'Dangerous legacy eth_sign request. Wren applies the EIP-191 personal-message prefix for compatibility.',
+    'Dangerous legacy eth_sign request. Saf0o applies the EIP-191 personal-message prefix for compatibility.',
   'opaque-message': () =>
     'This message is opaque hexadecimal data. Its meaning cannot be verified before signing.',
   'siwe-malformed': () => 'This message looks like Sign-In with Ethereum but does not conform to ERC-4361.',
   'siwe-origin-unverified': ({ origin }) =>
-    `Wren can compare only the stored origin label (${
+    `Saf0o can compare only the stored origin label (${
       origin || 'Unknown'
     }); native clients are not authenticated.`,
   'siwe-origin-mismatch': ({ origin, siwe }) =>
@@ -104,7 +104,7 @@ const SiweReview = ({ siwe }) => (
 const SignatureRequest = ({ req, originName, chainData = {}, readOnly = false }) => {
   const { account, data, id, handlerId, status, type } = req
   const { context, decodedMessage } = data
-  const method = context.method === 'eth_sign' ? 'eth_sign (EIP-191-prefixed by Wren)' : 'personal_sign'
+  const method = context.method === 'eth_sign' ? 'eth_sign (EIP-191-prefixed by Saf0o)' : 'personal_sign'
   const requestClass = getRequestClass(status)
 
   return type === 'sign' ? (

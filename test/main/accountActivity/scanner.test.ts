@@ -186,14 +186,14 @@ test('records failed unknown calls without treating reverted logs as incoming tr
     [a, 'failed', 'call']
   ])
 })
-test('does not duplicate a Wren operation or notify again for another watched recipient', async () => {
+test('does not duplicate a Saf0o operation or notify again for another watched recipient', async () => {
   const f = fixture()
   await f.scanner.scan(1)
   f.localActivity.mockReturnValue({ account: a, origin: 'https://app.example' })
   f.tx(3, a, b)
   f.head(5)
   await f.scanner.scan(1)
-  expect([...f.entries.values()].map((e) => [e.account, e.observed?.source])).toEqual([[b, 'wren']])
+  expect([...f.entries.values()].map((e) => [e.account, e.observed?.source])).toEqual([[b, 'saf0o']])
   expect(f.notify).not.toHaveBeenCalled()
 })
 test('keeps progress before an incomplete block and retries after a receipt failure', async () => {

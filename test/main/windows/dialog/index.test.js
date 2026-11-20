@@ -74,27 +74,27 @@ describe('#showUnhandledExceptionDialog', () => {
 })
 
 describe('profile backup dialogs', () => {
-  it('opens only Wren backup files without exposing the selected path elsewhere', async () => {
-    dialog.showOpenDialog.mockResolvedValue({ canceled: false, filePaths: ['/tmp/profile.wrenbackup'] })
+  it('opens only Saf0o backup files without exposing the selected path elsewhere', async () => {
+    dialog.showOpenDialog.mockResolvedValue({ canceled: false, filePaths: ['/tmp/profile.saf0obackup'] })
 
-    await expect(openProfileBackupDialog()).resolves.toBe('/tmp/profile.wrenbackup')
+    await expect(openProfileBackupDialog()).resolves.toBe('/tmp/profile.saf0obackup')
     expect(dialog.showOpenDialog).toHaveBeenCalledWith(
       'focused window',
       expect.objectContaining({
         properties: ['openFile'],
-        filters: [{ name: 'Wren profile backup', extensions: ['wrenbackup'] }]
+        filters: [{ name: 'Saf0o profile backup', extensions: ['saf0obackup'] }]
       })
     )
   })
 
   it('uses a dated non-JSON filename and reports cancellation', async () => {
-    dialog.showSaveDialog.mockResolvedValueOnce({ canceled: false, filePath: '/tmp/profile.wrenbackup' })
+    dialog.showSaveDialog.mockResolvedValueOnce({ canceled: false, filePath: '/tmp/profile.saf0obackup' })
     await expect(saveProfileBackupDialog(new Date('2026-08-12T00:00:00.000Z'))).resolves.toBe(
-      '/tmp/profile.wrenbackup'
+      '/tmp/profile.saf0obackup'
     )
     expect(dialog.showSaveDialog).toHaveBeenCalledWith(
       'focused window',
-      expect.objectContaining({ defaultPath: 'wren-profile-2026-08-12.wrenbackup' })
+      expect.objectContaining({ defaultPath: 'saf0o-profile-2026-08-12.saf0obackup' })
     )
 
     dialog.showSaveDialog.mockResolvedValueOnce({ canceled: true })

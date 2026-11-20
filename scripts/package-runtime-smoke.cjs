@@ -18,7 +18,7 @@ const { FrameNodeUsbTransport } = require(
 )
 const { isTransportInstance } = fromApp('@trezor/transport-common')
 // Construct only: never initialize, enumerate, or open a physical USB device.
-const guardedTrezorTransport = new FrameNodeUsbTransport({ id: 'Wren package probe' })
+const guardedTrezorTransport = new FrameNodeUsbTransport({ id: 'Saf0o package probe' })
 const trezorTransportContract =
   isTransportInstance(guardedTrezorTransport) &&
   typeof guardedTrezorTransport.api.resetDevice === 'function' &&
@@ -81,7 +81,7 @@ try {
   signerTamperingRejected = true
 }
 let linuxBackendQueries = 0
-const osSignerStorage = new OsSignerStorage(path.join(process.resourcesPath, '.wren-package-probe'), {
+const osSignerStorage = new OsSignerStorage(path.join(process.resourcesPath, '.saf0o-package-probe'), {
   platform: process.platform,
   safeStorage: {
     decryptString: () => {

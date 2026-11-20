@@ -5,7 +5,7 @@ import {
   OperationLifecycles,
   pruneOperationLifecycles
 } from '../store/state/types/operationLifecycle'
-import { WREN_DEPLOY_ORIGIN, WREN_INTERNAL_ORIGIN, originIdForName } from '../../resources/domain/origin'
+import { SAF0O_DEPLOY_ORIGIN, SAF0O_INTERNAL_ORIGIN, originIdForName } from '../../resources/domain/origin'
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu
 const BROADCAST_PHASE = Object.freeze({ broadcasting: 0, unconfirmed: 1, acknowledged: 2 })
@@ -20,8 +20,8 @@ export interface OperationLifecycleRetention {
 }
 
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T
-const deployOriginId = originIdForName(WREN_DEPLOY_ORIGIN)
-const internalOriginId = originIdForName(WREN_INTERNAL_ORIGIN)
+const deployOriginId = originIdForName(SAF0O_DEPLOY_ORIGIN)
+const internalOriginId = originIdForName(SAF0O_INTERNAL_ORIGIN)
 
 const hasValidReplacementLineage = (operation: OperationLifecycle, operations: OperationLifecycles) => {
   const visited = new Set<string>()

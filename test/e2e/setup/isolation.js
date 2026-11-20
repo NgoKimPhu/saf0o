@@ -6,10 +6,10 @@ const net = require('net')
 const path = require('path')
 
 const LOOPBACK_HOSTS = new Set(['127.0.0.1', '::1'])
-const WREN_LIVE_PORTS = new Set([1248, 8421])
-const profile = process.env.WREN_E2E_PROFILE
-const runRoot = process.env.WREN_E2E_RUN_ROOT
-const namespace = process.env.WREN_E2E_NAMESPACE
+const SAF0O_LIVE_PORTS = new Set([1248, 8421])
+const profile = process.env.SAF0O_E2E_PROFILE
+const runRoot = process.env.SAF0O_E2E_RUN_ROOT
+const namespace = process.env.SAF0O_E2E_NAMESPACE
 const originalChildProcess = Object.fromEntries(
   ['exec', 'execFile', 'fork', 'spawn', 'spawnSync'].map((method) => [method, childProcess[method]])
 )
@@ -56,7 +56,7 @@ function assertConnection(args) {
   const { host, port } = connectionTarget(args)
   if (!LOOPBACK_HOSTS.has(host)) fail(`outbound connection to ${host || '<default host>'} is blocked`)
   if (!Number.isSafeInteger(port) || port < 1 || port > 65535) fail('connection port is invalid')
-  if (WREN_LIVE_PORTS.has(port)) fail(`live Wren port ${port} is blocked`)
+  if (SAF0O_LIVE_PORTS.has(port)) fail(`live Saf0o port ${port} is blocked`)
   if (!allowedPorts.has(port)) fail(`loopback port ${port} does not belong to this test process`)
 }
 
@@ -128,7 +128,7 @@ for (const method of ['resolve', 'resolve4', 'resolve6', 'resolveAny', 'reverse'
     dns.promises[method] = () => fail('DNS queries are blocked')
 }
 
-Object.defineProperty(global, '__WREN_E2E_ISOLATION__', {
+Object.defineProperty(global, '__SAF0O_E2E_ISOLATION__', {
   value: Object.freeze({
     allowedPorts,
     namespace,

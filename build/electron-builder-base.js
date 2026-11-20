@@ -1,6 +1,6 @@
 const config = {
   appId: 'io.github.ngokimphu.saf0o',
-  productName: 'Wren',
+  productName: 'Saf0o',
   npmRebuild: false,
   files: [
     'compiled',

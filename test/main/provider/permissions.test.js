@@ -81,7 +81,7 @@ it('creates, evaluates, and formats a finite scoped account permission', () => {
     parentCapability: 'eth_accounts',
     caveats: [
       {
-        type: 'wren:permissionScope',
+        type: 'saf0o:permissionScope',
         value: expect.objectContaining({
           account: '0x1111111111111111111111111111111111111111',
           chains: ['0x1', '0xa'],

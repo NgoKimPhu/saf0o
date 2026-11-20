@@ -3,16 +3,16 @@
 .sendUnavailable
   box-sizing border-box
   min-height 100%
-  color var(--wren-text-primary)
+  color var(--saf0o-text-primary)
   background transparent
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
 
 .sendRequestState
   box-sizing border-box
   min-height 100%
-  color var(--wren-text-primary)
+  color var(--saf0o-text-primary)
   background transparent
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
 
 .sendComposer
   display flex
@@ -27,32 +27,32 @@
   gap 4px
   margin 14px 24px 0
   padding 4px
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-md)
-  background var(--wren-surface-inset)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-md)
+  background var(--saf0o-surface-inset)
 
   button
     min-height 44px
     padding 0 12px
     border 0
-    border-radius var(--wren-radius-sm)
-    color var(--wren-text-secondary)
+    border-radius var(--saf0o-radius-sm)
+    color var(--saf0o-text-secondary)
     background transparent
-    font-family var(--wren-font-ui)
+    font-family var(--saf0o-font-ui)
     font-weight 610
     cursor pointer
 
     &[aria-pressed='true']
-      color var(--wren-text-primary)
-      background var(--wren-bg-elevated)
-      box-shadow var(--wren-shadow-sm)
+      color var(--saf0o-text-primary)
+      background var(--saf0o-bg-elevated)
+      box-shadow var(--saf0o-shadow-sm)
 
     &:focus-visible
-      outline 2px solid var(--wren-focus)
+      outline 2px solid var(--saf0o-focus)
       outline-offset 2px
 
     &:disabled
-      color var(--wren-text-disabled)
+      color var(--saf0o-text-disabled)
       cursor default
 
 .sendLedger
@@ -86,8 +86,8 @@
   padding 12px 0 10px
 
 .sendRowLabel
-  color var(--wren-text-muted)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-muted)
+  font-size var(--saf0o-type-caption)
   font-weight 560
   letter-spacing .055em
   text-transform uppercase
@@ -106,17 +106,17 @@
   justify-content space-between
   padding 0
   border 0
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   background transparent
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
   text-align left
   cursor pointer
 
   &:hover
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 4px
 
   .sendAssetIdentityCluster
@@ -133,13 +133,13 @@
       gap 2px
 
   strong
-    color var(--wren-text-primary)
-    font-size var(--wren-type-body)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-body)
     font-weight 620
 
   small
-    color var(--wren-text-muted)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-size var(--saf0o-type-caption)
 
 .sendInputRow
   display grid
@@ -167,19 +167,19 @@
     flex 1
     border 0
     outline 0
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
     background transparent
-    font-family var(--wren-font-ui)
+    font-family var(--saf0o-font-ui)
     font-size 19px
     font-weight 510
 
     &::placeholder
-      color var(--wren-text-disabled)
-      font-family var(--wren-font-ui)
+      color var(--saf0o-text-disabled)
+      font-family var(--saf0o-font-ui)
       font-weight 430
 
 .sendRecipientInput
-  font-family var(--wren-font-mono) !important
+  font-family var(--saf0o-font-mono) !important
   font-size 15px !important
   font-weight 200 !important
 
@@ -187,8 +187,8 @@
   overflow hidden
   grid-column 1 / -1
   grid-row 3
-  color var(--wren-text-muted)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-muted)
+  font-size var(--saf0o-type-caption)
   text-overflow ellipsis
   user-select none
   white-space nowrap
@@ -197,7 +197,7 @@
   display flex
   align-items center
   flex-wrap wrap
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
   overflow visible
   text-overflow clip
   white-space normal
@@ -212,22 +212,22 @@
 
 .sendRowError
   .sendAmountError
-    color var(--wren-danger)
+    color var(--saf0o-danger)
 
 .sendInlineAction,
 .sendMaxAction
   border 0
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   background transparent
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
   cursor pointer
 
   &:hover
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
 
   &:focus-visible
     border-radius 4px
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
 .sendInlineAction
@@ -241,20 +241,20 @@
   min-height 126px
 
 .sendAmountInput
-  font-family var(--wren-font-mono) !important
+  font-family var(--saf0o-font-mono) !important
   font-size 30px !important
   font-weight 200 !important
   letter-spacing -.035em
 
   &::placeholder
-    font-family var(--wren-font-mono) !important
+    font-family var(--saf0o-font-mono) !important
     font-weight 430 !important
 
 .sendAmountSymbol
   margin-left 12px
-  color var(--wren-text-secondary)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-body)
+  color var(--saf0o-text-secondary)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-body)
   font-weight 620
 
 .sendMaxAction
@@ -262,14 +262,14 @@
   height 44px
   margin-left 10px
   padding 0 9px
-  font-size var(--wren-type-caption)
+  font-size var(--saf0o-type-caption)
   font-weight 620
 
   &:disabled,
   &:disabled:hover,
   &:disabled:active
     border-color transparent
-    color var(--wren-text-disabled)
+    color var(--saf0o-text-disabled)
     background transparent
     box-shadow none
     cursor default
@@ -297,9 +297,9 @@
   overflow hidden
   grid-column 2
   grid-row 1
-  color var(--wren-text-secondary)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-small)
+  color var(--saf0o-text-secondary)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-small)
   text-align right
   text-overflow ellipsis
   user-select none
@@ -307,30 +307,30 @@
 
 .sendQuotePanel
   display flex
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
   margin 12px 0 4px
-  padding var(--wren-space-4)
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-md)
-  background var(--wren-surface-inset)
+  padding var(--saf0o-space-4)
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-md)
+  background var(--saf0o-surface-inset)
   flex-direction column
 
   > span,
   > p
     margin 0
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-small)
     line-height 1.45
 
 .sendQuotePanelReview
-  border-color var(--wren-accent-primary)
+  border-color var(--saf0o-accent-primary)
 
 .sendQuoteHeading
   display flex
   min-width 0
   align-items flex-start
   justify-content space-between
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
 
   > div
     display flex
@@ -339,21 +339,21 @@
     gap 3px
 
     span
-      color var(--wren-text-muted)
-      font-size var(--wren-type-caption)
+      color var(--saf0o-text-muted)
+      font-size var(--saf0o-type-caption)
 
     strong
       overflow-wrap anywhere
-      font-family var(--wren-font-mono)
-      font-size var(--wren-type-body)
+      font-family var(--saf0o-font-mono)
+      font-size var(--saf0o-type-body)
 
 .sendQuoteBadge
   flex none
   padding 4px 7px
   border-radius 999px
-  color var(--wren-text-secondary)
-  background var(--wren-success-soft)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-secondary)
+  background var(--saf0o-success-soft)
+  font-size var(--saf0o-type-caption)
 
 .sendQuoteEdit
   align-self flex-start
@@ -369,16 +369,16 @@
     gap 10px
 
   dt
-    color var(--wren-text-muted)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-size var(--saf0o-type-caption)
 
   dd
     min-width 0
     margin 0
     overflow-wrap anywhere
-    color var(--wren-text-primary)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
     text-align right
 
 .sendSweepSelect,
@@ -405,24 +405,24 @@
   display grid
   grid-template-columns auto minmax(0, 1fr)
   align-items center
-  gap var(--wren-space-3)
-  padding var(--wren-space-3) 0
+  gap var(--saf0o-space-3)
+  padding var(--saf0o-space-3) 0
 
   .sendSweepChainLabel
-    color var(--wren-text-muted)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-size var(--saf0o-type-caption)
     font-weight 600
     text-transform uppercase
 
   .dropdownWrap
     height 44px
 
-  .dropdown.wrenInput
+  .dropdown.saf0oInput
     width 100%
     min-height 44px
     height 44px
     padding-right 36px
-    background-image linear-gradient(45deg, transparent 50%, var(--wren-text-tertiary) 50%), linear-gradient(135deg, var(--wren-text-tertiary) 50%, transparent 50%), linear-gradient(180deg, rgba(255, 255, 255, .012), transparent 48%)
+    background-image linear-gradient(45deg, transparent 50%, var(--saf0o-text-tertiary) 50%), linear-gradient(135deg, var(--saf0o-text-tertiary) 50%, transparent 50%), linear-gradient(180deg, rgba(255, 255, 255, .012), transparent 48%)
     background-position calc(100% - 16px) 19px, calc(100% - 11px) 19px, 0 0
     background-repeat no-repeat
     background-size 5px 5px, 5px 5px, auto
@@ -431,8 +431,8 @@
   display flex
   align-items center
   justify-content space-between
-  gap var(--wren-space-3)
-  padding var(--wren-space-3) 0 var(--wren-space-2)
+  gap var(--saf0o-space-3)
+  padding var(--saf0o-space-3) 0 var(--saf0o-space-2)
 
 .sendSweepHeaderCopy
   display flex
@@ -442,13 +442,13 @@
   gap 2px
 
   strong
-    font-size var(--wren-type-body)
+    font-size var(--saf0o-type-body)
     font-weight 500
     line-height 18px
 
   span
-    color var(--wren-text-muted)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-size var(--saf0o-type-caption)
     font-weight 400
     line-height 16px
 
@@ -456,11 +456,11 @@
   display flex
   flex none
   align-items center
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
-button.sendSweepSelectAll.wrenControl
+button.sendSweepSelectAll.saf0oControl
   min-width max-content
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   font-weight 430
   line-height 18px
 
@@ -483,17 +483,17 @@ button.sendSweepSelectAll.wrenControl
     border-radius 0
     background transparent
     cursor pointer
-    transition background-color var(--wren-motion-fast) var(--wren-ease)
+    transition background-color var(--saf0o-motion-fast) var(--saf0o-ease)
 
     &:hover
-      background var(--wren-ledger-hover)
+      background var(--saf0o-ledger-hover)
 
     &:focus-within
-      outline 2px solid var(--wren-focus)
+      outline 2px solid var(--saf0o-focus)
       outline-offset 1px
 
     &.sendSweepAssetSelected
-      background var(--wren-ledger-selected)
+      background var(--saf0o-ledger-selected)
       box-shadow none
 
     > .assetMark,
@@ -522,15 +522,15 @@ button.sendSweepSelectAll.wrenControl
       align-items center
       justify-content center
       box-sizing border-box
-      border 1px solid var(--wren-border-strong)
+      border 1px solid var(--saf0o-border-strong)
       border-radius 3px
-      color var(--wren-text-inverse)
-      background var(--wren-surface-inset)
-      box-shadow var(--wren-shadow-inset)
+      color var(--saf0o-text-inverse)
+      background var(--saf0o-surface-inset)
+      box-shadow var(--saf0o-shadow-inset)
 
     &.sendSweepAssetSelected .sendSweepCheckbox
-      border-color var(--wren-accent-primary-hover)
-      background var(--wren-accent-primary)
+      border-color var(--saf0o-accent-primary-hover)
+      background var(--saf0o-accent-primary)
 
     &:has(input:disabled) .sendSweepCheckbox
       opacity .55
@@ -557,9 +557,9 @@ button.sendSweepSelectAll.wrenControl
   code
     grid-row 2
     align-self baseline
-    color var(--wren-text-muted)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
     font-weight 200
     line-height 16px
 
@@ -569,9 +569,9 @@ button.sendSweepSelectAll.wrenControl
   grid-row 1
   align-self baseline
   justify-self end
-  color var(--wren-text-primary)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-small)
+  color var(--saf0o-text-primary)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-small)
   font-variant-numeric tabular-nums
   font-weight 200
   line-height 18px
@@ -580,12 +580,12 @@ button.sendSweepSelectAll.wrenControl
 .sendSweepWarning
   display flex
   gap 4px
-  margin var(--wren-space-3) 0
+  margin var(--saf0o-space-3) 0
   padding 10px 12px
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-secondary)
-  background var(--wren-warning-soft)
-  font-size var(--wren-type-small)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-secondary)
+  background var(--saf0o-warning-soft)
+  font-size var(--saf0o-type-small)
   line-height 1.45
   flex-direction column
 
@@ -594,28 +594,28 @@ button.sendSweepSelectAll.wrenControl
 
 .sendSweepTruth
   display flex
-  border-top 1px solid var(--wren-border-subtle)
+  border-top 1px solid var(--saf0o-border-subtle)
   flex-direction column
 
   > div
     display grid
     grid-template-columns minmax(0, 1fr) auto
     gap 5px 10px
-    padding var(--wren-space-3) 0
-    border-bottom 1px solid var(--wren-border-subtle)
+    padding var(--saf0o-space-3) 0
+    border-bottom 1px solid var(--saf0o-border-subtle)
 
     > span:first-child
       grid-column 1 / -1
-      color var(--wren-text-muted)
-      font-size var(--wren-type-caption)
+      color var(--saf0o-text-muted)
+      font-size var(--saf0o-type-caption)
       font-weight 600
 
     > code
       min-width 0
       overflow-wrap anywhere
-      color var(--wren-text-primary)
-      font-family var(--wren-font-mono)
-      font-size var(--wren-type-caption)
+      color var(--saf0o-text-primary)
+      font-family var(--saf0o-font-mono)
+      font-size var(--saf0o-type-caption)
       line-height 18px
 
     > button,
@@ -630,15 +630,15 @@ button.sendSweepSelectAll.wrenControl
   gap 4px
 
 .sendSweepPrivacyCopy
-  margin var(--wren-space-2) 0 0
-  color var(--wren-text-muted)
-  font-size var(--wren-type-caption)
+  margin var(--saf0o-space-2) 0 0
+  color var(--saf0o-text-muted)
+  font-size var(--saf0o-type-caption)
   line-height 1.4
 
 .sendSweepCalls
-  margin var(--wren-space-3) 0
-  color var(--wren-text-secondary)
-  font-size var(--wren-type-small)
+  margin var(--saf0o-space-3) 0
+  color var(--saf0o-text-secondary)
+  font-size var(--saf0o-type-small)
 
   summary
     min-height 44px
@@ -649,23 +649,23 @@ button.sendSweepSelectAll.wrenControl
     display flex
     gap 3px
     padding 8px 0
-    border-top 1px solid var(--wren-border-subtle)
+    border-top 1px solid var(--saf0o-border-subtle)
     flex-direction column
 
     code
       overflow-wrap anywhere
-      font-family var(--wren-font-mono)
-      font-size var(--wren-type-caption)
+      font-family var(--saf0o-font-mono)
+      font-size var(--saf0o-type-caption)
 
 .sendSweepReviewActions
   flex none
   display flex
   justify-content flex-end
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
   margin 0
   padding 14px 24px 16px
-  border-top 1px solid var(--wren-border-subtle)
-  background var(--wren-bg-subtle)
+  border-top 1px solid var(--saf0o-border-subtle)
+  background var(--saf0o-bg-subtle)
 
 .sendSweepShelf
   margin-right -24px
@@ -675,14 +675,14 @@ button.sendSweepSelectAll.wrenControl
   margin 12px 24px 0
   padding 10px 12px
   border 0
-  border-radius var(--wren-radius-sm)
-  color var(--wren-text-secondary)
-  background var(--wren-danger-soft)
-  font-size var(--wren-type-small)
+  border-radius var(--saf0o-radius-sm)
+  color var(--saf0o-text-secondary)
+  background var(--saf0o-danger-soft)
+  font-size var(--saf0o-type-small)
   line-height 1.45
 
 .sendComposerNotice
-  background var(--wren-warning-soft)
+  background var(--saf0o-warning-soft)
 
 .sendActionShelf
   position sticky
@@ -712,10 +712,10 @@ button.sendSweepSelectAll.wrenControl
   height 48px
   align-items center
   gap 10px
-  padding 0 var(--wren-space-3)
-  color var(--wren-text-muted)
+  padding 0 var(--saf0o-space-3)
+  color var(--saf0o-text-muted)
 
-  input.wrenInput
+  input.saf0oInput
     min-width 0
     height 44px
     flex 1
@@ -725,8 +725,8 @@ button.sendSweepSelectAll.wrenControl
     box-shadow none
 
     &::placeholder
-      color var(--wren-text-disabled)
-      font-family var(--wren-font-ui)
+      color var(--saf0o-text-disabled)
+      font-family var(--saf0o-font-ui)
       font-weight 430
 
 .sendAssetList
@@ -736,7 +736,7 @@ button.sendSweepSelectAll.wrenControl
   margin-top 12px
   border 1px solid rgba(150, 182, 150, .16)
   border-radius 10px
-  background var(--wren-surface-card)
+  background var(--saf0o-surface-card)
   box-shadow 0 10px 26px rgba(0, 0, 0, .38), inset 1px 1px 0 rgba(150, 182, 150, .04)
 
 .sendContactList
@@ -751,15 +751,15 @@ button.sendSweepSelectAll.wrenControl
   overflow hidden
   border 1px solid rgba(150, 182, 150, .16)
   border-radius 10px
-  background var(--wren-surface-card)
+  background var(--saf0o-surface-card)
   box-shadow 0 10px 26px rgba(0, 0, 0, .34), inset 1px 1px 0 rgba(150, 182, 150, .04)
 
   h3
     margin 0
     padding 12px 14px 10px
-    border-bottom 1px solid var(--wren-ledger-rule)
-    color var(--wren-text-tertiary)
-    font-size var(--wren-type-caption)
+    border-bottom 1px solid var(--saf0o-ledger-rule)
+    color var(--saf0o-text-tertiary)
+    font-size var(--saf0o-type-caption)
     font-weight 620
     letter-spacing .055em
     text-transform uppercase
@@ -767,9 +767,9 @@ button.sendSweepSelectAll.wrenControl
 .sendPickerSectionTitle
   margin 0
   padding 12px 14px 10px
-  border-bottom 1px solid var(--wren-ledger-rule)
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  border-bottom 1px solid var(--saf0o-ledger-rule)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
   font-weight 620
   letter-spacing .055em
   text-transform uppercase
@@ -783,18 +783,18 @@ button.sendSweepSelectAll.wrenControl
   padding 8px 12px
   border 0
   border-radius 0
-  border-bottom 1px solid var(--wren-ledger-rule)
-  color var(--wren-text-primary)
+  border-bottom 1px solid var(--saf0o-ledger-rule)
+  color var(--saf0o-text-primary)
   background transparent
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
   text-align left
   cursor pointer
 
   &:hover
-    background var(--wren-ledger-hover)
+    background var(--saf0o-ledger-hover)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset -2px
 
   &:last-child
@@ -806,7 +806,7 @@ button.sendSweepSelectAll.wrenControl
   height 32px
   align-items center
   justify-content center
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
 
 .sendContactIdentity
   display flex
@@ -829,18 +829,18 @@ button.sendSweepSelectAll.wrenControl
     line-height 17px
 
   strong
-    font-size var(--wren-type-body)
+    font-size var(--saf0o-type-body)
     font-weight 610
 
   span
-    color var(--wren-text-muted)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
 
   code
-    color var(--wren-text-muted)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
     line-height 17px
     overflow-wrap anywhere
     word-break break-word
@@ -860,8 +860,8 @@ button.sendSweepSelectAll.wrenControl
 .sendContactContext
   max-width 132px
   overflow hidden
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
   line-height 17px
   text-align right
   text-overflow ellipsis
@@ -874,29 +874,29 @@ button.sendSweepSelectAll.wrenControl
   gap 10px
   padding 8px 12px
   border 0
-  border-bottom 1px solid var(--wren-ledger-rule)
+  border-bottom 1px solid var(--saf0o-ledger-rule)
   border-radius 0
-  color var(--wren-text-primary)
+  color var(--saf0o-text-primary)
   background transparent
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
   text-align left
   cursor pointer
 
   &:hover
-    background var(--wren-ledger-hover)
+    background var(--saf0o-ledger-hover)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset -2px
 
   &[aria-pressed='true'],
   &.sendAssetOptionSelected
-    border-color var(--wren-ledger-rule)
-    background var(--wren-ledger-selected)
-    box-shadow var(--wren-shadow-inset)
+    border-color var(--saf0o-ledger-rule)
+    background var(--saf0o-ledger-selected)
+    box-shadow var(--saf0o-shadow-inset)
 
     &:hover
-      background var(--wren-surface-active)
+      background var(--saf0o-surface-active)
 
   &:last-child
     border-bottom 0
@@ -921,12 +921,12 @@ button.sendSweepSelectAll.wrenControl
     white-space nowrap
 
   strong
-    font-size var(--wren-type-body)
+    font-size var(--saf0o-type-body)
     font-weight 610
 
   span
-    color var(--wren-text-muted)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-size var(--saf0o-type-caption)
 
 .sendAssetBalance
   align-items flex-end
@@ -937,30 +937,30 @@ button.sendSweepSelectAll.wrenControl
   display flex
   align-items center
   justify-content center
-  color var(--wren-text-muted)
-  font-size var(--wren-type-body)
+  color var(--saf0o-text-muted)
+  font-size var(--saf0o-type-body)
 
 .sendUnavailableAsset
-  gap var(--wren-space-5)
-  padding var(--wren-space-6)
+  gap var(--saf0o-space-5)
+  padding var(--saf0o-space-6)
   flex-direction column
   text-align center
 
-.sendUnavailable .wrenEmptyStateExpanded
+.sendUnavailable .saf0oEmptyStateExpanded
   min-height auto
-  padding 0 var(--wren-space-5)
+  padding 0 var(--saf0o-space-5)
   flex-direction column
   justify-content center
   background transparent
   text-align center
 
-  .wrenEmptyStateImage
+  .saf0oEmptyStateImage
     position static
     width 190px
-    margin 0 0 var(--wren-space-3)
+    margin 0 0 var(--saf0o-space-3)
     transform none
 
-  .wrenEmptyStateText
+  .saf0oEmptyStateText
     max-width 320px
 
 .sendPickerEmpty
@@ -987,8 +987,8 @@ button.sendSweepSelectAll.wrenControl
   p
     max-width 340px
     margin 0 0 26px
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-body)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-body)
     line-height 1.5
 
 
@@ -997,33 +997,33 @@ button.sendSweepSelectAll.wrenControl
   box-sizing border-box
   display grid
   grid-template-columns minmax(0, 1fr) auto
-  gap 4px var(--wren-space-3)
-  padding var(--wren-space-3) var(--wren-space-4)
-  margin 0 0 var(--wren-space-5)
-  border 1px solid var(--wren-border-default)
-  border-radius var(--wren-radius-md)
-  background var(--wren-surface-inset)
+  gap 4px var(--saf0o-space-3)
+  padding var(--saf0o-space-3) var(--saf0o-space-4)
+  margin 0 0 var(--saf0o-space-5)
+  border 1px solid var(--saf0o-border-default)
+  border-radius var(--saf0o-radius-md)
+  background var(--saf0o-surface-inset)
   text-align left
 
   > span
     grid-column 1 / -1
-    color var(--wren-text-muted)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-muted)
+    font-size var(--saf0o-type-caption)
     font-weight 600
     text-transform uppercase
 
   strong
     grid-column 1 / -1
-    color var(--wren-text-primary)
-    font-size var(--wren-type-body)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-body)
     font-weight 610
 
   code
     min-width 0
     overflow-wrap anywhere
-    color var(--wren-accent-primary-hover)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-accent-primary-hover)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
     line-height 18px
 
   button
@@ -1033,7 +1033,7 @@ button.sendSweepSelectAll.wrenControl
   display flex
   flex-wrap wrap
   justify-content center
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
 
   button
     min-width 132px
@@ -1049,7 +1049,7 @@ button.sendSweepSelectAll.wrenControl
   display grid
   grid-template-columns minmax(0, 1fr) auto
   align-items center
-  gap 2px var(--wren-space-2)
+  gap 2px var(--saf0o-space-2)
   text-overflow clip
   white-space normal
 
@@ -1060,37 +1060,37 @@ button.sendSweepSelectAll.wrenControl
     min-width 0
     overflow-wrap anywhere
     word-break break-all
-    color var(--wren-accent-primary-hover)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-accent-primary-hover)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
     line-height 18px
 
 .sendRecipientCopy
   min-width 44px
   min-height 44px
   margin -13px 0
-  padding 0 var(--wren-space-2)
+  padding 0 var(--saf0o-space-2)
   border 0
-  border-radius var(--wren-radius-sm)
+  border-radius var(--saf0o-radius-sm)
   background transparent
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   cursor pointer
-  font-family var(--wren-font-ui)
-  font-size var(--wren-type-caption)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-caption)
 
   &:hover
-    background var(--wren-surface-hover)
-    color var(--wren-text-primary)
+    background var(--saf0o-surface-hover)
+    color var(--saf0o-text-primary)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 2px
 
 .sendCopyStatus
   min-height 18px
   grid-column 1 / -1
-  color var(--wren-text-muted)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-muted)
+  font-size var(--saf0o-type-caption)
   text-align center
 
 .sendRequestGlyph
@@ -1099,15 +1099,15 @@ button.sendSweepSelectAll.wrenControl
   height 58px
   align-items center
   justify-content center
-  border 1px solid var(--wren-border-strong)
+  border 1px solid var(--saf0o-border-strong)
   border-radius 12px
-  color var(--wren-accent-primary)
-  background var(--wren-surface-inset)
+  color var(--saf0o-accent-primary)
+  background var(--saf0o-surface-inset)
 
 .sendRequestStateSuccess .sendRequestGlyph
-  color var(--wren-success)
+  color var(--saf0o-success)
 
-// Perch composer: keep Wren's real send/sweep behavior while matching the
+// Perch composer: keep Saf0o's real send/sweep behavior while matching the
 // reference's compact card rhythm and full-width review action.
 .sendComposer
   .sendModeSwitch
@@ -1116,10 +1116,10 @@ button.sendSweepSelectAll.wrenControl
     gap 4px
     margin 10px 24px 0
     padding 4px
-    border 1px solid var(--wren-border-default)
+    border 1px solid var(--saf0o-border-default)
     border-radius 10px
-    background var(--wren-surface-inset)
-    box-shadow var(--wren-shadow-inset)
+    background var(--saf0o-surface-inset)
+    box-shadow var(--saf0o-shadow-inset)
 
     button
       min-height 44px
@@ -1128,12 +1128,12 @@ button.sendSweepSelectAll.wrenControl
       box-shadow none
 
       &:hover:not(:disabled):not([aria-pressed='true'])
-        color var(--wren-text-primary)
-        background var(--wren-surface-hover)
+        color var(--saf0o-text-primary)
+        background var(--saf0o-surface-hover)
 
       &[aria-pressed='true']
-        background var(--wren-surface-active)
-        box-shadow var(--wren-shadow-sm), var(--wren-shadow-inset)
+        background var(--saf0o-surface-active)
+        box-shadow var(--saf0o-shadow-sm), var(--saf0o-shadow-inset)
 
   .sendLedger
     display flex
@@ -1178,21 +1178,21 @@ button.sendSweepSelectAll.wrenControl
 
   .sendInputWrap
     padding 0 6px 0 12px
-    border-color var(--wren-border-default)
-    background-color var(--wren-surface-inset)
+    border-color var(--saf0o-border-default)
+    background-color var(--saf0o-surface-inset)
     background-image linear-gradient(180deg, rgba(255, 255, 255, .012), transparent 48%)
     box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), inset 0 -1px rgba(255, 255, 255, .018)
 
     &:hover:not(:focus-within)
-      border-color var(--wren-border-strong)
+      border-color var(--saf0o-border-strong)
 
     &:focus-within
-      border-color var(--wren-accent-primary-hover)
+      border-color var(--saf0o-accent-primary-hover)
       box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), 0 0 0 1px rgba(166, 138, 97, .2)
 
-    &.wrenInputGroupError
-      border-color var(--wren-danger)
-      background-color var(--wren-danger-soft)
+    &.saf0oInputGroupError
+      border-color var(--saf0o-danger)
+      background-color var(--saf0o-danger-soft)
       box-shadow inset 0 1px 2px rgba(0, 0, 0, .46), 0 0 0 1px rgba(225, 154, 145, .32)
 
   .sendFeeRow
@@ -1202,7 +1202,7 @@ button.sendSweepSelectAll.wrenControl
     grid-template-columns minmax(0, 1fr) auto
     grid-template-rows auto auto
     align-content center
-    gap 5px var(--wren-space-3)
+    gap 5px var(--saf0o-space-3)
 
     .sendRowLabel
       grid-column 1
@@ -1252,7 +1252,7 @@ button.sendSweepSelectAll.wrenControl
     min-height 64px
     padding 10px 16px
     box-sizing border-box
-    border-bottom 1px solid var(--wren-ledger-rule)
+    border-bottom 1px solid var(--saf0o-ledger-rule)
 
   .sendSweepHeader
     min-height 62px
@@ -1266,18 +1266,18 @@ button.sendSweepSelectAll.wrenControl
     overflow-y auto
     overscroll-behavior contain
     scrollbar-gutter stable both-edges
-    border-top 1px solid var(--wren-ledger-rule)
-    border-bottom 1px solid var(--wren-ledger-rule)
+    border-top 1px solid var(--saf0o-ledger-rule)
+    border-bottom 1px solid var(--saf0o-ledger-rule)
 
     > label
       padding 0 16px
-      border-bottom 1px solid var(--wren-ledger-rule)
+      border-bottom 1px solid var(--saf0o-ledger-rule)
 
       &:last-child
         border-bottom 0
 
       &.sendSweepAssetSelected
-        background var(--wren-ledger-selected)
+        background var(--saf0o-ledger-selected)
         box-shadow none
 
   .sendSweepWarningCompact
@@ -1368,7 +1368,7 @@ button.sendSweepSelectAll.wrenControl
   code
     grid-column 2
     overflow-wrap anywhere
-    color var(--wren-text-muted)
+    color var(--saf0o-text-muted)
     font-size 12px
 
 .sendComposer .sendAssetValue .sendAssetIdentityCluster strong

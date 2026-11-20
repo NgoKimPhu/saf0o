@@ -42,7 +42,7 @@ jest.mock('../../../main/api/nativeAuth', () => ({
 const request = {
   headers: { host: '127.0.0.1:1248' },
   socket: { localPort: 1248 },
-  url: '/?identity=wren-native&role=rpc&version=3'
+  url: '/?identity=saf0o-native&role=rpc&version=3'
 }
 const nativeFingerprint = Buffer.alloc(32, 1).toString('base64url')
 
@@ -102,12 +102,12 @@ it('rejects browser-origin and malformed native upgrade queries', () => {
   expect(
     verifyClient({ req: { ...request, headers: { ...request.headers, origin: 'https://example.test' } } })
   ).toBe(false)
-  expect(verifyClient({ req: { ...request, url: '/?identity=wren-native&role=rpc&version=2' } })).toBe(false)
+  expect(verifyClient({ req: { ...request, url: '/?identity=saf0o-native&role=rpc&version=2' } })).toBe(false)
 })
 
 it('binds one challenge to its socket and rejects a second hello', () => {
   const hello = JSON.stringify({
-    type: 'wren-native-auth',
+    type: 'saf0o-native-auth',
     version: 3,
     step: 'hello',
     installationId: 'client',
@@ -125,10 +125,10 @@ it('rejects proof from a challenge issued on another transport', () => {
   socket.emit(
     'message',
     JSON.stringify({
-      type: 'wren-native-auth',
+      type: 'saf0o-native-auth',
       version: 3,
       step: 'prove',
-      protocol: 'wren-companion-auth',
+      protocol: 'saf0o-companion-auth',
       transcript: { challengeId: '33333333-3333-4333-8333-333333333333' },
       signature: 'signature'
     })
@@ -141,7 +141,7 @@ it('expires an authenticated quiet socket without inbound traffic', async () => 
   socket.emit(
     'message',
     JSON.stringify({
-      type: 'wren-native-auth',
+      type: 'saf0o-native-auth',
       version: 3,
       step: 'hello',
       installationId: 'client',
@@ -152,10 +152,10 @@ it('expires an authenticated quiet socket without inbound traffic', async () => 
   socket.emit(
     'message',
     JSON.stringify({
-      type: 'wren-native-auth',
+      type: 'saf0o-native-auth',
       version: 3,
       step: 'prove',
-      protocol: 'wren-companion-auth',
+      protocol: 'saf0o-companion-auth',
       transcript: { challengeId: '11111111-1111-4111-8111-111111111111' },
       signature: 'signature'
     })
@@ -176,7 +176,7 @@ it('unsubscribes provider work when the native credential is revoked', async () 
   socket.emit(
     'message',
     JSON.stringify({
-      type: 'wren-native-auth',
+      type: 'saf0o-native-auth',
       version: 3,
       step: 'hello',
       installationId: 'client',
@@ -187,10 +187,10 @@ it('unsubscribes provider work when the native credential is revoked', async () 
   socket.emit(
     'message',
     JSON.stringify({
-      type: 'wren-native-auth',
+      type: 'saf0o-native-auth',
       version: 3,
       step: 'prove',
-      protocol: 'wren-companion-auth',
+      protocol: 'saf0o-companion-auth',
       transcript: { challengeId: '11111111-1111-4111-8111-111111111111' },
       signature: 'signature'
     })
@@ -207,7 +207,7 @@ it('unsubscribes provider work when the native credential is revoked', async () 
   socket.emit(
     'message',
     JSON.stringify({
-      type: 'wren-native-rpc',
+      type: 'saf0o-native-rpc',
       version: 3,
       proof: {},
       payloadBase64: payload.toString('base64url')

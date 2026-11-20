@@ -12,7 +12,7 @@ import {
 const version = '0.1.3'
 
 async function withReleaseFiles(run) {
-  const dist = await mkdtemp(path.join(tmpdir(), 'wren-release-manifest-'))
+  const dist = await mkdtemp(path.join(tmpdir(), 'saf0o-release-manifest-'))
   try {
     for (const artifact of releaseArtifactNames(version, { includeMacos: true, includeWindows: true })) {
       await writeFile(path.join(dist, artifact), `fixture:${artifact}`)
@@ -31,23 +31,17 @@ test('rejects missing, unexpected, repeated, and modified checksum entries', asy
     const original = await readFile(manifestPath, 'utf8')
 
     await writeFile(manifestPath, original.replace(/^[^\n]+\n/, ''))
-    await assert.rejects(
-      verifyReleaseChecksums(options),
-      /unexpected entry count/
-    )
+    await assert.rejects(verifyReleaseChecksums(options), /unexpected entry count/)
 
     const [first] = original.trim().split('\n')
     await writeFile(manifestPath, `${first}\n${first}\n${first}\n${first}\n${first}\n${first}\n`)
     await assert.rejects(verifyReleaseChecksums(options), /repeats artifact/)
 
-    await writeFile(manifestPath, original.replace('Wren-0.1.3.AppImage', 'unexpected.exe'))
-    await assert.rejects(
-      verifyReleaseChecksums(options),
-      /unexpected artifact/
-    )
+    await writeFile(manifestPath, original.replace('Saf0o-0.1.3.AppImage', 'unexpected.exe'))
+    await assert.rejects(verifyReleaseChecksums(options), /unexpected artifact/)
 
     await writeFile(manifestPath, original)
-    await writeFile(path.join(dist, 'Wren-0.1.3.AppImage'), 'modified')
+    await writeFile(path.join(dist, 'Saf0o-0.1.3.AppImage'), 'modified')
     await assert.rejects(verifyReleaseChecksums(options), /Checksum mismatch/)
   })
 })

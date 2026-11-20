@@ -116,7 +116,7 @@ export class ContractVerificationCredential extends Component {
                   <input
                     ref={this.apiKeyRef}
                     type='password'
-                    className='wrenInput contractVerificationCredentialInput'
+                    className='saf0oInput contractVerificationCredentialInput'
                     aria-label={credential.configured ? 'Replace Etherscan API key' : 'Etherscan API key'}
                     aria-describedby={formatHintVisible ? keyFormatId : undefined}
                     autoComplete='off'
@@ -131,7 +131,7 @@ export class ContractVerificationCredential extends Component {
                   />
                   <button
                     type='button'
-                    className='wrenControl wrenControlGhost'
+                    className='saf0oControl saf0oControlGhost'
                     aria-describedby={formatHintVisible ? keyFormatId : undefined}
                     disabled={busy || !keyReady}
                     onClick={() => this.save()}
@@ -143,7 +143,7 @@ export class ContractVerificationCredential extends Component {
               {credential.configured ? (
                 <button
                   type='button'
-                  className='wrenControl wrenControlGhost'
+                  className='saf0oControl saf0oControlGhost'
                   disabled={busy}
                   onClick={() => this.remove()}
                 >

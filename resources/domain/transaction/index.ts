@@ -6,7 +6,7 @@ export enum GasFeesSource {
   Frame = 'Frame'
 }
 
-// @ethereumjs/tx 10 types JSONTx fields as 0x-prefixed template strings; Wren carries plain strings.
+// @ethereumjs/tx 10 types JSONTx fields as 0x-prefixed template strings; Saf0o carries plain strings.
 type LooseHex<T> = { [K in keyof T]: T[K] extends `0x${string}` | undefined ? string : T[K] }
 
 export interface TransactionData extends Omit<LooseHex<JSONTx>, 'chainId' | 'type'> {

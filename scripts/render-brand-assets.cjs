@@ -13,7 +13,7 @@ const exit = (child) =>
   })
 
 const renderAssets = async (jobs, outputRoot) => {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'wren-brand-'))
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'saf0o-brand-'))
   await fs.chmod(root, 0o700)
   const children = new Set()
   let cancelled = false
@@ -74,7 +74,7 @@ const renderAssets = async (jobs, outputRoot) => {
       XDG_DATA_HOME: path.join(root, 'data'),
       XDG_CACHE_HOME: path.join(root, 'cache'),
       TMPDIR: path.join(root, 'tmp'),
-      WREN_BRAND_RENDER_ROOT: root,
+      SAF0O_BRAND_RENDER_ROOT: root,
       DBUS_SESSION_BUS_ADDRESS: 'unix:path=/dev/null',
       HTTP_PROXY: '',
       HTTPS_PROXY: '',
@@ -110,7 +110,7 @@ const renderAssets = async (jobs, outputRoot) => {
 
 const runElectron = async () => {
   const { app, BrowserWindow, session } = require('electron')
-  const root = process.env.WREN_BRAND_RENDER_ROOT
+  const root = process.env.SAF0O_BRAND_RENDER_ROOT
   const manifest = root && path.join(root, 'jobs.json')
   if (
     !root ||

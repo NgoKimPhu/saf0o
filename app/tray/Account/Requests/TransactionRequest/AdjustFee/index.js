@@ -169,7 +169,7 @@ const FeeOverlayInput = ({
         <input
           tabIndex={tabIndex}
           value={value}
-          className='txFeeOverlayInput wrenInput'
+          className='txFeeOverlayInput saf0oInput'
           aria-label={labelText}
           onChange={(e) => {
             const parsedInput = (decimals ? /[0-9.]*/ : /[0-9]*/).exec(e.target.value)

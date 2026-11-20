@@ -139,7 +139,7 @@ export class TxFee extends React.Component {
           {!adjustmentLocked ? (
             <button
               type='button'
-              className='signingDecisionFeeAdjust wrenControlCompact'
+              className='signingDecisionFeeAdjust saf0oControlCompact'
               onClick={() => link.send('nav:update', 'panel', { data: { step: 'adjustFee' } })}
             >
               Adjust
@@ -171,7 +171,7 @@ export class TxFee extends React.Component {
             <button
               type='button'
               aria-expanded={this.state.expanded}
-              className='wrenControl wrenControlSecondary wrenControlCompact transactionReviewFeeAdjust'
+              className='saf0oControl saf0oControlSecondary saf0oControlCompact transactionReviewFeeAdjust'
               onClick={() => this.setState((state) => ({ expanded: !state.expanded }))}
             >
               Adjust
@@ -183,7 +183,7 @@ export class TxFee extends React.Component {
             {'Gas values set by user'}
           </div>
         ) : req.data.gasFeesSource !== GasFeesSource.Frame ? (
-          <div className='transactionReviewFeeNotice' style={{ color: 'var(--wren-danger)' }}>
+          <div className='transactionReviewFeeNotice' style={{ color: 'var(--saf0o-danger)' }}>
             {`Gas values set by ${req.data.gasFeesSource}`}
           </div>
         ) : null}

@@ -173,7 +173,7 @@ const provenanceCopy = (origin) => {
   if (origin?.provenance === 'direct') {
     return 'Direct web origin · asserted by the connecting app'
   }
-  if (origin?.provenance === 'companion') return 'Wren Companion · bound to the source below'
+  if (origin?.provenance === 'companion') return 'Saf0o Companion · bound to the source below'
   if (origin?.provenance === 'native') return 'Native app · bound to the source below'
   if (origin?.sessionOnly) return 'Session connection · retained only for this session'
   return 'Stored connection identity'
@@ -301,7 +301,7 @@ export class DappGuardrailEditor extends React.Component {
           {
             confirmation: '',
             pending: null,
-            message: `Wren could not ${kind} this guardrail. Nothing changed. Try again.`,
+            message: `Saf0o could not ${kind} this guardrail. Nothing changed. Try again.`,
             messageKind: 'alert'
           },
           () => this.statusRef.current?.focus()
@@ -313,7 +313,7 @@ export class DappGuardrailEditor extends React.Component {
         {
           confirmation: '',
           pending: null,
-          message: `Wren could not ${kind} this guardrail. Nothing changed. Try again.`,
+          message: `Saf0o could not ${kind} this guardrail. Nothing changed. Try again.`,
           messageKind: 'alert'
         },
         () => this.statusRef.current?.focus()
@@ -346,7 +346,7 @@ export class DappGuardrailEditor extends React.Component {
         <div className='dappGuardrailConfirmActions'>
           <button
             type='button'
-            className='wrenControl wrenControlSecondary'
+            className='saf0oControl saf0oControlSecondary'
             disabled={busy}
             ref={this.cancelConfirmRef}
             onClick={() => this.cancelConfirmation()}
@@ -355,7 +355,7 @@ export class DappGuardrailEditor extends React.Component {
           </button>
           <button
             type='button'
-            className={`wrenControl ${saving ? 'wrenControlPrimary' : 'wrenControlDanger'}`}
+            className={`saf0oControl ${saving ? 'saf0oControlPrimary' : 'saf0oControlDanger'}`}
             disabled={busy}
             onClick={() => this.submit(confirmation)}
           >
@@ -385,7 +385,7 @@ export class DappGuardrailEditor extends React.Component {
           </div>
           <button
             type='button'
-            className='wrenControl wrenControlCompact'
+            className='saf0oControl saf0oControlCompact'
             disabled={fieldDisabled}
             onClick={onClose}
           >
@@ -432,7 +432,7 @@ export class DappGuardrailEditor extends React.Component {
             <span>When a request exceeds a restriction</span>
             <select
               aria-label='When a request exceeds a restriction'
-              className='wrenInput wrenInputQuiet'
+              className='saf0oInput saf0oInputQuiet'
               disabled={fieldDisabled}
               ref={this.firstFieldRef}
               value={form.mode}
@@ -448,7 +448,7 @@ export class DappGuardrailEditor extends React.Component {
               <label>
                 <span>{field === 'targets' ? 'Request targets' : 'Approval spenders'}</span>
                 <select
-                  className='wrenInput wrenInputQuiet'
+                  className='saf0oInput saf0oInputQuiet'
                   disabled={fieldDisabled}
                   value={form[`${field}Mode`]}
                   onChange={(event) => {
@@ -468,7 +468,7 @@ export class DappGuardrailEditor extends React.Component {
               {form[`${field}Mode`] === 'selected' ? (
                 <textarea
                   aria-label={field === 'targets' ? 'Allowed target addresses' : 'Allowed spender addresses'}
-                  className='wrenInput wrenInputQuiet'
+                  className='saf0oInput saf0oInputQuiet'
                   disabled={fieldDisabled}
                   placeholder='One full 0x address per line'
                   rows={3}
@@ -492,7 +492,7 @@ export class DappGuardrailEditor extends React.Component {
           >
             <input
               aria-label='Native-value ceiling'
-              className='wrenInput wrenInputQuiet'
+              className='saf0oInput saf0oInputQuiet'
               disabled={fieldDisabled || !validNativeDecimals(nativeDecimals)}
               inputMode='decimal'
               placeholder='0.0'
@@ -510,7 +510,7 @@ export class DappGuardrailEditor extends React.Component {
           >
             <textarea
               aria-label='Token ceilings'
-              className='wrenInput wrenInputQuiet'
+              className='saf0oInput saf0oInputQuiet'
               disabled={fieldDisabled}
               placeholder='0x token address  raw base-unit amount'
               rows={3}
@@ -528,7 +528,7 @@ export class DappGuardrailEditor extends React.Component {
           >
             <input
               aria-label='Allowed until'
-              className='wrenInput wrenInputQuiet'
+              className='saf0oInput saf0oInputQuiet'
               disabled={fieldDisabled}
               type='datetime-local'
               value={form.expiresAt}
@@ -552,7 +552,7 @@ export class DappGuardrailEditor extends React.Component {
               {guardrail ? (
                 <button
                   type='button'
-                  className='wrenControl wrenControlDanger'
+                  className='saf0oControl saf0oControlDanger'
                   disabled={fieldDisabled}
                   ref={this.removeButtonRef}
                   onClick={() => this.beginRemove()}
@@ -560,7 +560,7 @@ export class DappGuardrailEditor extends React.Component {
                   Remove guardrail
                 </button>
               ) : null}
-              <button type='submit' className='wrenControl wrenControlPrimary' disabled={fieldDisabled}>
+              <button type='submit' className='saf0oControl saf0oControlPrimary' disabled={fieldDisabled}>
                 Save changes
               </button>
             </div>

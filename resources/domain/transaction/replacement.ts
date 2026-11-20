@@ -103,7 +103,7 @@ export function getReplacementStatus(
 
 /**
  * Returns the least fee values that satisfy both the current wallet fee market and
- * the replacement minimum for every live same-nonce transaction known to Wren.
+ * the replacement minimum for every live same-nonce transaction known to Saf0o.
  * Callers still apply the normal transaction fee cap before signing.
  */
 export function replacementFees(

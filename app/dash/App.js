@@ -36,7 +36,7 @@ const AddNewItemButton = ({ view, req }) => {
     <div className='dashFooter'>
       <button
         type='button'
-        className='dashFooterButton wrenControl wrenControlPrimary wrenControlLarge wrenHeroPrimary'
+        className='dashFooterButton saf0oControl saf0oControlPrimary saf0oControlLarge saf0oHeroPrimary'
         onClick={() => link.send('tray:action', 'navDash', { view, data: dataMap[view] })}
       >
         <div className='newAccountIcon'>

@@ -6,7 +6,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const runRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-e2e-'))
+const runRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-e2e-'))
 const directories = ['home', 'config', 'data', 'cache', 'profile']
 
 fs.chmodSync(runRoot, 0o700)
@@ -22,9 +22,9 @@ const environment = {
   XDG_CONFIG_HOME: path.join(runRoot, 'config'),
   XDG_DATA_HOME: path.join(runRoot, 'data'),
   XDG_CACHE_HOME: path.join(runRoot, 'cache'),
-  WREN_E2E_PROFILE: path.join(runRoot, 'profile'),
-  WREN_E2E_NAMESPACE: crypto.randomBytes(16).toString('hex'),
-  WREN_E2E_RUN_ROOT: runRoot,
+  SAF0O_E2E_PROFILE: path.join(runRoot, 'profile'),
+  SAF0O_E2E_NAMESPACE: crypto.randomBytes(16).toString('hex'),
+  SAF0O_E2E_RUN_ROOT: runRoot,
   HTTP_PROXY: '',
   HTTPS_PROXY: '',
   ALL_PROXY: '',

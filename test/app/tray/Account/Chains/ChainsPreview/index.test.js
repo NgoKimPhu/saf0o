@@ -33,11 +33,11 @@ const renderMonitor = ({ optimismExplorer = 'https://optimistic.etherscan.io' } 
               gas: gas('0x3b9aca00', '0x3b9aca00', [
                 { label: 'Send ETH', estimates: { low: { cost: { usd: 0.42 } } } }
               ]),
-              primaryColor: 'wren-chain-ethereum'
+              primaryColor: 'saf0o-chain-ethereum'
             },
             10: {
               gas: gas('0x1dcd6500', '0x1dcd6500'),
-              primaryColor: 'wren-chain-optimism'
+              primaryColor: 'saf0o-chain-optimism'
             }
           }
         }

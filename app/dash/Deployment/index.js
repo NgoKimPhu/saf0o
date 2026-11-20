@@ -508,7 +508,7 @@ export class Deployment extends React.Component {
             <label>
               <span>Account</span>
               <select
-                className='wrenInput'
+                className='saf0oInput'
                 aria-label='Account'
                 value={this.state.account}
                 disabled={busy || !accounts.length}
@@ -525,7 +525,7 @@ export class Deployment extends React.Component {
             <label>
               <span>Network</span>
               <select
-                className='wrenInput'
+                className='saf0oInput'
                 aria-label='Network'
                 value={this.state.chainId}
                 disabled={busy || !networks.length}
@@ -554,7 +554,7 @@ export class Deployment extends React.Component {
           <label className='deploymentField'>
             <span>Deployment data</span>
             <textarea
-              className='wrenInput'
+              className='saf0oInput'
               aria-label='Deployment data'
               value={this.state.initcode}
               rows='9'
@@ -581,7 +581,7 @@ export class Deployment extends React.Component {
           <label className='deploymentField deploymentValueField'>
             <span>Optional native value{symbol ? ` · ${symbol}` : ''}</span>
             <input
-              className='wrenInput'
+              className='saf0oInput'
               aria-label='Optional native value'
               type='text'
               inputMode='decimal'
@@ -622,7 +622,7 @@ export class Deployment extends React.Component {
             {hasEvidence ? (
               <button
                 type='button'
-                className='wrenControl wrenControlSecondary wrenControlLarge'
+                className='saf0oControl saf0oControlSecondary saf0oControlLarge'
                 disabled={busy}
                 onClick={() => this.invalidate({}, true)}
               >
@@ -631,7 +631,7 @@ export class Deployment extends React.Component {
             ) : null}
             <button
               type={hasEvidence ? 'button' : 'submit'}
-              className={`wrenControl ${hasEvidence ? 'wrenControlPrimary' : 'wrenControlSecondary'} wrenControlLarge`}
+              className={`saf0oControl ${hasEvidence ? 'saf0oControlPrimary' : 'saf0oControlSecondary'} saf0oControlLarge`}
               disabled={hasEvidence ? busy : !canPrepare}
               onClick={hasEvidence ? () => this.queue() : undefined}
             >
@@ -666,14 +666,14 @@ export class Deployment extends React.Component {
                     <button
                       ref={this.abandonCancelRef}
                       type='button'
-                      className='wrenControl wrenControlSecondary'
+                      className='saf0oControl saf0oControlSecondary'
                       onClick={() => this.cancelAbandon()}
                     >
                       Keep editing
                     </button>
                     <button
                       type='button'
-                      className='wrenControl wrenControlDanger'
+                      className='saf0oControl saf0oControlDanger'
                       onClick={() => this.confirmAbandon()}
                     >
                       Discard and leave

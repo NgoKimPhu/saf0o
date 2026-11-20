@@ -11,14 +11,14 @@ export enum ApprovalType {
   DappGuardrailWarning = 'approveDappGuardrailWarning'
 }
 
-export const WREN_REPOSITORY_URL = 'https://github.com/NgoKimPhu/saf0o'
-export const WREN_LICENSE_URL = `${WREN_REPOSITORY_URL}/blob/main/LICENSE`
-export const WREN_SUPPORT_URL = `${WREN_REPOSITORY_URL}/issues`
-export const WREN_COMPANION_CHROME_WEB_STORE_URL =
+export const SAF0O_REPOSITORY_URL = 'https://github.com/NgoKimPhu/saf0o'
+export const SAF0O_LICENSE_URL = `${SAF0O_REPOSITORY_URL}/blob/main/LICENSE`
+export const SAF0O_SUPPORT_URL = `${SAF0O_REPOSITORY_URL}/issues`
+export const SAF0O_COMPANION_CHROME_WEB_STORE_URL =
   'https://chromewebstore.google.com/detail/wren-companion/ifimccfajfbgligbhcgfapdagpnfkbhn'
-export const WREN_COMPANION_FIREFOX_ADDONS_URL =
+export const SAF0O_COMPANION_FIREFOX_ADDONS_URL =
   'https://addons.mozilla.org/en-US/firefox/addon/wren-companion/'
-export const WREN_COMPANION_RELEASES_URL = 'https://github.com/NgoKimPhu/saf0o-companion/releases'
+export const SAF0O_COMPANION_RELEASES_URL = 'https://github.com/NgoKimPhu/saf0o-companion/releases'
 export const LEDGER_SHOP_URL = 'https://shop.ledger.com/'
 export const TREZOR_SHOP_URL = 'https://shop.trezor.io/'
 

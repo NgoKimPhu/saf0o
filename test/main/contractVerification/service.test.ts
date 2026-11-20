@@ -16,7 +16,7 @@ import type {
   ContractVerificationArtifact,
   ContractVerificationJobRecord
 } from '../../../resources/domain/contractVerification'
-import { WREN_DEPLOY_ORIGIN, originIdForName } from '../../../resources/domain/origin'
+import { SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../../resources/domain/origin'
 import migrations from '../../../main/store/migrate'
 import type { OperationLifecycle } from '../../../main/store/state/types/operationLifecycle'
 
@@ -70,7 +70,7 @@ const managedOperation = (settled = false): OperationLifecycle => ({
   id: '10000000-0000-4000-8000-000000000001',
   kind: 'transaction',
   account: ACCOUNT,
-  origin: originIdForName(WREN_DEPLOY_ORIGIN),
+  origin: originIdForName(SAF0O_DEPLOY_ORIGIN),
   chainId: 1,
   state: 'confirmed',
   createdAt: 1,
@@ -642,7 +642,7 @@ test('fences the same Sourcify creation transaction across block-only evidence c
 
 test('commits the Sourcify fence before POST and its accepted polling ID before returning', async () => {
   jest.useFakeTimers()
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-contract-verification-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-contract-verification-'))
   const { commitMainState, PersistStore } = jest.requireActual('../../../main/store/persist')
   const readJobs = () => {
     const restartedDisk = new PersistStore({ configName: 'config', cwd: directory })
@@ -1248,7 +1248,7 @@ test('serializes equivalent direct Etherscan publications before either POST set
 
 test('commits the direct publication fence before POST and restores it while the response is pending', async () => {
   jest.useFakeTimers()
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-contract-verification-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-contract-verification-'))
   const { commitMainState, PersistStore } = jest.requireActual('../../../main/store/persist')
 
   try {

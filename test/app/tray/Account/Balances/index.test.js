@@ -46,7 +46,7 @@ it('does not offer an empty expanded balance view', () => {
   render(<BalancesPreviewHarness account={account} moduleId='balances' />)
 
   expect(screen.getByText('No balances yet')).toBeTruthy()
-  expect(document.querySelector('.wrenEmptyStateImage')).toBeTruthy()
+  expect(document.querySelector('.saf0oEmptyStateImage')).toBeTruthy()
   expect(screen.queryByRole('button', { name: 'More' })).toBeNull()
   expect(screen.queryByText('Total')).toBeNull()
 })
@@ -126,7 +126,7 @@ it('keeps filtered misses plain instead of showing empty-account artwork', () =>
   render(<BalancesPreviewHarness account={account} moduleId='balances' filter='not-present' />)
 
   expect(screen.getByText('No matching balances')).toBeTruthy()
-  expect(document.querySelector('.wrenEmptyStateImage')).toBeNull()
+  expect(document.querySelector('.saf0oEmptyStateImage')).toBeNull()
 })
 
 it('hides holdings while keeping public unit prices visible', () => {

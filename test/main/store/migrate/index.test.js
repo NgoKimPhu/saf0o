@@ -31,7 +31,7 @@ it('rejects state newer than the requested migration boundary', () => {
   state.main._version = migrations.latest + 1
 
   expect(() => migrations.apply(state)).toThrow(
-    `Saved state version ${migrations.latest + 1} is newer than Wren supports`
+    `Saved state version ${migrations.latest + 1} is newer than Saf0o supports`
   )
 })
 

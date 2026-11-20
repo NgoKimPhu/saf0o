@@ -23,11 +23,11 @@ button,
 ::-webkit-scrollbar-thumb
   border 2px solid transparent
   border-radius 2px
-  background-color unquote('color-mix(in srgb, var(--wren-text-muted) 40%, transparent)')
+  background-color unquote('color-mix(in srgb, var(--saf0o-text-muted) 40%, transparent)')
   background-clip content-box
 
 ::-webkit-scrollbar-thumb:hover
-  background-color unquote('color-mix(in srgb, var(--wren-text-muted) 60%, transparent)')
+  background-color unquote('color-mix(in srgb, var(--saf0o-text-muted) 60%, transparent)')
 
 .dash
   width 100%
@@ -46,7 +46,7 @@ button,
     left 12px
     z-index 1000
     background var(--ghostZ)
-    border 1px solid var(--wren-border-subtle)
+    border 1px solid var(--saf0o-border-subtle)
     border-radius 16px
     padding-bottom 20px
     transition var(--standard)
@@ -226,7 +226,7 @@ button,
         justify-content center
         align-items center
         text-transform uppercase
-        font-size var(--wren-type-caption)
+        font-size var(--saf0o-type-caption)
         letter-spacing 1px
         font-weight 300
         padding-bottom 1px
@@ -289,7 +289,7 @@ button,
       height 32px
       margin 0px 16px 12px 16px
       box-sizing border-box
-      font-size var(--wren-type-small)
+      font-size var(--saf0o-type-small)
       text-transform uppercase
       letter-spacing 1px
       font-weight 400
@@ -306,7 +306,7 @@ button,
       display flex
       justify-content center
       align-items center
-      font-size var(--wren-type-caption)
+      font-size var(--saf0o-type-caption)
       font-weight 400
       letter-spacing 2px
       text-transform uppercase
@@ -335,23 +335,23 @@ button,
 @import './ContractVerification/style'
 @import './card.styl'
 
-// Wren dashboard shell
+// Saf0o dashboard shell
 .frameOverlay
   display none
 
 .dash
-  --wren-window-mode-canvas var(--wren-window-canvas)
-  --wren-window-mode-image var(--wren-window-atmosphere-workspace-right)
-  --wren-window-mode-repeat var(--wren-window-atmosphere-repeat)
-  --wren-window-mode-size var(--wren-window-atmosphere-workspace-size)
-  --wren-window-mode-blend var(--wren-window-atmosphere-blend)
-  --wren-window-mode-shadow var(--wren-window-atmosphere-workspace-shadow)
-  background-color var(--wren-window-mode-canvas)
-  background-image var(--wren-window-mode-image)
-  background-repeat var(--wren-window-mode-repeat)
-  background-size var(--wren-window-mode-size)
-  background-blend-mode var(--wren-window-mode-blend)
-  box-shadow var(--wren-window-mode-shadow)
+  --saf0o-window-mode-canvas var(--saf0o-window-canvas)
+  --saf0o-window-mode-image var(--saf0o-window-atmosphere-workspace-right)
+  --saf0o-window-mode-repeat var(--saf0o-window-atmosphere-repeat)
+  --saf0o-window-mode-size var(--saf0o-window-atmosphere-workspace-size)
+  --saf0o-window-mode-blend var(--saf0o-window-atmosphere-blend)
+  --saf0o-window-mode-shadow var(--saf0o-window-atmosphere-workspace-shadow)
+  background-color var(--saf0o-window-mode-canvas)
+  background-image var(--saf0o-window-mode-image)
+  background-repeat var(--saf0o-window-mode-repeat)
+  background-size var(--saf0o-window-mode-size)
+  background-blend-mode var(--saf0o-window-mode-blend)
+  box-shadow var(--saf0o-window-mode-shadow)
   overflow hidden
   cursor default
   user-select none
@@ -366,7 +366,7 @@ button,
   > .dashMain,
   > .dashFooter
     opacity 1
-    transition opacity var(--wren-motion-slow) var(--wren-ease)
+    transition opacity var(--saf0o-motion-slow) var(--saf0o-ease)
 
   .dashMain
     top 64px
@@ -449,14 +449,14 @@ button,
       min-width 190px
       height 46px
       min-height 46px
-      padding 0 var(--wren-space-4)
-      border 1px solid var(--wren-accent-primary-hover)
+      padding 0 var(--saf0o-space-4)
+      border 1px solid var(--saf0o-accent-primary-hover)
       border-radius 7px
       color #11130f
-      background-color var(--wren-accent-primary)
-      background-image var(--wren-control-texture-light)
-      box-shadow var(--wren-control-primary-shadow)
-      font-family var(--wren-font-ui)
+      background-color var(--saf0o-accent-primary)
+      background-image var(--saf0o-control-texture-light)
+      box-shadow var(--saf0o-control-primary-shadow)
+      font-family var(--saf0o-font-ui)
       font-size 13px
       font-weight 500
       letter-spacing 0
@@ -464,21 +464,21 @@ button,
 
       &:hover
         transform none
-        border-color var(--wren-control-primary-border-hover)
-        background-color var(--wren-accent-primary-hover)
-        background-image var(--wren-control-texture-light)
-        box-shadow var(--wren-control-primary-shadow-hover)
+        border-color var(--saf0o-control-primary-border-hover)
+        background-color var(--saf0o-accent-primary-hover)
+        background-image var(--saf0o-control-texture-light)
+        box-shadow var(--saf0o-control-primary-shadow-hover)
 
       &:active
         transform translateY(1px)
-        background-color var(--wren-accent-primary-active)
-        box-shadow var(--wren-control-primary-shadow-pressed)
+        background-color var(--saf0o-accent-primary-active)
+        box-shadow var(--saf0o-control-primary-shadow-pressed)
 
       .newAccountIcon
         position static
         width auto
         height auto
-        margin-right var(--wren-space-2)
+        margin-right var(--saf0o-space-2)
 
   // An inactive network is a neutral availability state, not an error.
   .network .signerPermissionToggle
@@ -496,12 +496,12 @@ button,
       width 44px
       height 24px
       box-sizing border-box
-      border 1px solid var(--wren-border-default)
+      border 1px solid var(--saf0o-border-default)
       border-radius 2px
       content ''
-      background var(--wren-surface-inset)
-      box-shadow var(--wren-shadow-inset)
-      transition border-color var(--wren-motion-fast) var(--wren-ease), background var(--wren-motion-fast) var(--wren-ease)
+      background var(--saf0o-surface-inset)
+      box-shadow var(--saf0o-shadow-inset)
+      transition border-color var(--saf0o-motion-fast) var(--saf0o-ease), background var(--saf0o-motion-fast) var(--saf0o-ease)
 
     .signerPermissionToggleSwitch
       top 14px
@@ -510,19 +510,19 @@ button,
       width 16px
       height 16px
       border 0
-      border-bottom 2px solid var(--wren-border-strong)
+      border-bottom 2px solid var(--saf0o-border-strong)
       border-radius 1px
-      background var(--wren-text-secondary)
-      box-shadow var(--wren-shadow-sm)
-      transition background var(--wren-motion-fast) var(--wren-ease), opacity var(--wren-motion-fast) var(--wren-ease), transform var(--wren-motion-fast) var(--wren-ease)
+      background var(--saf0o-text-secondary)
+      box-shadow var(--saf0o-shadow-sm)
+      transition background var(--saf0o-motion-fast) var(--saf0o-ease), opacity var(--saf0o-motion-fast) var(--saf0o-ease), transform var(--saf0o-motion-fast) var(--saf0o-ease)
 
   .network .signerPermissionToggleOn
     &::before
-      border-color var(--wren-success)
-      background var(--wren-success-soft)
+      border-color var(--saf0o-success)
+      background var(--saf0o-success-soft)
 
     .signerPermissionToggleSwitch
-      background var(--wren-success)
+      background var(--saf0o-success)
       transform translateX(20px)
 
   .network .signerPermissionToggle:disabled
@@ -530,7 +530,7 @@ button,
     cursor default
 
     &::before
-      border-color var(--wren-border-strong)
+      border-color var(--saf0o-border-strong)
 
     .signerPermissionToggleSwitchLocked
       inset 0
@@ -546,38 +546,38 @@ button,
         top 17px
         left 7px
         opacity 1
-        color var(--wren-text-muted)
-        transition color var(--wren-motion-fast) var(--wren-ease)
+        color var(--saf0o-text-muted)
+        transition color var(--saf0o-motion-fast) var(--saf0o-ease)
 
 .workspace-edge-left .dash,
 .workspace-overlay .dash
-  --wren-window-mode-image var(--wren-window-atmosphere-workspace-left)
+  --saf0o-window-mode-image var(--saf0o-window-atmosphere-workspace-left)
 
 .dash:has(.dashHomePerch),
 .dash:has(.dashNetworksPerch),
 .dash:has(.dashAccountsPerch),
-.dash:has(.wrenSettingsPerch),
+.dash:has(.saf0oSettingsPerch),
 .dash:has(.connectedAppsPerch),
 .dash:has(.sendComposer)
-  --wren-window-mode-image var(--wren-window-atmosphere-wallet)
-  --wren-window-mode-size var(--wren-window-atmosphere-wallet-size)
-  --wren-window-mode-shadow var(--wren-window-atmosphere-wallet-shadow)
+  --saf0o-window-mode-image var(--saf0o-window-atmosphere-wallet)
+  --saf0o-window-mode-size var(--saf0o-window-atmosphere-wallet-size)
+  --saf0o-window-mode-shadow var(--saf0o-window-atmosphere-wallet-shadow)
 
 .workspace-edge-right .dash
-  border-top-left-radius var(--wren-radius-xl)
+  border-top-left-radius var(--saf0o-radius-xl)
   border-top-right-radius 0
   border-bottom-right-radius 0
-  border-bottom-left-radius var(--wren-radius-xl)
+  border-bottom-left-radius var(--saf0o-radius-xl)
 
 .workspace-edge-left .dash
   border-top-left-radius 0
-  border-top-right-radius var(--wren-radius-xl)
-  border-bottom-right-radius var(--wren-radius-xl)
+  border-top-right-radius var(--saf0o-radius-xl)
+  border-bottom-right-radius var(--saf0o-radius-xl)
   border-bottom-left-radius 0
 
 .workspace-overlay .dash
   border 0
-  border-radius var(--wren-radius-xl)
+  border-radius var(--saf0o-radius-xl)
 
 .workspace-content-prepared .dash
   > .command,
@@ -585,7 +585,7 @@ button,
   > .dashFooter
     opacity 0
     transition none
-    animation wrenShellContentRevealFallback 0s linear 700ms forwards
+    animation saf0oShellContentRevealFallback 0s linear 700ms forwards
 
 .workspace-content-concealing .dash
   background transparent
@@ -594,50 +594,50 @@ button,
   > .dashMain,
   > .dashFooter
     opacity 0
-    transition-duration var(--wren-motion-standard)
+    transition-duration var(--saf0o-motion-standard)
 
 // Renderer-side opening failsafe: a missed prepared-state reveal must not
 // leave a visible workspace blank. Conceal remains fail-closed until main hides
 // the native window or sends an explicit reveal.
-@keyframes wrenShellContentRevealFallback
+@keyframes saf0oShellContentRevealFallback
   to
     opacity 1
 
-// Wren account chooser
+// Saf0o account chooser
 .dash .dashMain .addAccounts
   background transparent
 
 .dash .dashMain .addAccounts.addAccountsChooser
   display block
-  padding 0 var(--wren-page-gutter) var(--wren-space-6)
+  padding 0 var(--saf0o-page-gutter) var(--saf0o-space-6)
   box-sizing border-box
 
   .addAccountsHeader
     .addAccountsHeaderTitle
       height auto
-      margin var(--wren-space-5) var(--wren-space-2) var(--wren-space-4)
+      margin var(--saf0o-space-5) var(--saf0o-space-2) var(--saf0o-space-4)
       justify-content flex-start
-      color var(--wren-text-secondary)
-      font-size var(--wren-type-body)
+      color var(--saf0o-text-secondary)
+      font-size var(--saf0o-type-body)
       font-weight 500
 
   .accountTypeGroup + .accountTypeGroup
-    margin-top var(--wren-space-5)
+    margin-top var(--saf0o-space-5)
 
   .accountTypeGroup
     overflow hidden
     border 1px solid rgba(150, 182, 150, .16)
     border-radius 10px
-    background var(--wren-surface-card)
+    background var(--saf0o-surface-card)
     box-shadow 0 10px 26px rgba(0, 0, 0, .38), inset 1px 1px 0 rgba(150, 182, 150, .04)
 
   .accountTypeGroupTitle
     margin 0
     padding 12px 16px 10px
-    border-bottom 1px solid var(--wren-ledger-rule)
-    color var(--wren-text-tertiary)
-    font-family var(--wren-font-mono)
-    font-size var(--wren-type-caption)
+    border-bottom 1px solid var(--saf0o-ledger-rule)
+    color var(--saf0o-text-tertiary)
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
     font-weight 600
     letter-spacing 1.2px
     line-height 18px
@@ -654,39 +654,39 @@ button,
     padding 0 16px
     justify-content flex-start
     border 0
-    border-bottom 1px solid var(--wren-ledger-rule)
+    border-bottom 1px solid var(--saf0o-ledger-rule)
     border-radius 0
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
     background transparent
     box-shadow none
-    font-family var(--wren-font-ui)
+    font-family var(--saf0o-font-ui)
     font-size 15px
     font-weight 500
     text-align left
     transform none
-    transition background var(--wren-motion-fast) var(--wren-ease)
+    transition background var(--saf0o-motion-fast) var(--saf0o-ease)
 
     .accountTypeSelectIcon
       display flex
       width 24px
-      margin-right var(--wren-space-3)
+      margin-right var(--saf0o-space-3)
       align-items center
       justify-content center
-      color var(--wren-accent-primary-hover)
+      color var(--saf0o-accent-primary-hover)
 
     &:hover
       z-index auto
       transform none
-      background var(--wren-surface-hover)
+      background var(--saf0o-surface-hover)
       box-shadow none
 
     &:active
       transform none
-      background var(--wren-surface-active)
+      background var(--saf0o-surface-active)
       box-shadow none
 
     &:focus-visible
-      outline 2px solid var(--wren-focus)
+      outline 2px solid var(--saf0o-focus)
       outline-offset -2px
 
     &:last-child
@@ -698,7 +698,7 @@ button,
   align-items center
   justify-content center
 
-  .wrenEmptyStateExpanded
+  .saf0oEmptyStateExpanded
     min-height 340px
     padding 0
     flex-direction column
@@ -706,20 +706,20 @@ button,
     background transparent
     text-align center
 
-    .wrenEmptyStateImage
+    .saf0oEmptyStateImage
       position static
       width 220px
-      margin 0 0 var(--wren-space-3)
+      margin 0 0 var(--saf0o-space-3)
       transform none
 
-    .wrenEmptyStateText
+    .saf0oEmptyStateText
       max-width 360px
 
-    .wrenEmptyStateTitle
-      font-size var(--wren-type-body)
+    .saf0oEmptyStateTitle
+      font-size var(--saf0o-type-body)
 
-    .wrenEmptyStateCopy
-      font-size var(--wren-type-small)
+    .saf0oEmptyStateCopy
+      font-size var(--saf0o-type-small)
 
 .watchAccounts
   width 100%
@@ -731,28 +731,28 @@ button,
   width 100%
   min-height 72px
   box-sizing border-box
-  padding 0 var(--wren-space-2)
+  padding 0 var(--saf0o-space-2)
   border 0
-  color var(--wren-text-primary)
+  color var(--saf0o-text-primary)
   background transparent
-  font-family var(--wren-font-ui)
+  font-family var(--saf0o-font-ui)
   text-align left
   cursor pointer
-  transition background var(--wren-motion-fast) var(--wren-ease)
+  transition background var(--saf0o-motion-fast) var(--saf0o-ease)
 
   &:hover
-    background var(--wren-ledger-hover)
+    background var(--saf0o-ledger-hover)
 
   &:active
-    background var(--wren-surface-active)
+    background var(--saf0o-surface-active)
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset -2px
 
   > svg
     flex none
-    color var(--wren-text-tertiary)
+    color var(--saf0o-text-tertiary)
 
 .watchAccountIcon
   display flex
@@ -761,9 +761,9 @@ button,
   width 38px
   height 38px
   flex none
-  margin-right var(--wren-space-3)
+  margin-right var(--saf0o-space-3)
   border 0
-  color var(--wren-accent-primary-hover)
+  color var(--saf0o-accent-primary-hover)
   background transparent
 
 .watchAccountIdentity
@@ -775,63 +775,63 @@ button,
 
 .watchAccountName
   overflow hidden
-  font-size var(--wren-type-body)
+  font-size var(--saf0o-type-body)
   font-weight 560
   text-overflow ellipsis
   white-space nowrap
 
 .watchAccountAddress
   overflow hidden
-  color var(--wren-text-muted)
-  font-family var(--wren-font-mono)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-muted)
+  font-family var(--saf0o-font-mono)
+  font-size var(--saf0o-type-caption)
   text-overflow ellipsis
   white-space nowrap
 
 .delegationRevocation
   width 100%
   box-sizing border-box
-  margin var(--wren-space-5) 0 0
-  padding var(--wren-space-4) var(--wren-space-2)
-  color var(--wren-text-primary)
+  margin var(--saf0o-space-5) 0 0
+  padding var(--saf0o-space-4) var(--saf0o-space-2)
+  color var(--saf0o-text-primary)
   background transparent
 
 .delegationRevocationHeader
   display flex
   align-items flex-start
   justify-content space-between
-  padding-bottom var(--wren-space-3)
-  margin-bottom var(--wren-space-3)
+  padding-bottom var(--saf0o-space-3)
+  margin-bottom var(--saf0o-space-3)
 
   h2
     margin 0
-    font-family var(--wren-font-heading)
-    font-size var(--wren-type-body)
-    font-variation-settings var(--wren-font-heading-settings)
+    font-family var(--saf0o-font-heading)
+    font-size var(--saf0o-type-body)
+    font-variation-settings var(--saf0o-font-heading-settings)
     font-weight 600
 
   p
-    margin var(--wren-space-1) 0 0
-    color var(--wren-text-secondary)
+    margin var(--saf0o-space-1) 0 0
+    color var(--saf0o-text-secondary)
     font-size 12px
     line-height 1.45
 
 .delegationRevocationSelectors
   display grid
   grid-template-columns minmax(0, 1.35fr) minmax(160px, .65fr)
-  gap var(--wren-space-3)
-  padding var(--wren-space-3) 0
+  gap var(--saf0o-space-3)
+  padding var(--saf0o-space-3) 0
 
   label
     display flex
     min-width 0
     flex-direction column
-    gap var(--wren-space-1)
-    color var(--wren-text-secondary)
+    gap var(--saf0o-space-1)
+    color var(--saf0o-text-secondary)
     font-size 12px
 
     small
-      color var(--wren-text-muted)
+      color var(--saf0o-text-muted)
       font-size 12px
       line-height 1.4
 
@@ -839,15 +839,15 @@ button,
     width 100%
     min-height 44px
     box-sizing border-box
-    color var(--wren-text-primary)
-    background var(--wren-surface-inset)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-inset)
 
 .delegationRevocationMessage
   min-height 44px
   box-sizing border-box
   margin 0
-  padding var(--wren-space-3) 0 0
-  color var(--wren-text-secondary)
+  padding var(--saf0o-space-3) 0 0
+  color var(--saf0o-text-secondary)
   font-size 12px
   line-height 1.5
 
@@ -855,10 +855,10 @@ button,
   display flex
   align-items center
   justify-content space-between
-  gap var(--wren-space-4)
-  padding-top var(--wren-space-3)
+  gap var(--saf0o-space-4)
+  padding-top var(--saf0o-space-3)
 
-  > button.wrenControl.wrenControlPrimary
+  > button.saf0oControl.saf0oControlPrimary
     height 44px
     min-height 44px
     flex none
@@ -871,12 +871,12 @@ button,
 
   span,
   small
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
     font-size 12px
 
   strong
     overflow hidden
-    font-family var(--wren-font-mono)
+    font-family var(--saf0o-font-mono)
     font-size 12px
     font-weight 500
     text-overflow ellipsis
@@ -899,7 +899,7 @@ button,
 
   .dash .dashMain .addAccounts.addAccountsChooser
     .accountTypeGroup + .accountTypeGroup
-      margin-top var(--wren-space-2)
+      margin-top var(--saf0o-space-2)
 
     .accountTypeSelect
       height 52px

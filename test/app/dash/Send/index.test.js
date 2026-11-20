@@ -82,12 +82,12 @@ const baseState = () => ({
         1: {
           gas: { price: { levels: { fast: '1000000000' } } },
           nativeCurrency: { decimals: 18, name: 'Ether', symbol: 'ETH', usd: { price: 3000 } },
-          primaryColor: 'wren-chain-ethereum'
+          primaryColor: 'saf0o-chain-ethereum'
         },
         8453: {
           gas: { price: { levels: { fast: '10000000' } } },
           nativeCurrency: { decimals: 18, name: 'Ether', symbol: 'ETH', usd: { price: 3000 } },
-          primaryColor: 'wren-chain-base'
+          primaryColor: 'saf0o-chain-base'
         }
       }
     },
@@ -134,7 +134,7 @@ it('defers the network fee to authoritative request review', () => {
 
   expect(screen.getByText('Network fee')).toBeTruthy()
   expect(screen.getByText('Calculated during review')).toBeTruthy()
-  expect(screen.queryByText('Wren estimates gas before anything is signed.')).toBeNull()
+  expect(screen.queryByText('Saf0o estimates gas before anything is signed.')).toBeNull()
   expect(screen.queryByText(/0\.000021 ETH/)).toBeNull()
 })
 
@@ -181,7 +181,7 @@ it('distinguishes balance refresh and disconnected asset networks from an empty 
   })
 
   expect(screen.getByText('Checking balances…')).toBeTruthy()
-  expect(screen.getByText('Wren is refreshing this account before showing sendable assets.')).toBeTruthy()
+  expect(screen.getByText('Saf0o is refreshing this account before showing sendable assets.')).toBeTruthy()
   unmount()
 
   renderSend((state) => {
@@ -278,7 +278,7 @@ it('lists active accounts and identifies the current recipient account', async (
 
   expect(screen.getByText('Active accounts')).toBeTruthy()
   expect(screen.getByRole('button', { name: /Garden/ }).textContent).toContain('Current account')
-  expect(screen.getByRole('button', { name: /Meadow/ }).textContent).toContain('Active Wren account')
+  expect(screen.getByRole('button', { name: /Meadow/ }).textContent).toContain('Active Saf0o account')
   expect(screen.getByRole('button', { name: /Garden/ }).textContent).toContain(account)
   expect(screen.getByRole('button', { name: /Meadow/ }).textContent).toContain(secondAccount)
 
@@ -409,10 +409,13 @@ it('validates a recipient and amount before queueing the existing transaction re
 })
 
 it.each([
-  ['origin-unavailable', 'Wren could not prepare Send’s local authorization. Restart Wren, then try again.'],
+  [
+    'origin-unavailable',
+    'Saf0o could not prepare Send’s local authorization. Restart Saf0o, then try again.'
+  ],
   ['pending-chain', 'Finish or decline the pending Send transaction before sending on another network.'],
-  ['validation-failed', 'Wren could not validate this transfer. Check the recipient, amount, and network.'],
-  ['send-unavailable', 'Wren could not prepare this transaction.']
+  ['validation-failed', 'Saf0o could not validate this transfer. Check the recipient, amount, and network.'],
+  ['send-unavailable', 'Saf0o could not prepare this transaction.']
 ])('shows truthful prequeue copy for %s', async (error, message) => {
   resolveSendRecipient.mockResolvedValue({ success: true, address: recipient })
   queueSend.mockResolvedValue({ success: false, error })
@@ -484,7 +487,7 @@ it('uses the main-process maximum and blocks an amount above the stored balance'
 
   expect(screen.getByRole('button', { name: 'Use Max' }).disabled).toBe(true)
   expect(screen.getByText('Available: 1.00 ETH')).toBeTruthy()
-  expect(screen.getByText('Enter a recipient to use Max; Wren needs it to estimate gas.')).toBeTruthy()
+  expect(screen.getByText('Enter a recipient to use Max; Saf0o needs it to estimate gas.')).toBeTruthy()
   expect(screen.getByRole('button', { name: 'Use Max' }).getAttribute('aria-describedby')).toBe(
     'sendMaxReason'
   )

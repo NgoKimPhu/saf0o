@@ -33,7 +33,7 @@ const sbom = {
       type: 'application',
       name: packageJson.name,
       version: packageJson.version,
-      properties: [{ name: 'wren:source-commit', value: sourceCommit }]
+      properties: [{ name: 'saf0o:source-commit', value: sourceCommit }]
     }
   },
   components: [...productionGraph.keys()]
@@ -56,7 +56,7 @@ sbom.components = [
     version: electronVersion,
     scope: 'required',
     purl: electronRef,
-    properties: [{ name: 'wren:packaged-runtime', value: 'true' }]
+    properties: [{ name: 'saf0o:packaged-runtime', value: 'true' }]
   }
 ].sort((left, right) => left['bom-ref'].localeCompare(right['bom-ref']))
 

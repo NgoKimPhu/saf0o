@@ -71,7 +71,7 @@ afterEach(async () => {
 })
 
 function createService() {
-  const rpc = createDappClient(upstream.url, 'https://wren-test.invalid')
+  const rpc = createDappClient(upstream.url, 'https://saf0o-test.invalid')
   return new TokenApprovalsService({
     load: () => storage.load(),
     save: (value) => storage.save(value),
@@ -358,8 +358,8 @@ it('keeps observed history private through profile load, renderer updates, backu
     rendererVisibleActions([{ updates: [{ path: 'main.observedTokenApprovals', value: records }] }])
   ).toEqual([])
 
-  const source = path.join(process.env.WREN_E2E_PROFILE, 'approval-backup-source')
-  const target = path.join(process.env.WREN_E2E_PROFILE, 'approval-backup-restored')
+  const source = path.join(process.env.SAF0O_E2E_PROFILE, 'approval-backup-source')
+  const target = path.join(process.env.SAF0O_E2E_PROFILE, 'approval-backup-restored')
   fs.mkdirSync(source, { mode: 0o700 })
   fs.mkdirSync(target, { mode: 0o700 })
   fs.writeFileSync(
@@ -369,7 +369,7 @@ it('keeps observed history private through profile load, renderer updates, backu
   )
   const password = 'isolated regression profile backup'
   const backup = createEncryptedProfileBackup(source, password)
-  const backupPath = path.join(process.env.WREN_E2E_PROFILE, 'approval-history.wrenbackup')
+  const backupPath = path.join(process.env.SAF0O_E2E_PROFILE, 'approval-history.saf0obackup')
   fs.writeFileSync(backupPath, backup, { mode: 0o600 })
   stageEncryptedProfileRestore(backupPath, password, target)
   expect(runPendingProfileRestore(target).status).toBe('applied')

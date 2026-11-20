@@ -211,7 +211,7 @@ export class DelegationRevocation extends React.Component {
                 <span>Account</span>
                 <select
                   aria-label='Account to observe'
-                  className='wrenInput'
+                  className='saf0oInput'
                   value={account}
                   disabled={checking || queueing}
                   onChange={(event) => {
@@ -228,13 +228,15 @@ export class DelegationRevocation extends React.Component {
                     >{`${item.name} · ${item.address.slice(0, 8)}…${item.address.slice(-6)}`}</option>
                   ))}
                 </select>
-                <small>Viewing another account here does not change Wren’s currently selected account.</small>
+                <small>
+                  Viewing another account here does not change Saf0o’s currently selected account.
+                </small>
               </label>
               <label>
                 <span>Network</span>
                 <select
                   aria-label='Network to query'
-                  className='wrenInput'
+                  className='saf0oInput'
                   value={chainId}
                   disabled={checking || queueing || !networks.length}
                   onChange={(event) => {
@@ -271,7 +273,7 @@ export class DelegationRevocation extends React.Component {
                 {eligibility?.status === 'eligible' ? (
                   <button
                     type='button'
-                    className='wrenControl wrenControlPrimary'
+                    className='saf0oControl saf0oControlPrimary'
                     disabled={queueing || !selectedAccount}
                     onClick={() => this.requestRevocation()}
                   >

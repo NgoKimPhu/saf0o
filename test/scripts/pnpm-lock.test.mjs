@@ -6,11 +6,11 @@ import { componentFor, lockedVersion, productionGraph, readPnpmLock } from '../.
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'))
 const lock = readPnpmLock('.')
-const graph = productionGraph(lock, 'wren@0')
+const graph = productionGraph(lock, 'saf0o@0')
 
 test('production closure holds every direct dependency and no development-only package', () => {
   for (const name of Object.keys(packageJson.dependencies)) {
-    assert.ok(graph.get('wren@0').has(`${name}@${lockedVersion(lock, name)}`), name)
+    assert.ok(graph.get('saf0o@0').has(`${name}@${lockedVersion(lock, name)}`), name)
   }
   const development = Object.keys(packageJson.devDependencies).filter(
     (name) => !(name in packageJson.dependencies)

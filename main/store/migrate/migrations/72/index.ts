@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import {
   FRAME_SEND_ORIGIN,
-  WREN_DEPLOY_ORIGIN,
+  SAF0O_DEPLOY_ORIGIN,
   originIdForName
 } from '../../../../../resources/domain/origin'
 
@@ -45,7 +45,7 @@ const migrate = (initial: unknown) => {
   const { main } = parsed.data
   const origins = { ...(main.origins || {}) }
   const removed = new Set<string>()
-  for (const name of [FRAME_SEND_ORIGIN, WREN_DEPLOY_ORIGIN]) {
+  for (const name of [FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN]) {
     const originId = originIdForName(name)
     if (originId in origins && !validManagedOrigin(origins[originId], name)) {
       delete origins[originId]

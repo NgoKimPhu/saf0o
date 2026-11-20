@@ -1,7 +1,7 @@
 import React from 'react'
 import Restore from 'react-restore'
 
-import emptyConnections from 'url:../../../../../asset/ui/wren-empty-connections-v2.png'
+import emptyConnections from 'url:../../../../../asset/ui/saf0o-empty-connections-v2.png'
 
 import Icon from '../../../../../resources/Components/Icon'
 import link from '../../../../../resources/link'
@@ -19,7 +19,7 @@ import RevokeAccess, {
 } from '../RevokeAccess'
 
 import { Cluster, ClusterRow, ClusterValue } from '../../../../../resources/Components/Cluster'
-import WrenEmptyState from '../../../../../resources/Components/WrenEmptyState'
+import Saf0oEmptyState from '../../../../../resources/Components/Saf0oEmptyState'
 
 export class DappsPermissionsPreview extends React.Component {
   constructor(...args) {
@@ -238,9 +238,9 @@ export class DappsPermissionsPreview extends React.Component {
         </div>
         {permissionList.length === 0 ? (
           allPermissionIds.length ? (
-            <div className='wrenEmptyFilter'>No matching app permissions</div>
+            <div className='saf0oEmptyFilter'>No matching app permissions</div>
           ) : (
-            <WrenEmptyState
+            <Saf0oEmptyState
               image={emptyConnections}
               transparentImage={true}
               title='No app access'

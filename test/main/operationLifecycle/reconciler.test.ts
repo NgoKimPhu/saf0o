@@ -2,7 +2,7 @@ import { getCreateAddress } from 'ethers'
 
 import { OperationLifecycleLedger } from '../../../main/operationLifecycle/ledger'
 import { OperationLifecycleReconciler } from '../../../main/operationLifecycle/reconciler'
-import { WREN_DEPLOY_ORIGIN, originIdForName } from '../../../resources/domain/origin'
+import { SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../../resources/domain/origin'
 import {
   MAX_OPERATION_LIFECYCLE_AGE_MS,
   type OperationLifecycle,
@@ -103,7 +103,7 @@ test('persists the canonical CREATE address only for an exact managed deployment
     value: '0x0'
   }
   const managed = operation({
-    origin: originIdForName(WREN_DEPLOY_ORIGIN),
+    origin: originIdForName(SAF0O_DEPLOY_ORIGIN),
     transaction: { hash, nonce: '0x1', deployment }
   })
   const exact = fixture(managed, {

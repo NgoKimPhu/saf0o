@@ -1,22 +1,22 @@
 .inspector
   min-height 100%
   box-sizing border-box
-  padding 0 var(--wren-page-gutter) var(--wren-space-8)
-  color var(--wren-text-primary)
+  padding 0 var(--saf0o-page-gutter) var(--saf0o-space-8)
+  color var(--saf0o-text-primary)
 
 .inspectorHeader
   position relative
   display grid
   grid-template-columns minmax(0, 1fr) auto
-  gap var(--wren-space-4)
+  gap var(--saf0o-space-4)
   align-items center
-  margin 0 calc(-1 * var(--wren-page-gutter))
-  padding var(--wren-space-4) var(--wren-page-gutter)
-  border-bottom 1px solid var(--wren-border-subtle)
+  margin 0 calc(-1 * var(--saf0o-page-gutter))
+  padding var(--saf0o-space-4) var(--saf0o-page-gutter)
+  border-bottom 1px solid var(--saf0o-border-subtle)
   background transparent
 
   h1
-    margin 2px 0 var(--wren-space-1)
+    margin 2px 0 var(--saf0o-space-1)
     font-size 25px
     font-weight 500
     letter-spacing -.4px
@@ -24,24 +24,24 @@
   p
     max-width 480px
     margin 0
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-small)
     line-height 19px
 
 .inspectorEyebrow,
 .inspectorResultEyebrow
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-utility)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-utility)
+  font-size var(--saf0o-type-caption)
   letter-spacing .08em
   text-transform uppercase
 
 .inspectorSafetyContract
   display flex
   align-items center
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
   min-width 168px
-  padding var(--wren-space-2) 0
+  padding var(--saf0o-space-2) 0
   border 0
   border-radius 0
   color #a9cad5
@@ -50,45 +50,45 @@
   span
     display flex
     flex-direction column
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
     line-height 16px
 
   strong
-    color var(--wren-text-primary)
-    font-size var(--wren-type-small)
+    color var(--saf0o-text-primary)
+    font-size var(--saf0o-type-small)
     font-weight 600
 
 .inspectorModeTabs
   display grid
   grid-template-columns repeat(4, minmax(0, 1fr))
-  gap var(--wren-space-1)
-  margin var(--wren-space-4) 0 var(--wren-space-3)
-  padding var(--wren-space-1)
-  border 1px solid var(--wren-border-subtle)
-  border-radius var(--wren-radius-md)
-  background var(--wren-surface-inset)
+  gap var(--saf0o-space-1)
+  margin var(--saf0o-space-4) 0 var(--saf0o-space-3)
+  padding var(--saf0o-space-1)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-md)
+  background var(--saf0o-surface-inset)
 
-  button.wrenControl
+  button.saf0oControl
     min-width 0
     min-height 44px
     height auto
-    padding var(--wren-space-2)
-    font-size var(--wren-type-small)
+    padding var(--saf0o-space-2)
+    font-size var(--saf0o-type-small)
     scroll-margin-top 144px
     border-color transparent
-    border-radius var(--wren-radius-sm)
+    border-radius var(--saf0o-radius-sm)
 
   button.inspectorModeSelected,
   button.inspectorModeSelected:hover:not(:disabled)
-    border-color var(--wren-border-subtle)
-    color var(--wren-text-primary)
-    background var(--wren-surface-active)
-    box-shadow var(--wren-shadow-sm)
+    border-color var(--saf0o-border-subtle)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-active)
+    box-shadow var(--saf0o-shadow-sm)
 
 .inspectorInputPanel,
 .inspectorResult
-  padding var(--wren-space-4) 0
+  padding var(--saf0o-space-4) 0
   border 0
   border-radius 0
   background transparent
@@ -96,14 +96,14 @@
 
 .inspectorModeCopy
   h2
-    margin 0 0 var(--wren-space-1)
+    margin 0 0 var(--saf0o-space-1)
     font-size 18px
     font-weight 500
 
   p
-    margin 0 0 var(--wren-space-3)
-    color var(--wren-text-secondary)
-    font-size var(--wren-type-small)
+    margin 0 0 var(--saf0o-space-3)
+    color var(--saf0o-text-secondary)
+    font-size var(--saf0o-type-small)
     line-height 19px
 
 .inspectorRawInput,
@@ -112,9 +112,9 @@
   min-width 0
   flex-direction column
   gap 6px
-  color var(--wren-text-secondary)
-  font-family var(--wren-font-utility)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-secondary)
+  font-family var(--saf0o-font-utility)
+  font-size var(--saf0o-type-caption)
 
   > span
     display flex
@@ -122,7 +122,7 @@
     align-items baseline
 
   em
-    color var(--wren-text-tertiary)
+    color var(--saf0o-text-tertiary)
     font-style normal
 
   textarea,
@@ -130,37 +130,37 @@
   select
     width 100%
     box-sizing border-box
-    font-family var(--wren-font-mono)
+    font-family var(--saf0o-font-mono)
     font-size 12px
     line-height 18px
 
   textarea
     min-height 148px
-    padding var(--wren-space-3)
+    padding var(--saf0o-space-3)
     resize vertical
 
   input,
   select
     min-height 44px
-    padding 0 var(--wren-space-2)
+    padding 0 var(--saf0o-space-2)
 
 .inspectorContextFields
   display grid
   grid-template-columns repeat(2, minmax(0, 1fr))
-  gap var(--wren-space-3)
-  margin-top var(--wren-space-3)
+  gap var(--saf0o-space-3)
+  margin-top var(--saf0o-space-3)
 
 .inspectorActions
   display flex
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
   align-items center
   justify-content space-between
-  margin-top var(--wren-space-4)
+  margin-top var(--saf0o-space-4)
 
 .inspectorLocalNote
   max-width 360px
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
   line-height 17px
 
 button.inspectorInspectButton
@@ -170,49 +170,49 @@ button.inspectorInspectButton
 .inspectorError,
 .inspectorBusy,
 .inspectorMissing
-  margin-top var(--wren-space-3)
-  padding var(--wren-space-3)
-  border-radius var(--wren-radius-sm)
-  font-size var(--wren-type-small)
+  margin-top var(--saf0o-space-3)
+  padding var(--saf0o-space-3)
+  border-radius var(--saf0o-radius-sm)
+  font-size var(--saf0o-type-small)
   line-height 19px
 
 .inspectorError
   border 1px solid rgba(208, 92, 92, .55)
-  color var(--wren-danger)
+  color var(--saf0o-danger)
   background rgba(208, 92, 92, .08)
 
 .inspectorBusy
   border 1px solid rgba(120, 166, 184, .45)
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   background rgba(120, 166, 184, .08)
 
 .inspectorResult
-  margin-top var(--wren-space-4)
+  margin-top var(--saf0o-space-4)
 
 .inspectorResultHeader
   display flex
   align-items center
   justify-content space-between
-  gap var(--wren-space-3)
+  gap var(--saf0o-space-3)
   scroll-margin-top 144px
 
   h2
-    margin var(--wren-space-1) 0 0
+    margin var(--saf0o-space-1) 0 0
     font-size 20px
     font-weight 500
 
   &:focus-visible
-    outline 2px solid var(--wren-focus)
+    outline 2px solid var(--saf0o-focus)
     outline-offset 4px
 
 .inspectorReadonlyBadge
-  padding 5px var(--wren-space-2)
+  padding 5px var(--saf0o-space-2)
   border 1px solid rgba(120, 166, 184, .55)
   border-radius 999px
   color #a9cad5
   background rgba(120, 166, 184, .09)
-  font-family var(--wren-font-utility)
-  font-size var(--wren-type-caption)
+  font-family var(--saf0o-font-utility)
+  font-size var(--saf0o-type-caption)
 
 .inspectorMissing
   display flex
@@ -220,7 +220,7 @@ button.inspectorInspectButton
   gap 3px
   border 0
   border-radius 0
-  color var(--wren-text-secondary)
+  color var(--saf0o-text-secondary)
   background rgba(210, 162, 75, .08)
 
   strong
@@ -228,13 +228,13 @@ button.inspectorInspectButton
     font-weight 600
 
 .inspectorEvidenceSection
-  margin-top var(--wren-space-4)
+  margin-top var(--saf0o-space-4)
 
   h3
-    margin 0 0 var(--wren-space-2)
-    color var(--wren-text-secondary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-small)
+    margin 0 0 var(--saf0o-space-2)
+    color var(--saf0o-text-secondary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-small)
     font-weight 600
 
   dl
@@ -253,67 +253,67 @@ button.inspectorInspectButton
     align-items center
     min-width 0
     margin 0
-    padding var(--wren-space-2)
+    padding var(--saf0o-space-2)
 
   dt
-    color var(--wren-text-tertiary)
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    color var(--saf0o-text-tertiary)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
 
   dd
-    gap var(--wren-space-2)
+    gap var(--saf0o-space-2)
     justify-content space-between
     border 0
 
   code
     min-width 0
     overflow hidden
-    color var(--wren-text-primary)
-    font-family var(--wren-font-mono)
+    color var(--saf0o-text-primary)
+    font-family var(--saf0o-font-mono)
     font-size 12px
     line-height 18px
     overflow-wrap anywhere
     white-space pre-wrap
 
 .inspectorEvidenceRowMissing code
-  color var(--wren-text-tertiary)
-  font-family var(--wren-font-utility)
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-utility)
   font-style italic
 
 .inspectorEvidenceRow-success dd > code
-  color var(--wren-success)
+  color var(--saf0o-success)
 
 .inspectorEvidenceRow-warning dd > code
-  color var(--wren-warning)
+  color var(--saf0o-warning)
 
 .inspectorEvidenceRow-danger dd > code
-  color var(--wren-danger)
+  color var(--saf0o-danger)
 
 .inspectorLongEvidence
   min-width 0
   flex 1
 
   summary
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
     cursor pointer
-    font-family var(--wren-font-utility)
-    font-size var(--wren-type-caption)
+    font-family var(--saf0o-font-utility)
+    font-size var(--saf0o-type-caption)
 
   code
     display block
     max-height 360px
-    margin-top var(--wren-space-2)
-    padding var(--wren-space-2)
+    margin-top var(--saf0o-space-2)
+    padding var(--saf0o-space-2)
     overflow auto
     border 0
     border-radius 0
-    background var(--wren-bg-wallet-canvas)
+    background var(--saf0o-bg-wallet-canvas)
 
 .inspectorCopyBound
   max-width 155px
   flex 0 0 auto
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
   line-height 16px
 
 button.inspectorCopy
@@ -322,17 +322,17 @@ button.inspectorCopy
   gap 5px
   align-items center
   min-height 32px
-  padding 0 var(--wren-space-2)
+  padding 0 var(--saf0o-space-2)
 
 .inspectorEvidenceReason
-  margin var(--wren-space-2) 0 0
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  margin var(--saf0o-space-2) 0 0
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
   line-height 17px
 
 .inspectorSources
   display grid
-  gap var(--wren-space-2)
+  gap var(--saf0o-space-2)
   margin 0
   padding 0
   list-style none
@@ -340,17 +340,17 @@ button.inspectorCopy
   li
     display flex
     flex-wrap wrap
-    gap 4px var(--wren-space-2)
-    padding var(--wren-space-2) 0
+    gap 4px var(--saf0o-space-2)
+    padding var(--saf0o-space-2) 0
     border 0
     border-radius 0
-    color var(--wren-text-tertiary)
+    color var(--saf0o-text-tertiary)
     background transparent
-    font-size var(--wren-type-caption)
+    font-size var(--saf0o-type-caption)
 
   strong
     width 100%
-    color var(--wren-text-primary)
+    color var(--saf0o-text-primary)
     font-weight 500
 
 .inspectorWarnings
@@ -359,41 +359,41 @@ button.inspectorCopy
   list-style none
 
   li
-    margin-top var(--wren-space-2)
-    padding var(--wren-space-2) var(--wren-space-3)
+    margin-top var(--saf0o-space-2)
+    padding var(--saf0o-space-2) var(--saf0o-space-3)
     border 0
-    color var(--wren-text-secondary)
+    color var(--saf0o-text-secondary)
     background rgba(210, 162, 75, .08)
-    font-family var(--wren-font-mono)
+    font-family var(--saf0o-font-mono)
     font-size 12px
     line-height 18px
     overflow-wrap anywhere
 
 .inspectorTerminalNote
-  margin var(--wren-space-4) 0 0
-  padding-top var(--wren-space-3)
+  margin var(--saf0o-space-4) 0 0
+  padding-top var(--saf0o-space-3)
   border-top 1px solid rgba(120, 166, 184, .35)
   color #a9cad5
-  font-size var(--wren-type-small)
+  font-size var(--saf0o-type-small)
 
 .inspectorCopyStatus
   display block
   min-height 17px
-  margin-top var(--wren-space-1)
-  color var(--wren-text-tertiary)
-  font-size var(--wren-type-caption)
+  margin-top var(--saf0o-space-1)
+  color var(--saf0o-text-tertiary)
+  font-size var(--saf0o-type-caption)
 
 @media (max-width: 540px)
   .inspector
-    padding-right var(--wren-space-3)
-    padding-left var(--wren-space-3)
+    padding-right var(--saf0o-space-3)
+    padding-left var(--saf0o-space-3)
 
   .inspectorHeader
     grid-template-columns 1fr
-    margin-right calc(-1 * var(--wren-space-3))
-    margin-left calc(-1 * var(--wren-space-3))
-    padding-right var(--wren-space-3)
-    padding-left var(--wren-space-3)
+    margin-right calc(-1 * var(--saf0o-space-3))
+    margin-left calc(-1 * var(--saf0o-space-3))
+    padding-right var(--saf0o-space-3)
+    padding-left var(--saf0o-space-3)
 
   .inspectorSafetyContract
     width fit-content

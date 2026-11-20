@@ -13,7 +13,7 @@ const AccountActions = styled.div`
   padding: 16px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
-  gap: var(--wren-space-2);
+  gap: var(--saf0o-space-2);
   box-sizing: border-box;
 
   button {
@@ -25,44 +25,44 @@ const AccountActions = styled.div`
 
 const RemovalDialog = styled(DialogSurface)`
   padding: 14px 16px 16px;
-  color: var(--wren-text-primary);
+  color: var(--saf0o-text-primary);
 `
 
 const RemovalTitle = styled.h3`
   margin: 0;
-  font-family: var(--wren-font-ui);
-  font-size: var(--wren-type-body);
+  font-family: var(--saf0o-font-ui);
+  font-size: var(--saf0o-type-body);
   font-weight: 600;
   line-height: 20px;
 `
 
 const RemovalBody = styled.p`
   margin: 6px 0 0;
-  color: var(--wren-text-secondary);
-  font-family: var(--wren-font-ui);
-  font-size: var(--wren-type-small);
+  color: var(--saf0o-text-secondary);
+  font-family: var(--saf0o-font-ui);
+  font-size: var(--saf0o-type-small);
   line-height: 18px;
 `
 
 const RemovalError = styled.div`
   margin-top: 8px;
-  color: var(--wren-danger);
-  font-family: var(--wren-font-ui);
-  font-size: var(--wren-type-small);
+  color: var(--saf0o-danger);
+  font-family: var(--saf0o-font-ui);
+  font-size: var(--saf0o-type-small);
   line-height: 18px;
 `
 
 const RemovalStatus = styled.div`
   margin-top: 8px;
-  color: var(--wren-text-secondary);
-  font-family: var(--wren-font-ui);
-  font-size: var(--wren-type-small);
+  color: var(--saf0o-text-secondary);
+  font-family: var(--saf0o-font-ui);
+  font-size: var(--saf0o-type-small);
   line-height: 18px;
 `
 
 const RemovalActions = styled.div`
   display: flex;
-  gap: var(--wren-space-2);
+  gap: var(--saf0o-space-2);
   margin-top: 12px;
 
   button {
@@ -131,7 +131,7 @@ export class SettingsPreview extends React.Component {
         }
       } else if (result?.status === 'deferred' && this.mounted) {
         this.setState({
-          removeStatus: 'Removal is in progress. Wren will finish automatically.'
+          removeStatus: 'Removal is in progress. Saf0o will finish automatically.'
         })
       }
     })
@@ -180,7 +180,7 @@ export class SettingsPreview extends React.Component {
               >
                 <RemovalTitle id={titleId}>{`Remove ${accountDisplayName}?`}</RemovalTitle>
                 <RemovalBody id={bodyId}>
-                  {`This removes ${accountDisplayName} (${accountAddress}) from Wren. Funds remain onchain, but this account and its signer connection will no longer be available here.`}
+                  {`This removes ${accountDisplayName} (${accountAddress}) from Saf0o. Funds remain onchain, but this account and its signer connection will no longer be available here.`}
                 </RemovalBody>
                 {this.state.removeError ? (
                   <RemovalError role='alert'>{this.state.removeError}</RemovalError>
@@ -192,7 +192,7 @@ export class SettingsPreview extends React.Component {
                   <button
                     type='button'
                     ref={this.cancelRemoveRef}
-                    className='wrenControl wrenControlGhost'
+                    className='saf0oControl saf0oControlGhost'
                     disabled={this.state.removing}
                     onClick={() => this.resetRemoveConfirmation()}
                   >
@@ -200,7 +200,7 @@ export class SettingsPreview extends React.Component {
                   </button>
                   <button
                     type='button'
-                    className='wrenControl wrenControlDanger'
+                    className='saf0oControl saf0oControlDanger'
                     disabled={this.state.removing}
                     onClick={(event) => this.removeAccount(event)}
                   >
@@ -212,7 +212,7 @@ export class SettingsPreview extends React.Component {
               <AccountActions className='settingsPreviewActions'>
                 <button
                   type='button'
-                  className='settingsPreviewRename wrenControl wrenControlSecondary wrenControlLarge'
+                  className='settingsPreviewRename saf0oControl saf0oControlSecondary saf0oControlLarge'
                   onClick={() => this.openNameEditor()}
                 >
                   Rename account
@@ -220,7 +220,7 @@ export class SettingsPreview extends React.Component {
                 <button
                   type='button'
                   ref={this.removeTriggerRef}
-                  className='settingsPreviewRemove wrenControl wrenControlDanger wrenControlLarge'
+                  className='settingsPreviewRemove saf0oControl saf0oControlDanger saf0oControlLarge'
                   disabled={this.state.removing}
                   onClick={() => this.armAccountRemoval()}
                 >

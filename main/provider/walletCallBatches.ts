@@ -81,7 +81,7 @@ function persistedBytes(value: unknown) {
 }
 
 function operationIdForLegacyBatch(key: string) {
-  const digest = crypto.createHash('sha256').update(`wren:wallet-call:${key}`).digest('hex').slice(0, 32)
+  const digest = crypto.createHash('sha256').update(`saf0o:wallet-call:${key}`).digest('hex').slice(0, 32)
   const versioned = `${digest.slice(0, 12)}4${digest.slice(13, 16)}${(
     (Number.parseInt(digest[16] || '0', 16) & 0x3) |
     0x8

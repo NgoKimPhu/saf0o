@@ -65,12 +65,12 @@ export class SettingsExpanded extends React.Component {
               <span>Address</span>
               <code>{this.props.account}</code>
             </div>
-            <label className='panelBlockTitle' htmlFor='wren-account-name'>
+            <label className='panelBlockTitle' htmlFor='saf0o-account-name'>
               Account name
             </label>
             <input
-              id='wren-account-name'
-              className='wrenInput panelBlockItem'
+              id='saf0o-account-name'
+              className='saf0oInput panelBlockItem'
               type='text'
               aria-label='Account name'
               autoFocus

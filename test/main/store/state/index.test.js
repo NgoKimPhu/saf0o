@@ -79,11 +79,11 @@ afterEach(() => {
   jest.resetModules()
 })
 
-it('rejects state containing a snapshot newer than this Wren build supports', async () => {
+it('rejects state containing a snapshot newer than this Saf0o build supports', async () => {
   mockLatestVersion = 1
 
   await expect(import('../../../../main/store/state')).rejects.toThrow(
-    'Saved state version 2 is newer than Wren supports'
+    'Saved state version 2 is newer than Saf0o supports'
   )
 })
 
@@ -168,7 +168,7 @@ it('preserves an older version of the state after creating a newer state entry',
 
   jest.dontMock('../../../../main/store/persist')
   const fs = jest.requireActual('fs')
-  mockUserData = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-state-'))
+  mockUserData = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-state-'))
   fs.writeFileSync(
     path.join(mockUserData, 'config.json'),
     JSON.stringify({ main: { __: { 1: { main: { _version: 1, instanceId: 'test-frame' } } } } })

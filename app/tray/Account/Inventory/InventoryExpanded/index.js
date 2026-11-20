@@ -1,12 +1,12 @@
 import React from 'react'
 import Restore from 'react-restore'
 
-import emptyInventory from 'url:../../../../../asset/ui/wren-empty-inventory-v1.png'
+import emptyInventory from 'url:../../../../../asset/ui/saf0o-empty-inventory-v1.png'
 
 import link from '../../../../../resources/link'
 
 import { ClusterBox, Cluster, ClusterRow, ClusterValue } from '../../../../../resources/Components/Cluster'
-import WrenEmptyState from '../../../../../resources/Components/WrenEmptyState'
+import Saf0oEmptyState from '../../../../../resources/Components/Saf0oEmptyState'
 
 export class InventoryExpanded extends React.Component {
   constructor(...args) {
@@ -73,7 +73,7 @@ export class InventoryExpanded extends React.Component {
             <Cluster>{this.renderInventoryList()}</Cluster>
           </ClusterBox>
         ) : inventory ? (
-          <WrenEmptyState
+          <Saf0oEmptyState
             image={emptyInventory}
             title='No collectibles yet'
             copy='Collectibles associated with this account appear here.'

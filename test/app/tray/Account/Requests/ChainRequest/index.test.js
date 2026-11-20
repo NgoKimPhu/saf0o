@@ -33,7 +33,7 @@ it('shows the proposed network evidence and copies exact endpoints', async () =>
   )
 
   expect(screen.getByText('example.test')).toBeTruthy()
-  expect(screen.getByText('Add Optimism to Wren?')).toBeTruthy()
+  expect(screen.getByText('Add Optimism to Saf0o?')).toBeTruthy()
   expect(screen.getByText('10')).toBeTruthy()
   expect(screen.getByText('ETH · 18 decimals')).toBeTruthy()
 
@@ -77,6 +77,6 @@ it('uses neutral network fallbacks instead of rendering undefined identifiers', 
   expect(document.body.textContent).not.toContain('undefined')
 
   rerender(<ChainRequest req={{ handlerId: 'add-request', type: 'addChain', chain: { type: 'ethereum' } }} />)
-  expect(screen.getByText('Add Unknown network to Wren?')).toBeTruthy()
+  expect(screen.getByText('Add Unknown network to Saf0o?')).toBeTruthy()
   expect(document.body.textContent).not.toContain('undefined')
 })

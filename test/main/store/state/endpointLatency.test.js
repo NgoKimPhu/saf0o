@@ -12,7 +12,7 @@ let exitListeners
 
 beforeEach(async () => {
   exitListeners = new Set(process.listeners('exit'))
-  mockDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-endpoint-latency-'))
+  mockDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-endpoint-latency-'))
   jest.resetModules()
   const { default: createState } = await import('../../../../main/store/state')
   savedMain = createState().main

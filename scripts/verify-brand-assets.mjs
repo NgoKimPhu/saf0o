@@ -5,8 +5,8 @@ import { PNG } from 'pngjs'
 
 const appSizes = [1024, 512, 256, 128, 64, 32, 16]
 const markSizes = [1024, 512, 256, 128, 64, 32]
-const appExport = (size) => `asset/brand/exports/app/wren-app-icon-${size}.png`
-const markExport = (name, size) => `asset/brand/exports/mark/wren-mark-${name}-${size}.png`
+const appExport = (size) => `asset/brand/exports/app/saf0o-app-icon-${size}.png`
+const markExport = (name, size) => `asset/brand/exports/mark/saf0o-mark-${name}-${size}.png`
 const canonicalPath = appExport(512)
 const canonical = await readFile(path.resolve(canonicalPath))
 const canonicalPng = PNG.sync.read(canonical)
@@ -98,18 +98,18 @@ for (const copyPath of ['main/windows/AppIcon.png', 'build/icons/512x512.png', '
   assert.deepEqual(copy, canonical, `${copyPath} must match the canonical generated app icon`)
 }
 
-const master = await readFile(path.resolve('asset/brand/wren-mark.svg'), 'utf8')
-assert.match(master, /id="wren-silhouette"/, 'The brand master must define the shared silhouette')
-assert.match(master, /id="wren-color"/, 'The brand master must define the full-color mark')
+const master = await readFile(path.resolve('asset/brand/saf0o-mark.svg'), 'utf8')
+assert.match(master, /id="saf0o-silhouette"/, 'The brand master must define the shared silhouette')
+assert.match(master, /id="saf0o-color"/, 'The brand master must define the full-color mark')
 
 const markSpecs = [
-  { name: 'color', svgPattern: /href="#wren-color"/ },
+  { name: 'color', svgPattern: /href="#saf0o-color"/ },
   { name: 'mono-light', svgPattern: /fill="#e7eee8"/ },
   { name: 'mono-dark', svgPattern: /fill="#10130f"/ }
 ]
 
 for (const { name, svgPattern } of markSpecs) {
-  const svgPath = `asset/brand/exports/mark/wren-mark-${name}.svg`
+  const svgPath = `asset/brand/exports/mark/saf0o-mark-${name}.svg`
   const source = await readFile(path.resolve(svgPath), 'utf8')
   assert.match(source, svgPattern, `${svgPath} must retain its intended polarity`)
 
@@ -124,11 +124,11 @@ for (const { name, svgPattern } of markSpecs) {
 }
 
 const webSpecs = [
-  ['wren-favicon-16.png', 16],
-  ['wren-favicon-32.png', 32],
-  ['wren-apple-touch-icon-180.png', 180],
-  ['wren-web-app-192.png', 192],
-  ['wren-web-app-512.png', 512]
+  ['saf0o-favicon-16.png', 16],
+  ['saf0o-favicon-32.png', 32],
+  ['saf0o-apple-touch-icon-180.png', 180],
+  ['saf0o-web-app-192.png', 192],
+  ['saf0o-web-app-512.png', 512]
 ]
 
 for (const [name, size] of webSpecs) {
@@ -139,7 +139,7 @@ for (const [name, size] of webSpecs) {
 }
 
 for (const size of [16, 32, 512]) {
-  const webName = size === 512 ? 'wren-web-app-512.png' : `wren-favicon-${size}.png`
+  const webName = size === 512 ? 'saf0o-web-app-512.png' : `saf0o-favicon-${size}.png`
   assert.deepEqual(
     await readFile(path.resolve(`asset/brand/exports/web/${webName}`)),
     await readFile(path.resolve(appExport(size))),
@@ -147,7 +147,7 @@ for (const size of [16, 32, 512]) {
   )
 }
 
-const profilePath = 'asset/social/wren-profile-400.png'
+const profilePath = 'asset/social/saf0o-profile-400.png'
 const profile = await readFile(path.resolve(profilePath))
 const profilePng = PNG.sync.read(profile)
 const profileMark = getWarmMarkMetrics(profilePng)
@@ -165,12 +165,12 @@ assert.ok(
 )
 assert.ok(profileMark.farthestFromCenter <= 160, `${profilePath} mark must fit inside the crop-safe circle`)
 
-const headerMasterPath = 'asset/social/source/wren-night-rounds-v1.png'
+const headerMasterPath = 'asset/social/source/saf0o-night-rounds-v1.png'
 const headerMasterPng = await readPng(headerMasterPath)
 assert.equal(headerMasterPng.width, 2172, `${headerMasterPath} must retain its native 3:1 width`)
 assert.equal(headerMasterPng.height, 724, `${headerMasterPath} must retain its native 3:1 height`)
 
-const headerPath = 'asset/social/wren-x-header-1500x500.png'
+const headerPath = 'asset/social/saf0o-x-header-1500x500.png'
 const header = await readFile(path.resolve(headerPath))
 const headerPng = PNG.sync.read(header)
 const headerMark = getWarmMarkMetrics(headerPng)
@@ -187,23 +187,23 @@ assert.ok(headerMark.cropSafePixelRatio >= 0.95, `${headerPath} must retain crop
 for (const requiredPath of [
   'asset/README.md',
   'asset/brand/README.md',
-  'asset/brand/source/wren-character-flat-reference.png',
-  'asset/brand/wren-brand-sheet.png',
-  'asset/ui/wren-control-center-v1.png'
+  'asset/brand/source/saf0o-character-flat-reference.png',
+  'asset/brand/saf0o-brand-sheet.png',
+  'asset/ui/saf0o-control-center-v1.png'
 ]) {
   await access(path.resolve(requiredPath))
 }
 
 for (const removedPath of [
   'asset/review',
-  'asset/WrenIcon.png',
+  'asset/Saf0oIcon.png',
   'asset/png',
   'asset/ui/empty-connections-v6.png',
-  'asset/ui/wren-empty-balances-v1.png',
-  'asset/ui/wren-empty-connections-v1.png',
-  'asset/ui/wren-empty-requests-v1.png'
+  'asset/ui/saf0o-empty-balances-v1.png',
+  'asset/ui/saf0o-empty-connections-v1.png',
+  'asset/ui/saf0o-empty-requests-v1.png'
 ]) {
   await assert.rejects(access(path.resolve(removedPath)), `${removedPath} must remain removed`)
 }
 
-console.log('Complete Wren brand and social asset collection verified')
+console.log('Complete Saf0o brand and social asset collection verified')

@@ -252,7 +252,7 @@ it('authenticates native HTTP RPC before creating a fingerprint-scoped origin', 
     send({
       path: '/native/v3/rpc',
       body,
-      headers: { 'x-wren-native-proof': proofHeader }
+      headers: { 'x-saf0o-native-proof': proofHeader }
     })
   ).resolves.toMatchObject({
     status: 200,
@@ -291,7 +291,7 @@ it('rejects an invalid native HTTP proof without provider or origin work', async
     send({
       path: '/native/v3/rpc',
       body,
-      headers: { 'x-wren-native-proof': proofHeader }
+      headers: { 'x-saf0o-native-proof': proofHeader }
     })
   ).resolves.toMatchObject({
     status: 401,
@@ -323,7 +323,7 @@ it('removes a native HTTP subscription when its exact peer is disconnected', asy
     send({
       path: '/native/v3/rpc',
       body,
-      headers: { 'x-wren-native-proof': proofHeader }
+      headers: { 'x-saf0o-native-proof': proofHeader }
     })
   ).resolves.toMatchObject({
     status: 200,
@@ -505,7 +505,7 @@ it.each([undefined, 'null', 'Unknown/caller-selected', 'https://Unknown/caller-s
         id: null,
         error: {
           code: 4100,
-          message: 'Wren requires a paired native protocol 3 client for local requests.'
+          message: 'Saf0o requires a paired native protocol 3 client for local requests.'
         }
       }
     })

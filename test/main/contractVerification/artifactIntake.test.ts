@@ -75,7 +75,7 @@ afterEach(() => {
 })
 
 function fixture() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-artifact-intake-'))
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-artifact-intake-'))
   roots.push(root)
   return root
 }

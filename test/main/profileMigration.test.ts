@@ -16,7 +16,7 @@ afterEach(() => {
 })
 
 function fixture() {
-  const appDataPath = fs.mkdtempSync(path.join(os.tmpdir(), 'wren-profile-import-'))
+  const appDataPath = fs.mkdtempSync(path.join(os.tmpdir(), 'saf0o-profile-import-'))
   roots.push(appDataPath)
   const source = path.join(appDataPath, 'frame')
   const target = path.join(appDataPath, 'saf0o')
@@ -178,13 +178,13 @@ test('accepts a bounded legacy backup without treating it as an active signer', 
   )
 })
 
-test('refuses to overwrite an existing Wren profile', () => {
+test('refuses to overwrite an existing Saf0o profile', () => {
   const { appDataPath, target } = fixture()
   fs.mkdirSync(target)
   fs.writeFileSync(path.join(target, 'keep'), 'existing')
 
   expect(() => importFrameProfile(path.join(appDataPath, 'frame'), target)).toThrow(
-    'A Wren profile already exists; import is available only before first launch'
+    'A Saf0o profile already exists; import is available only before first launch'
   )
   expect(fs.readFileSync(path.join(target, 'keep'), 'utf8')).toBe('existing')
 })
@@ -197,12 +197,12 @@ test('replaces only an empty directory pre-created by Electron', () => {
   expect(fs.existsSync(path.join(target, 'config.json'))).toBe(true)
 })
 
-test('treats a broken Wren profile symlink as an existing destination', () => {
+test('treats a broken Saf0o profile symlink as an existing destination', () => {
   const { appDataPath, target } = fixture()
   fs.symlinkSync('missing-profile', target)
 
   expect(() => importFrameProfile(path.join(appDataPath, 'frame'), target)).toThrow(
-    'A Wren profile already exists; import is available only before first launch'
+    'A Saf0o profile already exists; import is available only before first launch'
   )
   expect(fs.lstatSync(target).isSymbolicLink()).toBe(true)
 })
@@ -224,7 +224,7 @@ test('removes staging data when validation fails', () => {
 
   expect(() => importFrameProfile(source, target)).toThrow('Frame configuration is not valid JSON')
   expect(fs.existsSync(target)).toBe(false)
-  expect(fs.readdirSync(appDataPath).filter((entry) => entry.startsWith('.wren-import-'))).toEqual([])
+  expect(fs.readdirSync(appDataPath).filter((entry) => entry.startsWith('.saf0o-import-'))).toEqual([])
   expect(fs.readFileSync(path.join(source, 'config.json'), 'utf8')).toBe('not json')
 })
 
@@ -236,7 +236,7 @@ test('rejects a profile from a newer state version', () => {
   )
 
   expect(() => importFrameProfile(source, target)).toThrow(
-    'Frame profile version 999 is newer than Wren supports'
+    'Frame profile version 999 is newer than Saf0o supports'
   )
   expect(fs.existsSync(target)).toBe(false)
 })
@@ -254,7 +254,7 @@ test('rejects malformed signer records without creating a profile', () => {
   expect(fs.existsSync(target)).toBe(false)
 })
 
-test('rejects signer symlinks without creating a partial Wren profile', () => {
+test('rejects signer symlinks without creating a partial Saf0o profile', () => {
   const { source, target } = fixture()
   fs.symlinkSync('signer.json', path.join(source, 'signers', 'linked.json'))
 
@@ -262,7 +262,7 @@ test('rejects signer symlinks without creating a partial Wren profile', () => {
   expect(fs.existsSync(target)).toBe(false)
 })
 
-test('rejects a configuration symlink without creating a partial Wren profile', () => {
+test('rejects a configuration symlink without creating a partial Saf0o profile', () => {
   const { source, target } = fixture()
   fs.renameSync(path.join(source, 'config.json'), path.join(source, 'config-target.json'))
   fs.symlinkSync('config-target.json', path.join(source, 'config.json'))
@@ -288,13 +288,13 @@ test('rejects relative, empty, and nested import paths', () => {
       userDataPath: path.join(appDataPath, 'saf0o')
     })
   ).toThrow('Frame profile import source cannot be empty')
-  expect(() => importFrameProfile(source, path.join(source, 'wren'))).toThrow(
-    'Frame and Wren profile paths must be different'
+  expect(() => importFrameProfile(source, path.join(source, 'saf0o'))).toThrow(
+    'Frame and Saf0o profile paths must be different'
   )
 
   const sourceAlias = path.join(appDataPath, 'frame-alias')
   fs.symlinkSync(source, sourceAlias, 'dir')
-  expect(() => importFrameProfile(source, path.join(sourceAlias, 'wren'))).toThrow(
-    'Frame and Wren profile paths must be different'
+  expect(() => importFrameProfile(source, path.join(sourceAlias, 'saf0o'))).toThrow(
+    'Frame and Saf0o profile paths must be different'
   )
 })
