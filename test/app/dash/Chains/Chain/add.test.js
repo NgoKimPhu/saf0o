@@ -3,6 +3,7 @@ import Restore from 'react-restore'
 import store from '../../../../../main/store'
 import link from '../../../../../resources/link'
 import { render, screen } from '../../../../componentSetup'
+import { publicNodePresets } from '../../../../../resources/chains/publicnodePresets'
 import ChainComponent from '../../../../../app/dash/Chains/Chain'
 
 jest.mock('../../../../../main/store/persist')
@@ -232,4 +233,38 @@ test('changes the test-network setting', async () => {
 
   await user.click(toggle)
   expect(toggle.getAttribute('aria-checked')).toBe('true')
+})
+
+describe('PublicNode presets', () => {
+  test('picking a preset fills the form without adding the network', async () => {
+    const { user } = render(<Chain view='setup' id='' name='' symbol='' rpcUrls={['']} />)
+
+    await user.selectOptions(screen.getByLabelText('PublicNode presets'), 'Sonic')
+
+    expect(screen.getByLabelText('Network name').value).toBe('Sonic')
+    expect(screen.getByLabelText('Chain ID').value).toBe('146')
+    expect(screen.getByLabelText('Native currency').value).toBe('S')
+    expect(screen.getByLabelText('RPC URL 1').value).toBe('https://sonic-rpc.publicnode.com')
+    expect(screen.getByLabelText('Block explorer').value).toBe('https://sonicscan.org')
+    expect(link.invoke).not.toHaveBeenCalled()
+  })
+
+  test('hides presets for networks the user already has', () => {
+    render(<Chain view='setup' id='' name='' symbol='' rpcUrls={['']} />)
+
+    // mainnet (chainId 1) is a default network in the store
+    expect(screen.queryByRole('option', { name: 'Ethereum' })).toBeNull()
+    expect(screen.getByRole('option', { name: 'Sonic' })).toBeTruthy()
+  })
+
+  test('preset entries are well formed so a pick always yields a valid network', () => {
+    const ids = publicNodePresets.map(({ id }) => id)
+    expect(new Set(ids).size).toBe(ids.length)
+    for (const p of publicNodePresets) {
+      expect(Number.isSafeInteger(p.id) && p.id > 0).toBe(true)
+      expect(p.rpcUrl).toMatch(/^https:\/\/[a-z0-9-]+-rpc\.publicnode\.com$/)
+      expect(new URL(p.explorer).protocol).toBe('https:')
+      expect(p.name && p.symbol && p.nativeCurrencyName).toBeTruthy()
+    }
+  })
 })

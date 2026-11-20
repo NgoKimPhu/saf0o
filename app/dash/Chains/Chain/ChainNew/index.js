@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import chainDefault from '../chainDefault'
 import link from '../../../../../resources/link'
+import { publicNodePresets } from '../../../../../resources/chains/publicnodePresets'
 import {
   NetworkEditorActions,
   NetworkEditorField,
@@ -68,7 +69,7 @@ export const Chain = ({
   const [currentColor] = useState(newChain.primaryColor)
   const [currentName, setName] = useState(newChain.name)
   const [currentSymbol, setSymbol] = useState(newChain.symbol)
-  const [currentNativeCurrencyName] = useState(newChain.nativeCurrencyName)
+  const [currentNativeCurrencyName, setNativeCurrencyName] = useState(newChain.nativeCurrencyName)
   const [currentChainIcon] = useState(newChain.icon)
   const [currentCurrencyIcon] = useState(newChain.nativeCurrencyIcon)
   const [currentChainId, setChainId] = useState(newChain.id)
@@ -191,6 +192,21 @@ export const Chain = ({
     Number(currentDecimals) < 0 ||
     Number(currentDecimals) > 255
 
+  const applyPreset = (presetId) => {
+    const preset = publicNodePresets.find(({ id: candidate }) => String(candidate) === presetId)
+    if (!preset) return
+    setName(preset.name)
+    setChainId(String(preset.id))
+    setSymbol(preset.symbol)
+    setNativeCurrencyName(preset.nativeCurrencyName)
+    setDecimals(preset.nativeCurrencyDecimals)
+    setExplorer(preset.explorer)
+    setTestnet(preset.isTestnet)
+    setEndpoints([{ ...endpoints[0], id: 'rpc-1', custom: preset.rpcUrl }])
+    setEndpointValues({ 'rpc-1': preset.rpcUrl })
+    setEndpointTouched({})
+  }
+
   const moveEndpoint = (endpointId, offset) => {
     setEndpoints((items) => {
       const index = items.findIndex((endpoint) => endpoint.id === endpointId)
@@ -231,6 +247,28 @@ export const Chain = ({
         {requestReference?.origin && <p>Requested by {displayOrigin(requestReference.origin)}</p>}
       </div>
       <div className='networkEditorBody'>
+        {!requestReference && (
+          <label className='networkEditorField'>
+            <span className='networkEditorFieldLabel'>
+              <span>PublicNode presets</span>
+            </span>
+            <select
+              aria-label='PublicNode presets'
+              className='networkEditorInput saf0oInput'
+              value=''
+              onChange={(event) => applyPreset(event.target.value)}
+            >
+              <option value=''>Choose a network…</option>
+              {publicNodePresets
+                .filter(({ id: presetId }) => !existingChains.includes(presetId))
+                .map((preset) => (
+                  <option key={preset.id} value={preset.id}>
+                    {preset.name}
+                  </option>
+                ))}
+            </select>
+          </label>
+        )}
         <div className='networkEditorGrid'>
           <NetworkEditorField label='Network name' value={currentName} onChange={setName} />
           <NetworkEditorField
