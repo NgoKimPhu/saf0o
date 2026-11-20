@@ -177,7 +177,7 @@ const mainState = {
   },
   shortcuts: {
     summon: main('shortcuts.summon', {
-      modifierKeys: ['Alt'],
+      modifierKeys: ['Meta'],
       shortcutKey: 'Slash',
       enabled: true,
       configuring: false

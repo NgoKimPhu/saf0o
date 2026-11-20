@@ -102,6 +102,19 @@ it('loads values from the current version of the state', async () => {
   expect(state().main.desktopAuthIdentity.privateKey.d).toEqual(expect.any(String))
 })
 
+it('defaults the wallet summon shortcut to Win/Meta+/ when none is persisted', async () => {
+  mockLatestVersion = 2
+
+  const { default: state } = await import('../../../../main/store/state')
+
+  expect(state().main.shortcuts.summon).toEqual({
+    modifierKeys: ['Meta'],
+    shortcutKey: 'Slash',
+    enabled: true,
+    configuring: false
+  })
+})
+
 it('restores a supported requested interface scale', async () => {
   mockLatestVersion = 2
   mockInterfaceScale = 1.5

@@ -66,7 +66,7 @@ export class SystemTray {
 
   setContextMenu(
     type: string,
-    { displaySummonShortcut = false, accelerator = 'Alt+/', switchScreen = false }
+    { displaySummonShortcut = false, accelerator = 'Meta+/', switchScreen = false }
   ) {
     const separatorMenuItem = {
       label: 'Saf0o',
