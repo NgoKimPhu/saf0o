@@ -306,7 +306,8 @@ it('uses a canonical domain-separated request payload independent of input prope
     protocol: canonical.protocol
   }
   expect(nativeRequestPayload(reordered)).toEqual(nativeRequestPayload(canonical))
-  expect(nativeRequestPayload(canonical).subarray(0, 23).toString()).toBe('saf0o-native-request-v3\0')
+  const domain = 'saf0o-native-request-v3\0'
+  expect(nativeRequestPayload(canonical).subarray(0, Buffer.byteLength(domain)).toString()).toBe(domain)
   expect(nativeRequestPayload({ ...canonical, path: '/native/v3/other' })).not.toEqual(
     nativeRequestPayload(canonical)
   )

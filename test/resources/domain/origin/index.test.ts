@@ -15,7 +15,7 @@ test('defines a distinct exact managed deployment principal and friendly display
   const sendId = originIdForInvoker(FRAME_SEND_ORIGIN, { provenance: 'managed' })
 
   expect(SAF0O_DEPLOY_ORIGIN).toBe('http://deploy.saf0o.localhost:8421')
-  expect(deployId).toBe('ae9af752-884b-5edc-a215-5d472486a6b9')
+  expect(deployId).toBe('b28720ba-585d-5a20-a021-d85274e6e654')
   expect(deployId).not.toBe(sendId)
   expect(getOriginDisplayName(SAF0O_DEPLOY_ORIGIN)).toBe(SAF0O_DEPLOY_DISPLAY_NAME)
   expect(getManagedOriginNameForId(deployId)).toBe(SAF0O_DEPLOY_ORIGIN)
