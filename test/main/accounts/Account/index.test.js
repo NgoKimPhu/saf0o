@@ -22,9 +22,11 @@ import { flushPromises } from '../../../util'
 import { transitionNotification } from '../../../../resources/store/notifications'
 import { createAccountPermission } from '../../../../main/provider/permissions'
 import { recordOutboundAddresses } from '../../../../main/addressSafety'
+import { syncReputation } from '../../../../main/reputation'
 
 jest.mock('../../../../main/reveal')
 jest.mock('../../../../main/transaction/balancePreview')
+jest.mock('../../../../main/reputation')
 jest.mock('../../../../main/transaction/simulation', () => ({
   ...jest.requireActual('../../../../main/transaction/simulation'),
   inspectTransactionAccountCode: jest.fn(),
@@ -449,6 +451,33 @@ describe('#addRequest', () => {
     expect(request.addressSafety.targets).toEqual([{ address: lookalike, state: 'lookalike' }])
     expect(request.approvals).toEqual([])
     account.clearRequest(request.handlerId)
+  })
+
+  it('asks for target reputation wherever address safety is synced, and drops results once the request is gone', () => {
+    store.mockImplementation(() => undefined)
+    const request = {
+      handlerId: 'reputation-hook',
+      type: 'transaction',
+      account: accountState.address,
+      origin: 'example.test',
+      data: { from: accountState.address, to: `0x${'a'.repeat(40)}`, chainId: '0x1', value: '0x1' },
+      payload: { id: 1, jsonrpc: '2.0', method: 'eth_sendTransaction', params: [] },
+      approvals: [],
+      recognizedActions: [],
+      simulation: { status: 'pending' }
+    }
+    syncReputation.mockClear()
+
+    account.addRequest(request)
+
+    expect(syncReputation).toHaveBeenCalledWith(request, {
+      publish: expect.any(Function),
+      isCurrent: expect.any(Function)
+    })
+    const { isCurrent } = syncReputation.mock.calls[0][1]
+    expect(isCurrent()).toBe(true)
+    account.clearRequest(request.handlerId)
+    expect(isCurrent()).toBe(false)
   })
 
   it('returns concurrent arrivals to the inbox without replacing the active review', () => {

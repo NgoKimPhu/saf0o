@@ -129,6 +129,12 @@ it('auto-hides by default for new profiles but keeps a saved choice', async () =
   expect(saved().main.autohide).toBe(false)
 })
 
+it('turns MetaSleuth labels on by default for profiles with no saved value', async () => {
+  mockLatestVersion = 2
+  const { default: fresh } = await import('../../../../main/store/state')
+  expect(fresh().main.metasleuthLabels).toBe(true)
+})
+
 it('restores a supported requested interface scale', async () => {
   mockLatestVersion = 2
   mockInterfaceScale = 1.5

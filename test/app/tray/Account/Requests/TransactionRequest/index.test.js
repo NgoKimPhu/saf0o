@@ -299,6 +299,37 @@ describe('confirm', () => {
     )
   })
 
+  it('shows the recipient reputation under the address', () => {
+    const flagged = '0x3333333333333333333333333333333333333333'
+    render(
+      <TxRecipient
+        i={0}
+        req={{
+          data: { to: flagged, value: '0x1' },
+          recipientType: 'external',
+          reputation: {
+            chainId: 1,
+            assessedAt: 1,
+            targets: [
+              {
+                address: flagged,
+                state: 'done',
+                level: 'danger',
+                signals: {
+                  lookalike: false,
+                  label: { ok: true, value: { name: 'Phishing 12' } },
+                  risk: { ok: true, value: { score: 4 } }
+                }
+              }
+            ]
+          }
+        }}
+      />
+    )
+
+    expect(screen.getByRole('alert').textContent).toBe('Flagged: Phishing 12 · High risk')
+  })
+
   it('does not expose a recipient copy target for contract creation', () => {
     render(
       <TxRecipient

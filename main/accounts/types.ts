@@ -10,6 +10,7 @@ import type { Token } from '../store/state'
 import type { TransactionSimulation, WalletCallsSimulation } from '../transaction/simulation'
 import type { AddressSafetyAssessment } from '../addressSafety/types'
 import type { BalancePreview } from '../transaction/balancePreview'
+import type { ReputationAssessment } from '../reputation'
 import type { TypedDataContext, TypedMessage } from '../../resources/domain/typedData'
 import type { SweepEvidence } from '../../resources/domain/sweep'
 import type { NativeMaxTrustedMetadata } from '../send/max'
@@ -159,6 +160,7 @@ export interface TransactionRequest extends AccountRequest<'transaction'> {
   simulation: TransactionSimulation
   addressSafety?: AddressSafetyAssessment
   balancePreview?: BalancePreview
+  reputation?: ReputationAssessment
   replacement?: {
     kind: ReplacementType
     originalActivityId: string
@@ -328,6 +330,7 @@ export interface WalletCallsRequest extends AccountRequest<'walletCalls'> {
   managedSweep?: SweepEvidence
   addressSafety?: AddressSafetyAssessment
   balancePreview?: BalancePreview
+  reputation?: ReputationAssessment
   recoverableError?: {
     code: 'wallet-call-funding-insufficient' | 'wallet-call-funding-unavailable' | 'managed-sweep-changed'
     message: string

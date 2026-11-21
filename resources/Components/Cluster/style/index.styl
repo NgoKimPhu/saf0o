@@ -304,6 +304,35 @@
     color var(--saf0o-warning)
     font-weight 650
 
+.addressReputation
+  display flex
+  flex-wrap wrap
+  align-items baseline
+  gap 0 var(--saf0o-space-1)
+  margin var(--saf0o-space-1) 0 0
+  color var(--saf0o-text-tertiary)
+  font-family var(--saf0o-font-ui)
+  font-size var(--saf0o-type-caption)
+  font-weight 450
+  line-height 17px
+  text-align left
+  overflow-wrap anywhere
+
+.addressReputationChip
+  font-weight 650
+
+.addressReputationDanger .addressReputationChip
+  color var(--saf0o-danger)
+
+.addressReputationCaution .addressReputationChip
+  color var(--saf0o-warning)
+
+.addressReputationTrusted .addressReputationChip
+  color var(--saf0o-success)
+
+.addressReputationFacts
+  color var(--saf0o-text-secondary)
+
 .clusterAddressRecipientFull
   position absolute
   inset 0

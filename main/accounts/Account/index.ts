@@ -92,6 +92,7 @@ import {
   transactionOutboundTargets,
   walletCallsOutboundTargets
 } from '../../addressSafety'
+import { syncReputation } from '../../reputation'
 
 const nebula = nebulaApi()
 
@@ -868,6 +869,10 @@ class FrameAccount {
       store('main.instanceId'),
       targets
     )
+    syncReputation(req, {
+      publish: () => this.update(),
+      isCurrent: () => this.requests[req.handlerId] === req
+    })
 
     return req.addressSafety
   }

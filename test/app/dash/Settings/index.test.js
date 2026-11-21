@@ -330,6 +330,8 @@ it('cancels a staged reset from About with Escape', async () => {
 
 it.each([
   ['Auto-hide', 'Auto-hide', ['tray:action', 'setAutohide', true]],
+  // on by default when the store has no saved value, so one click turns it off
+  ['MetaSleuth labels', 'MetaSleuth labels', ['tray:action', 'setMetasleuthLabels', false]],
   [
     'Wallet activity notifications',
     'Wallet activity notifications',

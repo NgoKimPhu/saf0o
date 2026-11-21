@@ -136,6 +136,35 @@ it('shows full lookalike destinations with highlighted ends and an inline warnin
   )
 })
 
+it('shows the reputation of a called contract next to the call', () => {
+  const req = preparedRequest()
+  req.calls = [req.calls[0]]
+  req.preparation.calls = [req.preparation.calls[0]]
+  req.preparation.maxFee = req.preparation.calls[0].maxFee
+  req.simulation.calls = [req.simulation.calls[0]]
+  req.reputation = {
+    chainId: 1,
+    assessedAt: 1_800_000_000_000,
+    targets: [
+      {
+        address: target,
+        state: 'done',
+        level: 'caution',
+        signals: { lookalike: false, source: { ok: true, value: { verified: false, proxy: false } } }
+      }
+    ]
+  }
+  render(
+    <WalletCallsRequest
+      originName='example.test'
+      chainData={{ chainName: 'Ethereum', nativeCurrencySymbol: 'ETH', nativeCurrencyDecimals: 18 }}
+      req={req}
+    />
+  )
+
+  expect(screen.getByRole('alert').textContent).toBe('Caution' + 'unverified')
+})
+
 it('keeps aggregate fees and adjustment beside the decision while per-call fees remain in details', async () => {
   const req = preparedRequest()
   const localStore = Restore.create(

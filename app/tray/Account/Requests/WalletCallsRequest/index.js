@@ -5,6 +5,7 @@ import AddressIdentity from '../../../../../resources/Components/AddressIdentity
 import AddressSafetyStatus, {
   addressSafetyTarget
 } from '../../../../../resources/Components/AddressSafetyStatus'
+import AddressReputation from '../../../../../resources/Components/AddressReputation'
 import link from '../../../../../resources/link'
 import { resolveLocalAddressIdentity } from '../../../../../resources/domain/addressBook/identity'
 import BalancePreview from '../../../../../resources/Components/BalancePreview'
@@ -377,7 +378,10 @@ export class WalletCallsRequest extends React.Component {
                       </span>
                     ) : null}
                     {call.to ? (
-                      <AddressSafetyStatus address={call.to} assessment={req.addressSafety} />
+                      <>
+                        <AddressSafetyStatus address={call.to} assessment={req.addressSafety} />
+                        <AddressReputation address={call.to} reputation={req.reputation} />
+                      </>
                     ) : null}
                     <div className='walletCallsCallEvidence'>
                       <span>{identity.method ? `${identity.method} call` : 'Contract call'}</span>

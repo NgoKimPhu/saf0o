@@ -16,6 +16,7 @@ import AddressIdentity from '../../../../../../resources/Components/AddressIdent
 import AddressSafetyStatus, {
   addressSafetyTarget
 } from '../../../../../../resources/Components/AddressSafetyStatus'
+import AddressReputation from '../../../../../../resources/Components/AddressReputation'
 import { resolveLocalAddressIdentity } from '../../../../../../resources/domain/addressBook/identity'
 import { isUnlimited } from '../../../../../../resources/utils/numbers'
 import { DisplayValue, DisplayCoinBalance } from '../../../../../../resources/Components/DisplayValue'
@@ -122,7 +123,10 @@ export class TxSending extends React.Component {
                         source={localIdentity?.source || (recipientEns ? 'ENS' : '')}
                       />
                       {distinctSafetyTarget ? (
-                        <AddressSafetyStatus address={address} assessment={req.addressSafety} />
+                        <>
+                          <AddressSafetyStatus address={address} assessment={req.addressSafety} />
+                          <AddressReputation address={address} reputation={req.reputation} />
+                        </>
                       ) : null}
                     </div>
                   </ClusterValue>
@@ -219,7 +223,10 @@ export class TxSending extends React.Component {
                           <Icon name='copy' size={16} />
                         </span>
                         {distinctSafetyTarget ? (
-                          <AddressSafetyStatus address={address} assessment={req.addressSafety} />
+                          <>
+                            <AddressSafetyStatus address={address} assessment={req.addressSafety} />
+                            <AddressReputation address={address} reputation={req.reputation} />
+                          </>
                         ) : null}
                       </div>
                     </div>

@@ -64,6 +64,10 @@ const PreferencesSchema = {
     .default(30)
     .describe('Window background transparency in percent'),
   autohide: z.boolean().default(false).describe('Automatically hide Saf0o when it loses focus'),
+  metasleuthLabels: z
+    .boolean()
+    .default(true)
+    .describe('Look up recipient and contract addresses in MetaSleuth labels'),
   transactionNotifications: z
     .boolean()
     .default(true)
