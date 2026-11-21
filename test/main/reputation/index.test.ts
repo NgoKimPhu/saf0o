@@ -106,7 +106,7 @@ const rows = (n: number, to: string) =>
 const hostCalls = (calls: Call[], host: string) => calls.filter((c) => c.host === host)
 
 describe('syncReputation service', () => {
-  it('makes no request for contacts, own accounts and known tokens', async () => {
+  it('makes no request for contacts, own accounts and custom tokens', async () => {
     const h = harness({
       state: {
         'main.addressBook': {
@@ -120,9 +120,9 @@ describe('syncReputation service', () => {
           }
         },
         'main.accounts': { [addr(0xa2)]: { name: 'Savings' } },
-        'main.tokens.known': {
-          [ME]: [{ chainId: 1, address: addr(0xa3).toUpperCase().replace('0X', '0x'), symbol: 'USDC' }]
-        }
+        'main.tokens.custom': [
+          { chainId: 1, address: addr(0xa3).toUpperCase().replace('0X', '0x'), symbol: 'USDC' }
+        ]
       }
     })
     const req = walletCalls(addr(0xa1), addr(0xa2), addr(0xa3))
@@ -134,6 +134,20 @@ describe('syncReputation service', () => {
       ['done', 'trusted', 'account'],
       ['done', 'trusted', 'token']
     ])
+  })
+
+  it('does not trust a scanned token: lookups run and a MetaSleuth danger wins', async () => {
+    const token = addr(0xb7)
+    const h = harness({
+      handlers: { 'address-risk-score': (c) => ({ address: c.body.address, risk: 5 }) },
+      state: { 'main.tokens.known': { [ME]: [{ chainId: 1, address: token, symbol: 'AIRDROP' }] } }
+    })
+    const req = tx(token)
+    await h.service.sync(req, hooks())
+    // WHY: scanned tokens include airdrop spam, so they must not skip lookups or earn trust
+    expect(hostCalls(h.calls, 'extension.blocksec.com').length).toBeGreaterThan(0)
+    expect(hostCalls(h.calls, 'api.etherscan.io').length).toBeGreaterThan(0)
+    expect(req.reputation.targets[0]).toMatchObject({ level: 'danger', signals: { knownToken: true } })
   })
 
   it('makes no request without a stored key and reports no-key', async () => {

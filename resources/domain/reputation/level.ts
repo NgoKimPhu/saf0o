@@ -10,6 +10,7 @@ export type TargetSignals = Readonly<{
   yours?: Signal<{ count: number; scanned: number; complete: boolean }>
   label?: Signal<{ name?: string }>
   risk?: Signal<{ score: 0 | 1 | 2 | 3 | 4 | 5 }> // 0 = not scored
+  knownToken?: boolean // scanned, not user-added: informational only
   lookalike: boolean
 }>
 

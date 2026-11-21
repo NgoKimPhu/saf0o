@@ -1,5 +1,5 @@
 const RISK_TEXT = { 3: 'Medium risk', 4: 'High risk', 5: 'Critical risk' }
-const LOCAL_TEXT = { contact: 'Saved contact', account: 'Saf0o account', token: 'Known token' }
+const LOCAL_TEXT = { contact: 'Saved contact', account: 'Saf0o account', token: 'Custom token' }
 const SIGNALS = ['creation', 'source', 'usage', 'yours', 'label', 'risk']
 
 const okValue = (signal) => (signal?.ok ? signal.value : undefined)
@@ -57,6 +57,7 @@ const AddressReputation = ({ address, reputation }) => {
     ageText(reputation, creation),
     usage && (usage.txs === 0 ? 'no transactions' : `${usage.senders} senders in last ${usage.txs} txs`),
     yoursText(okValue(signals.yours)),
+    signals.knownToken ? 'scanned token' : undefined,
     source?.proxy ? 'proxy' : undefined,
     partlyUnavailable ? 'reputation partly unavailable' : undefined
   ].filter(Boolean)

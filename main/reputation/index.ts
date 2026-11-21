@@ -216,22 +216,30 @@ export function createReputationService(deps: Deps = {}) {
       ]).then(([label, risk]) => ({ label, risk }) as Partial<TargetSignals>)
   }
 
+  const findToken = (list: unknown[] | undefined, chainId: number, address: string) =>
+    (list ?? []).find(
+      (t): t is Record<string, unknown> =>
+        isRecord(t) &&
+        Number(t['chainId']) === chainId &&
+        typeof t['address'] === 'string' &&
+        t['address'].toLowerCase() === address
+    )
+
+  // Informational only: scanned tokens never change the level or skip lookups.
+  const isScannedToken = (chainId: number, address: string) =>
+    Object.values((read('main.tokens.known') as Record<string, unknown[]> | undefined) ?? {}).some(
+      (list) => findToken(list, chainId, address) !== undefined
+    )
+
   const localSignals = (chainId: number, address: string): TargetSignals['local'] => {
     const identity = resolveLocalAddressIdentity(read('main.addressBook'), read('main.accounts'), address)
     if (identity) return { kind: identity.kind, label: identity.label }
-    const known = Object.values((read('main.tokens.known') as Record<string, unknown[]> | undefined) ?? {})
-    const custom = (read('main.tokens.custom') as unknown[] | undefined) ?? []
-    for (const token of [...known.flat(), ...custom]) {
-      if (
-        isRecord(token) &&
-        Number(token['chainId']) === chainId &&
-        typeof token['address'] === 'string' &&
-        token['address'].toLowerCase() === address
-      ) {
-        return {
-          kind: 'token',
-          ...(typeof token['symbol'] === 'string' ? { label: token['symbol'].slice(0, 32) } : {})
-        }
+    // Only tokens the user added count as local trust; scanned tokens include airdrop spam.
+    const token = findToken(read('main.tokens.custom') as unknown[] | undefined, chainId, address)
+    if (token) {
+      return {
+        kind: 'token',
+        ...(typeof token['symbol'] === 'string' ? { label: token['symbol'].slice(0, 32) } : {})
       }
     }
     return undefined
@@ -283,7 +291,13 @@ export function createReputationService(deps: Deps = {}) {
     for (const address of fresh) {
       const local = localSignals(chainId, address)
       states.set(address, local ? 'done' : 'pending')
-      put(entry(address, local ? 'done' : 'pending', local ? { local } : {}))
+      put(
+        entry(
+          address,
+          local ? 'done' : 'pending',
+          local ? { local } : isScannedToken(chainId, address) ? { knownToken: true } : {}
+        )
+      )
       if (!local) remote.push(address)
     }
     if (!remote.length) return Promise.resolve()
@@ -330,7 +344,12 @@ export function createReputationService(deps: Deps = {}) {
         ]).catch((): Partial<TargetSignals>[] => [{ creation: unavailable('error') }, {}])
         states.set(address, 'done')
         if (!hooks.isCurrent()) return
-        put(entry(address, 'done', Object.assign({}, ...parts)))
+        put(
+          entry(address, 'done', {
+            ...Object.assign({}, ...parts),
+            ...(isScannedToken(chainId, address) ? { knownToken: true } : {})
+          })
+        )
         hooks.publish()
       })
     )
