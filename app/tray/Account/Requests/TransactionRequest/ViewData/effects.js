@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { SimpleJSON } from '../../../../../../resources/Components/SimpleTypedData'
 import { MAX_UINT256, parseRpcQuantity } from '../../../../../../resources/domain/transaction/quantity'
 import { hasSimulationEffects } from '../../../../../../resources/domain/transaction/effects'
@@ -31,7 +32,19 @@ const transferTitle = (effect, account) => {
   return `${standardName(effect.standard)} ${direction}`
 }
 
-export const getEffectPresentation = (effect, account) => {
+const formatAmount = (amount, token) => {
+  if (token?.decimals === undefined) return undefined
+  const value = BigNumber(amount).shiftedBy(-token.decimals).toFixed()
+  return token.symbol ? `${value} ${token.symbol}` : value
+}
+
+export const getEffectPresentation = (effect, account, tokens) => {
+  const amountField = (key) => {
+    if (effect.amount === undefined) return {}
+    const formatted =
+      effect.standard === 'erc20' ? formatAmount(effect.amount, tokens?.[effect.token]) : undefined
+    return formatted ? { amount: formatted } : { [key]: effect.amount }
+  }
   if (effect.type === 'transfer') {
     return {
       title: transferTitle(effect, account),
@@ -40,7 +53,7 @@ export const getEffectPresentation = (effect, account) => {
         from: effect.from,
         to: effect.to,
         ...(effect.tokenId !== undefined ? { tokenId: effect.tokenId } : {}),
-        ...(effect.amount !== undefined ? { amountRawUnits: effect.amount } : {})
+        ...amountField('amountRawUnits')
       },
       risky: false
     }
@@ -56,7 +69,7 @@ export const getEffectPresentation = (effect, account) => {
         owner: effect.owner,
         spender: effect.spender,
         ...(effect.tokenId !== undefined ? { tokenId: effect.tokenId } : {}),
-        ...(effect.amount !== undefined ? { amountRawUnits: effect.amount } : {})
+        ...amountField('amountRawUnits')
       },
       risky: unlimited
     }
@@ -74,7 +87,7 @@ export const getEffectPresentation = (effect, account) => {
   }
 }
 
-export const SimulationEffects = ({ account, simulation }) => {
+export const SimulationEffects = ({ account, simulation, tokens }) => {
   if (!hasSimulationEffects(simulation)) return null
 
   const effects = simulation.effects || []
@@ -89,7 +102,7 @@ export const SimulationEffects = ({ account, simulation }) => {
       </div>
       {effects.length ? (
         effects.map((effect, index) => {
-          const presentation = getEffectPresentation(effect, account)
+          const presentation = getEffectPresentation(effect, account, tokens)
           return (
             <section className='simulationEffect' key={`${effect.type}:${effect.token}:${index}`}>
               <div
