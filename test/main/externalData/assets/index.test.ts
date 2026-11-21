@@ -294,3 +294,29 @@ test('uses pool prices for Robinhood despite a primary quote and retains native 
   })
   rates.stop()
 })
+
+// Monad (143) was absent from CHAIN_PRICE_IDENTIFIERS, so neither MON nor WMON was ever
+// requested from DefiLlama and the balance preview showed "no price" for both.
+test('prices Monad native MON and wrapped WMON', async () => {
+  const wmon = '0x3bd359C1119dA7Da1D913D1C4D2B7c461115433A'
+  store.set('main.tokens.custom', [
+    { chainId: 143, address: wmon, name: 'Wrapped Monad', symbol: 'WMON', decimals: 18 }
+  ])
+  const loadPrices = jest.fn(async () => ({
+    'coingecko:monad': { price: 0.0135 },
+    [`monad:${wmon.toLowerCase()}`]: { price: 0.0133 }
+  }))
+  const rates = Rates(store, loadPrices)
+  rates.start()
+  rates.updateSubscription([143], account)
+  await Promise.resolve()
+  await Promise.resolve()
+
+  expect(loadPrices).toHaveBeenCalledWith(
+    ['coingecko:monad', `monad:${wmon.toLowerCase()}`],
+    expect.any(AbortSignal)
+  )
+  expect(store.setNativeCurrencyData).toHaveBeenCalledWith('ethereum', 143, { usd: { price: 0.0135 } })
+  expect(store.setRates).toHaveBeenCalledWith({ [`143:${wmon.toLowerCase()}`]: { usd: { price: 0.0133 } } })
+  rates.stop()
+})
