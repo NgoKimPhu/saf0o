@@ -1,6 +1,6 @@
 import { createHash } from 'crypto'
 
-import type { TransactionRequest, WalletCallsRequest } from '../accounts/types'
+import type { SignTypedDataRequest, TransactionRequest, WalletCallsRequest } from '../accounts/types'
 import {
   MAX_OUTBOUND_ADDRESS_MEMORY,
   OutboundAddressFingerprintSchema,
@@ -73,6 +73,20 @@ export const walletCallsOutboundTargets = (request: Pick<WalletCallsRequest, 'ca
     0,
     MAX_OUTBOUND_ADDRESS_MEMORY
   )
+
+// Spender first, then the token contract(s): the cap on assessed targets keeps the spender.
+// EIP-2612 permits and Permit2 allowance/transfer signatures; the domain chain must be the request chain.
+export const permitReputationTargets = (request: SignTypedDataRequest) => {
+  const { context } = request
+  if (!context || Number(context.domainChainId) !== context.requestChainId) return []
+  const targets: unknown[] =
+    request.type === 'signErc20Permit'
+      ? [request.permit?.spender?.address, request.permit?.verifyingContract?.address]
+      : context.permit2
+        ? [context.permit2.spender, ...context.permit2.permissions.map(({ token }) => token)]
+        : []
+  return [...new Set(targets.flatMap((target) => normalizeAddress(target) || []))]
+}
 
 export const recordOutboundAddresses = (
   value: unknown,

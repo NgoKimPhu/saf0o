@@ -422,3 +422,78 @@ describe('MetaSleuth in the service', () => {
     expect(req.reputation.targets).toHaveLength(5)
   })
 })
+
+describe('permit signatures', () => {
+  const spender = addr(0xd1)
+  const token = addr(0xd2)
+  const permit = (): any => ({
+    type: 'signErc20Permit',
+    handlerId: 'h',
+    account: ME,
+    context: { requestChainId: 1, domainChainId: '1', risks: [] },
+    permit: { spender: { address: spender }, verifyingContract: { address: token } }
+  })
+  const permit2 = (): any => ({
+    type: 'signTypedData',
+    handlerId: 'h',
+    account: ME,
+    context: {
+      requestChainId: 1,
+      domainChainId: '1',
+      risks: [],
+      permit2: { spender, permissions: [{ token }, { token: addr(0xd3) }] }
+    }
+  })
+  const risky = () => ({
+    'address-risk-score': (c: Call) => ({ address: c.body.address, risk: c.body.address === spender ? 5 : 1 })
+  })
+
+  it('scores a permit spender danger and also assesses the token contract', async () => {
+    const h = harness({ handlers: risky() })
+    const req = permit()
+    await h.service.sync(req, hooks())
+    // WHY: the spender receives the allowance, so a flagged spender must show before the user signs
+    expect(req.reputation.targets.map((t: any) => [t.address, t.level])).toEqual([
+      [spender, 'danger'],
+      [token, 'caution']
+    ])
+  })
+
+  it('assesses a Permit2 spender and tokens, spender first', async () => {
+    const h = harness({ handlers: risky() })
+    const req = permit2()
+    await h.service.sync(req, hooks())
+    expect(req.reputation.targets.map((t: any) => [t.address, t.level])).toEqual([
+      [spender, 'danger'],
+      [token, 'caution'],
+      [addr(0xd3), 'caution']
+    ])
+  })
+
+  it('skips a permit whose domain chain differs from the request chain', async () => {
+    const h = harness({ handlers: risky() })
+    const req = permit()
+    req.context.domainChainId = '137'
+    await h.service.sync(req, hooks())
+    // WHY: the token address would be looked up on the wrong chain
+    expect(h.fetchMock).not.toHaveBeenCalled()
+    expect(req.reputation).toBeUndefined()
+  })
+
+  it('ignores typed data that is not a permit', async () => {
+    const h = harness()
+    const req = permit2()
+    delete req.context.permit2
+    await h.service.sync(req, hooks())
+    expect(h.fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('honours both toggles for permits', async () => {
+    const h = harness({
+      handlers: risky(),
+      state: { 'main.metasleuthLabels': false, 'main.etherscanReputation': false }
+    })
+    await h.service.sync(permit(), hooks())
+    expect(h.fetchMock).not.toHaveBeenCalled()
+  })
+})

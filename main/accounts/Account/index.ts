@@ -877,6 +877,14 @@ class FrameAccount {
     return req.addressSafety
   }
 
+  private syncPermitReputation(req: SignTypedDataRequest) {
+    if (req.type !== 'signErc20Permit' && !req.context?.permit2) return
+    syncReputation(req, {
+      publish: () => this.update(),
+      isCurrent: () => this.requests[req.handlerId] === req
+    })
+  }
+
   refreshRequestAddressSafety(handlerId: string) {
     const request = this.getActiveReviewRequest(handlerId)
     if (!request || (request.type !== 'transaction' && request.type !== 'walletCalls')) {
@@ -1964,6 +1972,7 @@ class FrameAccount {
     if (req.type === 'signErc20Permit') {
       this.syncPermitApprovalRisk(req)
     }
+    if (req.type === 'signTypedData' || req.type === 'signErc20Permit') this.syncPermitReputation(req)
 
     this.revealDetails(req)
     if (hadActiveReview && this.orderedRequests().length > 1) {

@@ -480,6 +480,32 @@ describe('#addRequest', () => {
     expect(isCurrent()).toBe(false)
   })
 
+  it('asks for reputation on permit signatures but not on plain typed data', () => {
+    store.mockImplementation(() => undefined)
+    const base = (handlerId, type, context) => ({
+      handlerId,
+      type,
+      account: accountState.address,
+      origin: 'example.test',
+      payload: { id: 1, jsonrpc: '2.0', method: 'eth_signTypedData_v4', params: [] },
+      typedMessage: { data: {}, version: 'V4' },
+      context: { requestChainId: 1, domainChainId: '1', risks: [], ...context },
+      approvals: []
+    })
+    syncReputation.mockClear()
+    const plain = base('plain', 'signTypedData')
+    const permit2 = base('p2', 'signTypedData', {
+      permit2: { spender: `0x${'a'.repeat(40)}`, permissions: [] }
+    })
+    const eip2612 = base('p1', 'signErc20Permit')
+    eip2612.typedMessage.data = { message: { value: '1' } }
+    for (const req of [plain, permit2, eip2612]) account.addRequest(req)
+
+    // WHY: the spender of an allowance is the party that can drain the token
+    expect(syncReputation.mock.calls.map(([req]) => req.handlerId)).toEqual(['p2', 'p1'])
+    for (const req of [plain, permit2, eip2612]) account.clearRequest(req.handlerId)
+  })
+
   it('returns concurrent arrivals to the inbox without replacing the active review', () => {
     const now = jest.spyOn(Date, 'now').mockReturnValue(100)
     const panelNav = []

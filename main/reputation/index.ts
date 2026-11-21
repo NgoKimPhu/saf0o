@@ -1,5 +1,9 @@
-import type { TransactionRequest, WalletCallsRequest } from '../accounts/types'
-import { transactionOutboundTargets, walletCallsOutboundTargets } from '../addressSafety'
+import type { SignTypedDataRequest, TransactionRequest, WalletCallsRequest } from '../accounts/types'
+import {
+  permitReputationTargets,
+  transactionOutboundTargets,
+  walletCallsOutboundTargets
+} from '../addressSafety'
 import store from '../store'
 import { resolveLocalAddressIdentity } from '../../resources/domain/addressBook/identity'
 import {
@@ -25,7 +29,7 @@ export type ReputationAssessment = Readonly<{
   targets: readonly TargetReputation[]
 }>
 
-type Req = TransactionRequest | WalletCallsRequest
+type Req = TransactionRequest | WalletCallsRequest | SignTypedDataRequest
 type Hooks = { publish: () => void; isCurrent: () => boolean }
 export type Deps = Partial<{
   etherscan: EtherscanReader
@@ -250,7 +254,10 @@ export function createReputationService(deps: Deps = {}) {
   function sync(req: Req, hooks: Hooks): Promise<void> {
     let chainId: number
     try {
-      chainId = Number(parseRpcQuantity(req.type === 'transaction' ? req.data.chainId : req.chainId))
+      chainId =
+        req.type === 'signTypedData' || req.type === 'signErc20Permit'
+          ? req.context.requestChainId
+          : Number(parseRpcQuantity(req.type === 'transaction' ? req.data.chainId : req.chainId))
     } catch {
       return Promise.resolve()
     }
@@ -259,7 +266,11 @@ export function createReputationService(deps: Deps = {}) {
     let states = seen.get(req)
     if (!states) seen.set(req, (states = new Map()))
     const targets = (
-      req.type === 'transaction' ? transactionOutboundTargets(req) : walletCallsOutboundTargets(req)
+      req.type === 'transaction'
+        ? transactionOutboundTargets(req)
+        : req.type === 'walletCalls'
+          ? walletCallsOutboundTargets(req)
+          : permitReputationTargets(req)
     ).filter((a) => !states.has(a))
     const room = MAX_TARGETS - states.size
     // Targets past the cap are marked seen so they are not retried, and get no entry.
@@ -268,7 +279,9 @@ export function createReputationService(deps: Deps = {}) {
     if (!fresh.length) return Promise.resolve()
 
     const lookalike = (address: string) =>
-      req.addressSafety?.targets.some((t) => t.address === address && t.state === 'lookalike') ?? false
+      (req.type === 'transaction' || req.type === 'walletCalls'
+        ? req.addressSafety?.targets.some((t) => t.address === address && t.state === 'lookalike')
+        : false) ?? false
     const entry = (
       address: string,
       state: TargetReputation['state'],

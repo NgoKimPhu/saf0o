@@ -258,6 +258,7 @@ export interface DefaultSignTypedDataRequest extends AccountRequest<'signTypedDa
   context: TypedDataContext
   signingMetadata?: import('../reveal/signingMetadata').SigningMetadata
   approvals: Approval[]
+  reputation?: ReputationAssessment
 }
 
 interface EIP2612PermitDomain {
@@ -288,6 +289,7 @@ export interface PermitSignatureRequest extends AccountRequest<'signErc20Permit'
   context: TypedDataContext
   signingMetadata?: import('../reveal/signingMetadata').SigningMetadata
   approvals: Approval[]
+  reputation?: ReputationAssessment
 }
 
 export interface AccessRequest extends AccountRequest<'access'> {
