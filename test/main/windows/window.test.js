@@ -8,7 +8,9 @@ import {
   openBlockExplorer,
   openContractVerificationResult,
   openExternal,
-  restoreWindow
+  restoreWindow,
+  throttleWhileHidden,
+  PARK_PAINT_MS
 } from '../../../main/windows/window'
 import store from '../../../main/store'
 
@@ -23,6 +25,11 @@ const createMockSession = () => ({
 
 const mockWindow = {
   on: jest.fn(),
+  once: jest.fn(),
+  show: jest.fn(),
+  showInactive: jest.fn(),
+  isDestroyed: jest.fn(() => false),
+  isVisible: jest.fn(() => false),
   isFullScreen: jest.fn(() => false),
   setFullScreen: jest.fn(),
   unmaximize: jest.fn(),
@@ -30,7 +37,8 @@ const mockWindow = {
     on: jest.fn(),
     once: jest.fn(),
     session: createMockSession(),
-    setWindowOpenHandler: jest.fn()
+    setWindowOpenHandler: jest.fn(),
+    setBackgroundThrottling: jest.fn()
   }
 }
 
@@ -70,6 +78,99 @@ afterAll(() => {
   } else {
     process.env.BUNDLE_LOCATION = originalBundleLocation
   }
+})
+
+describe('background throttling', () => {
+  const setup = () => {
+    const { EventEmitter } = require('events')
+    const win = Object.assign(new EventEmitter(), {
+      show: jest.fn(),
+      showInactive: jest.fn(),
+      isDestroyed: jest.fn(() => false),
+      isVisible: jest.fn(() => false),
+      webContents: { setBackgroundThrottling: jest.fn() }
+    })
+    const { show, showInactive } = win
+    throttleWhileHidden(win)
+    return { win, show, showInactive, set: win.webContents.setBackgroundThrottling }
+  }
+
+  it('starts unthrottled so the first paint is unaffected', () => {
+    const { set } = setup()
+    expect(set).not.toHaveBeenCalled()
+  })
+
+  it('throttles after the first paint of a window that stays hidden', () => {
+    const { win, set } = setup()
+    win.emit('ready-to-show')
+    expect(set).toHaveBeenLastCalledWith(true)
+  })
+
+  it('does not throttle a window that is already visible at first paint', () => {
+    const { win, set } = setup()
+    win.isVisible.mockReturnValue(true)
+    win.emit('ready-to-show')
+    expect(set).not.toHaveBeenCalled()
+  })
+
+  // Throttling at once would freeze the renderer before it paints the parked (.suspend) frame,
+  // and Windows would flash the old frame on reopen.
+  it('throttles a hidden window only after the parked frame has had time to paint', () => {
+    jest.useFakeTimers()
+    const { win, set } = setup()
+    win.emit('hide')
+    expect(set).not.toHaveBeenCalled()
+    jest.advanceTimersByTime(PARK_PAINT_MS)
+    expect(set).toHaveBeenLastCalledWith(true)
+    jest.useRealTimers()
+  })
+
+  it('does not throttle a window that was shown again before the delay ran out', () => {
+    jest.useFakeTimers()
+    const { win, set } = setup()
+    win.emit('hide')
+    win.isVisible.mockReturnValue(true)
+    jest.advanceTimersByTime(PARK_PAINT_MS)
+    expect(set).not.toHaveBeenCalled()
+    jest.useRealTimers()
+  })
+
+  it('lifts the throttle before show and showInactive so the first visible frame is current', () => {
+    jest.useFakeTimers()
+    const { win, show, showInactive, set } = setup()
+    win.emit('hide')
+    jest.advanceTimersByTime(PARK_PAINT_MS)
+    set.mockClear()
+
+    win.show()
+    expect(set).toHaveBeenLastCalledWith(false)
+    expect(set.mock.invocationCallOrder[0]).toBeLessThan(show.mock.invocationCallOrder[0])
+
+    win.emit('hide')
+    jest.advanceTimersByTime(PARK_PAINT_MS)
+    expect(set).toHaveBeenLastCalledWith(true)
+
+    win.showInactive()
+    expect(set).toHaveBeenLastCalledWith(false)
+    expect(set.mock.invocationCallOrder.at(-1)).toBeLessThan(showInactive.mock.invocationCallOrder[0])
+    jest.useRealTimers()
+  })
+
+  it('ignores a destroyed window', () => {
+    const { win, set } = setup()
+    win.isDestroyed.mockReturnValue(true)
+    jest.useFakeTimers()
+    win.emit('hide')
+    jest.advanceTimersByTime(PARK_PAINT_MS)
+    jest.useRealTimers()
+    expect(set).not.toHaveBeenCalled()
+  })
+
+  it('createWindow installs it for every window', () => {
+    createWindow('dash')
+    expect(mockWindow.once).toHaveBeenCalledWith('ready-to-show', expect.any(Function))
+    expect(mockWindow.on).toHaveBeenCalledWith('hide', expect.any(Function))
+  })
 })
 
 describe('createWindow', () => {

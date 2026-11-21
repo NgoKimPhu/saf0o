@@ -87,7 +87,7 @@ export function createWindow(
         `--frame-renderer-role=${rendererRole}`
       ],
       preload: path.resolve(process.env.BUNDLE_LOCATION, 'bridge.js'),
-      backgroundThrottling: false, // Allows repaint when window is hidden
+      backgroundThrottling: false, // Unthrottled until the first paint; see throttleWhileHidden
       contextIsolation: true,
       webviewTag: false,
       sandbox: true,
@@ -98,6 +98,7 @@ export function createWindow(
       disableBlinkFeatures: 'Auxclick'
     }
   })
+  throttleWhileHidden(browserWindow)
   registerRendererRole(browserWindow.webContents, rendererRole)
   denySessionPermissions(browserWindow.webContents.session)
   denyDeviceSelection(browserWindow.webContents)
@@ -111,6 +112,37 @@ export function createWindow(
 
   if (isShellWindow) installTrayRecovery(browserWindow)
   return browserWindow
+}
+
+// Store sync over IPC plus one paint takes a few frames; this leaves a wide margin.
+export const PARK_PAINT_MS = 300
+
+// Throttle renderers while the window is hidden, but lift the throttle before every show so the
+// first visible frame is current. A window starts unthrottled so its first paint is unaffected.
+export function throttleWhileHidden(window: BrowserWindow) {
+  const setThrottling = (on: boolean) => {
+    if (!window.isDestroyed()) window.webContents.setBackgroundThrottling(on)
+  }
+  for (const method of ['show', 'showInactive'] as const) {
+    const original = window[method].bind(window)
+    window[method] = () => {
+      setThrottling(false)
+      original()
+    }
+  }
+  window.once('ready-to-show', () => {
+    if (!window.isVisible()) setThrottling(true)
+  })
+  // Main hides the window in the same tick it tells the renderer to park the panel (.suspend).
+  // Throttle only after the renderer has painted that parked frame, or Windows keeps the old
+  // frame and shows it on reopen (a flicker before the slide-in).
+  let timer: ReturnType<typeof setTimeout> | undefined
+  window.on('hide', () => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      if (!window.isVisible()) setThrottling(true)
+    }, PARK_PAINT_MS)
+  })
 }
 
 function installTrayRecovery(window: BrowserWindow) {
