@@ -6,10 +6,11 @@
 .eip7702RevokeDocument
   width 100%
   box-sizing border-box
-  padding var(--saf0o-space-4) var(--saf0o-space-5) var(--saf0o-space-5)
+  // 30px = the 24px page gutter plus the 6px scrollbar gutter the signing reviews reserve.
+  padding var(--saf0o-space-4) calc(var(--saf0o-space-6) + 6px) var(--saf0o-space-6)
 
 .eip7702RevokeSummary
-  padding 0 0 var(--saf0o-space-3)
+  padding 0 0 var(--saf0o-space-4)
 
   h1
     margin 0 0 var(--saf0o-space-2)
@@ -27,10 +28,13 @@
     overflow-wrap anywhere
 
 .eip7702RevokeSection
-  padding var(--saf0o-space-3) 0
+  padding 0
+
+  & + &
+    margin-top var(--saf0o-space-4)
 
   > h2
-    margin 0 0 var(--saf0o-space-1)
+    margin 0 0 var(--saf0o-space-2)
     color var(--saf0o-text-secondary)
     font-family var(--saf0o-font-ui)
     font-size var(--saf0o-type-caption)
@@ -44,9 +48,11 @@
     grid-template-columns var(--saf0o-review-label-column) minmax(0, 1fr)
     gap var(--saf0o-space-3)
     align-items start
-    min-height 40px
     box-sizing border-box
-    padding var(--saf0o-space-2) 0
+    padding 0
+
+    & + div
+      margin-top var(--saf0o-space-4)
 
   dt
     color var(--saf0o-text-secondary)
@@ -65,7 +71,7 @@
     display flex
     min-width 0
     flex-direction column
-    gap 3px
+    gap var(--saf0o-space-1)
 
   small
     color var(--saf0o-text-muted)
@@ -81,7 +87,9 @@
   display flex
   width 100%
   min-height 44px
+  margin -6px 0
   padding var(--saf0o-space-1) 0
+  align-items center
   justify-content flex-start
   border 1px solid transparent
   border-radius var(--saf0o-radius-sm)
@@ -332,9 +340,12 @@
       grid-column 2
 
     > button
-      grid-column 1 / -1
+      grid-column 2
       grid-row 3
-      width 100%
+      justify-self end
+      width auto
+      min-height 32px
+      margin-top var(--saf0o-space-1)
 
 @container panel (max-width: 560px)
   .eip7702StopMonitoringDialog

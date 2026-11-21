@@ -1,0 +1,94 @@
+// Review screens share one rhythm: a 4px label-to-value gap, a 16px gap between sections, and one
+// left edge. Addresses stay on one line (42 mono characters) with the copy icon in a fixed right column.
+// Loaded last so it settles the spacing the earlier review files set screen by screen.
+.signingReview,
+.signingDecisionSummary,
+.approveTransaction
+  .signingReviewAddressRow
+    gap var(--saf0o-space-1)
+    margin 0 0 var(--saf0o-space-4)
+    padding 0
+
+  .signingReviewAddress
+    display grid
+    grid-template-columns minmax(0, 1fr) 16px
+    align-items center
+    gap var(--saf0o-space-1)
+    width 100%
+    padding 0
+    justify-content stretch
+    text-align left
+
+    .clusterAddress
+      display block
+      min-width 0
+      padding 0
+      text-align left
+
+    .clusterAddress *
+      justify-content flex-start
+      text-align left
+
+    .clusterAddressRecipient,
+    .clusterAddressRecipientComplete,
+    .clusterAddressEvidence
+      display inline
+      font-family var(--saf0o-font-mono)
+      font-size var(--saf0o-type-caption)
+      overflow-wrap normal
+      white-space nowrap
+      word-break normal
+
+.signingReview
+  .signingAuthorityCopy
+    display grid
+    grid-template-columns minmax(0, 1fr) 16px
+    gap var(--saf0o-space-1)
+    margin 0
+    padding 0
+    font-size var(--saf0o-type-caption)
+    overflow-wrap normal
+    white-space nowrap
+    word-break normal
+
+  .signingPermissionRow
+    padding 0
+    gap var(--saf0o-space-4)
+
+    strong
+      margin-top var(--saf0o-space-1)
+
+  .signingPermissionList
+    gap var(--saf0o-space-4)
+    margin-top var(--saf0o-space-4)
+
+  .signingAuthorityLabel + *
+    margin-top var(--saf0o-space-1)
+
+  .signingPermissionExpiration
+    margin-top var(--saf0o-space-4)
+
+.signingPermissionCard
+  padding var(--saf0o-space-4)
+  margin 0 0 var(--saf0o-space-4)
+
+.signingPermitReview .signingReviewTitle,
+.signingReview .signingReviewTitle
+  margin 0 0 var(--saf0o-space-4)
+
+.signingPermissionDates
+  margin-top var(--saf0o-space-4)
+
+// The decision shelf is one left-aligned column on the same edge as the page.
+.signingDecisionShelf
+  text-align left
+
+  .signingDecisionAccount
+    align-items flex-start
+
+  .signingDecisionSummary > .signingReviewAddressRow .signingReviewAddress
+    justify-content stretch
+
+  // 30px = the 24px page gutter plus the 6px scrollbar gutter beside the review body.
+  padding-right calc(var(--saf0o-space-6) + 6px)
+  padding-left calc(var(--saf0o-space-6) + 6px)
