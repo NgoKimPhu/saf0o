@@ -82,6 +82,11 @@ const REQUEST_REVIEW_STATES = new Set([
 
 const enforceRequestReviewChrome = (scenario) => {
   if (scenario.renderer !== 'tray' || !REQUEST_REVIEW_STATES.has(scenario.state)) return scenario
+  // Addresses on the permit review stay on one line (42 mono characters) with the copy icon apart.
+  const oneLineAddresses =
+    scenario.state === 'signature-permit-review'
+      ? [{ kind: 'text-unclipped', selector: '.signingReviewAddress .clusterAddressRecipient' }]
+      : []
   return {
     ...scenario,
     requiredControls:
@@ -91,6 +96,7 @@ const enforceRequestReviewChrome = (scenario) => {
     layoutExpectations: [
       ...WALLET_VIEW_CHROME,
       ...FOCUSED_WINDOW_SURFACE,
+      ...oneLineAddresses,
       ...(scenario.layoutExpectations || [])
     ]
   }
@@ -3742,6 +3748,13 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
           ...WALLET_VIEW_CHROME,
           { kind: 'hidden', selector: '.accountSelectorOpen' },
           { kind: 'edge-clearance', selector: '.balanceFilter', container: '.accountViewMain', inset: 12 },
+          // Chain names are muted; only the dot carries the chain colour (red must not read as danger).
+          {
+            kind: 'computed-style',
+            selector: '.signerBalanceChain',
+            property: 'color',
+            value: 'rgb(135, 147, 154)'
+          },
           {
             kind: 'edge-clearance',
             selector: '.balancesExpandedLedger',
@@ -3784,12 +3797,6 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             property: 'display',
             value: 'grid'
           },
-          {
-            kind: 'computed-style',
-            selector: '.txLifecycleFacts > div',
-            property: 'display',
-            value: 'flex'
-          },
           { kind: 'text-unclipped', selector: '.txLifecycleFacts dd[title]' },
           { kind: 'no-overlap', selector: '.txLifecycleFacts dt, .txLifecycleFacts dd' },
           { kind: 'viewport-bottom', selector: '.requestNoticeTransactionStatus' }
@@ -3812,12 +3819,6 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             property: 'display',
             value: 'grid'
           },
-          {
-            kind: 'computed-style',
-            selector: '.txLifecycleFacts > div',
-            property: 'display',
-            value: 'flex'
-          },
           { kind: 'text-unclipped', selector: '.txLifecycleFacts dd[title]' },
           { kind: 'no-overlap', selector: '.txLifecycleFacts dt, .txLifecycleFacts dd' },
           { kind: 'viewport-bottom', selector: '.requestNoticeTransactionStatus' }
@@ -3837,6 +3838,11 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
           { kind: 'text-unclipped', selector: '.txLifecycleDetailVisible' },
           { kind: 'text-unclipped', selector: '.txLifecycleFacts dd[title]' },
           { kind: 'no-overlap', selector: '.txLifecycleFacts dt, .txLifecycleFacts dd' },
+          {
+            kind: 'aligned-left',
+            selector: '.txLifecycleFacts > div:nth-child(1) dd',
+            with: '.txLifecycleFacts > div:nth-child(2) dd'
+          },
           { kind: 'viewport-bottom', selector: '.requestNoticeTransactionStatus' }
         ]
       },
@@ -3856,12 +3862,6 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             selector: '.txLifecycleSteps',
             property: 'display',
             value: 'grid'
-          },
-          {
-            kind: 'computed-style',
-            selector: '.txLifecycleFacts > div',
-            property: 'display',
-            value: 'flex'
           },
           { kind: 'text-unclipped', selector: '.txLifecycleFacts dd[title]' },
           { kind: 'no-overlap', selector: '.txLifecycleFacts dt, .txLifecycleFacts dd' },
