@@ -19,11 +19,11 @@
     height 24px
     box-sizing border-box
     border 1px solid var(--saf0o-border-default)
-    border-radius 2px
+    border-radius var(--saf0o-radius-sm)
     content ''
     background var(--saf0o-surface-inset)
     box-shadow var(--saf0o-shadow-inset)
-    transition background var(--saf0o-motion-fast), border-color var(--saf0o-motion-fast)
+    transition background var(--saf0o-motion-fast) var(--saf0o-ease), border-color var(--saf0o-motion-fast) var(--saf0o-ease)
 
   &:hover:not(:disabled)
     &::before
@@ -51,23 +51,24 @@
     height 16px
     box-sizing border-box
     border-bottom 2px solid var(--saf0o-border-strong)
-    border-radius 1px
+    border-radius 2px
     background var(--saf0o-text-secondary)
     box-shadow var(--saf0o-shadow-sm)
-    transition transform var(--saf0o-motion-fast), background var(--saf0o-motion-fast)
+    transition transform var(--saf0o-motion-fast) var(--saf0o-ease), background var(--saf0o-motion-fast) var(--saf0o-ease)
 
 .saf0oToggleOn
   &::before
-    border-color var(--saf0o-success)
-    background var(--saf0o-success-soft)
+    border-color var(--saf0o-accent-primary)
+    background var(--saf0o-accent-primary-soft)
 
   &:hover:not(:disabled)
     &::before
-      border-color var(--saf0o-accent-secondary-hover)
-      background var(--saf0o-accent-secondary-soft)
+      border-color var(--saf0o-accent-primary-hover)
+      background var(--saf0o-accent-primary-soft)
 
   .saf0oToggleThumb
-    background var(--saf0o-success)
+    border-bottom-color var(--saf0o-accent-primary-active)
+    background var(--saf0o-accent-primary)
     transform translateX(20px)
 
   &:disabled .saf0oToggleThumb
