@@ -4727,10 +4727,12 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
       // The shelf spans the 425px panel (shellWidth), not the 620px window; the lifecycle shelf is
       // taller while a hash row and confirmations are shown.
       const shelfHeight = ['transaction-confirming', 'transaction-confirmed'].includes(scenario.state)
-        ? 142
+        ? 150
         : scenario.state === 'wallet-calls-adjustment'
           ? 132
-          : 114
+          : scenario.state === 'transaction-submitted'
+            ? 120
+            : 114
       layout.push({ kind: 'size', selector: shelfSelector, width: PANEL_WIDTH, height: shelfHeight })
       layout.push({ kind: 'viewport-bottom', selector: shelfSelector })
     }
