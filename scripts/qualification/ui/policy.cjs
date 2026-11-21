@@ -3875,7 +3875,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
         scale,
         logicalWidth: 620,
         logicalHeight: FULL_SHELL_HEIGHT,
-        action: { type: 'clickText', text: 'Delegation' },
+        action: { type: 'clickText', text: 'DELEGATION' },
         ready: '.delegationRevocationEligible',
         requiredControls: ['Revoke delegation'],
         requiredText: ['RPC-reported delegation target', 'Reported by configured RPC · eth_getCode']
@@ -3887,7 +3887,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
         scale,
         logicalWidth: 620,
         logicalHeight: SHORT_SHELL_HEIGHT,
-        action: { type: 'clickText', text: 'Delegation' },
+        action: { type: 'clickText', text: 'DELEGATION' },
         ready: '.delegationRevocationEligible',
         requiredControls: ['Revoke delegation'],
         requiredText: ['RPC-reported delegation target', 'Reported by configured RPC · eth_getCode']
@@ -4107,7 +4107,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
       scale: 1.5,
       logicalWidth: 530,
       logicalHeight: SHORT_SHELL_HEIGHT,
-      action: { type: 'clickText', text: 'Delegation' },
+      action: { type: 'clickText', text: 'DELEGATION' },
       ready: '.delegationRevocationEligible',
       requiredControls: ['Revoke delegation'],
       requiredText: ['RPC-reported delegation target', 'Reported by configured RPC · eth_getCode'],
@@ -4730,9 +4730,11 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
         ? 150
         : scenario.state === 'wallet-calls-adjustment'
           ? 132
-          : scenario.state === 'transaction-submitted'
-            ? 120
-            : 114
+          : shelfSelector === '.requestApproveRecoveryStatus'
+            ? 130
+            : scenario.state === 'transaction-submitted'
+              ? 120
+              : 114
       layout.push({ kind: 'size', selector: shelfSelector, width: PANEL_WIDTH, height: shelfHeight })
       layout.push({ kind: 'viewport-bottom', selector: shelfSelector })
     }

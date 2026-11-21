@@ -1953,10 +1953,12 @@
       margin-top var(--saf0o-space-1)
       line-height 18px
 
+  // Buttons keep their label width; at min-width 0 the short shell squeezed them to 24px.
   .requestActionButtons button
-    min-width 0
+    min-width 96px
+    min-height 44px
     width auto
-    padding 0 var(--saf0o-space-3)
+    padding 0 var(--saf0o-space-4)
 
 @container panel (max-width: 560px)
   .requestApproveTransaction.requestApproveRecoveryStatus
