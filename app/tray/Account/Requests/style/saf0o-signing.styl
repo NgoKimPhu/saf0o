@@ -1314,6 +1314,7 @@
     font-size var(--saf0o-type-caption)
     line-height 15px
     white-space normal
+    text-wrap balance
 
 .txLifecycleSteps
   display grid
@@ -1629,8 +1630,13 @@
     grid-template-columns 1fr
     gap var(--saf0o-space-3)
 
+  // Label and value columns are shared by every row, so all values start at one x.
   .txLifecycleFacts
-    grid-template-columns repeat(2, minmax(0, 1fr))
+    grid-template-columns max-content minmax(0, 1fr) max-content minmax(0, 1fr)
+    column-gap var(--saf0o-space-2)
+
+    > div
+      display contents
 
     > div:nth-child(2):last-child
       grid-column auto
@@ -1641,11 +1647,8 @@
       grid-template-rows none
 
     .txLifecycleFacts
-      grid-template-columns minmax(0, 1fr)
-      gap 2px
-
-      > div:last-child
-        justify-self start
+      grid-template-columns max-content minmax(0, 1fr)
+      gap 2px var(--saf0o-space-2)
 
   .txLifecycleEvidence
     grid-template-columns 1fr
