@@ -2,7 +2,7 @@ import os from 'os'
 import path from 'path'
 
 jest.mock('electron-log', () => ({ info: console.log, warn: jest.fn(), error: jest.fn() }))
-// conf 16 is ESM and uses the real fs, so the persisted file is seeded and read from a temp dir.
+// conf reads the real fs (not the fs mock), so the persisted file is seeded and read from a temp dir.
 let mockUserData
 jest.mock('electron', () => ({ app: { on: jest.fn(), getPath: jest.fn(() => mockUserData) } }))
 
