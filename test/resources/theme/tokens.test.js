@@ -50,3 +50,12 @@ it('defines the 8-step type scale once', () => {
   ])
     expect(base).toContain(`--saf0o-type-${name} ${px}px`)
 })
+
+it('keeps the packed spacing scale: 8px gutter, 8px card padding, nothing above 12px for gaps', () => {
+  const base = readFileSync('resources/base.styl', 'utf8')
+  const px = (name) => Number(base.match(new RegExp(`--saf0o-${name} (\\d+)px`))[1])
+  expect(px('space-2')).toBe(4)
+  expect(px('space-4')).toBe(8)
+  expect(px('space-6')).toBe(12)
+  expect(base).toContain('--saf0o-page-gutter var(--saf0o-space-4)')
+})
