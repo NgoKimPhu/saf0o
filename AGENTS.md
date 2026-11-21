@@ -73,6 +73,9 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 - The Windows dir build sets `signAndEditExecutable=false`. The result is unsigned and keeps the default Electron icon.
   It needs no Wine. `-c.win.signExecutable=false` (resource editing, so the exe icon) fails offline: electron-builder downloads rcedit
   from github.com.
+- The local install sets the exe icon afterwards instead: `~/.cache/saf0o-check/install-win.sh` runs a pinned
+  `rcedit-x64.exe` v2.0.0 (electron/rcedit, sha256-checked) natively through WSL interop on an `.ico` built from
+  `build/icons/icon.png`.
 
 ## Quirks that bit earlier sessions
 
