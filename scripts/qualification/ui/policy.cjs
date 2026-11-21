@@ -2219,10 +2219,7 @@ const reviewScenarios = () => [
     logicalHeight: FULL_SHELL_HEIGHT,
     ready: '#saf0o-settings-wallet-notifications',
     requiredControls: ['Wallet activity notifications'],
-    requiredText: [
-      'Wallet activity notifications',
-      'Alerts while hidden. Wallet details stay private.'
-    ],
+    requiredText: ['Wallet activity notifications', 'Alerts while hidden. Wallet details stay private.'],
     captureScroll: 'target',
     captureScrollSelector: '#saf0o-settings-wallet-notifications'
   },
@@ -3987,6 +3984,10 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             selector: '.eip7702RevokeFeeRow > button',
             property: 'gridRowStart',
             value: '3' // the 425px panel always uses the narrow (container < 560px) layout
+          },
+          {
+            kind: 'no-overlap',
+            selector: '.eip7702RevokeFeeRow strong, .eip7702RevokeFeeRow small, .eip7702RevokeFeeAmount'
           },
           {
             kind: 'size',
