@@ -24,6 +24,7 @@ import type { DappViewDescriptor } from './dappView'
 import {
   shouldAnimateWorkspaceClose,
   shouldAnimateWorkspaceOpen,
+  shouldAutoHideOnBlur,
   shouldSuppressRepeatedShow
 } from './displayTransition'
 import { GlideDetector, shouldAutoHideGlide } from './glide'
@@ -294,16 +295,15 @@ export class Tray {
 
   canAutoHide() {
     const autoHideOn = !!store('main.autohide')
-    const dashShowing = !!store('windows.dash.showing')
     const onboardShowing = !!store('windows.onboard.showing')
     const isFrameShowing = frameManager.isFrameShowing()
 
     log.debug(
-      `%ccanAutoHide ${JSON.stringify({ autoHideOn, dashShowing, onboardShowing, isFrameShowing })}`,
+      `%ccanAutoHide ${JSON.stringify({ autoHideOn, onboardShowing, isFrameShowing })}`,
       'color: blue'
     )
 
-    return autoHideOn && !dashShowing && !onboardShowing && !isFrameShowing
+    return shouldAutoHideOnBlur(autoHideOn, onboardShowing, isFrameShowing)
   }
 
   hide() {

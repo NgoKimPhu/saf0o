@@ -2,6 +2,7 @@ import {
   shouldAnimateShell,
   shouldAnimateWorkspaceClose,
   shouldAnimateWorkspaceOpen,
+  shouldAutoHideOnBlur,
   shouldSuppressRepeatedShow
 } from '../../../main/windows/displayTransition'
 
@@ -30,4 +31,12 @@ it('animates a visible workspace closing unless reduced motion is preferred', ()
   expect(shouldAnimateWorkspaceClose(true, false, true)).toBe(false)
   expect(shouldAnimateWorkspaceClose(false, false, false)).toBe(false)
   expect(shouldAnimateWorkspaceClose(true, true, false)).toBe(false)
+})
+
+// Clicking another app hides the wallet whether or not the dashboard is open.
+it('hides on blur with auto-hide on, unless onboarding or a dapp frame is showing', () => {
+  expect(shouldAutoHideOnBlur(true, false, false)).toBe(true)
+  expect(shouldAutoHideOnBlur(false, false, false)).toBe(false)
+  expect(shouldAutoHideOnBlur(true, true, false)).toBe(false)
+  expect(shouldAutoHideOnBlur(true, false, true)).toBe(false)
 })

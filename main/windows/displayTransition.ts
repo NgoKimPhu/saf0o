@@ -22,3 +22,9 @@ export function shouldAnimateWorkspaceClose(
 ) {
   return shouldAnimateShell(trayVisible && !workspaceSettled, prefersReducedMotion)
 }
+
+// The open dashboard does not keep the wallet up: clicking another app hides both, as it does
+// the wallet alone. Onboarding and a dapp frame still hold it open.
+export function shouldAutoHideOnBlur(autoHideOn: boolean, onboardShowing: boolean, frameShowing: boolean) {
+  return autoHideOn && !onboardShowing && !frameShowing
+}
