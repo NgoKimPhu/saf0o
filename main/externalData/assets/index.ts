@@ -34,7 +34,7 @@ const defaultPriceLoader: PriceLoader = (identifiers, signal) =>
 // Use pool USD prices for Robinhood tokens after inconsistent primary-provider quotes.
 const usesPoolPricing = (identifier: string) => identifier.startsWith('robinhood:')
 
-const tokenIdentifier = (token: Token) => {
+export const tokenIdentifier = (token: Token) => {
   const chain = CHAIN_PRICE_IDENTIFIERS[token.chainId]?.chain
   const address = token.address.toLowerCase()
   return chain && /^0x[0-9a-f]{40}$/u.test(address) ? `${chain}:${address}` : undefined
