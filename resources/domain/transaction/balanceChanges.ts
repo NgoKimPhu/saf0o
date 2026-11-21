@@ -6,7 +6,7 @@ export type NetChange = Readonly<{
   delta: string
 }>
 
-export type PricedChange = Readonly<NetChange & { usd?: number }>
+export type PricedChange = Readonly<NetChange & { usd?: number | undefined }>
 
 export type EffectLike = Readonly<{
   type: string
@@ -33,8 +33,8 @@ const toBigInt = (value?: string) => {
 export function netBalanceChanges(input: {
   account: string
   effects: readonly EffectLike[]
-  nativeChange?: string
-  fallbackNativeOut?: string
+  nativeChange?: string | undefined
+  fallbackNativeOut?: string | undefined
 }): NetChange[] {
   const account = input.account.toLowerCase()
   const sums = new Map<string, { standard: NetChange['standard']; delta: bigint }>()
@@ -74,7 +74,7 @@ export function usdOf(delta: string, decimals: number, price: number): number {
 const isFungible = (change: PricedChange) => change.standard === 'native' || change.standard === 'erc20'
 
 export function summarizeBalancePreview(changes: readonly PricedChange[]): {
-  totalUsd?: number
+  totalUsd?: number | undefined
   unpricedFungible: number
   swapLoss?: { sentUsd: number; receivedUsd: number; lossPct: number }
 } {

@@ -16,7 +16,7 @@ const MISS_TTL_MS = 30_000
 const MAX_CACHE = 200
 
 // A marker with no price caches "no trusted price" so block-driven re-sims do not refetch.
-const cache = new Map<string, { price?: TrustedPrice; expires: number }>()
+const cache = new Map<string, { price?: TrustedPrice | undefined; expires: number }>()
 
 export function clearTrustedPriceCache() {
   cache.clear()

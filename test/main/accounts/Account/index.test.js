@@ -4,6 +4,7 @@ import { Interface } from 'ethers'
 import reveal from '../../../../main/reveal'
 import { fetchContract } from '../../../../main/contracts'
 import Erc20Contract from '../../../../main/contracts/erc20'
+import { syncBalancePreview } from '../../../../main/transaction/balancePreview'
 import {
   inspectTransactionAccountCode,
   simulateTransaction,
@@ -23,6 +24,7 @@ import { createAccountPermission } from '../../../../main/provider/permissions'
 import { recordOutboundAddresses } from '../../../../main/addressSafety'
 
 jest.mock('../../../../main/reveal')
+jest.mock('../../../../main/transaction/balancePreview')
 jest.mock('../../../../main/transaction/simulation', () => ({
   ...jest.requireActual('../../../../main/transaction/simulation'),
   inspectTransactionAccountCode: jest.fn(),
@@ -804,6 +806,41 @@ describe('#addRequest', () => {
     resolveInitial({ status: 'succeeded', source: 'eth_simulateV1', calls: [] })
     await jest.advanceTimersByTimeAsync(0)
     expect(request.simulation.status).toBe('unavailable')
+  })
+
+  it('syncs the balance preview for transaction and wallet-call results, and stops once the request is gone', async () => {
+    // Without the hook the tray never gets net changes; without isCurrent a late price could revive a removed request.
+    const tx = {
+      handlerId: 'balance-preview-tx',
+      type: 'transaction',
+      account: accountState.address,
+      data: { chainId: '0x1', to: tokenContract, data: '0x' },
+      recognizedActions: [],
+      simulation: { status: 'pending' },
+      approvals: []
+    }
+    simulateTransaction.mockResolvedValueOnce({ status: 'succeeded', source: 'eth_simulateV1' })
+    account.requests[tx.handlerId] = tx
+    account.refreshTransactionSimulation(tx)
+    await jest.advanceTimersByTimeAsync(1)
+    const [txReq, txHooks] = syncBalancePreview.mock.calls.at(-1)
+    expect(txReq).toBe(tx)
+    expect(txHooks.isCurrent()).toBe(true)
+    account.clearRequest(tx.handlerId)
+    expect(txHooks.isCurrent()).toBe(false)
+
+    let resolveSimulation
+    simulateWalletCalls.mockImplementationOnce(() => new Promise((resolve) => (resolveSimulation = resolve)))
+    const calls = walletCallsRequest('balance-preview-calls')
+    account.addRequest(calls)
+    jest.advanceTimersByTime(1)
+    resolveSimulation({ status: 'succeeded', source: 'eth_simulateV1', calls: [] })
+    await jest.advanceTimersByTimeAsync(1)
+    const [callsReq, callsHooks] = syncBalancePreview.mock.calls.at(-1)
+    expect(callsReq).toBe(calls)
+    expect(callsHooks.isCurrent()).toBe(true)
+    account.clearRequest(calls.handlerId)
+    expect(callsHooks.isCurrent()).toBe(false)
   })
 
   it('does not apply wallet-call simulation after request removal', async () => {
