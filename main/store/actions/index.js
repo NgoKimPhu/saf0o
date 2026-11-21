@@ -550,6 +550,9 @@ module.exports = {
   setAutohide: (u, v) => {
     u('main.autohide', () => v)
   },
+  setMetasleuthLabels: (u, v) => {
+    if (typeof v === 'boolean') u('main.metasleuthLabels', () => v)
+  },
   setTransactionNotifications: (u, value) => {
     u('main.transactionNotifications', () => Boolean(value))
   },

@@ -78,6 +78,20 @@ describe('#clearActivity', () => {
   })
 })
 
+describe('#setMetasleuthLabels', () => {
+  const run = (value) => {
+    const updates = []
+    storeActions.setMetasleuthLabels((path, reducer) => updates.push([path, reducer()]), value)
+    return updates
+  }
+
+  it('stores only booleans, so a malformed call cannot flip the privacy toggle', () => {
+    expect(run(false)).toEqual([['main.metasleuthLabels', false]])
+    expect(run(true)).toEqual([['main.metasleuthLabels', true]])
+    for (const bad of ['false', 0, null, undefined, {}]) expect(run(bad)).toEqual([])
+  })
+})
+
 describe('recent recipients', () => {
   const use = {
     operationId: '00000000-0000-4000-8000-000000000001',

@@ -598,6 +598,22 @@ export class Settings extends Component {
                 <span>Hide Saf0o when it loses focus.</span>
               </div>
             </div>
+            <div className='signerPermission localSetting' style={{ zIndex: 212 }}>
+              <div className='signerPermissionControls'>
+                <div className='signerPermissionSetting'>MetaSleuth labels</div>
+                <Toggle
+                  checked={this.store('main.metasleuthLabels') !== false}
+                  label='MetaSleuth labels'
+                  onChange={(on) => link.send('tray:action', 'setMetasleuthLabels', on)}
+                />
+              </div>
+              <div className='signerPermissionDetails'>
+                <span>
+                  Sends recipient and contract addresses of pending requests to BlockSec (MetaSleuth) to show
+                  labels and risk. Unofficial endpoint; may stop working. Your own address is not sent.
+                </span>
+              </div>
+            </div>
             <div
               id='saf0o-settings-wallet-notifications'
               className='signerPermission localSetting localSettingExplained'
