@@ -33,6 +33,7 @@ import { GlideSentinel } from './glideSentinel'
 import {
   getShellLayout,
   GlideEdge,
+  shapesShellWindow,
   ShellLayout,
   shellMainTargetWidth,
   shouldJoinWorkspace
@@ -102,7 +103,7 @@ const getActiveShellLayout = (
   scale: InterfaceScale
 ): ShellLayout => {
   const requested = getShellLayout(area, edge, workspaceOpen, scale)
-  if (process.platform !== 'linux' || requested.workspaceOverlaysMain) return requested
+  if (!shapesShellWindow() || requested.workspaceOverlaysMain) return requested
   return getShellLayout(area, edge, true, scale)
 }
 

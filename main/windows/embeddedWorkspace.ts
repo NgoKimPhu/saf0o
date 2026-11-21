@@ -1,4 +1,5 @@
 import type { App, BrowserWindow, Rectangle, WebContentsView } from 'electron'
+import { shapesShellWindow } from './shellGeometry'
 
 export const shellTransitionDuration = 180
 export const workspaceUnresponsiveRecoveryDelay = 3000
@@ -168,7 +169,7 @@ export class EmbeddedWorkspace {
   }
 
   private applyWindowShape(bounds: Rectangle) {
-    if (process.platform === 'linux') this.parent.setShape([bounds])
+    if (shapesShellWindow()) this.parent.setShape([bounds])
   }
 
   private fullShape(bounds: Rectangle): Rectangle {

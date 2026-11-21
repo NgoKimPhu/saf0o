@@ -2,6 +2,7 @@ import { readFileSync } from 'fs'
 import { join } from 'path'
 import {
   getShellLayout,
+  shapesShellWindow,
   shellMainTargetWidth,
   shouldJoinWorkspace
 } from '../../../main/windows/shellGeometry'
@@ -151,4 +152,13 @@ describe('getShellLayout', () => {
     expect(styl).toContain(`shellWidth = ${shellMainTargetWidth}px`)
     expect(styl).not.toMatch(/width 620px/)
   })
+})
+
+// Resizing the window to open the workspace made Windows flash the old frame at the new top-left
+// (the panel snapped left before the slide). Windows keeps a full-width window clipped by
+// setShape, as Linux does; macOS has no setShape.
+it('shapes a full-width shell window on Windows and Linux, not macOS', () => {
+  expect(shapesShellWindow('win32')).toBe(true)
+  expect(shapesShellWindow('linux')).toBe(true)
+  expect(shapesShellWindow('darwin')).toBe(false)
 })

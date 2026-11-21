@@ -65,3 +65,10 @@ export function shouldJoinWorkspace(layout: ShellLayout, showing: boolean) {
   return !layout.workspaceOverlaysMain && showing
 }
 import type { InterfaceScale } from './uiScale'
+
+// Keep the window at full shell width and clip it to the panel with setShape while the
+// workspace is closed. Opening it then never resizes the window, so Windows cannot flash the
+// old frame at the new top-left (the panel snapped to the left before the slide).
+export function shapesShellWindow(platform: NodeJS.Platform = process.platform) {
+  return platform === 'linux' || platform === 'win32'
+}
