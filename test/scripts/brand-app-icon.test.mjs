@@ -39,3 +39,25 @@ test('every runtime app icon is derived from the one PNG master', async () => {
     )
   }
 })
+
+test('tray icons are the master resampled to 24px and 48px, on every platform', async () => {
+  const master = PNG.sync.read(await readFile('asset/brand/saf0o-app-icon-master.png'))
+  for (const [size, name] of [
+    [24, 'Icon.png'],
+    [48, 'Icon@2x.png']
+  ]) {
+    const expected = resizedPngBuffer(master, size)
+    assert.deepEqual(
+      await readFile(`main/windows/${name}`),
+      expected,
+      `${name} is not derived from the master`
+    )
+    assert.deepEqual(await readFile(`asset/brand/exports/tray/saf0o-tray-${size}.png`), expected)
+  }
+  const source = await readFile('main/windows/systemTray.ts', 'utf8')
+  assert.match(
+    source,
+    /systemTrayIcon = 'Icon\.png'/,
+    'one colour icon for all platforms; a Template-suffixed colour plate renders as a black square on macOS'
+  )
+})

@@ -155,52 +155,13 @@ const writeProductionAssets = async () => {
     copies.push([appOutput, path.join(outputRoot, outputPath)])
   }
 
-  const trayAssets = [
-    ['saf0o-tray-windows-24.png', 'Icon.png', 24, palette.tray, 'saf0o-silhouette-24', 1.17, -42],
-    ['saf0o-tray-windows-48.png', 'Icon@2x.png', 48, palette.tray, 'saf0o-silhouette-32', 1.17, -42],
-    [
-      'saf0o-tray-macos-template-24.png',
-      'IconTemplate.png',
-      24,
-      '#000000',
-      'saf0o-silhouette-24',
-      1.15245,
-      -42
-    ],
-    [
-      'saf0o-tray-macos-template-48.png',
-      'IconTemplate@2x.png',
-      48,
-      '#000000',
-      'saf0o-silhouette-32',
-      1.15245,
-      -42
-    ],
-    [
-      'saf0o-tray-linux-light-24.png',
-      'LinuxTray.png',
-      24,
-      palette.light,
-      'saf0o-silhouette-16',
-      1.28,
-      -42,
-      -10
-    ],
-    [
-      'saf0o-tray-linux-light-48.png',
-      'LinuxTray@2x.png',
-      48,
-      palette.light,
-      'saf0o-silhouette-16',
-      1.28,
-      -42,
-      -10
-    ]
-  ]
-
-  for (const [exportName, runtimeName, size, fill, symbol, scale, y, x = 0] of trayAssets) {
-    const exportPath = path.join(trayExportDirectory, exportName)
-    await render(mark({ fill, symbol, scale, x, y }), exportPath, size)
+  // One colour tray icon for every platform, resampled from the master (@2x = 48).
+  for (const [size, runtimeName] of [
+    [24, 'Icon.png'],
+    [48, 'Icon@2x.png']
+  ]) {
+    const exportPath = path.join(trayExportDirectory, `saf0o-tray-${size}.png`)
+    await writeResized(exportPath, size)
     copies.push([exportPath, path.join(outputRoot, 'main/windows', runtimeName)])
   }
 
