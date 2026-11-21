@@ -92,6 +92,26 @@ it('shows the approved hierarchy, ordered call identities, values, and disclosed
   expect(screen.getByText('Address copied')).toBeTruthy()
 })
 
+it('shows the net balance preview above the call list only when the request carries one', () => {
+  const chainData = { chainName: 'Ethereum', nativeCurrencySymbol: 'ETH', nativeCurrencyDecimals: 18 }
+  const req = preparedRequest()
+  const { rerender } = render(
+    <WalletCallsRequest originName='example.test' chainData={chainData} req={req} />
+  )
+  expect(screen.queryByRole('group', { name: 'Net balance changes' })).toBeNull()
+
+  req.balancePreview = {
+    key: 'k',
+    assessedAt: 0,
+    enriched: true,
+    tokens: {},
+    changes: [{ asset: 'native', standard: 'native', delta: '-1000000000000000000', usd: -3000 }]
+  }
+  rerender(<WalletCallsRequest originName='example.test' chainData={chainData} req={req} />)
+  expect(screen.getByRole('group', { name: 'Net balance changes' })).toBeTruthy()
+  expect(screen.getAllByText('−$3,000.00').length).toBeGreaterThan(0)
+})
+
 it('shows full lookalike destinations with highlighted ends and an inline warning', () => {
   const req = preparedRequest()
   req.calls = [req.calls[0]]

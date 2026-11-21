@@ -227,7 +227,11 @@ export class ViewData extends React.Component {
               {data?.data && data.data !== '0x' ? (
                 <div className='txViewData'>{this.renderDecodedData()}</div>
               ) : null}
-              <SimulationEffects account={req.account} simulation={simulation} />
+              <SimulationEffects
+                account={req.account}
+                simulation={simulation}
+                tokens={req.balancePreview?.tokens}
+              />
             </>
           )}
         {showPermissions &&

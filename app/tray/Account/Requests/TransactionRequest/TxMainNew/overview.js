@@ -5,6 +5,7 @@ import AssetMark from '../../../../../../resources/Components/AssetMark'
 
 import { Cluster, ClusterRow, ClusterValue } from '../../../../../../resources/Components/Cluster'
 import { DisplayValue } from '../../../../../../resources/Components/DisplayValue'
+import BalancePreview from '../../../../../../resources/Components/BalancePreview'
 import { ReviewContext } from '../../../../../../resources/Components/SigningReview'
 import BigNumber from 'bignumber.js'
 import {
@@ -287,9 +288,7 @@ const renderActionOverview = (action, index, req, assetContext) => {
   const ActionOverview = actionOverviews[id] || actionOverviews[_actionClass] || SimpleContractCallOverview
 
   const asset =
-    id === 'erc20:transfer'
-      ? { ...assetContext, address: req.data.to, symbol: data.symbol }
-      : undefined
+    id === 'erc20:transfer' ? { ...assetContext, address: req.data.to, symbol: data.symbol } : undefined
 
   return <ActionOverview asset={asset} key={key} type={actionType} {...{ ...data }} />
 }
@@ -632,13 +631,21 @@ const TxOverview = ({
         )}
         <ReplacementNotice replacement={req.replacement} />
         <ReplacementAssessment status={replacementStatus} />
-        <BalanceChanges
-          account={req.account}
-          req={req}
-          simulation={req.simulation}
-          symbol={symbol}
-          tokenFor={tokenFor}
-        />
+        {req.balancePreview?.changes.length ? (
+          <ClusterRow className='transactionReviewAssetChanges'>
+            <ClusterValue>
+              <BalancePreview preview={req.balancePreview} symbol={symbol} />
+            </ClusterValue>
+          </ClusterRow>
+        ) : (
+          <BalanceChanges
+            account={req.account}
+            req={req}
+            simulation={req.simulation}
+            symbol={symbol}
+            tokenFor={tokenFor}
+          />
+        )}
       </Cluster>
     )
   }

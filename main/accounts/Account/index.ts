@@ -43,6 +43,7 @@ import { parseTokenBaseUnitAmount } from '../../../resources/domain/token/amount
 import { requiredSignatureRisks } from '../../../resources/domain/signature/risk'
 
 import reveal from '../../reveal'
+import { syncBalancePreview } from '../../transaction/balancePreview'
 import { isTransactionRequest, isTypedMessageSignatureRequest } from '../../../resources/domain/request'
 import Erc20Contract from '../../contracts/erc20'
 import { suggestCallData } from '../../contracts'
@@ -1109,6 +1110,13 @@ class FrameAccount {
       .digest('hex')
   }
 
+  private syncBalancePreview(req: TransactionRequest | WalletCallsRequest) {
+    syncBalancePreview(req, {
+      publish: () => this.update(),
+      isCurrent: () => this.requests[req.handlerId] === req
+    })
+  }
+
   private applySimulationResult(
     req: TransactionRequest,
     simulation: TransactionSimulation,
@@ -1136,6 +1144,7 @@ class FrameAccount {
       delete this.actionRecognitionBindings[req.handlerId]
     }
     this.syncAddressSafety(req)
+    this.syncBalancePreview(req)
     this.syncSimulationApproval(req, simulation)
     this.syncTokenApprovalRisk(req, simulation)
     this.syncTokenAllowanceChangeRisk(req, simulation)
@@ -1253,6 +1262,7 @@ class FrameAccount {
   private applyWalletCallsSimulationResult(req: WalletCallsRequest, simulation: WalletCallsSimulationResult) {
     req.simulation = simulation
     this.syncTokenApprovalRisk(req)
+    this.syncBalancePreview(req)
     this.update()
     if (simulation.accountCodeEvidence) this.revealWalletCallDetails(req)
   }

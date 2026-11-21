@@ -7,6 +7,7 @@ import AddressSafetyStatus, {
 } from '../../../../../resources/Components/AddressSafetyStatus'
 import link from '../../../../../resources/link'
 import { resolveLocalAddressIdentity } from '../../../../../resources/domain/addressBook/identity'
+import BalancePreview from '../../../../../resources/Components/BalancePreview'
 import { ReviewContext } from '../../../../../resources/Components/SigningReview'
 import ReviewAcknowledgements from '../ReviewAcknowledgements'
 import { SimulationAllowance, SimulationEffects } from '../TransactionRequest/ViewData/effects'
@@ -319,6 +320,12 @@ export class WalletCallsRequest extends React.Component {
 
         <ReviewAcknowledgements req={req} readOnly={this.props.readOnly} />
 
+        {req.balancePreview?.changes.length ? (
+          <section className='walletCallsSection'>
+            <BalancePreview preview={req.balancePreview} symbol={symbol} />
+          </section>
+        ) : null}
+
         <section className='walletCallsSection'>
           <div className='walletCallsSectionHeading'>
             <h3>Calls execute in this order</h3>
@@ -465,7 +472,11 @@ export class WalletCallsRequest extends React.Component {
                       <>
                         <SimulationAllowance simulation={callSimulation} />
                         {(callSimulation.effects?.length || callSimulation.effectsTruncated) && (
-                          <SimulationEffects account={req.account} simulation={callSimulation} />
+                          <SimulationEffects
+                            account={req.account}
+                            simulation={callSimulation}
+                            tokens={req.balancePreview?.tokens}
+                          />
                         )}
                       </>
                     )}

@@ -25,6 +25,7 @@ import {
   getSimulationPresentation,
   ApproveOverview,
   BalanceChanges,
+  default as TxOverview,
   ReplacementAssessment,
   ReplacementNotice,
   TransactionDataRow
@@ -34,6 +35,7 @@ import {
   SimulationCallTrace,
   SimulationDelegation,
   SimulationEffects,
+  getEffectPresentation,
   SimulationNativeBalanceChanges,
   SimulationProxyImplementationChanges
 } from '../../../../../../app/tray/Account/Requests/TransactionRequest/ViewData/effects'
@@ -114,6 +116,46 @@ describe('trace-backed fallback preview', () => {
     expect(getSimulationEffectsPresentation(unsourced, account)).toBeNull()
     const { container } = render(<SimulationEffects account={account} simulation={unsourced} />)
     expect(container.textContent).toBe('')
+  })
+})
+
+describe('balance preview in the review', () => {
+  const token = '0x2222222222222222222222222222222222222222'
+  const effects = [
+    { type: 'transfer', standard: 'erc20', token, from: account.toLowerCase(), to: token, amount: '7000000' }
+  ]
+  const simulation = { status: 'succeeded', source: 'eth_simulateV1', effects }
+  const baseReq = {
+    account,
+    classification: 'CONTRACT_CALL',
+    data: { value: '0x0', chainId: '0x1' },
+    simulation
+  }
+  const preview = {
+    key: 'k',
+    assessedAt: 0,
+    enriched: true,
+    tokens: { [token]: { symbol: 'TKN', decimals: 6, known: true } },
+    changes: [{ asset: token, standard: 'erc20', delta: '-7000000', usd: -7 }]
+  }
+  const props = { symbol: 'ETH', tokenFor: () => undefined, replacementStatus: undefined }
+
+  it('renders the net preview when present and the legacy block otherwise', () => {
+    const { rerender } = render(<TxOverview req={{ ...baseReq, balancePreview: preview }} {...props} />)
+    expect(screen.getByRole('group', { name: 'Net balance changes' })).toBeTruthy()
+    rerender(<TxOverview req={baseReq} {...props} />)
+    expect(screen.queryByRole('group', { name: 'Net balance changes' })).toBeNull()
+    expect(screen.getByText('You send')).toBeTruthy()
+  })
+
+  it('formats effect amounts with decimals only when token metadata is known', () => {
+    const effect = effects[0]
+    expect(getEffectPresentation(effect, account, preview.tokens).fields).toMatchObject({ amount: '7 TKN' })
+    expect(getEffectPresentation(effect, account, preview.tokens).fields.amountRawUnits).toBeUndefined()
+    expect(getEffectPresentation(effect, account).fields).toMatchObject({ amountRawUnits: '7000000' })
+    expect(getEffectPresentation(effect, account, { [token]: { known: false } }).fields).toMatchObject({
+      amountRawUnits: '7000000'
+    })
   })
 })
 
