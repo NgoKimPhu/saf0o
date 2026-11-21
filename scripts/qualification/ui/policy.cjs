@@ -2221,7 +2221,7 @@ const reviewScenarios = () => [
     requiredControls: ['Wallet activity notifications'],
     requiredText: [
       'Wallet activity notifications',
-      'Show activity alerts while Saf0o is hidden. Wallet details stay private.'
+      'Alerts while hidden. Wallet details stay private.'
     ],
     captureScroll: 'target',
     captureScrollSelector: '#saf0o-settings-wallet-notifications'

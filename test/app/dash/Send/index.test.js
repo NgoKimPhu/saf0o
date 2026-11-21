@@ -985,7 +985,7 @@ it('preserves an unavailable explicit asset instead of silently sending the fall
     state.main.balances[account] = state.main.balances[account].filter((asset) => asset.address !== token)
   })
 
-  expect(screen.getByText(/This asset is no longer available/)).toBeTruthy()
+  expect(screen.getByText(/Asset unavailable on this network/)).toBeTruthy()
   expect(screen.queryByRole('button', { name: 'Review send' })).toBeNull()
   expect(queueSend).not.toHaveBeenCalled()
 })
@@ -1094,7 +1094,7 @@ it('distinguishes an unconfirmed submission from a validated network response', 
   const status = screen.getByRole('status')
   expect(status.getAttribute('aria-live')).toBe('polite')
   expect(status.textContent).toContain('Broadcast unconfirmed')
-  expect(status.textContent).toContain('Checking network acceptance')
+  expect(status.textContent).toContain('Checking acceptance')
   expect(status.textContent).not.toContain('Transaction submitted')
 })
 

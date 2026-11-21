@@ -177,7 +177,7 @@ export const RpcEndpointLedger = ({
       <div className='rpcEndpointHeading'>
         <div>
           <h2 id='rpc-endpoints-title'>RPC endpoints</h2>
-          <p>Saf0o uses endpoints in order and tries the next one only if the current endpoint fails.</p>
+          <p>Endpoints are tried in order; the next is used only if one fails.</p>
         </div>
       </div>
       <div className='rpcEndpointLedger'>

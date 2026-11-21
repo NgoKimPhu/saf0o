@@ -12,7 +12,7 @@ export const isUnconfirmedSubmission = (req) =>
 export const transactionLifecyclePresentation = (req, networkName = 'the network') => {
   if (isUnconfirmedSubmission(req)) {
     return {
-      detail: 'Checking network acceptance. Saf0o will not resend automatically.',
+      detail: 'Checking acceptance. Saf0o will not resend.',
       icon: 'alert',
       position: 0,
       title: 'Broadcast unconfirmed',

@@ -642,9 +642,7 @@ export class Settings extends Component {
                   onChange={(enabled) => link.send('tray:action', 'setTransactionNotifications', enabled)}
                 />
               </div>
-              <div className='signerPermissionDetails'>
-                Show activity alerts while Saf0o is hidden. Wallet details stay private.
-              </div>
+              <div className='signerPermissionDetails'>Alerts while hidden. Wallet details stay private.</div>
             </div>
             <div className='signerPermission localSetting' style={{ zIndex: 212 }}>
               <div className='signerPermissionControls'>

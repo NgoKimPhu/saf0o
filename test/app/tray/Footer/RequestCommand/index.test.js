@@ -640,7 +640,7 @@ it('presents an ambiguous one-shot broadcast without claiming network acceptance
 
   expect(transactionLifecyclePresentation(req, 'Ethereum')).toMatchObject({
     title: 'Broadcast unconfirmed',
-    detail: 'Checking network acceptance. Saf0o will not resend automatically.',
+    detail: 'Checking acceptance. Saf0o will not resend.',
     position: 0,
     tone: 'warning'
   })
@@ -686,9 +686,9 @@ it('shows truthful unconfirmed-submission evidence without replacement actions',
   expect(status.getAttribute('role')).toBe('status')
   expect(status.getAttribute('aria-live')).toBe('polite')
   expect(status.textContent).toContain('Broadcast unconfirmed')
-  expect(status.textContent).toContain('Checking network acceptance')
+  expect(status.textContent).toContain('Checking acceptance')
   expect(document.querySelector('.requestNoticeTransactionUnconfirmed')).toBeTruthy()
-  expect(status.textContent).toContain('will not resend automatically')
+  expect(status.textContent).toContain('will not resend')
   expect(screen.getByText('Expected tx hash')).toBeTruthy()
   expect(screen.getByText('RPC acceptance')).toBeTruthy()
   expect(screen.getByText('Unconfirmed')).toBeTruthy()

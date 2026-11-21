@@ -25,12 +25,12 @@ import { isWatchOnlyAccountType } from '../../../resources/domain/signer'
 import { maxSendAmount, queueSend, queueSweep, quoteSweep, resolveSendRecipient } from './api'
 
 const COPY = Object.freeze({
-  accountChanged: 'The selected account changed. Re-check the recipient and amount before trying again.',
+  accountChanged: 'Account changed. Re-check the recipient and amount.',
   amount: 'Amount',
   amountExceedsBalance: 'Amount exceeds available balance',
   amountInvalid: 'Enter a valid amount',
   asset: 'Asset',
-  assetUnavailable: 'This asset is no longer available to send on this network. Choose another asset.',
+  assetUnavailable: 'Asset unavailable on this network. Choose another.',
   close: 'Close',
   chooseAsset: 'Choose an asset',
   chooseContact: 'Choose recipient',
@@ -86,7 +86,7 @@ const COPY = Object.freeze({
   viewContact: 'View contact',
   submittedBody: 'Waiting for network confirmation.',
   submittedHeading: 'Transaction submitted',
-  unconfirmedBody: 'Checking network acceptance. Saf0o will not resend automatically.',
+  unconfirmedBody: 'Checking acceptance. Saf0o will not resend.',
   unconfirmedHeading: 'Broadcast unconfirmed',
   tryAgain: 'Try again',
   watchOnly: 'Watch-only accounts cannot sign transactions.'

@@ -121,7 +121,7 @@ it('groups settings into a short, semantic ledger', () => {
   ).toBe(true)
   expect(
     within(setting('Wallet activity notifications')).getByText(
-      'Show activity alerts while Saf0o is hidden. Wallet details stay private.'
+      'Alerts while hidden. Wallet details stay private.'
     )
   ).toBeTruthy()
   fireEvent.click(screen.getByRole('button', { name: 'Privacy' }))
