@@ -115,6 +115,8 @@ it('uses the full search width until an in-field clear action is needed', async 
   const { user } = render(<BalancesExpandedHarness account={account} moduleId='balances' />)
   const filter = screen.getByRole('textbox', { name: 'Filter balances' })
 
+  // An unlabeled empty field reads as broken: it names itself.
+  expect(filter.getAttribute('placeholder')).toBe('Search')
   expect(screen.queryByRole('button', { name: 'Clear balance filter' })).toBeNull()
 
   await user.type(filter, 'eth')
