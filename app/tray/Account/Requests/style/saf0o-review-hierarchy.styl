@@ -379,7 +379,9 @@
 .signingReviewAcknowledgements
   margin 16px 0
 
-.signingReviewAcknowledgement.approveTransactionWarning
+// The parent class outranks the footer's .approveTransactionWarning rules (same specificity
+// otherwise, so bundle order let the footer's height 100% and fixed rows stretch this card).
+.signingReviewAcknowledgements .signingReviewAcknowledgement.approveTransactionWarning
   box-sizing border-box
   height auto
   margin 0 0 12px
@@ -390,6 +392,8 @@
 
   .approveTransactionWarningBody
     display grid
+    height auto
+    grid-template-rows none
     gap 8px
     padding 0
 
