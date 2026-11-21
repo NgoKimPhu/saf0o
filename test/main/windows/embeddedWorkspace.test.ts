@@ -79,7 +79,10 @@ it('animates expansion and lands on exact shell bounds', () => {
   view.setVisible.mockClear()
   workspace.applyShellLayout(windowBounds, { x: 620, y: 0, width: 760, height: 900 }, viewBounds, true, true)
 
-  expect(view.setVisible.mock.calls).toEqual([[false]])
+  // Visible from the start, at its final bounds, so the sidebar slides in with the shell instead
+  // of a blank background sliding first.
+  expect(view.setVisible.mock.calls[0]).toEqual([true])
+  expect(view.setBounds.mock.invocationCallOrder[0]).toBeLessThan(view.setVisible.mock.invocationCallOrder[0])
   expect(parent.setBounds).toHaveBeenCalledTimes(1)
   expect(parent.setBounds).toHaveBeenLastCalledWith(windowBounds, false)
   expect(view.setBounds).toHaveBeenLastCalledWith(viewBounds)
@@ -93,7 +96,7 @@ it('animates expansion and lands on exact shell bounds', () => {
   jest.runAllTimers()
 
   expect(parent.setBounds).toHaveBeenCalledTimes(1)
-  expect(view.setVisible.mock.calls).toEqual([[false], [true]])
+  expect(view.setVisible.mock.calls).toEqual([[true], [true]])
   expect(workspace.isVisible()).toBe(true)
   expect(workspace.isSettled(true)).toBe(true)
   expect(workspace.isTransitioningTo(true)).toBe(false)
@@ -132,7 +135,7 @@ it('keeps a left-edge overlay anchored while it expands over the wallet', () => 
   view.setVisible.mockClear()
   workspace.applyShellLayout(windowBounds, { x: 0, y: 0, width: 760, height: 744 }, viewBounds, true, true)
 
-  expect(view.setVisible).toHaveBeenCalledWith(false)
+  expect(view.setVisible).toHaveBeenCalledWith(true)
   expect(view.setBounds).toHaveBeenCalledWith(viewBounds)
   jest.runAllTimers()
 

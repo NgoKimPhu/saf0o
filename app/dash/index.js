@@ -29,7 +29,11 @@ const revealShellContent = () => {
   cancelAnimationFrame(shellRevealFrame)
   shellRevealFrame = requestAnimationFrame(() => {
     shellRevealFrame = requestAnimationFrame(() => {
-      document.body.classList.remove('workspace-content-prepared', 'workspace-content-concealing')
+      document.body.classList.remove(
+        'workspace-content-prepared',
+        'workspace-content-concealing',
+        'workspace-content-sliding'
+      )
     })
   })
 }
@@ -38,7 +42,8 @@ const prepareShellContent = () => {
   clearTimeout(shellRevealTimer)
   cancelAnimationFrame(shellRevealFrame)
   document.body.classList.remove('workspace-content-concealing')
-  document.body.classList.add('workspace-content-prepared')
+  // Slide in with the shell instead of fading in after it (index.styl).
+  document.body.classList.add('workspace-content-sliding')
   shellRevealTimer = setTimeout(() => {
     revealShellContent()
   }, 600)

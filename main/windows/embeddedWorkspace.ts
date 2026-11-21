@@ -127,12 +127,13 @@ export class EmbeddedWorkspace {
     }
 
     if (showing) {
-      this.view.setVisible(false)
       this.visible = false
       this.applyWindowBounds(windowBounds)
       this.applyWindowShape(this.fullShape(windowBounds))
       this.view.setBounds(viewBounds)
       this.viewBounds = viewBounds
+      // Show the view now: its renderer slides the sidebar in with the shell ('prepare').
+      this.view.setVisible(true)
     }
 
     this.animationTimer = setTimeout(() => {

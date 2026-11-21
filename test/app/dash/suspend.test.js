@@ -19,3 +19,13 @@ it('marks the sidebar suspended whenever the tray is closed', () => {
   const source = fs.readFileSync('app/dash/index.js', 'utf8')
   expect(source).toMatch(/classList\.toggle\('suspend', !store\('tray\.open'\)\)/)
 })
+
+// Opening: the sidebar slides in with its content as the shell widens, not after a blank slide.
+it.each(['right', 'left'])('slides the %s-docked sidebar in with its content on open', (edge) => {
+  expect(view).toMatch(
+    new RegExp(`\\.workspace-edge-${edge}\\.workspace-content-sliding #dash \\{[^}]*animation: dashSlideIn`)
+  )
+  expect(fs.readFileSync('app/dash/index.js', 'utf8')).toMatch(
+    /classList\.add\('workspace-content-sliding'\)/
+  )
+})

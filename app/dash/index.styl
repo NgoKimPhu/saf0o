@@ -976,9 +976,20 @@ button,
 .workspace-edge-left:not(.suspend) .dash
   animation dashSlideInLeft 180ms ease-out 40ms backwards
 
+// Opening: main shows the view as the shell starts widening, and the sidebar slides out from
+// behind the panel with its content, instead of a blank background sliding first.
+.workspace-edge-right.workspace-content-sliding #dash
+  animation dashSlideInRight 180ms ease-out backwards
+
+.workspace-edge-left.workspace-content-sliding #dash
+  animation dashSlideInLeft 180ms ease-out backwards
+
 @media (prefers-reduced-motion: reduce)
   .suspend .dash
     transition none !important
+
+  .workspace-content-sliding #dash
+    animation none !important
 
   .workspace-edge-right:not(.suspend) .dash,
   .workspace-edge-left:not(.suspend) .dash
