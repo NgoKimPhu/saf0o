@@ -219,6 +219,16 @@ div
   from
     transform translateX(-100%)
 
+// While hidden, park the panel at the slide's start so the frame Windows shows on reopen is empty,
+// not the panel at its final spot (a flicker before the slide).
+.workspace-edge-right.suspend #panel,
+.workspace-edge-right.suspend::before
+  transform translateX(100%)
+
+.workspace-edge-left.suspend #panel,
+.workspace-edge-left.suspend::before
+  transform translateX(-100%)
+
 .workspace-edge-right:not(.suspend) #panel,
 .workspace-edge-right:not(.suspend)::before
   animation shellSlideInRight 180ms ease-out 40ms backwards
