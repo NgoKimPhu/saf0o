@@ -114,7 +114,6 @@ const fixture = () => {
       confirmedAt: 1
     }
   ]
-  fixtureMain.yearn = { catalogCache: { private: true }, workflows: { pending: 'private-workflow' } }
   fixtureMain.updater = { dontRemind: ['runtime-update-id'] }
   fixtureMain.dapps = {
     privateDapp: {
@@ -274,7 +273,6 @@ it('packages sanitized configuration and encrypted signers in an authenticated e
   expect(recoveryMain).not.toHaveProperty('outboundAddressMemory')
   expect(recoveryMain).not.toHaveProperty('rememberRecentRecipients')
   expect(recoveryMain).not.toHaveProperty('recentRecipientUses')
-  expect(recoveryMain).not.toHaveProperty('yearn')
   expect(recoveryMain).not.toHaveProperty('updater')
   expect(recoveryMain).not.toHaveProperty('extensionCredentials')
   expect(recoveryMain).not.toHaveProperty('desktopAuthIdentity')

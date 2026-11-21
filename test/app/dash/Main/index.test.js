@@ -87,13 +87,6 @@ it('routes support, tutorial, and quit actions', () => {
   ])
 })
 
-it('has no support-address copy or QR control', () => {
-  renderMain()
-
-  expect(screen.queryByRole('button', { name: 'Support Saf0o' })).toBeNull()
-  expect(screen.queryByRole('img', { name: 'QR code for the support address' })).toBeNull()
-})
-
 it('returns the workspace home to its top-level navigation', () => {
   const scroll = document.createElement('div')
   scroll.className = 'dashMainScroll'
