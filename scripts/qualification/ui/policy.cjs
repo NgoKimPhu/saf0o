@@ -3465,7 +3465,7 @@ const reviewScenarios = () => [
         kind: 'computed-style',
         selector: '.accountViewBack',
         property: 'top',
-        value: '12px'
+        value: '13px'
       },
       {
         kind: 'computed-style',
