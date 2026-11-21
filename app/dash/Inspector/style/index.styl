@@ -17,7 +17,7 @@
 
   h1
     margin 2px 0 var(--saf0o-space-1)
-    font-size 25px
+    font-size var(--saf0o-type-title)
     font-weight 500
     letter-spacing -.4px
 
@@ -97,7 +97,7 @@
 .inspectorModeCopy
   h2
     margin 0 0 var(--saf0o-space-1)
-    font-size 18px
+    font-size var(--saf0o-type-sub)
     font-weight 500
 
   p
@@ -111,14 +111,14 @@
   display flex
   min-width 0
   flex-direction column
-  gap 6px
+  gap var(--saf0o-space-2)
   color var(--saf0o-text-secondary)
   font-family var(--saf0o-font-utility)
   font-size var(--saf0o-type-caption)
 
   > span
     display flex
-    gap 5px
+    gap var(--saf0o-space-1)
     align-items baseline
 
   em
@@ -131,7 +131,7 @@
     width 100%
     box-sizing border-box
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     line-height 18px
 
   textarea
@@ -198,7 +198,7 @@ button.inspectorInspectButton
 
   h2
     margin var(--saf0o-space-1) 0 0
-    font-size 20px
+    font-size var(--saf0o-type-heading)
     font-weight 500
 
   &:focus-visible
@@ -206,7 +206,7 @@ button.inspectorInspectButton
     outline-offset 4px
 
 .inspectorReadonlyBadge
-  padding 5px var(--saf0o-space-2)
+  padding var(--saf0o-space-1) var(--saf0o-space-2)
   border 1px solid rgba(120, 166, 184, .55)
   border-radius 999px
   color #a9cad5
@@ -270,7 +270,7 @@ button.inspectorInspectButton
     overflow hidden
     color var(--saf0o-text-primary)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     line-height 18px
     overflow-wrap anywhere
     white-space pre-wrap
@@ -319,7 +319,7 @@ button.inspectorInspectButton
 button.inspectorCopy
   display inline-flex
   flex 0 0 auto
-  gap 5px
+  gap var(--saf0o-space-1)
   align-items center
   min-height 32px
   padding 0 var(--saf0o-space-2)
@@ -340,7 +340,7 @@ button.inspectorCopy
   li
     display flex
     flex-wrap wrap
-    gap 4px var(--saf0o-space-2)
+    gap var(--saf0o-space-1) var(--saf0o-space-2)
     padding var(--saf0o-space-2) 0
     border 0
     border-radius 0
@@ -365,7 +365,7 @@ button.inspectorCopy
     color var(--saf0o-text-secondary)
     background rgba(210, 162, 75, .08)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     line-height 18px
     overflow-wrap anywhere
 
@@ -422,7 +422,7 @@ button.inspectorCopy
 .inspector details > summary
   box-sizing border-box
   min-height 44px
-  padding 12px 0
+  padding var(--saf0o-space-3) 0
   cursor pointer
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 20px

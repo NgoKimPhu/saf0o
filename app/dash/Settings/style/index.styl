@@ -23,7 +23,7 @@
   .localSetting
     min-height 56px
     margin 0
-    padding 12px var(--saf0o-space-2)
+    padding var(--saf0o-space-3) var(--saf0o-space-2)
     box-sizing border-box
     border 0
     border-radius 0
@@ -201,7 +201,7 @@
       display none
 
     min-height 18px
-    padding 4px var(--saf0o-space-2) 0
+    padding var(--saf0o-space-1) var(--saf0o-space-2) 0
     color var(--saf0o-text-secondary)
     font-family var(--saf0o-font-ui)
     font-size var(--saf0o-type-caption)
@@ -229,7 +229,7 @@
     margin-top var(--saf0o-space-1)
     color var(--saf0o-text-tertiary)
     font-family var(--saf0o-font-ui)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-weight 400
     line-height 18px
 
@@ -258,7 +258,7 @@
       min-width 40px
       color var(--saf0o-text-secondary)
       font-family var(--saf0o-font-ui)
-      font-size 12px
+      font-size var(--saf0o-type-caption)
       text-align right
 
   .interfaceScaleOption
@@ -268,7 +268,7 @@
     border 0
     border-radius 0
     box-shadow none
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
     & + .interfaceScaleOption
       border-left 1px solid var(--saf0o-border-default)
@@ -543,7 +543,7 @@
 
       strong
         color var(--saf0o-text-primary)
-        font-size 14px
+        font-size var(--saf0o-type-body)
         font-weight 500
 
     .appInfoLineResetConfirmButtons
@@ -571,16 +571,16 @@
 
   .localSettingsWrap
     width 100%
-    padding 20px 18px 24px
+    padding var(--saf0o-space-5) var(--saf0o-space-4) var(--saf0o-space-6)
     box-sizing border-box
 
   .saf0oSettingsSection
     position relative
-    margin 0 0 12px
-    padding 14px 20px 8px
+    margin 0 0 var(--saf0o-space-3)
+    padding var(--saf0o-space-3) var(--saf0o-space-5) var(--saf0o-space-2)
     box-sizing border-box
     border 1px solid rgba(140, 160, 182, .16)
-    border-radius 10px
+    border-radius var(--saf0o-radius-lg)
     background linear-gradient(172deg, rgba(255, 255, 255, .022), rgba(255, 255, 255, 0) 46%), var(--saf0o-surface-card)
     box-shadow 0 10px 26px rgba(0, 0, 0, .5)
 
@@ -597,10 +597,10 @@
 
   .saf0oSettingsSectionTitle
     margin 0
-    padding 0 0 6px
+    padding 0 0 var(--saf0o-space-2)
     color var(--saf0o-text-tertiary)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-weight 600
     letter-spacing 1.4px
     line-height 18px
@@ -609,7 +609,7 @@
   .localSetting
     min-height 64px
     margin 0
-    padding 10px 0
+    padding var(--saf0o-space-2) 0
     border 0
     border-bottom 1px solid rgba(140, 160, 182, .10)
     border-radius 0
@@ -624,11 +624,11 @@
 
     .signerPermissionControls
       min-height 44px
-      gap 16px
+      gap var(--saf0o-space-4)
 
     .signerPermissionSetting
       color var(--saf0o-text-primary)
-      font-size 14px
+      font-size var(--saf0o-type-body)
       font-weight 500
 
     .signerPermissionDetails
@@ -660,7 +660,7 @@
       clip-path none
       color var(--saf0o-text-tertiary)
       font-family var(--saf0o-font-ui)
-      font-size 12px
+      font-size var(--saf0o-type-caption)
       line-height 18px
       white-space normal
 
@@ -675,7 +675,7 @@
 
   .interfaceScaleOptions
     border-color rgba(140, 160, 182, .16)
-    border-radius 7px
+    border-radius var(--saf0o-radius-md)
     background rgba(8, 11, 18, .34)
 
   .interfaceScaleOption
@@ -709,8 +709,8 @@
 
     .localSetting
       min-height 52px
-      padding-top 10px
-      padding-bottom 10px
+      padding-top var(--saf0o-space-2)
+      padding-bottom var(--saf0o-space-2)
 
     .interfaceScaleSetting
       min-height 96px
@@ -780,7 +780,7 @@
       background var(--saf0o-surface-active)
       box-shadow var(--saf0o-shadow-sm)
   flex-wrap wrap
-  margin-bottom 20px
+  margin-bottom var(--saf0o-space-5)
 
 .saf0oSettingsSection[hidden]
   display none

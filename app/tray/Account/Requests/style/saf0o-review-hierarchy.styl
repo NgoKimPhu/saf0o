@@ -4,18 +4,18 @@
   min-height 32px
   align-items center
   justify-content space-between
-  gap 16px
-  margin-bottom 20px
+  gap var(--saf0o-space-4)
+  margin-bottom var(--saf0o-space-5)
   color var(--saf0o-text-secondary)
   font-family var(--saf0o-font-ui)
-  font-size 14px
+  font-size var(--saf0o-type-body)
   line-height 20px
 
 .signingReviewOrigin
   display flex
   min-width 0
   align-items center
-  gap 8px
+  gap var(--saf0o-space-2)
   overflow-wrap anywhere
   font-weight 550
 
@@ -24,7 +24,7 @@
   min-width 0
   max-width 46%
   color var(--saf0o-text-muted)
-  font-size 13px
+  font-size var(--saf0o-type-small)
   text-align right
   overflow-wrap anywhere
 
@@ -32,19 +32,19 @@
 .signingReviewTechnical
   color var(--saf0o-text-muted)
   font-family var(--saf0o-font-ui)
-  font-size 13px
+  font-size var(--saf0o-type-small)
   line-height 20px
 
 .signingReviewTechnical
-  margin 12px 0
+  margin var(--saf0o-space-3) 0
 
 .signingReviewAddressRow
   position relative
   display grid
   grid-template-columns 112px minmax(0, 1fr)
   align-items center
-  gap 12px
-  padding 8px 0
+  gap var(--saf0o-space-3)
+  padding var(--saf0o-space-2) 0
 
   &:not(:has(> .signingReviewLabel))
     grid-template-columns minmax(0, 1fr)
@@ -55,8 +55,8 @@
   min-width 0
   min-height 32px
   align-items center
-  gap 8px
-  padding 4px 0
+  gap var(--saf0o-space-2)
+  padding var(--saf0o-space-1) 0
   border 0
   border-radius var(--saf0o-radius-sm)
   color var(--saf0o-text-secondary)
@@ -87,7 +87,7 @@
   clip-path inset(50%)
 
 .signingReviewDetails
-  margin 12px 0 20px
+  margin var(--saf0o-space-3) 0 var(--saf0o-space-5)
   padding 0
 
   > summary
@@ -95,12 +95,12 @@
     min-height 44px
     align-items center
     justify-content space-between
-    gap 12px
-    padding 8px 0
+    gap var(--saf0o-space-3)
+    padding var(--saf0o-space-2) 0
     border-radius var(--saf0o-radius-sm)
     color var(--saf0o-text-secondary)
     font-family var(--saf0o-font-ui)
-    font-size 14px
+    font-size var(--saf0o-type-body)
     line-height 20px
     list-style none
     cursor pointer
@@ -119,11 +119,11 @@
     transform rotate(90deg)
 
 .signingReviewDetailsBody
-  padding 8px 0 12px
+  padding var(--saf0o-space-2) 0 var(--saf0o-space-3)
 
 .approveTransaction
   font-family var(--saf0o-font-ui)
-  padding 8px 24px 24px
+  padding var(--saf0o-space-2) var(--saf0o-space-6) var(--saf0o-space-6)
   overflow-y auto
   scrollbar-gutter stable both-edges
 
@@ -133,7 +133,7 @@
       min-height 0
 
     ._txDescription
-      padding 0 0 20px
+      padding 0 0 var(--saf0o-space-5)
 
     ._txDescriptionSummary
       display block
@@ -141,14 +141,14 @@
     ._txDescriptionSummaryMain
       font-family var(--saf0o-font-ui)
       padding 0
-      font-size 25px
+      font-size var(--saf0o-type-title)
       line-height 32px
 
     .transactionReviewStatusRow
       border 0
 
     .transactionReviewSummaryStatus
-      padding 4px 0 12px
+      padding var(--saf0o-space-1) 0 var(--saf0o-space-3)
 
   .transactionReviewRecipient > ._txMainInner > ._txLabel
     display none
@@ -160,8 +160,8 @@
     font-family var(--saf0o-font-ui)
 
   .transactionReviewTokenApproval
-    padding 16px 20px
-    margin 0 0 20px
+    padding var(--saf0o-space-4) var(--saf0o-space-5)
+    margin 0 0 var(--saf0o-space-5)
     border 1px solid var(--saf0o-border-subtle)
     border-radius var(--saf0o-radius-md)
     background var(--saf0o-surface-card)
@@ -177,15 +177,15 @@
     .transactionReviewApprovalLimit
       display grid
       grid-template-columns minmax(0, 1fr) auto
-      gap 4px 16px
-      padding 0 0 16px
+      gap var(--saf0o-space-1) var(--saf0o-space-4)
+      padding 0 0 var(--saf0o-space-4)
 
       > .transactionReviewMetaLabel
         grid-column 1
 
       > strong
         grid-column 1
-        font-size 27px
+        font-size var(--saf0o-type-title)
         line-height 34px
         overflow-wrap anywhere
 
@@ -196,25 +196,25 @@
 
     .transactionReviewApprovalSpender
       grid-template-columns 112px minmax(0, 1fr)
-      padding 4px 0
+      padding var(--saf0o-space-1) 0
 
   .transactionReviewAssetChanges
-    margin 0 0 20px
+    margin 0 0 var(--saf0o-space-5)
 
   .transactionReviewAssetChangesInner
-    padding 16px 20px
+    padding var(--saf0o-space-4) var(--saf0o-space-5)
 
   .transactionReviewAssetChangesHeader
-    margin-bottom 10px
+    margin-bottom var(--saf0o-space-2)
 
   .transactionReviewAssetChange
     min-height 62px
 
   .transactionReviewAssetChangeIdentity
-    font-size 16px
+    font-size var(--saf0o-type-lead)
 
   .transactionReviewAssetChangeAmount
-    font-size 22px
+    font-size var(--saf0o-type-heading)
     line-height 30px
 
     .displayValue
@@ -228,7 +228,7 @@
     display none
 
   .transactionReviewDataRow
-    margin-top 12px
+    margin-top var(--saf0o-space-3)
 
   .transactionDataDisclosure
     color var(--saf0o-text-secondary)
@@ -245,7 +245,7 @@
   .clusterAddressEvidence,
   .clusterFira
     color var(--saf0o-text-secondary)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     line-height 19px
     overflow-wrap anywhere
 
@@ -254,9 +254,9 @@
 
 .signingDecisionShelf
   display grid
-  gap 10px
+  gap var(--saf0o-space-2)
   min-height 114px
-  padding 16px 24px 20px
+  padding var(--saf0o-space-4) var(--saf0o-space-6) var(--saf0o-space-5)
   background var(--saf0o-bg-subtle)
   color var(--saf0o-text-primary)
 
@@ -265,8 +265,8 @@
     align-items center
     justify-content space-between
     min-height 24px
-    gap 16px
-    font-size 13px
+    gap var(--saf0o-space-4)
+    font-size var(--saf0o-type-small)
 
     > strong
       min-width 0
@@ -277,7 +277,7 @@
 
   .signingDecisionSummary > .signingReviewAddressRow
     padding 0
-    margin-bottom 4px
+    margin-bottom var(--saf0o-space-1)
 
     .signingReviewAddress
       justify-content flex-end
@@ -290,7 +290,7 @@
 
   .signingReviewLabel
     flex none
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
   .requestNotice,
   .requestNoticeInner
@@ -317,7 +317,7 @@
     background transparent
     box-shadow none
     animation none
-    gap 8px
+    gap var(--saf0o-space-2)
 
   .requestActionContext
     width 100%
@@ -335,7 +335,7 @@
     display grid
     grid-template-columns repeat(2, minmax(0, 1fr))
     width 100%
-    gap 12px
+    gap var(--saf0o-space-3)
 
     > button
       position relative
@@ -350,42 +350,42 @@
   display flex
   min-height 32px
   align-items center
-  gap 12px
+  gap var(--saf0o-space-3)
   color var(--saf0o-text-primary)
-  font-size 13px
+  font-size var(--saf0o-type-small)
 
 .signingDecisionFeeValue
   min-width 0
   margin-left auto
   font-family var(--saf0o-font-mono)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
 
 .signingDecisionFeeAdjust
   appearance none
   flex none
   min-height 32px
-  padding 4px 0 4px 4px
+  padding var(--saf0o-space-1) 0 var(--saf0o-space-1) var(--saf0o-space-1)
   border 0
   border-radius var(--saf0o-radius-sm)
   color var(--saf0o-text-secondary)
   background transparent
   font-family var(--saf0o-font-ui)
-  font-size 13px
+  font-size var(--saf0o-type-small)
   cursor pointer
 
   &:hover
     background var(--saf0o-surface-hover)
 
 .signingReviewAcknowledgements
-  margin 16px 0
+  margin var(--saf0o-space-4) 0
 
 // The parent class outranks the footer's .approveTransactionWarning rules (same specificity
 // otherwise, so bundle order let the footer's height 100% and fixed rows stretch this card).
 .signingReviewAcknowledgements .signingReviewAcknowledgement.approveTransactionWarning
   box-sizing border-box
   height auto
-  margin 0 0 12px
-  padding 14px 16px
+  margin 0 0 var(--saf0o-space-3)
+  padding var(--saf0o-space-3) var(--saf0o-space-4)
   border 1px solid rgba(221, 180, 103, .18)
   border-radius var(--saf0o-radius-sm)
   background var(--saf0o-warning-soft)
@@ -394,17 +394,17 @@
     display grid
     height auto
     grid-template-rows none
-    gap 8px
+    gap var(--saf0o-space-2)
     padding 0
 
   .approveTransactionWarningTitle
     display flex
     align-items center
-    gap 8px
+    gap var(--saf0o-space-2)
     margin 0
     padding 0
     color var(--saf0o-warning)
-    font-size 14px
+    font-size var(--saf0o-type-body)
     line-height 20px
     text-transform none
 
@@ -422,7 +422,7 @@
     margin 0
     padding 0
     color var(--saf0o-text-secondary)
-    font-size 13px
+    font-size var(--saf0o-type-small)
     line-height 19px
     text-align left
 
@@ -434,28 +434,28 @@
 
 .signingReviewAcknowledgementError
   color var(--saf0o-danger)
-  font-size 13px
+  font-size var(--saf0o-type-small)
 
 .signingReview
   width auto
   margin 0
-  padding 8px 24px 24px
+  padding var(--saf0o-space-2) var(--saf0o-space-6) var(--saf0o-space-6)
 
   .typedDataReviewSummary
     display block
-    padding 0 0 20px
+    padding 0 0 var(--saf0o-space-5)
 
   .typedDataReviewTitle
     margin 0
-    font-size 25px
+    font-size var(--saf0o-type-title)
     line-height 32px
 
   .simpleJsonHeader
     border 0
-    padding 14px 0 8px
+    padding var(--saf0o-space-3) 0 var(--saf0o-space-2)
 
   .simpleJson > .simpleJsonChild
-    padding 7px 0
+    padding var(--saf0o-space-2) 0
     grid-template-columns 128px minmax(0, 1fr)
 
   .signingRawDisclosure
@@ -475,13 +475,13 @@
     cursor pointer
     display flex
     align-items center
-    gap 8px
+    gap var(--saf0o-space-2)
     width 100%
     min-width 0
     min-height 32px
-    padding 4px 0
+    padding var(--saf0o-space-1) 0
     color var(--saf0o-text-secondary)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     line-height 19px
     word-break break-all
 
@@ -498,8 +498,8 @@
 
   .signingPermissionList
     display grid
-    gap 18px
-    margin-top 16px
+    gap var(--saf0o-space-4)
+    margin-top var(--saf0o-space-4)
 
   .signingPermissionRow
     display block
@@ -510,11 +510,11 @@
     display flex
     align-items baseline
     justify-content space-between
-    gap 16px
+    gap var(--saf0o-space-4)
 
     > strong
       color var(--saf0o-text-primary)
-      font-size 16px
+      font-size var(--saf0o-type-lead)
 
     > div
       min-width 0
@@ -524,32 +524,32 @@
 
       > strong
         font-family var(--saf0o-font-mono)
-        font-size 14px
+        font-size var(--saf0o-type-body)
         line-height 22px
 
   .signingPermissionExpiration
-    margin-top 6px
+    margin-top var(--saf0o-space-2)
 
   .signingAuthorityFacts > div
     display grid
     grid-template-columns 112px minmax(0, 1fr)
     align-items center
-    gap 12px
-    padding 8px 0
+    gap var(--saf0o-space-3)
+    padding var(--saf0o-space-2) 0
 
   .signMessageRaw
-    margin 0 0 16px
-    padding 18px 20px
+    margin 0 0 var(--saf0o-space-4)
+    padding var(--saf0o-space-4) var(--saf0o-space-5)
     border 1px solid var(--saf0o-border-subtle)
     border-radius var(--saf0o-radius-md)
     background var(--saf0o-surface-card)
     font-family var(--saf0o-font-ui)
-    font-size 16px
+    font-size var(--saf0o-type-lead)
     line-height 25px
 
 .signingPermissionCard
-  padding 16px 20px
-  margin 0 0 20px
+  padding var(--saf0o-space-4) var(--saf0o-space-5)
+  margin 0 0 var(--saf0o-space-5)
   border 1px solid var(--saf0o-border-subtle)
   border-radius var(--saf0o-radius-md)
   background var(--saf0o-surface-card)
@@ -558,26 +558,26 @@
   display block
   color var(--saf0o-text-muted)
   font-family var(--saf0o-font-ui)
-  font-size 13px
+  font-size var(--saf0o-type-small)
   font-weight 400
   line-height 20px
 
 .signingPermissionDates
   display grid
   grid-template-columns repeat(2, minmax(0, 1fr))
-  gap 16px
-  margin-top 16px
+  gap var(--saf0o-space-4)
+  margin-top var(--saf0o-space-4)
 
   strong
     display block
     font-family var(--saf0o-font-ui)
-    font-size 13px
+    font-size var(--saf0o-type-small)
     line-height 20px
 
 .signingPermitReview
   .signingReviewTitle
-    margin 0 0 20px
-    font-size 25px
+    margin 0 0 var(--saf0o-space-5)
+    font-size var(--saf0o-type-title)
     line-height 32px
 
   .signingPermitLimit
@@ -585,16 +585,16 @@
     min-width 0
     align-items center
     justify-content space-between
-    gap 16px
-    margin-bottom 16px
+    gap var(--saf0o-space-4)
+    margin-bottom var(--saf0o-space-4)
 
     > div
       min-width 0
 
       > strong
         display block
-        margin-top 4px
-        font-size 27px
+        margin-top var(--saf0o-space-1)
+        font-size var(--saf0o-type-title)
         line-height 34px
         overflow-wrap anywhere
 
@@ -605,15 +605,15 @@
   width 100%
   align-items center
   justify-content space-between
-  gap 12px
-  margin-top 12px
-  padding 8px 0
+  gap var(--saf0o-space-3)
+  margin-top var(--saf0o-space-3)
+  padding var(--saf0o-space-2) 0
   border 0
   border-radius var(--saf0o-radius-sm)
   color var(--saf0o-text-secondary)
   background transparent
   font-family var(--saf0o-font-ui)
-  font-size 14px
+  font-size var(--saf0o-type-body)
   cursor pointer
 
   &:hover
@@ -621,23 +621,23 @@
 
 .walletCallsReview
   font-family var(--saf0o-font-ui)
-  padding 8px 24px 24px
+  padding var(--saf0o-space-2) var(--saf0o-space-6) var(--saf0o-space-6)
   scrollbar-gutter stable both-edges
 
   .walletCallsSummary
     min-height 0
-    padding 0 0 20px
+    padding 0 0 var(--saf0o-space-5)
     grid-template-columns minmax(0, 1fr)
-    gap 14px
+    gap var(--saf0o-space-3)
 
     h2
       margin 0
-      font-size 25px
+      font-size var(--saf0o-type-title)
       line-height 32px
 
     p
       color var(--saf0o-text-muted)
-      font-size 13px
+      font-size var(--saf0o-type-small)
 
   .walletCallsAtomicWarning
     padding-left 0
@@ -647,10 +647,10 @@
     grid-template-columns 28px minmax(0, 1fr)
 
   .walletCallsCallEvidence
-    margin-top 8px
+    margin-top var(--saf0o-space-2)
 
   .walletCallsDestinationAddress
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
 #panel:has(.signingDecisionShelf)
   .footerModule
@@ -662,14 +662,14 @@
 
 @media (max-height: 800px)
   .signingReviewContext
-    margin-bottom 16px
+    margin-bottom var(--saf0o-space-4)
 
   .signingPermissionCard
-    padding 14px 16px
-    margin-bottom 16px
+    padding var(--saf0o-space-3) var(--saf0o-space-4)
+    margin-bottom var(--saf0o-space-4)
 
   .signingReview .signingPermissionList
-    gap 12px
+    gap var(--saf0o-space-3)
 
 @container panel (max-width: 480px)
   .signingReviewAddressRow,
@@ -680,7 +680,7 @@
   .signingDecisionAccount
     align-items start
     flex-direction column
-    gap 4px
+    gap var(--saf0o-space-1)
 
   .signingPermissionDates
     grid-template-columns minmax(0, 1fr)
@@ -695,7 +695,7 @@
     display grid
     grid-template-columns minmax(0, 1fr) 16px
     align-items center
-    gap 8px
+    gap var(--saf0o-space-2)
 
     .addressSafetyStatus,
     .addressReputation
@@ -718,12 +718,12 @@
   scrollbar-gutter stable both-edges
 
 .signingAuthorizationAmount
-  margin 12px 0
+  margin var(--saf0o-space-3) 0
 
   .signingTokenAmountFormatted,
   > div > strong
     display block
     font-family var(--saf0o-font-mono)
-    font-size 24px
+    font-size var(--saf0o-type-title)
     line-height 34px
     overflow-wrap anywhere

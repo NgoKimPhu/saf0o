@@ -1,7 +1,7 @@
 .loaderWrap
   width: 18.5px;
   height: 18.5px;
-  margin-left 10px
+  margin-left var(--saf0o-space-2)
 
 @keyframes load
   0%
@@ -28,14 +28,14 @@
 
 .dashModule
   height 120px
-  margin-bottom 8px
+  margin-bottom var(--saf0o-space-2)
   border-radius 26px
   cursor pointer
   display flex
   justify-content center
   align-items center
-  margin 6px
-  font-size 18px
+  margin var(--saf0o-space-2)
+  font-size var(--saf0o-type-sub)
   font-weight 300
   border-radius 26px
   background var(--ghostAZ)
@@ -46,7 +46,7 @@
     pointer-events none
 
   .dashModuleIcon
-    margin-right 20px
+    margin-right var(--saf0o-space-5)
 
 .dashModule:hover
   transform translateY(-1px)
@@ -77,8 +77,8 @@ button.requestFeatureButton:focus-visible
 .signerPermission
   position relative
   justify-content space-between
-  padding 12px 0px 0px 0px 
-  font-size 15px
+  padding var(--saf0o-space-3) 0px 0px 0px 
+  font-size var(--saf0o-type-body)
   font-weight 300
   transform translateZ(0)
   z-index 2000
@@ -99,28 +99,28 @@ button.requestFeatureButton:focus-visible
     position relative
     justify-content space-between
     transform translateZ(0)
-    font-size 13px
-    padding 12px 0px 0px 1px
+    font-size var(--saf0o-type-small)
+    padding var(--saf0o-space-3) 0px 0px 1px
     z-index 20
     font-weight 300
     font-family 'MainFont'
     line-height 18px
 
   .keyCommand
-    margin-left 5px
-    padding 1px 6px 2px 6px
+    margin-left var(--saf0o-space-1)
+    padding 1px var(--saf0o-space-2) 2px var(--saf0o-space-2)
     font-weight 400
-    border-radius 5px
+    border-radius var(--saf0o-radius-sm)
     font-size var(--saf0o-type-small)
     border 1px solid var(--outerspace05)
     color var(--outerspace)
     height 30px
 
   .keyCommandLoading
-    margin-left 5px
-    padding 1px 6px 2px 6px
+    margin-left var(--saf0o-space-1)
+    padding 1px var(--saf0o-space-2) 2px var(--saf0o-space-2)
     font-weight 400
-    border-radius 5px
+    border-radius var(--saf0o-radius-sm)
     font-size var(--saf0o-type-small)
     border 1px solid var(--outerspace05)
     color var(--outerspace)
@@ -131,11 +131,11 @@ button.requestFeatureButton:focus-visible
     justify-content center
     align-items center
     height 18px
-    border-radius 10px
+    border-radius var(--saf0o-radius-lg)
     font-size var(--saf0o-type-caption)
     text-transform uppercase
-    padding-left 8px
-    padding-right 8px
+    padding-left var(--saf0o-space-2)
+    padding-right var(--saf0o-space-2)
     background var(--bad)
     padding-bottom 1px
     font-weight 400
@@ -162,7 +162,7 @@ button.requestFeatureButton:focus-visible
     font-weight 300
     text-align center
     width 100%
-    font-size 14px
+    font-size var(--saf0o-type-body)
 
   .signerPermissionSetting
     background transparent
@@ -174,15 +174,15 @@ button.requestFeatureButton:focus-visible
     white-space nowrap
     font-family 'MainFont'
     font-weight 300
-    font-size 18px
+    font-size var(--saf0o-type-sub)
     position relative
-    padding-top 4px
+    padding-top var(--saf0o-space-1)
 
 .localSetting
   background var(--ghostAZ)
   border-radius 27px
-  margin 6px
-  padding 20px
+  margin var(--saf0o-space-2)
+  padding var(--saf0o-space-5)
   box-shadow 0px 4px 8px var(--ghostY)
 
 .signerPermissionToggle
@@ -193,9 +193,9 @@ button.requestFeatureButton:focus-visible
   background var(--bad)
   height 20px
   width 40px
-  margin-right 6px
-  margin-left 12px
-  margin-top 4px
+  margin-right var(--saf0o-space-2)
+  margin-left var(--saf0o-space-3)
+  margin-top var(--saf0o-space-1)
   border-radius 2px
   transition var(--standard)
   transform translateZ(0)
@@ -278,14 +278,14 @@ button.requestFeatureButton:focus-visible
       width auto
       max-width calc(100% - 90px)
       color var(--saf0o-text-primary)
-      font-size 15px
+      font-size var(--saf0o-type-body)
       font-weight 500
       text-transform none
 
     .signerPermissionDetails
       padding-top var(--saf0o-space-2)
       color var(--saf0o-text-tertiary)
-      font-size 13px
+      font-size var(--saf0o-type-small)
       line-height 18px
 
     .keyCommand,
@@ -306,7 +306,7 @@ button.requestFeatureButton:focus-visible
 
   .localSettingsWrap
     width 100%
-    padding 2px 18px 16px
+    padding 2px var(--saf0o-space-4) var(--saf0o-space-4)
     box-sizing border-box
 
 .dashModules
@@ -522,7 +522,7 @@ button.dashModuleCurrent.saf0oControl
 
 @media (max-height: 760px)
   .dashHomePerch .localSettingsWrap
-    padding-bottom 12px
+    padding-bottom var(--saf0o-space-3)
 
 @media (max-width: 560px)
   .dashCompanionBrowserActions
@@ -555,21 +555,21 @@ button.dashModuleCurrent.saf0oControl
       color var(--saf0o-text-primary)
       background var(--saf0o-surface-active)
       box-shadow var(--saf0o-shadow-sm)
-  margin-bottom 16px
+  margin-bottom var(--saf0o-space-4)
 
 .networkEditorLiveStatus
   color var(--saf0o-text-secondary)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
 
 .accountTypeAdvanced
-  margin-top 20px
+  margin-top var(--saf0o-space-5)
 
 .originAccountAccess
   display flex
   flex-direction column
   align-items flex-start
-  gap 4px
+  gap var(--saf0o-space-1)
   width 100%
-  padding 12px
+  padding var(--saf0o-space-3)
   code
     overflow-wrap anywhere

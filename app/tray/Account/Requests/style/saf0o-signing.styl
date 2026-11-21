@@ -86,7 +86,7 @@
     ._txDescriptionSummaryMain
       padding-top var(--saf0o-space-2)
       min-width 0
-      font-size 26px
+      font-size var(--saf0o-type-title)
       line-height 32px
       overflow-wrap anywhere
 
@@ -112,7 +112,7 @@
         display flex
         min-height 32px
         align-items center
-        gap 10px
+        gap var(--saf0o-space-2)
 
         .transactionReviewAssetMark .assetMarkGlyph
           border-color transparent
@@ -174,7 +174,7 @@
 
     ._txDescriptionSummaryTag
       display block
-      margin-top 6px
+      margin-top var(--saf0o-space-2)
       color var(--saf0o-text-secondary)
 
   .transactionReviewMainApproval
@@ -479,7 +479,7 @@
     justify-content flex-start
     color var(--saf0o-text-primary)
     font-family var(--saf0o-font-utility)
-    font-size 18px
+    font-size var(--saf0o-type-sub)
     font-weight 500
     text-align left
 
@@ -489,7 +489,7 @@
 
     ._txFeeGweiValue
       font-family var(--saf0o-font-utility)
-      font-size 18px
+      font-size var(--saf0o-type-sub)
       font-weight 500
 
     ._txFeeGweiLabel
@@ -870,7 +870,7 @@
     position relative
     top -1px
     font-family var(--saf0o-font-ui)
-    font-size 18px
+    font-size var(--saf0o-type-sub)
     font-weight 650
     line-height 1
 
@@ -905,13 +905,13 @@
     position relative
     display grid
     height 100%
-    padding 8px 20px
+    padding var(--saf0o-space-2) var(--saf0o-space-5)
     box-sizing border-box
     grid-template-columns minmax(0, 1fr) auto
     grid-template-rows 44px 18px
     align-content center
     align-items center
-    gap 2px 16px
+    gap 2px var(--saf0o-space-4)
 
 .requestNoticeTransactionUnconfirmed
   height 114px
@@ -929,7 +929,7 @@
 
   .requestNoticeDeclinedInner
     align-items flex-start
-    padding 16px 24px
+    padding var(--saf0o-space-4) var(--saf0o-space-6)
     color var(--saf0o-text-secondary)
     font-family var(--saf0o-font-ui)
     text-align left
@@ -940,13 +940,13 @@
 
     strong
       color var(--saf0o-text-primary)
-      font-size 14px
+      font-size var(--saf0o-type-body)
       font-weight 650
       letter-spacing 0
       text-transform none
 
     span
-      margin-top 4px
+      margin-top var(--saf0o-space-1)
       color var(--saf0o-text-muted)
       font-family var(--saf0o-font-utility)
       font-size var(--saf0o-type-caption)
@@ -1028,7 +1028,7 @@
 
     strong
       color var(--saf0o-text-primary)
-      font-size 14px
+      font-size var(--saf0o-type-body)
       font-weight 650
 
     span
@@ -1069,7 +1069,7 @@
     padding 0 var(--saf0o-space-4)
     border 1px solid var(--saf0o-border-default)
     border-radius var(--saf0o-radius-md)
-    font-size 14px
+    font-size var(--saf0o-type-body)
     font-weight 650
     letter-spacing 0
     white-space nowrap
@@ -1165,7 +1165,7 @@
     border-radius var(--saf0o-radius-md)
     background var(--saf0o-control-texture-dark), var(--saf0o-bg-elevated)
     font-family var(--saf0o-font-ui)
-    font-size 14px
+    font-size var(--saf0o-type-body)
     font-weight 650
     text-transform none
 
@@ -1241,13 +1241,13 @@
   grid-row 1
   grid-template-columns max-content minmax(112px, 150px)
   align-items center
-  gap 18px
+  gap var(--saf0o-space-4)
 
 .txLifecycleSummary
   display flex
   min-width 0
   align-items center
-  gap 12px
+  gap var(--saf0o-space-3)
 
 .txLifecycleMark
   display grid
@@ -1285,7 +1285,7 @@
 
   strong
     color var(--saf0o-text-primary)
-    font-size 14px
+    font-size var(--saf0o-type-body)
     font-weight 650
 
   span
@@ -1401,8 +1401,8 @@
 .requestApproveRecoverable
   height auto
   min-height 114px
-  padding-top 14px
-  padding-bottom 14px
+  padding-top var(--saf0o-space-3)
+  padding-bottom var(--saf0o-space-3)
 
   .requestActionContext
     align-items flex-start
@@ -1421,11 +1421,11 @@
   max-height calc(100vh - 80px)
   grid-template-rows minmax(0, 1fr) auto
   min-height 160px
-  padding-top 16px
-  padding-bottom 16px
+  padding-top var(--saf0o-space-4)
+  padding-bottom var(--saf0o-space-4)
   grid-template-columns minmax(0, 1fr)
   align-items start
-  gap 12px
+  gap var(--saf0o-space-3)
 
   .requestActionContext
     align-items flex-start
@@ -1461,13 +1461,13 @@
 
 .transactionFundingFacts
   display grid
-  margin 8px 0 0
+  margin var(--saf0o-space-2) 0 0
   grid-template-columns repeat(3, minmax(0, 1fr))
-  gap 10px
+  gap var(--saf0o-space-2)
 
   dt
     color var(--saf0o-text-muted)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     text-transform uppercase
 
   dd
@@ -1475,23 +1475,23 @@
     overflow-wrap anywhere
     color var(--saf0o-text-primary)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     line-height 16px
 
 .requestActionContextCopy .transactionFundingActions
   display flex
-  margin-top 8px
-  gap 8px
+  margin-top var(--saf0o-space-2)
+  gap var(--saf0o-space-2)
 
   button
     display inline-flex
     min-height 44px
-    padding 0 8px
+    padding 0 var(--saf0o-space-2)
     border 0
     color var(--saf0o-accent-primary-hover)
     background transparent
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     align-items center
     cursor pointer
 
@@ -1499,7 +1499,7 @@
   display block
   width 132px
   height 132px
-  margin-top 8px
+  margin-top var(--saf0o-space-2)
   border 6px solid #fff
 
 .txLifecycleEvidence
@@ -1512,13 +1512,13 @@
   margin 0
   padding 0
   grid-template-columns minmax(150px, 1fr) repeat(3, max-content)
-  gap 14px
+  gap var(--saf0o-space-3)
 
   div
     display flex
     min-width 0
     align-items baseline
-    gap 6px
+    gap var(--saf0o-space-2)
 
     &:last-child
       justify-self end
@@ -1552,20 +1552,20 @@
   grid-column 2
   grid-row 1
   justify-content flex-end
-  gap 8px
+  gap var(--saf0o-space-2)
 
 .txLifecycleAction,
 .txLifecycleCancelRequest
   min-height 44px
   height 44px
-  padding 0 13px
+  padding 0 var(--saf0o-space-3)
   border 1px solid var(--saf0o-border-default)
   border-radius var(--saf0o-radius-sm)
   color var(--saf0o-text-secondary)
   background var(--saf0o-control-texture-dark), var(--saf0o-bg-elevated)
   box-shadow var(--saf0o-control-shadow)
   font-family var(--saf0o-font-ui)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   font-weight 620
 
   &:hover
@@ -1626,7 +1626,7 @@
 
   .txLifecycle
     grid-template-columns 1fr
-    gap 14px
+    gap var(--saf0o-space-3)
 
   .txLifecycleFacts
     grid-template-columns repeat(2, minmax(0, 1fr))
@@ -1662,7 +1662,7 @@
       gap var(--saf0o-space-2)
 
     ._txDescriptionSummaryMain
-      font-size 22px
+      font-size var(--saf0o-type-heading)
       line-height 28px
 
     .transactionReviewSummaryStatus
@@ -1789,10 +1789,10 @@
   bottom 100%
   z-index 2
   width max-content
-  padding 4px 8px
+  padding var(--saf0o-space-1) var(--saf0o-space-2)
   color var(--saf0o-text-primary)
   background var(--saf0o-bg-elevated)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 16px
   white-space nowrap
   pointer-events none
@@ -1803,7 +1803,7 @@
 .requestNoticeTransactionUnconfirmed
   .requestNoticeInner
     grid-template-rows minmax(64px, auto) 18px
-    gap 8px 16px
+    gap var(--saf0o-space-2) var(--saf0o-space-4)
 
   .txLifecycle
     min-width 0
@@ -1816,7 +1816,7 @@
     position static
     width auto
     max-width none
-    margin 4px 0 0
+    margin var(--saf0o-space-1) 0 0
     overflow visible
     clip auto
     font-family var(--saf0o-font-ui)
@@ -1829,8 +1829,8 @@
   height auto
   min-height 114px
   grid-template-columns minmax(0, 1fr)
-  gap 10px
-  padding 10px 20px
+  gap var(--saf0o-space-2)
+  padding var(--saf0o-space-2) var(--saf0o-space-5)
 
   .requestActionContextCopy span
     max-width none
@@ -1849,12 +1849,12 @@
   .transactionFundingFacts
     display grid
     grid-template-columns minmax(0, 1fr)
-    gap 4px
+    gap var(--saf0o-space-1)
 
     > div
       display grid
       grid-template-columns 90px minmax(0, 1fr)
-      gap 12px
+      gap var(--saf0o-space-3)
 
     dd
       text-align right
@@ -1863,24 +1863,24 @@
 .fundingExactAmounts > summary,
 .transactionEvidenceView details > summary
   min-height 32px
-  padding 6px 0
+  padding var(--saf0o-space-2) 0
   box-sizing border-box
   cursor pointer
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 20px
 
 .fundingExactAmounts dl
-  margin 8px 0
+  margin var(--saf0o-space-2) 0
 
   dd
-    margin 0 0 8px
+    margin 0 0 var(--saf0o-space-2)
     overflow-wrap anywhere
     font-family var(--saf0o-font-mono)
 
 .transactionEvidenceSource
-  margin 16px 20px
+  margin var(--saf0o-space-4) var(--saf0o-space-5)
   color var(--saf0o-text-secondary)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
 
 .footerModule:has(.walletCallsFundingRecovery)
   height auto !important
@@ -1888,7 +1888,7 @@
 
 .fundingExactAmounts > summary
   min-height 44px
-  padding 12px 0
+  padding var(--saf0o-space-3) 0
 
 .walletCallsFundingRecovery .requestActionContextCopy span
   font-family var(--saf0o-font-ui)
@@ -1899,8 +1899,8 @@
   .requestActionContext
     display grid
     grid-template-columns 40px minmax(0, 1fr)
-    column-gap 12px
-    row-gap 8px
+    column-gap var(--saf0o-space-3)
+    row-gap var(--saf0o-space-2)
     align-items center
 
   .requestActionContextIcon
@@ -1922,7 +1922,7 @@
       margin-top 0
 
   .requestActionButtons
-    gap 8px
+    gap var(--saf0o-space-2)
 
 .requestApproveRecoverable .requestActionContextCopy
   > .transactionFundingQr
@@ -1933,26 +1933,26 @@
 
 .requestApproveTransaction.requestApproveRecoveryStatus
   min-height 114px
-  padding 16px 20px
+  padding var(--saf0o-space-4) var(--saf0o-space-5)
   grid-template-columns minmax(0, 1fr) auto
-  gap 12px
+  gap var(--saf0o-space-3)
 
   .requestActionContext
     display flex
-    gap 10px
+    gap var(--saf0o-space-2)
 
   .requestActionContextCopy
     display block
     min-width 0
 
     > span
-      margin-top 4px
+      margin-top var(--saf0o-space-1)
       line-height 18px
 
   .requestActionButtons button
     min-width 0
     width auto
-    padding 0 14px
+    padding 0 var(--saf0o-space-3)
 
 @container panel (max-width: 560px)
   .requestApproveTransaction.requestApproveRecoveryStatus
@@ -1960,12 +1960,12 @@
 
 button.fundingExactAmounts
   min-height 44px
-  padding 8px 0
+  padding var(--saf0o-space-2) 0
   border 0
   background transparent
   color var(--saf0o-text-secondary)
   font-family var(--saf0o-font-ui)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   cursor pointer
 
   &[aria-pressed='true']

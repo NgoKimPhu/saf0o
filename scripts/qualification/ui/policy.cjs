@@ -563,13 +563,13 @@ const sendComposerScenarios = () =>
             kind: 'computed-style',
             selector: '.sendSweepHeader',
             property: 'paddingTop',
-            value: '10px'
+            value: '8px'
           },
           {
             kind: 'computed-style',
             selector: '.sendSweepHeader',
             property: 'paddingBottom',
-            value: '10px'
+            value: '8px'
           },
           {
             kind: 'computed-style',
@@ -2381,7 +2381,7 @@ const reviewScenarios = () => [
         kind: 'computed-style',
         selector: '.dashNetworksLedger .network:first-child .signerTop',
         property: 'backgroundColor',
-        value: 'rgb(26, 33, 28)'
+        value: 'rgb(25, 30, 38)'
       }
     ]
   },
@@ -2654,7 +2654,7 @@ const reviewScenarios = () => [
         kind: 'computed-style',
         selector: '.accountPortfolioCard, .accountMainPerch .moduleHeader',
         property: 'paddingTop',
-        value: '15px'
+        value: '16px'
       },
       {
         kind: 'computed-style',
@@ -4726,7 +4726,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
       // The shelf spans the 425px panel (shellWidth), not the 620px window; the lifecycle shelf is
       // taller while a hash row and confirmations are shown.
       const shelfHeight = ['transaction-confirming', 'transaction-confirmed'].includes(scenario.state)
-        ? 146
+        ? 142
         : scenario.state === 'wallet-calls-adjustment'
           ? 132
           : 114

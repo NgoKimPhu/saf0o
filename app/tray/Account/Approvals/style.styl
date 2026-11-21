@@ -8,7 +8,7 @@
   overflow-y auto
 
 .tokenApprovalsBody
-  padding 20px
+  padding var(--saf0o-space-5)
 
 .tokenApprovalsToolbar,
 .tokenApprovalRow > header,
@@ -17,10 +17,10 @@
   display flex
   align-items center
   justify-content space-between
-  gap 16px
+  gap var(--saf0o-space-4)
 
 .tokenApprovalsToolbar
-  margin-bottom 8px
+  margin-bottom var(--saf0o-space-2)
   color var(--saf0o-text-secondary)
 
 .tokenApprovalsList
@@ -29,11 +29,11 @@
   padding 0
 
 .tokenApprovalRow
-  padding 20px 0
+  padding var(--saf0o-space-5) 0
   & + &
     border-top 1px solid var(--saf0o-border-subtle)
   > header
-    margin-bottom 12px
+    margin-bottom var(--saf0o-space-3)
     strong
       font-size var(--saf0o-type-body)
     > span
@@ -44,7 +44,7 @@
   display grid
   grid-template-columns 60px minmax(0, 1fr)
   align-items center
-  gap 8px
+  gap var(--saf0o-space-2)
   > span
     color var(--saf0o-text-secondary)
     font-size var(--saf0o-type-small)
@@ -53,10 +53,10 @@
   display flex
   align-items center
   justify-content space-between
-  gap 10px
+  gap var(--saf0o-space-2)
   min-height 44px
   min-width 0
-  padding 6px 0
+  padding var(--saf0o-space-2) 0
   border 0
   background transparent
   color var(--saf0o-text-secondary)
@@ -77,7 +77,7 @@
     outline-offset 3px
 
 .tokenApprovalActions
-  margin-top 14px
+  margin-top var(--saf0o-space-3)
   align-items flex-end
   > button
     flex 0 0 auto
@@ -86,7 +86,7 @@
   min-width 0
   display flex
   flex-direction column
-  gap 6px
+  gap var(--saf0o-space-2)
   > span
     color var(--saf0o-text-muted)
     font-size var(--saf0o-type-small)
@@ -97,7 +97,7 @@
     overflow-wrap anywhere
 
 .tokenApprovalsAbout
-  margin-top 20px
+  margin-top var(--saf0o-space-5)
   color var(--saf0o-text-secondary)
   summary
     display list-item
@@ -105,7 +105,7 @@
     min-height 44px
     align-content center
   p
-    margin 4px 0 14px
+    margin var(--saf0o-space-1) 0 var(--saf0o-space-3)
     font-size var(--saf0o-type-small)
     line-height 20px
 
@@ -118,14 +118,14 @@
   line-height 20px
 
 .tokenApprovalsPagination
-  margin-top 16px
+  margin-top var(--saf0o-space-4)
 
 .accountApprovalsLink
   width 100%
-  margin 8px 0 4px
+  margin var(--saf0o-space-2) 0 var(--saf0o-space-1)
 
 @container panel (max-width: 560px)
   .tokenApprovalsBody
-    padding 12px
+    padding var(--saf0o-space-3)
   .tokenApprovalField
     grid-template-columns 52px minmax(0, 1fr)

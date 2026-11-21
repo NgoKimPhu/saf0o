@@ -194,7 +194,7 @@
     border-radius var(--saf0o-radius-sm)
     color var(--saf0o-text-primary)
     background var(--saf0o-bg-elevated)
-    font-size 20px
+    font-size var(--saf0o-type-heading)
     cursor pointer
 
   .localSettingsAddNetwork:hover
@@ -622,16 +622,16 @@
 
   .localSettingsWrap
     width 100%
-    padding 20px 18px 24px
+    padding var(--saf0o-space-5) var(--saf0o-space-4) var(--saf0o-space-6)
     box-sizing border-box
 
 .dashNetworksCard
-  padding 14px 20px 8px
+  padding var(--saf0o-space-3) var(--saf0o-space-5) var(--saf0o-space-2)
 
 .dashNetworksCardHeader
   display grid
   grid-template-columns minmax(0, 1fr) auto auto
-  gap 10px
+  gap var(--saf0o-space-2)
   min-height 50px
   align-items center
 
@@ -645,15 +645,15 @@ button.dashNetworksAdd.saf0oControl
   width 84px
   height 44px
   min-height 44px
-  padding 0 13px
+  padding 0 var(--saf0o-space-3)
   align-items center
   justify-content center
-  gap 8px
+  gap var(--saf0o-space-2)
   border 0
   color var(--saf0o-text-secondary)
   background transparent
   box-shadow none
-  font-size 13px
+  font-size var(--saf0o-type-small)
   font-weight 500
 
   &::before
@@ -661,7 +661,7 @@ button.dashNetworksAdd.saf0oControl
     z-index -1
     inset 6px 0
     border 1px solid rgba(140, 160, 182, .14)
-    border-radius 7px
+    border-radius var(--saf0o-radius-md)
     content ''
     background linear-gradient(178deg, rgba(255, 255, 255, .04), rgba(18, 23, 30, .62))
     box-shadow 0 2px 5px rgba(0, 0, 0, .18), inset 0 -1px 0 rgba(0, 0, 0, .25)
@@ -682,7 +682,7 @@ button.dashNetworksAdd.saf0oControl
       transform translateY(1px)
 
 .dashNetworksLedger
-  margin-top 10px
+  margin-top var(--saf0o-space-2)
 
   > div
     display contents
@@ -707,8 +707,8 @@ button.dashNetworksAdd.saf0oControl
 
   .networkDetailsTrigger
     min-height 62px
-    padding 8px 0
-    gap 12px
+    padding var(--saf0o-space-2) 0
+    gap var(--saf0o-space-3)
 
   .networkDetailsTrigger:hover
     background transparent
@@ -718,13 +718,13 @@ button.dashNetworksAdd.saf0oControl
 
   .networkDetailsTrigger .signerName
     color var(--saf0o-text-primary)
-    font-size 14px
+    font-size var(--saf0o-type-body)
     font-weight 500
 
   .networkDetailsTrigger .networkChainId
     color var(--saf0o-text-tertiary)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
   .networkDetailsChevron
     display none
@@ -739,7 +739,7 @@ button.dashNetworksAdd.saf0oControl
     min-width 68px
     color var(--saf0o-text-tertiary)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     text-align right
 
   .networkRowStatusConnected
@@ -750,11 +750,11 @@ button.dashNetworksAdd.saf0oControl
 
   .signerMenuItems
     padding-right 0
-    padding-left 10px
+    padding-left var(--saf0o-space-2)
 
   .networkBreak
     margin 0
-    padding 11px 0 5px
+    padding var(--saf0o-space-3) 0 var(--saf0o-space-1)
     border-bottom 1px solid rgba(140, 160, 182, .10)
 
   .networkBreakLayer
@@ -780,7 +780,7 @@ button.dashNetworksAdd.saf0oControl
     z-index -2
     inset 6px 0
     border 1px solid rgba(140, 160, 182, .12)
-    border-radius 7px
+    border-radius var(--saf0o-radius-md)
     content ''
     background rgba(8, 11, 18, .34)
 
@@ -789,12 +789,12 @@ button.dashNetworksAdd.saf0oControl
   isolation isolate
   min-width 54px
   height 44px
-  padding 0 12px
+  padding 0 var(--saf0o-space-3)
   border 0
   color #777c70
   background transparent
   font-family var(--saf0o-font-mono)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   font-weight 500
   cursor pointer
 
@@ -803,7 +803,7 @@ button.dashNetworksAdd.saf0oControl
     z-index -1
     inset 6px 2px
     border 1px solid transparent
-    border-radius 6px
+    border-radius var(--saf0o-radius-sm)
     content ''
     background transparent
 

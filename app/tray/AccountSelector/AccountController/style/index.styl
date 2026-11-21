@@ -48,7 +48,7 @@
   .signerContainer
     position relative
     z-index 3002
-    padding 0px 0px 5px 0px
+    padding 0px 0px var(--saf0o-space-1) 0px
 
   .signerDetailsFullAddress
     appearance none
@@ -79,17 +79,17 @@
       display flex
       align-items center
       justify-content center
-      font-size 14px
+      font-size var(--saf0o-type-body)
       font-weight 500
       span
-        margin-left 8px
+        margin-left var(--saf0o-space-2)
 
     .signerDetailsFullAddressText
       display flex
       align-items center
       max-width fit-content
       font-family 'FiraCode'
-      margin-top 4px
+      margin-top var(--saf0o-space-1)
       pointer-events auto
       border-radius 1px
       font-size 13.5px
@@ -118,9 +118,9 @@
       appearance none
       font-family 'FiraCode'
       letter-spacing -1px
-      font-size 16px
+      font-size var(--saf0o-type-lead)
       font-weight 300
-      margin-top 5px
+      margin-top var(--saf0o-space-1)
       pointer-events auto
       max-width fit-content
       padding 0
@@ -138,17 +138,17 @@
 
     .signerDetailsName
       font-family 'MainFont'
-      font-size 16px
+      font-size var(--saf0o-type-lead)
       font-weight 400
-      margin-top 4px
+      margin-top var(--saf0o-space-1)
       pointer-events none
 
     .signerDetailsAddressCopy
-      margin-left 10px
+      margin-left var(--saf0o-space-2)
       display flex
       align-items center
-      padding 0px 6px 0px 0px
-      border-radius 12px
+      padding 0px var(--saf0o-space-2) 0px 0px
+      border-radius var(--saf0o-radius-lg)
       display none
 
     .signerDetailsAddress
@@ -160,8 +160,8 @@
       margin-top 2px
       pointer-events auto
       padding 0px 0px 2px 1px 
-      border-radius 12px
-      font-size 15px
+      border-radius var(--saf0o-radius-lg)
+      font-size var(--saf0o-type-body)
       position relative
       cursor pointer
       left -1px
@@ -201,7 +201,7 @@
       max-width 100%
       font-weight 300
       display flex
-      font-size 15px
+      font-size var(--saf0o-type-body)
       opacity 1
 
       .transactionToAddressLargeEllipsis
@@ -223,7 +223,7 @@
       letter-spacing 1px
       font-family 'MainFont'
       color var(--outerspace08)
-      border-radius 10px
+      border-radius var(--saf0o-radius-lg)
       transform translateY(0px)
       bottom 30px
       opacity 0
@@ -256,7 +256,7 @@
         svg
           position relative
           top 0px
-          margin-left 11px
+          margin-left var(--saf0o-space-3)
 
     .transactionToAddressENS
       transform translateY(-11px)
@@ -275,7 +275,7 @@
     z-index 9999000
     height 74px
     background var(--saf0o-surface-card)
-    margin 0px 0px 6px 0px
+    margin 0px 0px var(--saf0o-space-2) 0px
     box-shadow var(--saf0o-shadow-inset)
     border 1px solid var(--saf0o-border-subtle)
     cursor pointer
@@ -302,7 +302,7 @@
       background var(--saf0o-surface-inset)
       position absolute
       color var(--saf0o-text-muted)
-      font-size 13px
+      font-size var(--saf0o-type-small)
       font-weight 600
       transition var(--standardFast)
       box-shadow var(--saf0o-shadow-inset)
@@ -398,7 +398,7 @@
       color var(--ghostX)
       cursor grab
       z-index 5000000000000000
-      padding-top 9px
+      padding-top var(--saf0o-space-2)
       opacity 1
       transition var(--standardSlow)
 
@@ -586,7 +586,7 @@
       height 330px
       z-index 3018
       overflow hidden
-      padding 15px 0px 10px 0px
+      padding var(--saf0o-space-4) 0px var(--saf0o-space-2) 0px
 
       .settingsMenu
         background linear-gradient(var(--ghostB), var(--ghostD))
@@ -638,7 +638,7 @@
               left 0
               position absolute
               z-index 1234
-              padding 10px 10px
+              padding var(--saf0o-space-2) var(--saf0o-space-2)
           .settingsMenuItemSelected, .settingsMenuItem:hover
             color var(--outerspace)
 
@@ -667,7 +667,7 @@
           display flex
           justify-content space-between
           align-items center
-          padding 0px 20px 0px 20px
+          padding 0px var(--saf0o-space-5) 0px var(--saf0o-space-5)
           font-family 'FiraCode'
           color var(--outerspace08)
           position relative
@@ -679,7 +679,7 @@
 
           .accountListItemAddress
             svg
-              margin 0px 4px 0px 4px
+              margin 0px var(--saf0o-space-1) 0px var(--saf0o-space-1)
 
         .accountListItem:last-child
           border-bottom none
@@ -687,7 +687,7 @@
         .accountListItemSelected
           background var(--ghostC)
           color var(--outerspace)
-          border-radius 6px
+          border-radius var(--saf0o-radius-sm)
           border-bottom 1px solid var(--thick0)
           box-shadow 0px 2px 3px var(--thin), 0px 19px 9px -14px var(--thin) !important
           position relative
@@ -696,10 +696,10 @@
             color var(--outerspace)
 
       .accountPageToggle
-        padding-top 20px
+        padding-top var(--saf0o-space-5)
         height 20px
         min-height 20px
-        padding-bottom 10px
+        padding-bottom var(--saf0o-space-2)
         width 100%
         display flex
         justify-content center
@@ -719,7 +719,7 @@
           display flex
           justify-content center
           align-items center
-          font-size 18px
+          font-size var(--saf0o-type-sub)
 
         .accountPageButton
           border-radius 3px
@@ -745,7 +745,7 @@
     right 0px
     left 0px
     // padding-top 20px
-    border-radius 6px
+    border-radius var(--saf0o-radius-sm)
     z-index 3005
     overflow-x hidden
     overflow-y hidden
@@ -769,7 +769,7 @@
       .accountMenuItem
         border-right 1px solid var(--thick)
       .accountMenuItem:first-child
-        padding-left 4px
+        padding-left var(--saf0o-space-1)
 
     .accountMenuRight
       position absolute
@@ -779,7 +779,7 @@
       .accountMenuItem
         border-left 1px solid var(--thick)
       .accountMenuItem:last-child
-        padding-right 4px
+        padding-right var(--saf0o-space-1)
     
     .accountMenuItem
       height 40px
@@ -801,7 +801,7 @@
     right 0px
     bottom 7px
     left 0px
-    border-radius 6px
+    border-radius var(--saf0o-radius-sm)
     z-index 3005
     overflow-x hidden
     overflow-y hidden
@@ -830,7 +830,7 @@
         display flex
         justify-content center
         align-items center
-        margin-top 5px
+        margin-top var(--saf0o-space-1)
 
         .signerMenuItem
           height 30px
@@ -850,7 +850,7 @@
           height 2px
           width 20px
           // margin 0px 4px
-          margin 0px 10px
+          margin 0px var(--saf0o-space-2)
           background black
 
     .signerNode

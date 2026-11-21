@@ -2,20 +2,20 @@
   position relative
   overflow hidden
   box-sizing border-box
-  margin 6px
-  padding-bottom 24px
+  margin var(--saf0o-space-2)
+  padding-bottom var(--saf0o-space-6)
   border-radius 27px
   background var(--ghostA)
   transform translate3d(0, 0, 0)
-  padding-top 8px
+  padding-top var(--saf0o-space-2)
 
 .signer
   position relative
   width 100%
   overflow hidden
   box-sizing border-box
-  margin 6px 0px 0px 0px
-  padding-bottom 24px
+  margin var(--saf0o-space-2) 0px 0px 0px
+  padding-bottom var(--saf0o-space-6)
   border-radius 27px
   box-shadow 0px 4px 8px var(--ghostY)
   transform translate3d(0, 0, 0)
@@ -34,7 +34,7 @@
   display flex
   justify-content space-between
   align-items center
-  padding 24px 16px
+  padding var(--saf0o-space-6) var(--saf0o-space-4)
 
 .signerDetails
   display flex
@@ -43,11 +43,11 @@
 
   .signerName
     height 28px
-    padding-left 14px
-    border-radius 8px
-    font-size 18px
+    padding-left var(--saf0o-space-3)
+    border-radius var(--saf0o-radius-md)
+    font-size var(--saf0o-type-sub)
     font-weight 300
-    padding-top 4px
+    padding-top var(--saf0o-space-1)
     box-sizing border-box
     font-family 'MainFont'
     text-transform capitalize
@@ -98,7 +98,7 @@
   background var(--ghostZ)
   width 10px
   height 10px
-  border-radius 5px
+  border-radius var(--saf0o-radius-sm)
 
 .signerStatusIndicatorLocked
   background var(--moon)
@@ -107,8 +107,8 @@
   background var(--good)
 
 .signerStatusText
-  padding 0px 32px 16px 32px
-  margin 0px 6px 6px 6px
+  padding 0px var(--saf0o-space-8) var(--saf0o-space-4) var(--saf0o-space-8)
+  margin 0px var(--saf0o-space-2) var(--saf0o-space-2) var(--saf0o-space-2)
   border-radius 20px
   font-family var(--saf0o-font-utility)
   font-size var(--saf0o-type-small)
@@ -141,16 +141,16 @@
   display flex
   justify-content space-between
   align-items center
-  font-size 14px
+  font-size var(--saf0o-type-body)
   font-weight 300
   display flex
   justify-content center
   align-items center
-  padding 18px 16px 10px 16px
+  padding var(--saf0o-space-4) var(--saf0o-space-4) var(--saf0o-space-2) var(--saf0o-space-4)
 
   .signerBottomPages
-    border-radius 8px
-    font-size 13px
+    border-radius var(--saf0o-radius-md)
+    font-size var(--saf0o-type-small)
     font-weight 400
     width 66px
     text-align center
@@ -163,7 +163,7 @@
     padding 2px 1px 2px 2px
     height 30px
     width 45px
-    border-radius 15px
+    border-radius var(--saf0o-radius-xl)
     cursor pointer
     box-sizing border-box
     border 3px solid var(--ghostZ)
@@ -183,7 +183,7 @@
     padding 2px 2px 2px 1px
     height 30px
     width 45px
-    border-radius 15px
+    border-radius var(--saf0o-radius-xl)
     cursor pointer
     box-sizing border-box
     border 3px solid var(--ghostZ)
@@ -206,7 +206,7 @@
   .showControls
     position absolute
     height 20px
-    border-radius 13px
+    border-radius var(--saf0o-radius-lg)
     border 3px solid var(--ghostZ)
     background var(--ghostA)
     z-index 2
@@ -241,27 +241,27 @@
     margin-top -3px
 
 .signerControls
-  padding-top 16px
+  padding-top var(--saf0o-space-4)
 
   .signerControlDetail
     height 40px
-    margin 0px 10px 11px 10px
+    margin 0px var(--saf0o-space-2) var(--saf0o-space-3) var(--saf0o-space-2)
     display flex
     justify-content center
     align-items center
     box-sizing border-box
-    font-size 16px
+    font-size var(--saf0o-type-lead)
     font-weight 400
     border 2px solid var(--ghostA)
-    border-radius 9px
+    border-radius var(--saf0o-radius-md)
 
     .signerControlDetailKey
       font-size var(--saf0o-type-caption)
-      margin 4px 4px 6px 4px
+      margin var(--saf0o-space-1) var(--saf0o-space-1) var(--saf0o-space-2) var(--saf0o-space-1)
       letter-spacing 1px
 
     .signerControlDetailValue
-      margin 4px
+      margin var(--saf0o-space-1)
       font-family 'FiraCode'
 
   .signerControlOption
@@ -269,7 +269,7 @@
     width calc(100% - 20px)
     font-family inherit
     height 52px
-    margin 0px 10px 11px 10px
+    margin 0px var(--saf0o-space-2) var(--saf0o-space-3) var(--saf0o-space-2)
     background var(--ghostA)
     border-radius 20px
     color var(--outerspace)
@@ -277,7 +277,7 @@
     justify-content center
     align-items center
     font-weight 400
-    font-size 13px
+    font-size var(--saf0o-type-small)
     cursor pointer
     letter-spacing 0px
     box-sizing border-box
@@ -311,7 +311,7 @@
     display flex
     justify-content center
     align-items center
-    font-size 14px
+    font-size var(--saf0o-type-body)
     font-weight 300
     text-transform none
     color var(--moon)
@@ -319,8 +319,8 @@
   .signerLatticePairInput
     background var(--ghostC)
     height 60px
-    border-radius 12px
-    margin 10px 10px 20px 10px
+    border-radius var(--saf0o-radius-lg)
+    margin var(--saf0o-space-2) var(--saf0o-space-2) var(--saf0o-space-5) var(--saf0o-space-2)
 
     input
       width 100%
@@ -330,9 +330,9 @@
       outline none
       color var(--outerspace)
       text-align center
-      font-size 22px
+      font-size var(--saf0o-type-heading)
       letter-spacing 6px
-      padding-left 6px
+      padding-left var(--saf0o-space-2)
       font-family 'MainFont'
 
   .signerLatticePairSubmit
@@ -346,13 +346,13 @@
     justify-content center
     align-items center
     background var(--ghostC)
-    border-radius 12px
+    border-radius var(--saf0o-radius-lg)
     position relative
     left 50%
     margin-left -50px
     cursor pointer
     letter-spacing 1px
-    font-size 13px
+    font-size var(--saf0o-type-small)
     text-transform uppercase
     font-weight 300
     padding-left 1px
@@ -377,7 +377,7 @@
   justify-content center
   align-items center
   // height 40px
-  padding 0px 12px 0px 12px
+  padding 0px var(--saf0o-space-3) 0px var(--saf0o-space-3)
 
 .signerAccountsTitleActive
   text-transform uppercase
@@ -390,13 +390,13 @@
   color var(--outerspace)
 
   .signerAccountsTitleActiveCount
-    font-size 13px
-    margin-left 5px
+    font-size var(--saf0o-type-small)
+    margin-left var(--saf0o-space-1)
     font-weight 400
     margin-top -1px
     height 24px
     width 24px
-    border-radius 12px
+    border-radius var(--saf0o-radius-lg)
     box-sizing border-box
     display flex
     justify-content center
@@ -409,7 +409,7 @@
   // bottom 30px
   // right 8px
   // left 8px
-  margin 7px 6px
+  margin var(--saf0o-space-2) var(--saf0o-space-2)
   // padding 8px
   text-align center
   
@@ -432,7 +432,7 @@
     border-bottom-left-radius 17px
 
   .signerAccount:first-child:last-child
-    border-radius 17px
+    border-radius var(--saf0o-radius-xl)
 
   .signerAccountsAdd
     appearance none
@@ -441,7 +441,7 @@
     background transparent
     border 0
     font-family inherit
-    padding 16px
+    padding var(--saf0o-space-4)
     font-size var(--saf0o-type-small)
     cursor pointer
     text-transform uppercase
@@ -463,7 +463,7 @@
     position relative
     background var(--ghostZ)
     color var(--outerspace)
-    border-radius 8px
+    border-radius var(--saf0o-radius-md)
     box-sizing border-box
     cursor pointer
 
@@ -489,13 +489,13 @@
       left 30px
       bottom 7px
       right 40px
-      font-size 15px
+      font-size var(--saf0o-type-body)
       overflow hidden
       font-family 'FiraCode'
       font-weight 250
 
       svg
-        margin 2px 4px 0px 4px
+        margin 2px var(--saf0o-space-1) 0px var(--saf0o-space-1)
 
     .signerAccountCheck
       position absolute
@@ -538,7 +538,7 @@
   display flex
   justify-content center
   align-items center
-  padding 20px
+  padding var(--saf0o-space-5)
 
 .signerLoadingLoader, .signerLoadingLoaderafter
   border-radius 50%
@@ -568,7 +568,7 @@
     transform rotate(360deg)
 
 .signerInterface
-  font-size 16px
+  font-size var(--saf0o-type-lead)
   width 100%
   transition var(--standard)
   position relative
@@ -576,7 +576,7 @@
   text-align center
   flex-direction column
   overflow hidden
-  font-size 14px
+  font-size var(--saf0o-type-body)
 
   .trezorPhraseInput
     position relative
@@ -585,13 +585,13 @@
     align-items center
     background var(--ghostY)
     height 36px
-    border-radius 8px
+    border-radius var(--saf0o-radius-md)
     width calc(100% - 20px)
     overflow hidden
-    margin-bottom 18px
+    margin-bottom var(--saf0o-space-4)
 
     svg
-      margin 0px 5px
+      margin 0px var(--saf0o-space-1)
 
     input 
       position absolute
@@ -602,7 +602,7 @@
       width 100%
       height 100%
       text-align center
-      font-size 20px
+      font-size var(--saf0o-type-heading)
       outline 0
       border 0
       background transparent
@@ -627,13 +627,13 @@
       color var(--bad)
       font-size var(--saf0o-type-small)
       line-height 16px
-      margin-bottom 12px
+      margin-bottom var(--saf0o-space-3)
 
     .signerPinMessageOr
       font-size var(--saf0o-type-caption)
       text-transform uppercase
       font-weight 300
-      padding 5px
+      padding var(--saf0o-space-1)
 
     .signerPinDot
       display block
@@ -666,7 +666,7 @@
         left 0px
         color inherit
         border 0
-        border-radius 8px
+        border-radius var(--saf0o-radius-md)
         background var(--ghostC)
         cursor pointer
 
@@ -685,7 +685,7 @@
       display flex
       justify-content center
       transition var(--standard)
-      padding 10px 0px 25px 0px
+      padding var(--saf0o-space-2) 0px var(--saf0o-space-6) 0px
       height 100px
 
       .trezorPinInput
@@ -726,13 +726,13 @@
   text-transform none
   font-family 'MainFont'
   letter-spacing 0px
-  font-size 16px
+  font-size var(--saf0o-type-lead)
   font-weight 400
   padding-right 2px
   text-transform capitalize
 
   .expandedSignerIcon
-    margin-right 12px
+    margin-right var(--saf0o-space-3)
 
 .signerAddedAccountTitle
   display flex
@@ -740,16 +740,16 @@
   align-items center
   text-transform uppercase
   font-size var(--saf0o-type-caption)
-  margin 2px 0px 4px 0px
+  margin 2px 0px var(--saf0o-space-1) 0px
   font-weight 500
   letter-spacing 1px
-  padding-top 8px
+  padding-top var(--saf0o-space-2)
 
 @import '../SignerStatus/style'
 
 // Saf0o signer surfaces
 .expandedSigner, .signer
-  margin 6px
+  margin var(--saf0o-space-2)
   padding-top var(--saf0o-space-2)
   border 1px solid var(--saf0o-border-subtle)
   border-radius var(--saf0o-radius-sm)
@@ -1289,7 +1289,7 @@
       padding 0 var(--saf0o-space-4)
       border-radius var(--saf0o-radius-sm)
       font-family var(--saf0o-font-ui)
-      font-size 13px
+      font-size var(--saf0o-type-small)
       font-weight 550
       letter-spacing .01em
       line-height 1
@@ -1337,7 +1337,7 @@
   overflow auto
   box-sizing border-box
   border 1px solid var(--saf0o-border-default)
-  border-radius 10px
+  border-radius var(--saf0o-radius-lg)
   background-color rgba(13, 17, 24, .94)
   background-image var(--saf0o-control-texture-dark), radial-gradient(90% 70% at 10% 0%, rgba(0, 168, 128, .06), transparent 68%)
   box-shadow var(--saf0o-shadow-lg), var(--saf0o-shadow-inset)

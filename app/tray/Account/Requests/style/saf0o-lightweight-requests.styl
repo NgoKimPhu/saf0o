@@ -3,7 +3,7 @@
 .approveRequest.lightweightRequest
   position absolute
   inset 0
-  padding 30px 30px 24px
+  padding var(--saf0o-space-8) var(--saf0o-space-8) var(--saf0o-space-6)
   overflow-y auto
   border 0
   border-radius 0
@@ -18,7 +18,7 @@
 .lightweightRequestSummary
   display grid
   min-height 76px
-  padding 0 0 16px
+  padding 0 0 var(--saf0o-space-4)
   grid-template-columns 36px minmax(0, 1fr)
   align-items start
   gap var(--saf0o-space-3)
@@ -27,7 +27,7 @@
     margin 2px 0 0
     color var(--saf0o-text-primary)
     font-family var(--saf0o-font-ui)
-    font-size 23px
+    font-size var(--saf0o-type-title)
     font-variation-settings var(--saf0o-font-heading-settings)
     font-weight 680
     line-height 28px
@@ -60,8 +60,8 @@
   padding 0
 
   + .lightweightRequestSection
-    margin-top 14px
-    padding-top 14px
+    margin-top var(--saf0o-space-3)
+    padding-top var(--saf0o-space-3)
     border-top 1px solid var(--saf0o-ledger-rule)
 
   h3
@@ -153,7 +153,7 @@
 
 .lightweightRequestPermissionList
   display grid
-  gap 10px
+  gap var(--saf0o-space-2)
 
 .lightweightRequestPermission
   display grid
@@ -171,7 +171,7 @@
 
   strong
     color var(--saf0o-text-secondary)
-    font-size 14px
+    font-size var(--saf0o-type-body)
     font-weight 590
     line-height 19px
 
@@ -183,7 +183,7 @@
 
 .lightweightRequestNote
   display grid
-  margin-top 12px
+  margin-top var(--saf0o-space-3)
   padding var(--saf0o-space-3)
   border 0
   border-radius var(--saf0o-radius-sm)
@@ -219,7 +219,7 @@
     gap var(--saf0o-space-3)
 
     h2
-      font-size 22px
+      font-size var(--saf0o-type-heading)
       line-height 27px
 
   .lightweightRequestSummaryIcon

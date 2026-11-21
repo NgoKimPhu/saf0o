@@ -13,15 +13,15 @@
   z-index 20000000000
   transition var(--standardFast)
   box-sizing border-box
-  margin 4px
+  margin var(--saf0o-space-1)
 
   .panelHeaderTitle
     position absolute 
     left 0
     top 0
     bottom 0
-    font-size 20px
-    padding 18px
+    font-size var(--saf0o-type-heading)
+    padding var(--saf0o-space-4)
 
   .panelHeaderAddChain
     position absolute 
@@ -31,7 +31,7 @@
     cursor pointer
     height 32px
     width 106px
-    border-radius 8px
+    border-radius var(--saf0o-radius-md)
     background var(--ghostB)
     display flex
     justify-content center
@@ -47,7 +47,7 @@
 
     .panelHeaderAddChainInner
       pointer-events none
-      margin-left 4px
+      margin-left var(--saf0o-space-1)
       margin-top -1px
 
   .panelHeaderAddChain:hover
@@ -63,13 +63,13 @@
     cursor pointer
     height 32px
     width 66px
-    border-radius 16px
+    border-radius var(--saf0o-radius-xl)
     background var(--ghostX)
     display flex
     justify-content center
     align-items center
     font-family 'FiraCode'
-    font-size 26px
+    font-size var(--saf0o-type-title)
     font-weight 300
     overflow hidden
     background-position 0 100%
@@ -81,13 +81,13 @@
       bottom 2px
       left 2px
       background var(--ghostX)
-      border-radius 14px
+      border-radius var(--saf0o-radius-xl)
 
     .panelHeaderUpdateToggle
       position absolute 
       height 28px
       width 55px
-      border-radius 14px
+      border-radius var(--saf0o-radius-xl)
       left 0px
       background var(--ghostD)
       // box-shadow 0px 3px 3px var(--ghostY)

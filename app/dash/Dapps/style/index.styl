@@ -9,17 +9,17 @@
   padding 0
 
   .sliceOriginGroup
-    margin-bottom 12px
+    margin-bottom var(--saf0o-space-3)
     overflow hidden
     border 1px solid rgba(140, 160, 182, .16)
-    border-radius 10px
+    border-radius var(--saf0o-radius-lg)
     background var(--saf0o-surface-card)
     box-shadow 0 10px 26px rgba(0, 0, 0, .42), inset 1px 1px 0 rgba(140, 160, 182, .045)
 
   .originTitle
     min-height 48px
     margin 0
-    padding 0 16px
+    padding 0 var(--saf0o-space-4)
     box-sizing border-box
     border-bottom 1px solid var(--saf0o-ledger-rule)
     color var(--saf0o-text-tertiary)
@@ -30,13 +30,13 @@
     text-transform uppercase
 
     .originTitleIcon
-      margin 0 12px 0 0
+      margin 0 var(--saf0o-space-3) 0 0
 
     .originTitleText
       margin 0
 
   .sliceOriginList
-    margin 0 20px 8px
+    margin 0 var(--saf0o-space-5) var(--saf0o-space-2)
     border-top 0
 
 // The legacy dashboard shell has a higher-specificity origin header. Keep the
@@ -48,7 +48,7 @@
     height 44px
     min-height 44px
     margin 0
-    padding 0 16px
+    padding 0 var(--saf0o-space-4)
     box-sizing border-box
     color var(--saf0o-text-secondary)
     font-family var(--saf0o-font-ui)
@@ -62,7 +62,7 @@
       display flex
       flex 0 0 24px
       height 44px
-      margin 0 10px 0 0
+      margin 0 var(--saf0o-space-2) 0 0
       align-items center
       justify-content center
 
@@ -75,8 +75,8 @@
 
   .sliceOrigin
     min-height 52px
-    padding-top 7px
-    padding-bottom 7px
+    padding-top var(--saf0o-space-2)
+    padding-bottom var(--saf0o-space-2)
 
 .sliceTileUsage
   display flex
@@ -106,7 +106,7 @@
   min-height 60px
   box-sizing border-box
   margin 0
-  padding 10px var(--saf0o-space-3)
+  padding var(--saf0o-space-2) var(--saf0o-space-3)
   border 0
   border-bottom 1px solid var(--saf0o-ledger-rule)
   border-radius 0
@@ -166,8 +166,8 @@
 
 @media (max-width: 560px)
   .connectedAppsPerch .sliceOriginList
-    margin-right 12px
-    margin-left 12px
+    margin-right var(--saf0o-space-3)
+    margin-left var(--saf0o-space-3)
 
 .sliceOrigin:disabled
   color var(--saf0o-text-disabled)
@@ -191,7 +191,7 @@
   justify-content center
   min-height 410px
   box-sizing border-box
-  padding 28px 24px 48px
+  padding 28px var(--saf0o-space-6) var(--saf0o-space-12)
   color var(--saf0o-text-secondary)
   text-align center
 
@@ -204,12 +204,12 @@
 
   strong
     color var(--saf0o-text-primary)
-    font-size 18px
+    font-size var(--saf0o-type-sub)
     font-weight 600
 
   span
     max-width 340px
-    margin-top 7px
+    margin-top var(--saf0o-space-2)
     font-size var(--saf0o-type-small)
     line-height 20px
 

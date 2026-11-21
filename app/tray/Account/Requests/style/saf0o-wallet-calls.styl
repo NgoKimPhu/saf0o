@@ -1,5 +1,5 @@
 .walletCallsRequestSummary
-  padding 0 12px 10px
+  padding 0 var(--saf0o-space-3) var(--saf0o-space-2)
   color var(--outerspace08)
   font-size var(--saf0o-type-caption)
   letter-spacing 1px
@@ -9,7 +9,7 @@
   position absolute
   inset 0
   box-sizing border-box
-  padding 18px 30px 24px
+  padding var(--saf0o-space-4) var(--saf0o-space-8) var(--saf0o-space-6)
   overflow-y auto
   color var(--saf0o-text-primary)
   background transparent
@@ -21,13 +21,13 @@
 
   h2
     margin-top 3px
-    font-size 22px
+    font-size var(--saf0o-type-heading)
     font-weight 660
     line-height 1.18
 
   h3
     color var(--saf0o-text-primary)
-    font-size 13px
+    font-size var(--saf0o-type-small)
     font-weight 650
 
   button,
@@ -37,19 +37,19 @@
 .walletCallsSummary
   display grid
   min-height 78px
-  padding 2px 0 14px
+  padding 2px 0 var(--saf0o-space-3)
   grid-template-columns minmax(0, 1fr) 220px
-  gap 22px
+  gap var(--saf0o-space-6)
   align-items end
 
   p
-    margin-top 7px
+    margin-top var(--saf0o-space-2)
     color var(--saf0o-text-secondary)
-    font-size 13px
+    font-size var(--saf0o-type-small)
     line-height 1.45
 
 .walletCallsAtomicWarning
-  padding-left 17px
+  padding-left var(--saf0o-space-4)
   border-left 1px solid var(--saf0o-warning)
 
   strong,
@@ -59,38 +59,38 @@
   strong
     display flex
     color var(--saf0o-warning)
-    font-size 13px
+    font-size var(--saf0o-type-small)
     font-weight 650
     align-items center
-    gap 7px
+    gap var(--saf0o-space-2)
 
   span
-    margin-top 6px
+    margin-top var(--saf0o-space-2)
     color var(--saf0o-text-secondary)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     line-height 1.45
 
 .walletCallsSection
-  padding 14px 0
+  padding var(--saf0o-space-3) 0
   border-top 0
 
   > h3
-    margin-bottom 12px
+    margin-bottom var(--saf0o-space-3)
 
 .walletCallsReviewActions .requestActionButtons
   margin-left auto
 
 .walletCallsSectionHeading
   display flex
-  margin-bottom 7px
+  margin-bottom var(--saf0o-space-2)
   justify-content space-between
   align-items baseline
-  gap 16px
+  gap var(--saf0o-space-4)
 
   > span
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
 .walletCallsSimulationState-success
   color var(--saf0o-success) !important
@@ -109,14 +109,14 @@
 .walletCall
   display grid
   min-height 70px
-  padding 11px 0
+  padding var(--saf0o-space-3) 0
   border-top 0
   border-radius 0
   box-sizing border-box
   background transparent
   box-shadow none
   grid-template-columns 42px minmax(0, 1fr) 142px
-  gap 13px
+  gap var(--saf0o-space-3)
   align-items start
 
   &:hover
@@ -126,7 +126,7 @@
   padding-top 2px
   color var(--saf0o-text-muted)
   font-family var(--saf0o-font-utility)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   font-weight 550
 
 .walletCallsCallBody
@@ -150,17 +150,17 @@
   strong
     overflow hidden
     color var(--saf0o-text-primary)
-    font-size 14px
+    font-size var(--saf0o-type-body)
     font-weight 640
     text-overflow ellipsis
     white-space nowrap
 
   span
-    margin-top 4px
+    margin-top var(--saf0o-space-1)
     overflow hidden
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     text-overflow ellipsis
     white-space nowrap
 
@@ -176,35 +176,35 @@
 
 .walletCallsCallEvidence
   display flex
-  margin-top 7px
+  margin-top var(--saf0o-space-2)
   color var(--saf0o-text-secondary)
   font-family var(--saf0o-font-utility)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   flex-wrap wrap
-  gap 6px 14px
+  gap var(--saf0o-space-2) var(--saf0o-space-3)
 
   button
     display inline-flex
     min-height 44px
-    padding 0 8px
+    padding 0 var(--saf0o-space-2)
     border 0
     color var(--saf0o-text-secondary)
     background transparent
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     align-items center
 
     &:hover
       color var(--saf0o-accent-primary-hover)
 
 .walletCallsCalldata
-  margin-top 10px
-  padding 10px 12px
+  margin-top var(--saf0o-space-2)
+  padding var(--saf0o-space-2) var(--saf0o-space-3)
   overflow-wrap anywhere
   color var(--saf0o-text-tertiary)
   background var(--saf0o-surface-inset)
   font-family var(--saf0o-font-utility)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 1.5
   box-shadow inset 0 1px 2px rgba(0, 0, 0, .32)
 
@@ -212,17 +212,17 @@
 .walletCallsEvidenceWarning,
 .walletCallsAdjustError
   color var(--saf0o-warning)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 1.45
 
 .walletCallsCallWarning
-  margin-top 8px
+  margin-top var(--saf0o-space-2)
 
 .walletCallsTargetDelegation
-  margin-top 9px
+  margin-top var(--saf0o-space-2)
   color var(--saf0o-warning)
   font-family var(--saf0o-font-utility)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 1.45
 
   strong,
@@ -242,39 +242,39 @@
 
 .walletCallsEvidenceWarning
   display flex
-  padding 13px 0
+  padding var(--saf0o-space-3) 0
   border-top 0
   align-items flex-start
-  gap 9px
+  gap var(--saf0o-space-2)
 
 .walletCallsEvidenceWarning-danger
   color var(--saf0o-danger)
 
 .walletCallsAdjustSummary
   min-height 108px
-  padding 14px 0 18px
+  padding var(--saf0o-space-3) 0 var(--saf0o-space-4)
 
   h2
     margin 0
 
   .walletCallsAdjustControls
     display grid
-    margin-top 12px
+    margin-top var(--saf0o-space-3)
     grid-template-columns var(--saf0o-review-label-column) minmax(0, 1fr)
     align-items end
-    gap 18px
+    gap var(--saf0o-space-4)
 
   p
     max-width 400px
-    margin-top 6px
+    margin-top var(--saf0o-space-2)
     color var(--saf0o-text-secondary)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     line-height 1.5
 
 .walletCallsAdjustTotal
   display grid
   grid-template-rows auto 44px
-  row-gap 5px
+  row-gap var(--saf0o-space-1)
   text-align left
 
   span,
@@ -284,13 +284,13 @@
   span
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
   strong
     display flex
     align-items center
     font-family var(--saf0o-font-utility)
-    font-size 14px
+    font-size var(--saf0o-type-body)
 
 .walletCallsAdjustNonce
   display flex
@@ -301,23 +301,23 @@
   > span
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
 .walletCallsNonceInput.saf0oInput
   width 100%
   height 44px
-  margin-top 5px
+  margin-top var(--saf0o-space-1)
   padding 0 var(--saf0o-space-2)
   font-family var(--saf0o-font-utility)
-  font-size 13px
+  font-size var(--saf0o-type-small)
   text-align right
 
 .walletCallsAdjustCall
   display grid
-  padding 16px 0 18px
+  padding var(--saf0o-space-4) 0 var(--saf0o-space-4)
   border-top 0
   grid-template-columns 30px minmax(0, 1fr)
-  gap 12px
+  gap var(--saf0o-space-3)
 
 .walletCallsCallNumber
   display flex
@@ -330,13 +330,13 @@
   align-items center
   justify-content center
   font-family var(--saf0o-font-utility)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   font-weight 620
 
 .walletCallsAdjustCallHeader
   display flex
   justify-content space-between
-  gap 16px
+  gap var(--saf0o-space-4)
 
   > div:first-child
     min-width 0
@@ -346,16 +346,16 @@
 
     strong
       overflow hidden
-      font-size 14px
+      font-size var(--saf0o-type-body)
       font-weight 640
       text-overflow ellipsis
       white-space nowrap
 
 .walletCallsDestinationAddress
-  margin-top 4px
+  margin-top var(--saf0o-space-1)
   color var(--saf0o-text-muted)
   font-family var(--saf0o-font-utility)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   overflow-wrap anywhere
   white-space normal
 
@@ -378,16 +378,16 @@
 
 .walletCallsAdjustFields
   display grid
-  margin-top 13px
+  margin-top var(--saf0o-space-3)
   grid-template-columns repeat(3, minmax(108px, 1fr))
-  gap 10px
+  gap var(--saf0o-space-2)
   align-items end
 
   label > span:first-child
     display block
-    margin-bottom 6px
+    margin-bottom var(--saf0o-space-2)
     color var(--saf0o-text-secondary)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
   label > input,
   .walletCallsUnitInput
@@ -398,9 +398,9 @@
   label > input
     width 100%
     height 44px
-    padding 0 10px
+    padding 0 var(--saf0o-space-2)
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
 .walletCallsUnitInput
   align-items center
@@ -409,25 +409,25 @@
     min-width 0
     width 100%
     height 100%
-    padding 0 5px 0 10px
+    padding 0 var(--saf0o-space-1) 0 var(--saf0o-space-2)
     border 0
     color var(--saf0o-text-primary)
     background transparent
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
     &:focus
       outline 0
 
   em
-    padding-right 9px
+    padding-right var(--saf0o-space-2)
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-style normal
 
 .walletCallsAdjustError
-  margin-top 12px
+  margin-top var(--saf0o-space-3)
   color var(--saf0o-danger)
 
 .walletCallsAdjustActions .walletCallsCancelButton
@@ -446,10 +446,10 @@
 
   .walletCallsSimulationAcknowledgementCheck
     display flex
-    margin-top 8px
+    margin-top var(--saf0o-space-2)
     color var(--saf0o-text-secondary)
     align-items flex-start
-    gap 7px
+    gap var(--saf0o-space-2)
 
     input
       flex none
@@ -477,12 +477,12 @@
 
 @container panel (max-width: 610px)
   .walletCallsSurface
-    padding-right 22px
-    padding-left 22px
+    padding-right var(--saf0o-space-6)
+    padding-left var(--saf0o-space-6)
 
   .walletCallsSummary
     grid-template-columns minmax(0, 1fr) 205px
-    gap 20px
+    gap var(--saf0o-space-5)
 
   .walletCallsAdjustFields
     grid-template-columns repeat(2, minmax(110px, 1fr))

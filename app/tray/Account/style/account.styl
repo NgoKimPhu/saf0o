@@ -82,7 +82,7 @@
   .signerContainer
     position relative
     z-index 3002
-    padding 0px 0px 5px 0px
+    padding 0px 0px var(--saf0o-space-1) 0px
 
 .accountMain
   position absolute
@@ -101,7 +101,7 @@
   .accountsModuleExpand
     background var(--ghostZ)
     z-index 2001
-    margin-bottom 30px
+    margin-bottom var(--saf0o-space-8)
     height 100%
 
     .moduleExpanded
@@ -162,7 +162,7 @@
       right 0px
       bottom 0px
       display flex
-      font-size 17px
+      font-size var(--saf0o-type-lead)
       opacity 1
       pointer-events none
       cursor pointer
@@ -183,7 +183,7 @@
       letter-spacing 1px
       font-family 'MainFont'
       color var(--outerspace08)
-      border-radius 10px
+      border-radius var(--saf0o-radius-lg)
       transform translateY(0px)
       bottom 30px
       opacity 0
@@ -211,7 +211,7 @@
         svg
           position relative
           top -1px
-          margin-left 22px
+          margin-left var(--saf0o-space-6)
 
     .transactionToAddressENS
       transform translateY(7px)
@@ -226,7 +226,7 @@
     bottom 0
     right 0
     z-index 4000
-    border-radius 12px
+    border-radius var(--saf0o-radius-lg)
 
   .accountListWrap
     position absolute
@@ -252,7 +252,7 @@
       height 330px
       z-index 3018
       overflow hidden
-      padding 15px 0px 10px 0px
+      padding var(--saf0o-space-4) 0px var(--saf0o-space-2) 0px
 
       .settingsMenu
         background linear-gradient(var(--ghostB), var(--ghostD))
@@ -304,7 +304,7 @@
               left 0
               position absolute
               z-index 1234
-              padding 10px 10px
+              padding var(--saf0o-space-2) var(--saf0o-space-2)
           .settingsMenuItemSelected, .settingsMenuItem:hover
             color var(--outerspace)
 
@@ -332,7 +332,7 @@
           display flex
           justify-content space-between
           align-items center
-          padding 0px 20px 0px 20px
+          padding 0px var(--saf0o-space-5) 0px var(--saf0o-space-5)
           font-family 'FiraCode'
           color var(--outerspace08)
           position relative
@@ -344,7 +344,7 @@
 
           .accountListItemAddress
             svg
-              margin 0px 4px 0px 4px
+              margin 0px var(--saf0o-space-1) 0px var(--saf0o-space-1)
 
         .accountListItem:last-child
           border-bottom none
@@ -352,7 +352,7 @@
         .accountListItemSelected
           background var(--ghostC)
           color var(--outerspace)
-          border-radius 6px
+          border-radius var(--saf0o-radius-sm)
           border-bottom 1px solid var(--thick0)
           box-shadow 0px 2px 3px var(--thin), 0px 19px 9px -14px var(--thin) !important
           position relative
@@ -361,10 +361,10 @@
             color var(--outerspace)
 
       .accountPageToggle
-        padding-top 20px
+        padding-top var(--saf0o-space-5)
         height 20px
         min-height 20px
-        padding-bottom 10px
+        padding-bottom var(--saf0o-space-2)
         width 100%
         display flex
         justify-content center
@@ -384,7 +384,7 @@
           display flex
           justify-content center
           align-items center
-          font-size 18px
+          font-size var(--saf0o-type-sub)
 
         .accountPageButton
           border-radius 3px
@@ -409,7 +409,7 @@
     top 64px
     right 0px
     left 0px
-    border-radius 6px
+    border-radius var(--saf0o-radius-sm)
     z-index 3005
     overflow-x hidden
     overflow-y hidden
@@ -430,7 +430,7 @@
       .accountMenuItem
         border-right 1px solid var(--thick)
       .accountMenuItem:first-child
-        padding-left 4px
+        padding-left var(--saf0o-space-1)
 
     .accountMenuRight
       position absolute
@@ -440,7 +440,7 @@
       .accountMenuItem
         border-left 1px solid var(--thick)
       .accountMenuItem:last-child
-        padding-right 4px
+        padding-right var(--saf0o-space-1)
     
     .accountMenuItem
       height 40px
@@ -462,7 +462,7 @@
     right 0px
     bottom 7px
     left 0px
-    border-radius 6px
+    border-radius var(--saf0o-radius-sm)
     z-index 3005
     overflow-x hidden
     overflow-y hidden
@@ -491,7 +491,7 @@
         display flex
         justify-content center
         align-items center
-        margin-top 5px
+        margin-top var(--saf0o-space-1)
 
         .signerMenuItem
           height 30px
@@ -511,7 +511,7 @@
           height 2px
           width 20px
           // margin 0px 4px
-          margin 0px 10px
+          margin 0px var(--saf0o-space-2)
           background black
 
     .signerNode
@@ -561,7 +561,7 @@
   transform translate3d(0, 0, 0)
   transition var(--standardFast)
   pointer-events auto
-  padding-bottom 7px
+  padding-bottom var(--saf0o-space-2)
 
 .moduleExpanded
   min-height 100%
@@ -649,7 +649,7 @@
     justify-content space-between
     cursor pointer
     z-index 200
-    padding 16px 0px 16px 20px
+    padding var(--saf0o-space-4) 0px var(--saf0o-space-4) var(--saf0o-space-5)
     box-sizing border-box
     overflow hidden
     border-radius 26px
@@ -661,14 +661,14 @@
     .requestPreviewContentArrow
       display flex
       align-items center
-      padding-right 20px
+      padding-right var(--saf0o-space-5)
       transition var(--standard)
 
       div
         max-width 13px
         
   span
-    margin-right 8px
+    margin-right var(--saf0o-space-2)
 
   .requestsBadgeOverlay
     position absolute
@@ -687,7 +687,7 @@
   right 0px
   bottom 7px
   transform translate3d(0, 0, 0)
-  padding 0px 6px
+  padding 0px var(--saf0o-space-2)
   border-radius 26px
 
   .accountModuleCard
@@ -714,7 +714,7 @@
     font-size var(--saf0o-type-caption)
     text-transform uppercase
     letter-spacing 2px
-    padding 16px 90px 10px 20px
+    padding var(--saf0o-space-4) 90px var(--saf0o-space-2) var(--saf0o-space-5)
     height 42px
     font-family 'MainFont'
     font-weight 500
@@ -723,14 +723,14 @@
     align-items center
 
     span
-      margin-right 8px
+      margin-right var(--saf0o-space-2)
 
     .moduleHeaderClose
       background var(--moon)
       color var(--moonOver)
       width 20px
       height 20px
-      border-radius 10px
+      border-radius var(--saf0o-radius-lg)
       position absolute
       right 11px
       top 9px
@@ -756,7 +756,7 @@
       border-radius 50%
       width 12px
       height 12px
-      margin 12px auto
+      margin var(--saf0o-space-3) auto
       font-size 10px // Spinner geometry; no visible text.
       position relative
       text-indent -9999em
@@ -779,10 +779,10 @@
     /// background var(--bad01)
 
   .moduleMain
-    padding 16px
+    padding var(--saf0o-space-4)
 
   .moduleFooter
-    padding 16px
+    padding var(--saf0o-space-4)
 
   .moduleMainSettings
     font-size var(--saf0o-type-caption)
@@ -804,7 +804,7 @@
     box-sizing border-box
     font-weight 300
     letter-spacing 1px
-    padding 12px 
+    padding var(--saf0o-space-3) 
     height 42px
     text-align center
     box-sizing border-box
@@ -920,7 +920,7 @@
 
       .settingsPreviewRemovalConfirm > .clusterValue:last-child
         min-height 42px
-        margin 5px var(--saf0o-space-2)
+        margin var(--saf0o-space-1) var(--saf0o-space-2)
         border 1px solid rgba(225, 154, 145, .42)
         border-radius var(--saf0o-radius-sm)
         color var(--saf0o-danger)
@@ -994,7 +994,7 @@
 
 .accountMainSlide .moduleHeader
   height 40px
-  padding 13px 76px 10px var(--saf0o-space-4)
+  padding var(--saf0o-space-3) 76px var(--saf0o-space-2) var(--saf0o-space-4)
   color var(--saf0o-text-tertiary)
   font-family var(--saf0o-font-ui)
   font-size var(--saf0o-type-small)
@@ -1131,7 +1131,7 @@
         left 56px
         justify-content flex-start
         color var(--saf0o-text-primary)
-        font-size 20px
+        font-size var(--saf0o-type-heading)
         font-variation-settings var(--saf0o-font-heading-settings)
         font-weight 650
         line-height 1
@@ -1177,7 +1177,7 @@
   .accountModuleCard
     overflow hidden
     border 1px solid var(--saf0o-border-default)
-    border-radius 10px
+    border-radius var(--saf0o-radius-lg)
     background var(--saf0o-surface-card)
     box-shadow var(--saf0o-shadow-sm), var(--saf0o-shadow-inset)
 
@@ -1305,14 +1305,14 @@
     right 0
     bottom 0
     left 0
-    padding 16px 18px 16px
+    padding var(--saf0o-space-4) var(--saf0o-space-4) var(--saf0o-space-4)
     scroll-padding-bottom 40px
     box-sizing border-box
     border-radius 0
 
   .accountMainSlide
     width 100%
-    margin-top 12px
+    margin-top var(--saf0o-space-3)
     padding 0
     padding-bottom 0
     box-sizing border-box
@@ -1335,11 +1335,11 @@
 .accountPortfolioCard
   position relative
   height 144px
-  padding 15px var(--saf0o-account-ledger-inset) 18px
+  padding var(--saf0o-space-4) var(--saf0o-account-ledger-inset) var(--saf0o-space-4)
   box-sizing border-box
   overflow hidden
   border 1px solid var(--saf0o-border-default)
-  border-radius 10px
+  border-radius var(--saf0o-radius-lg)
   background linear-gradient(172deg, rgba(255, 255, 255, .028), transparent 46%), var(--saf0o-surface-card)
   backdrop-filter blur(10px)
   box-shadow 0 10px 26px rgba(0, 0, 0, .5), inset 1px 1px 0 rgba(140, 160, 182, .05), inset 0 1px 0 rgba(255, 255, 255, .05)
@@ -1366,7 +1366,7 @@
 .accountMainPerch .moduleHeader
   color var(--saf0o-text-tertiary)
   font-family var(--saf0o-font-mono)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   font-weight 600
   line-height 18px
   letter-spacing 1.4px
@@ -1391,9 +1391,9 @@
   width 136px
   height 44px
   min-height 44px
-  padding 0 16px
-  border-radius 9px
-  font-size 13px
+  padding 0 var(--saf0o-space-4)
+  border-radius var(--saf0o-radius-md)
+  font-size var(--saf0o-type-small)
   font-weight 620
 
 .accountMainPerch .accountModule
@@ -1406,14 +1406,14 @@
   bottom 0
   left 0
   padding 0
-  border-radius 10px
+  border-radius var(--saf0o-radius-lg)
 
   .accountModuleCard
     height 100%
     box-sizing border-box
     overflow hidden
     border 1px solid var(--saf0o-border-default)
-    border-radius 10px
+    border-radius var(--saf0o-radius-lg)
     background linear-gradient(172deg, rgba(255, 255, 255, .028), transparent 46%), var(--saf0o-surface-card)
     backdrop-filter blur(10px)
     box-shadow 0 10px 26px rgba(0, 0, 0, .5), inset 1px 1px 0 rgba(140, 160, 182, .05), inset 0 1px 0 rgba(255, 255, 255, .05)
@@ -1421,7 +1421,7 @@
 .accountMainPerch .moduleHeader
   display flex
   height 48px
-  padding 15px var(--saf0o-account-ledger-inset)
+  padding var(--saf0o-space-4) var(--saf0o-account-ledger-inset)
   box-sizing border-box
   align-items center
 
@@ -1455,7 +1455,7 @@
     inset auto
     display block
     min-height 106px
-    padding 15px 16px 16px
+    padding var(--saf0o-space-4) var(--saf0o-space-4) var(--saf0o-space-4)
     box-sizing border-box
     border-radius 0
 
@@ -1476,13 +1476,13 @@
   .requestPreviewItem
     display flex
     min-height 62px
-    margin-top 22px
-    padding 9px 12px
+    margin-top var(--saf0o-space-6)
+    padding var(--saf0o-space-2) var(--saf0o-space-3)
     box-sizing border-box
     align-items center
-    gap 12px
+    gap var(--saf0o-space-3)
     border 1px solid var(--saf0o-border-default)
-    border-radius 10px
+    border-radius var(--saf0o-radius-lg)
     background var(--saf0o-surface-card)
 
   .requestPreviewIdentity
@@ -1496,7 +1496,7 @@
     strong
       overflow hidden
       color var(--saf0o-text-primary)
-      font-size 14px
+      font-size var(--saf0o-type-body)
       font-weight 560
       text-overflow ellipsis
       white-space nowrap
@@ -1506,7 +1506,7 @@
       margin 0
       color var(--saf0o-text-tertiary)
       font-family var(--saf0o-font-mono)
-      font-size 12px
+      font-size var(--saf0o-type-caption)
       text-overflow ellipsis
       white-space nowrap
 
@@ -1515,37 +1515,37 @@
     flex none
     color var(--saf0o-accent-primary)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-weight 600
     letter-spacing .4px
 
   .requestPreviewEmpty
-    margin-top 12px
-    padding 14px 12px
+    margin-top var(--saf0o-space-3)
+    padding var(--saf0o-space-3) var(--saf0o-space-3)
     color var(--saf0o-text-tertiary)
     border 1px solid var(--saf0o-border-subtle)
-    border-radius 10px
+    border-radius var(--saf0o-radius-lg)
     background var(--saf0o-surface-card)
-    font-size 13px
+    font-size var(--saf0o-type-small)
 
   .requestPreviewContentEnd
     display none
 
 .accountMainPerch .chainMonitorPreview
-  padding 10px 14px
+  padding var(--saf0o-space-2) var(--saf0o-space-3)
   box-sizing border-box
 
 .chainMonitorCompactRow
   display grid
   min-height 44px
   align-items center
-  gap 12px
+  gap var(--saf0o-space-3)
   grid-template-columns auto minmax(0, 1fr) auto
 
 .chainMonitorLabel
   color var(--saf0o-text-tertiary)
   font-family var(--saf0o-font-mono)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   font-weight 600
   letter-spacing 1.4px
   text-transform uppercase
@@ -1554,16 +1554,16 @@
   display flex
   min-width 0
   align-items center
-  gap 7px
+  gap var(--saf0o-space-2)
   color var(--saf0o-text-tertiary)
   font-family var(--saf0o-font-mono)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
 
   > strong
     overflow hidden
     color var(--saf0o-text-primary)
     font-family var(--saf0o-font-ui)
-    font-size 13px
+    font-size var(--saf0o-type-small)
     font-weight 560
     text-overflow ellipsis
     white-space nowrap
@@ -1571,7 +1571,7 @@
   .sliceTileGasPrice
     color var(--saf0o-text-primary)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
 .chainMonitorControls
   display flex
@@ -1584,18 +1584,18 @@
     height 44px
     min-height 44px
     padding 0
-    border-radius 8px
+    border-radius var(--saf0o-radius-md)
 
   button.chainMonitorDisclosure
     width auto
     min-width 90px
-    padding 0 9px
+    padding 0 var(--saf0o-space-2)
 
 .accountMainPerch .balancesPreview
   overflow visible
 
   > .cluster
-    margin 0 16px
+    margin 0 var(--saf0o-space-4)
     padding 0
     border 0
     background transparent
@@ -1615,8 +1615,8 @@
 
   .signerBalanceTotal
     height 60px
-    margin 0 8px 8px
-    padding 8px 0
+    margin 0 var(--saf0o-space-2) var(--saf0o-space-2)
+    padding var(--saf0o-space-2) 0
     box-sizing border-box
 
 .accountMainPerch .signerBalance
@@ -1637,7 +1637,7 @@
       --asset-mark-vector-size 20px
 
       .ringIconFallback
-        font-size 13px
+        font-size var(--saf0o-type-small)
         transform translate(calc(-50% + 3px), -50%)
 
   .signerBalanceCurrency
@@ -1645,7 +1645,7 @@
     right 48%
     left var(--saf0o-account-ledger-text-offset)
     height 18px
-    font-size 14px
+    font-size var(--saf0o-type-body)
     font-weight 500
 
   .signerBalanceChain
@@ -1654,7 +1654,7 @@
     height 14px
     color var(--saf0o-text-tertiary) !important
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-weight 400
     letter-spacing 0
 
@@ -1663,14 +1663,14 @@
     right 0
     left 52%
     height 18px
-    font-size 13px
+    font-size var(--saf0o-type-small)
 
   .signerBalancePrice
     right 0
     bottom 10px
     left 52%
     justify-content flex-end
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
   .signerBalanceOk
     display none
@@ -1706,8 +1706,8 @@
 
   .accountHomeShelf
     height 68px
-    padding-top 8px
-    padding-bottom 8px
+    padding-top var(--saf0o-space-2)
+    padding-bottom var(--saf0o-space-2)
 
 .accountHomeHeader
   display grid
@@ -1727,7 +1727,7 @@
   overflow hidden
   color var(--saf0o-text-primary)
   font-family var(--saf0o-font-ui)
-  font-size 25px
+  font-size var(--saf0o-type-title)
   font-weight 660
   line-height 1.08
   text-overflow ellipsis
@@ -1775,7 +1775,7 @@ button.accountHomeRename.saf0oControl
   min-height 32px
   padding 0 var(--saf0o-space-3)
   box-sizing border-box
-  font-size 18px
+  font-size var(--saf0o-type-sub)
   font-weight 620
 
 .accountHomeAddressActions
@@ -1883,7 +1883,7 @@ button.accountHomeRename.saf0oControl
   max-width 100%
   padding 0 var(--saf0o-space-1)
   align-items center
-  gap 7px
+  gap var(--saf0o-space-2)
   overflow hidden
   border 0
   color var(--saf0o-text-muted)
@@ -1983,7 +1983,7 @@ button.accountHomeRename.saf0oControl
   right 16px
   bottom 20px
   display flex
-  gap 8px
+  gap var(--saf0o-space-2)
   z-index 2
 
   .accountPortfolioSend,
@@ -1992,7 +1992,7 @@ button.accountHomeRename.saf0oControl
     width auto
     min-width 88px
     min-height 44px
-    padding 0 12px
+    padding 0 var(--saf0o-space-3)
 
 @container panel (max-width: 550px)
   .accountPortfolioCard
@@ -2003,17 +2003,17 @@ button.accountHomeRename.saf0oControl
     position relative
     right auto
     bottom auto
-    margin-top 16px
+    margin-top var(--saf0o-space-4)
 
 .accountMainPerch .requestsPreview
   .requestPreviewContent
     min-height 106px
-    padding 12px 16px
+    padding var(--saf0o-space-3) var(--saf0o-space-4)
 
   .requestPreviewItem
     min-height 52px
-    margin-top 8px
-    padding 8px 10px
+    margin-top var(--saf0o-space-2)
+    padding var(--saf0o-space-2) var(--saf0o-space-2)
 
   .requestPreviewIdentity strong, .requestPreviewIdentity span
     white-space normal

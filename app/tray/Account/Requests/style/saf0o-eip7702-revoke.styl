@@ -14,7 +14,7 @@
   h1
     margin 0 0 var(--saf0o-space-2)
     font-family var(--saf0o-font-heading)
-    font-size 20px
+    font-size var(--saf0o-type-heading)
     font-variation-settings var(--saf0o-font-heading-settings)
     font-weight 620
     line-height 1.25
@@ -22,7 +22,7 @@
   p
     margin 0
     color var(--saf0o-text-secondary)
-    font-size 13px
+    font-size var(--saf0o-type-small)
     line-height 1.55
     overflow-wrap anywhere
 
@@ -33,7 +33,7 @@
     margin 0 0 var(--saf0o-space-1)
     color var(--saf0o-text-secondary)
     font-family var(--saf0o-font-ui)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-weight 600
 
 .eip7702RevokeFacts
@@ -50,13 +50,13 @@
 
   dt
     color var(--saf0o-text-secondary)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     line-height 1.45
 
   dd
     min-width 0
     margin 0
-    font-size 13px
+    font-size var(--saf0o-type-small)
     line-height 1.45
     overflow-wrap anywhere
 
@@ -70,7 +70,7 @@
   small
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     overflow-wrap anywhere
 
 .eip7702RevokeIdentityName
@@ -88,7 +88,7 @@
   color var(--saf0o-text-secondary)
   background transparent
   font-family var(--saf0o-font-mono)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 1.45
   overflow-wrap anywhere
   text-align left
@@ -114,7 +114,7 @@
   .eip7702RevokeMono
     overflow hidden
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     text-overflow ellipsis
     white-space nowrap
 
@@ -142,13 +142,13 @@
 
     strong
       display block
-      font-size 12px
+      font-size var(--saf0o-type-caption)
       font-weight 600
 
     > span:last-child
       flex none
       color var(--saf0o-text-secondary)
-      font-size 12px
+      font-size var(--saf0o-type-caption)
 
       &::after
         content ' +'
@@ -213,7 +213,7 @@
 
 .eip7702RevokeFeeUpdated
   color var(--saf0o-success)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
 
 .eip7702RevokeFeeBody .txFeeOverlay
   margin-top var(--saf0o-space-2)
@@ -230,12 +230,12 @@
   background var(--saf0o-surface-inset)
   flex-direction column
   gap var(--saf0o-space-1)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 1.5
 
   strong
     color var(--saf0o-text-primary)
-    font-size 13px
+    font-size var(--saf0o-type-small)
 
 .eip7702RevokeRequest-verified .eip7702RevokeOutcome
   border-left-color var(--saf0o-success)
@@ -249,13 +249,13 @@
 .eip7702RevokeHash
   color var(--saf0o-text-muted)
   font-family var(--saf0o-font-mono)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
 
 .eip7702RevokeRequestSummary
   padding var(--saf0o-space-2) var(--saf0o-space-3) var(--saf0o-space-3)
   color var(--saf0o-text-secondary)
   font-family var(--saf0o-font-ui)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
 
   > span
     font-family var(--saf0o-font-mono)
@@ -314,7 +314,7 @@
     gap var(--saf0o-space-1)
 
   .eip7702RevokeSummary h1
-    font-size 18px
+    font-size var(--saf0o-type-sub)
 
   .eip7702RevokeFeeRow
     grid-template-columns 1fr auto

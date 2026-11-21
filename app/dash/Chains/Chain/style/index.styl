@@ -61,7 +61,7 @@
   width 100%
   box-sizing border-box
   margin-top var(--saf0o-space-1)
-  padding 12px
+  padding var(--saf0o-space-3)
   border 1px solid var(--saf0o-border-default)
   border-radius var(--saf0o-radius-sm)
   outline none
@@ -106,7 +106,7 @@
   min-height 44px
   box-sizing border-box
   margin var(--saf0o-space-3) 0 var(--saf0o-space-1)
-  padding 10px var(--saf0o-space-4)
+  padding var(--saf0o-space-2) var(--saf0o-space-4)
   border 1px solid var(--saf0o-border-subtle)
   border-radius var(--saf0o-radius-sm)
   color var(--saf0o-text-disabled)
@@ -190,7 +190,7 @@
   flex none
   min-height 70px
   box-sizing border-box
-  padding 15px var(--saf0o-page-gutter) 12px
+  padding var(--saf0o-space-4) var(--saf0o-page-gutter) var(--saf0o-space-3)
 
   h1,
   p
@@ -198,7 +198,7 @@
 
   h1
     overflow hidden
-    font-size 20px
+    font-size var(--saf0o-type-heading)
     font-weight 660
     font-variation-settings 'CASL' .28, 'CRSV' 0
     line-height 25px
@@ -210,7 +210,7 @@
     overflow hidden
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-ui)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     text-overflow ellipsis
     white-space nowrap
 
@@ -218,7 +218,7 @@
   position relative
   flex 1 1 auto
   min-height 0
-  padding 34px var(--saf0o-page-gutter) 26px
+  padding 34px var(--saf0o-page-gutter) var(--saf0o-space-6)
   overflow-x hidden
   overflow-y auto
   scrollbar-gutter stable both-edges
@@ -226,7 +226,7 @@
 .networkEditorGrid
   display grid
   grid-template-columns minmax(0, 2fr) minmax(0, 1fr)
-  gap 22px 16px
+  gap var(--saf0o-space-6) var(--saf0o-space-4)
 
 .networkEditorWide
   grid-column 1 / -1
@@ -242,14 +242,14 @@
   justify-content space-between
   gap var(--saf0o-space-3)
   color var(--saf0o-text-secondary)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   font-weight 590
 
 .networkEditorFieldStatus
   overflow hidden
   color var(--saf0o-success)
   font-family var(--saf0o-font-ui)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   font-weight 400
   text-overflow ellipsis
   white-space nowrap
@@ -260,10 +260,10 @@
 input.networkEditorInput
   width 100%
   height 44px
-  padding 0 12px
+  padding 0 var(--saf0o-space-3)
   color var(--saf0o-text-primary)
   font-family var(--saf0o-font-ui)
-  font-size 13px
+  font-size var(--saf0o-type-small)
   text-align left
 
   &[readonly]
@@ -271,14 +271,14 @@ input.networkEditorInput
 
 input.networkEditorInputTechnical
   font-family var(--saf0o-font-mono)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
 
 .rpcEndpointSection
   min-width 0
 
 .rpcEndpointHeading
   display flex
-  margin-bottom 10px
+  margin-bottom var(--saf0o-space-2)
   align-items flex-end
   justify-content space-between
 
@@ -298,7 +298,7 @@ input.networkEditorInputTechnical
     margin-top 2px
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-ui)
-    font-size 13px
+    font-size var(--saf0o-type-small)
     line-height 18px
 
 .rpcEndpointRow
@@ -308,7 +308,7 @@ input.networkEditorInputTechnical
   border 0
   align-items center
   grid-template-columns 18px 18px minmax(0, 1fr) 88px 44px 44px
-  gap 6px
+  gap var(--saf0o-space-2)
 
 .rpcEndpointRowOff
   color var(--saf0o-text-muted)
@@ -319,7 +319,7 @@ input.networkEditorInputTechnical
 .rpcEndpointOrder
   color var(--saf0o-text-muted)
   font-family var(--saf0o-font-mono)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   text-align center
 
 .rpcEndpointState
@@ -357,17 +357,17 @@ input.networkEditorInputTechnical
   display grid
   min-width 0
   gap 2px
-  padding 4px 0
+  padding var(--saf0o-space-1) 0
 
 input.rpcEndpointInput
   width 100%
   height 44px
   min-width 0
   box-sizing border-box
-  padding 0 9px
+  padding 0 var(--saf0o-space-2)
   color var(--saf0o-text-primary)
   font-family var(--saf0o-font-mono)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   text-align left
 
 .rpcEndpointStatus
@@ -375,7 +375,7 @@ input.rpcEndpointInput
   overflow hidden
   color var(--saf0o-text-muted)
   font-family var(--saf0o-font-ui)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 17px
   text-overflow ellipsis
   white-space nowrap
@@ -451,8 +451,8 @@ input.rpcEndpointInput
 .rpcEndpointAddRow
   display flex
   min-height 46px
-  padding-top 10px
-  padding-left 48px
+  padding-top var(--saf0o-space-2)
+  padding-left var(--saf0o-space-12)
   box-sizing border-box
   align-items center
   justify-content flex-start
@@ -462,24 +462,24 @@ input.rpcEndpointInput
     margin-left auto
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-ui)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
   button
     appearance none
     display inline-flex
     min-width 0
     height 44px
-    padding 0 10px 0 12px
+    padding 0 var(--saf0o-space-2) 0 var(--saf0o-space-3)
     border 1px solid transparent
     border-radius var(--saf0o-radius-sm)
     align-items center
     justify-content center
-    gap 7px
+    gap var(--saf0o-space-2)
     color var(--saf0o-text-secondary)
     background transparent
     box-shadow none
     font-family var(--saf0o-font-ui)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-weight 590
     cursor pointer
 
@@ -503,25 +503,25 @@ input.rpcEndpointInput
 .networkEditorToggleRow
   display flex
   min-height 44px
-  margin-top 24px
+  margin-top var(--saf0o-space-6)
   align-items center
   justify-content space-between
   color var(--saf0o-text-secondary)
-  font-size 13px
+  font-size var(--saf0o-type-small)
   font-weight 590
 
 .networkEditorMessage
   margin-top var(--saf0o-space-3)
   color var(--saf0o-danger)
   font-family var(--saf0o-font-ui)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
 
 .networkEditorFooter
   display flex
   flex none
   min-height 104px
   box-sizing border-box
-  padding 26px var(--saf0o-page-gutter)
+  padding var(--saf0o-space-6) var(--saf0o-page-gutter)
   align-items center
   justify-content space-between
   gap var(--saf0o-space-3)
@@ -532,7 +532,7 @@ input.rpcEndpointInput
   display flex
   margin-left auto
   align-items center
-  gap 10px
+  gap var(--saf0o-space-2)
 
 button.networkEditorCancel,
 button.networkEditorSubmit
@@ -540,8 +540,8 @@ button.networkEditorSubmit
   min-width 156px
   height 46px
   min-height 46px
-  padding 0 19px
-  font-size 14px
+  padding 0 var(--saf0o-space-5)
+  font-size var(--saf0o-type-body)
   font-weight 650
 
 button.networkEditorCancel
@@ -560,23 +560,23 @@ button.networkEditorRemove.saf0oControl
 @media (max-height: 760px) and (min-width: 561px)
   .networkEditorHeader
     min-height 60px
-    padding-top 10px
-    padding-bottom 8px
+    padding-top var(--saf0o-space-2)
+    padding-bottom var(--saf0o-space-2)
 
   .networkEditorBody
-    padding-top 12px
-    padding-bottom 8px
+    padding-top var(--saf0o-space-3)
+    padding-bottom var(--saf0o-space-2)
 
   .networkEditorGrid
-    row-gap 14px
+    row-gap var(--saf0o-space-3)
 
   .networkEditorToggleRow
-    margin-top 6px
+    margin-top var(--saf0o-space-2)
 
   .networkEditorFooter
     min-height 74px
-    padding-top 13px
-    padding-bottom 13px
+    padding-top var(--saf0o-space-3)
+    padding-bottom var(--saf0o-space-3)
 
 @media (max-width: 560px)
   .networkEditorHeader
@@ -607,10 +607,10 @@ button.networkEditorRemove.saf0oControl
     min-width 0
 
 .networkEditorConnections
-  padding-top 8px
+  padding-top var(--saf0o-space-2)
 
 .networkEditorSections
-  margin 0 var(--saf0o-page-gutter) 8px
+  margin 0 var(--saf0o-page-gutter) var(--saf0o-space-2)
 
 .networkEditorConnections > button
-  margin-top 20px
+  margin-top var(--saf0o-space-5)

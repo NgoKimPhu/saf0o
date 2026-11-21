@@ -3,7 +3,7 @@
 
 .requestNoticeInnerApproval
   display block
-  padding 8px 2px
+  padding var(--saf0o-space-2) 2px
   box-sizing border-box
 
 .approveTransactionWarning
@@ -15,9 +15,9 @@
     display grid
     width 100%
     height 100%
-    padding 10px 20px
+    padding var(--saf0o-space-2) var(--saf0o-space-5)
     grid-template-rows auto auto 44px
-    gap 6px
+    gap var(--saf0o-space-2)
     box-sizing border-box
     overflow-wrap anywhere
     word-break normal
@@ -29,7 +29,7 @@
       gap var(--saf0o-space-2)
       color var(--saf0o-warning)
       font-family var(--saf0o-font-ui)
-      font-size 16px
+      font-size var(--saf0o-type-lead)
       font-weight 650
       letter-spacing 0
       line-height 20px
@@ -67,7 +67,7 @@
   border-top-left-radius 0px
   z-index 99999999
   height 45px
-  padding-bottom 8px
+  padding-bottom var(--saf0o-space-2)
   pointer-events auto
   
   .requestApproveFee
@@ -92,7 +92,7 @@
   box-sizing border-box
   transition var(--standard)
   font-family 'MainFont'
-  font-size 14px
+  font-size var(--saf0o-type-body)
   transform translateY(0px) 
   text-transform uppercase
   flex-grow 1

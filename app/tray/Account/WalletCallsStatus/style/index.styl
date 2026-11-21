@@ -7,22 +7,22 @@
 .walletCallsStatusScroll
   position absolute
   inset 0
-  padding 25px 30px 32px
+  padding var(--saf0o-space-6) var(--saf0o-space-8) var(--saf0o-space-8)
   box-sizing border-box
   overflow-y auto
 
 .walletCallsStatusSummary
   display flex
   min-height 82px
-  padding 4px 0 21px
+  padding var(--saf0o-space-1) 0 var(--saf0o-space-5)
   justify-content space-between
   align-items center
-  gap 24px
+  gap var(--saf0o-space-6)
 
 .walletCallsStatusEyebrow
   color var(--saf0o-accent-primary-hover)
   font-family var(--saf0o-font-utility)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   font-weight 550
   letter-spacing .03em
   text-transform uppercase
@@ -34,14 +34,14 @@
 
   h2
     margin-top 3px
-    font-size 25px
+    font-size var(--saf0o-type-title)
     font-weight 660
     line-height 1.18
 
   p
-    margin-top 7px
+    margin-top var(--saf0o-space-2)
     color var(--saf0o-text-secondary)
-    font-size 13px
+    font-size var(--saf0o-type-small)
     line-height 1.45
 
 .walletCallsStatusMark
@@ -70,19 +70,19 @@
 
 .walletCallsStatusUnavailableActions
   display flex
-  padding 0 0 18px
+  padding 0 0 var(--saf0o-space-4)
   justify-content flex-end
-  gap 8px
+  gap var(--saf0o-space-2)
 
   button
     height 34px
-    padding 0 14px
+    padding 0 var(--saf0o-space-3)
     border 1px solid var(--saf0o-border-default)
     border-radius var(--saf0o-radius-sm)
     color var(--saf0o-text-secondary)
     background var(--saf0o-control-texture-dark), var(--saf0o-bg-elevated)
     box-shadow var(--saf0o-control-shadow)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-weight 620
 
     &:not(:disabled):hover
@@ -98,18 +98,18 @@
       outline-offset 2px
 
 .walletCallsStatusSection
-  padding 18px 0
+  padding var(--saf0o-space-4) 0
   border-top 1px solid var(--saf0o-ledger-rule)
 
   > h3
-    margin 0 0 13px
-    font-size 13px
+    margin 0 0 var(--saf0o-space-3)
+    font-size var(--saf0o-type-small)
     font-weight 650
 
 .walletCallsStatusContext
   display grid
   grid-template-columns repeat(4, minmax(0, 1fr))
-  gap 18px
+  gap var(--saf0o-space-4)
 
   div
     min-width 0
@@ -121,13 +121,13 @@
   span
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
   strong
-    margin-top 5px
+    margin-top var(--saf0o-space-1)
     overflow hidden
     color var(--saf0o-text-secondary)
-    font-size 13px
+    font-size var(--saf0o-type-small)
     font-weight 570
     text-overflow ellipsis
     white-space nowrap
@@ -137,29 +137,29 @@
 
 .walletCallsStatusAtomic
   display flex
-  margin-top 17px
+  margin-top var(--saf0o-space-4)
   color var(--saf0o-warning)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 1.45
   align-items center
-  gap 8px
+  gap var(--saf0o-space-2)
 
 .walletCallsStatusSectionHeading
   display flex
-  margin-bottom 7px
+  margin-bottom var(--saf0o-space-2)
   justify-content space-between
   align-items baseline
-  gap 16px
+  gap var(--saf0o-space-4)
 
   h3
     margin 0
-    font-size 13px
+    font-size var(--saf0o-type-small)
     font-weight 650
 
   span
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-utility)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
 .walletCallsStatusReceipts
   border-bottom 1px solid var(--saf0o-ledger-rule)
@@ -167,11 +167,11 @@
 .walletCallsStatusReceipt
   display grid
   min-height 88px
-  padding 15px 0
+  padding var(--saf0o-space-4) 0
   border-top 1px solid var(--saf0o-ledger-rule)
   box-sizing border-box
   grid-template-columns 42px minmax(0, 1fr) 76px
-  gap 13px
+  gap var(--saf0o-space-3)
   align-items start
 
   &:hover
@@ -181,7 +181,7 @@
   padding-top 2px
   color var(--saf0o-text-muted)
   font-family var(--saf0o-font-utility)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
 
 .walletCallsStatusReceiptBody
   min-width 0
@@ -202,15 +202,15 @@
 
     strong
       color var(--saf0o-text-primary)
-      font-size 14px
+      font-size var(--saf0o-type-body)
       font-weight 640
 
     span
-      margin-top 4px
+      margin-top var(--saf0o-space-1)
       overflow hidden
       color var(--saf0o-text-muted)
       font-family var(--saf0o-font-utility)
-      font-size 12px
+      font-size var(--saf0o-type-caption)
       text-overflow ellipsis
       white-space nowrap
 
@@ -223,9 +223,9 @@
 
   dl
     display grid
-    margin 12px 0 0
+    margin var(--saf0o-space-3) 0 0
     grid-template-columns 100px 120px minmax(0, 1fr)
-    gap 13px
+    gap var(--saf0o-space-3)
 
     div
       min-width 0
@@ -238,25 +238,25 @@
     dt
       color var(--saf0o-text-muted)
       font-family var(--saf0o-font-utility)
-      font-size 12px
+      font-size var(--saf0o-type-caption)
 
     dd
-      margin 4px 0 0
+      margin var(--saf0o-space-1) 0 0
       color var(--saf0o-text-secondary)
       font-family var(--saf0o-font-utility)
-      font-size 12px
+      font-size var(--saf0o-type-caption)
 
     small
       margin-top 3px
       color var(--saf0o-text-muted)
       font-family var(--saf0o-font-utility)
-      font-size 12px
+      font-size var(--saf0o-type-caption)
       line-height 1.4
 
 .walletCallsStatusReceiptGood,
 .walletCallsStatusReceiptBad
   padding-top 2px
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   font-weight 650
   text-align right
 
@@ -267,19 +267,19 @@
   color var(--saf0o-danger)
 
 .walletCallsStatusEmpty
-  padding 22px 0
+  padding var(--saf0o-space-6) 0
   border-top 1px solid var(--saf0o-ledger-rule)
   border-bottom 1px solid var(--saf0o-ledger-rule)
   color var(--saf0o-text-secondary)
-  font-size 13px
+  font-size var(--saf0o-type-small)
 
 .walletCallsStatusMetadata
   display flex
-  padding-top 13px
+  padding-top var(--saf0o-space-3)
   color var(--saf0o-text-muted)
   font-family var(--saf0o-font-utility)
-  font-size 12px
-  gap 16px
+  font-size var(--saf0o-type-caption)
+  gap var(--saf0o-space-4)
 
   span
     overflow hidden
@@ -288,8 +288,8 @@
 
 @container panel (max-width: 610px)
   .walletCallsStatusScroll
-    padding-right 22px
-    padding-left 22px
+    padding-right var(--saf0o-space-6)
+    padding-left var(--saf0o-space-6)
 
   .walletCallsStatusContext
     grid-template-columns repeat(2, minmax(0, 1fr))

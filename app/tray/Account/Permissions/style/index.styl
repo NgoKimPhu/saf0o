@@ -165,7 +165,7 @@ button.saf0oControl.revokeAccessButton
 .revokeAccessStatus
   min-height 18px
   margin var(--saf0o-space-2) var(--saf0o-space-2) 0
-  padding 4px var(--saf0o-space-2) 0
+  padding var(--saf0o-space-1) var(--saf0o-space-2) 0
   color var(--saf0o-text-secondary)
   font-family var(--saf0o-font-ui)
   font-size var(--saf0o-type-caption)
@@ -376,7 +376,7 @@ button.saf0oControl.dappGuardrailManage.saf0oControlCompact
       margin-left auto
       color var(--saf0o-text-tertiary)
       font-family var(--saf0o-font-mono)
-      font-size 14px
+      font-size var(--saf0o-type-body)
 
     &:focus-visible
       outline 2px solid var(--saf0o-focus)
@@ -627,9 +627,9 @@ button.saf0oControl.dappGuardrailManage.saf0oControlCompact
 .dappGuardrailEditor details > summary
   box-sizing border-box
   min-height 44px
-  padding 12px 0
+  padding var(--saf0o-space-3) 0
   cursor pointer
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 20px
 
 // Guardrails use the page measure, with flat fields and readable decision text.
@@ -641,18 +641,18 @@ button.saf0oControl.dappGuardrailManage.saf0oControlCompact
     border-radius 0
 
   .connectedAppsList .signerPermission
-    padding 12px 0
+    padding var(--saf0o-space-3) 0
 
   .connectedAppsList .signerPermissionOrigin,
   .dappGuardrailIdentity strong,
   .dappGuardrailAction,
   .connectedAppDetails summary
-    font-size 14px
+    font-size var(--saf0o-type-body)
     line-height 22px
 
   .dappGuardrailIdentity > span,
   .connectedAppKind
-    font-size 13px
+    font-size var(--saf0o-type-small)
     line-height 20px
 
 .dappGuardrailEditor
@@ -662,90 +662,90 @@ button.saf0oControl.dappGuardrailManage.saf0oControlCompact
   border-radius 0
   background transparent
   font-family var(--saf0o-font-ui)
-  font-size 14px
+  font-size var(--saf0o-type-body)
   line-height 22px
 
   .dappGuardrailEditorHeader
-    margin-bottom 16px
+    margin-bottom var(--saf0o-space-4)
 
     strong
-      font-size 18px
+      font-size var(--saf0o-type-sub)
 
     span
       font-family var(--saf0o-font-ui)
-      font-size 14px
+      font-size var(--saf0o-type-body)
       line-height 22px
 
   details > summary
-    font-size 14px
+    font-size var(--saf0o-type-body)
 
   .dappGuardrailDisclosure
     padding 0
-    margin 12px 0 24px
+    margin var(--saf0o-space-3) 0 var(--saf0o-space-6)
     border 0
     background transparent
-    font-size 14px
+    font-size var(--saf0o-type-body)
     line-height 22px
 
   .dappGuardrailField
-    gap 8px
-    margin-bottom 24px
+    gap var(--saf0o-space-2)
+    margin-bottom var(--saf0o-space-6)
 
     label
       display grid
-      gap 8px
+      gap var(--saf0o-space-2)
 
   .dappGuardrailField > span,
   .dappGuardrailToggleField legend,
   input, select, textarea,
   .dappGuardrailMessage,
   .dappGuardrailConfirm > span
-    font-size 14px
+    font-size var(--saf0o-type-body)
     line-height 22px
 
   textarea
     font-family var(--saf0o-font-mono)
-    font-size 13px
+    font-size var(--saf0o-type-small)
 
   .dappGuardrailToggleField
     padding 0
-    margin 0 0 24px
+    margin 0 0 var(--saf0o-space-6)
     border 0
     border-radius 0
 
     legend
       min-height 44px
       align-items center
-      font-size 14px
+      font-size var(--saf0o-type-body)
 
   .dappGuardrailFieldDetail
-    padding 4px 0 0
-    font-size 13px
+    padding var(--saf0o-space-1) 0 0
+    font-size var(--saf0o-type-small)
     line-height 20px
     color var(--saf0o-text-secondary)
 
   .dappGuardrailEvidence
-    gap 10px
+    gap var(--saf0o-space-2)
 
     > div
       grid-template-columns 124px minmax(0, 1fr)
-      gap 12px
+      gap var(--saf0o-space-3)
 
     dt
-      font-size 13px
+      font-size var(--saf0o-type-small)
       text-transform none
 
     dd
-      font-size 13px
+      font-size var(--saf0o-type-small)
       line-height 20px
 
   .dappGuardrailActions
-    padding-top 16px
+    padding-top var(--saf0o-space-4)
     border-top 1px solid var(--saf0o-border-subtle)
 
   .dappGuardrailConfirm
-    padding 16px
-    gap 16px
+    padding var(--saf0o-space-4)
+    gap var(--saf0o-space-4)
 
 .permissionsLedgerView button.saf0oControl.dappGuardrailManage
   min-height 64px
@@ -759,6 +759,6 @@ button.saf0oControl.dappGuardrailManage.saf0oControlCompact
     text-align center
 
 .guardrailConnectionIdentity h3
-  margin 16px 0 8px
-  font-size 14px
+  margin var(--saf0o-space-4) 0 var(--saf0o-space-2)
+  font-size var(--saf0o-type-body)
   line-height 22px

@@ -47,8 +47,8 @@ button,
     z-index 1000
     background var(--ghostZ)
     border 1px solid var(--saf0o-border-subtle)
-    border-radius 16px
-    padding-bottom 20px
+    border-radius var(--saf0o-radius-xl)
+    padding-bottom var(--saf0o-space-5)
     transition var(--standard)
 
     .dashMainScroll
@@ -58,7 +58,7 @@ button,
       bottom 0px
       left 0px
       z-index 2000
-      border-radius 16px
+      border-radius var(--saf0o-radius-xl)
       overflow-y scroll
       overflow-x hidden
 
@@ -68,38 +68,38 @@ button,
       right 0px
       bottom 0px
       left 0px
-      border-radius 16px
+      border-radius var(--saf0o-radius-xl)
       z-index 40000000
       box-shadow inset 0px 0px 6px var(--ghostY)
       pointer-events none
 
     .originTitle
-      margin 30px 8px 5px 0px
-      font-size 18px
+      margin var(--saf0o-space-8) var(--saf0o-space-2) var(--saf0o-space-1) 0px
+      font-size var(--saf0o-type-sub)
       display flex
       align-items center
       font-weight 400
 
       .originTitleIcon
-        margin 9px 16px
+        margin var(--saf0o-space-2) var(--saf0o-space-4)
 
       .originTitleText
         margin-top -2px
 
     .clearOriginsButton
       background var(--ghostA)
-      margin 74px 6px 7px 6px
+      margin 74px var(--saf0o-space-2) var(--saf0o-space-2) var(--saf0o-space-2)
       height 38px
       border-radius 20px
       font-weight 500
       box-sizing border-box
-      padding 18px 16px 16px 17px
+      padding var(--saf0o-space-4) var(--saf0o-space-4) var(--saf0o-space-4) var(--saf0o-space-4)
       text-align center
-      margin-bottom 5px
+      margin-bottom var(--saf0o-space-1)
       display flex
       justify-content center
       align-items center
-      font-size 13px
+      font-size var(--saf0o-type-small)
       text-transform uppercase
       cursor pointer
       border-bottom 2px solid var(--ghostZ)
@@ -126,7 +126,7 @@ button,
     height 60px
     left 12px
     right 12px
-    border-radius 16px
+    border-radius var(--saf0o-radius-xl)
     padding 3px 3px 1px 3px
     box-sizing border-box
 
@@ -134,12 +134,12 @@ button,
       height 56px
       position relative
       background var(--ghostA)
-      border-radius 12px
+      border-radius var(--saf0o-radius-lg)
       display flex
       justify-content center
       align-items center
       cursor pointer
-      font-size 16px
+      font-size var(--saf0o-type-lead)
       box-shadow 0px 2px 4px var(--ghostY)
       border-bottom 2px solid var(--ghostZ)
       box-sizing border-box
@@ -185,7 +185,7 @@ button,
     right 0px
     bottom 0px
     left 0px
-    border-radius 16px
+    border-radius var(--saf0o-radius-xl)
     z-index 40000000
     box-shadow inset 0px 0px 6px var(--ghostX)
     pointer-events none
@@ -204,9 +204,9 @@ button,
 
     .addAccountsHeader
       .addAccountsHeaderTitle
-        margin-top 20px
-        margin-bottom 20px
-        font-size 14px
+        margin-top var(--saf0o-space-5)
+        margin-bottom var(--saf0o-space-5)
+        font-size var(--saf0o-type-body)
         font-weight 400
         height 50px
         display flex
@@ -217,7 +217,7 @@ button,
         position absolute
         top 18px
         right 10px
-        border-radius 8px
+        border-radius var(--saf0o-radius-md)
         cursor pointer
         background var(--ghostB)
         width 90px
@@ -248,14 +248,14 @@ button,
       font-family inherit
       font-weight 400
       border-radius 27px
-      margin 6px 6px 8px 6px
+      margin var(--saf0o-space-2) var(--saf0o-space-2) var(--saf0o-space-2) var(--saf0o-space-2)
       display flex
       justify-content center
       align-items center
       cursor pointer
       background var(--ghostA)
       box-shadow 0px 4px 8px var(--ghostY)
-      font-size 16px
+      font-size var(--saf0o-type-lead)
       border 0
       border-bottom 2px solid var(--ghostZ)
       transform translateY(0px)
@@ -264,7 +264,7 @@ button,
         pointer-event none
 
       .accountTypeSelectIcon
-        margin-right 16px
+        margin-right var(--saf0o-space-4)
 
     .accountTypeSelect:hover
       transform translateY(-1px)
@@ -287,7 +287,7 @@ button,
       align-items center
       position relative
       height 32px
-      margin 0px 16px 12px 16px
+      margin 0px var(--saf0o-space-4) var(--saf0o-space-3) var(--saf0o-space-4)
       box-sizing border-box
       font-size var(--saf0o-type-small)
       text-transform uppercase
@@ -301,8 +301,8 @@ button,
       overflow hidden
       background var(--ghostA)
       box-sizing border-box
-      margin 0px 0px 40px 0px
-      border-radius 12px
+      margin 0px 0px var(--saf0o-space-10) 0px
+      border-radius var(--saf0o-radius-lg)
       display flex
       justify-content center
       align-items center
@@ -313,7 +313,7 @@ button,
       box-shadow 0px 4px 8px var(--ghostY)
 
     .signersMid
-      padding 0px 6px 64px 6px
+      padding 0px var(--saf0o-space-2) 64px var(--saf0o-space-2)
 
     .signersList
       display flex
@@ -407,12 +407,12 @@ button,
 
     .dashControlShell
       min-height 100%
-      padding 16px 18px 24px
+      padding var(--saf0o-space-4) var(--saf0o-space-4) var(--saf0o-space-6)
       box-sizing border-box
 
       > .dashControlNavigation
         width 100%
-        margin 0 0 16px
+        margin 0 0 var(--saf0o-space-4)
         box-sizing border-box
 
     .dashControlContent
@@ -451,13 +451,13 @@ button,
       min-height 46px
       padding 0 var(--saf0o-space-4)
       border 1px solid var(--saf0o-accent-primary-hover)
-      border-radius 7px
+      border-radius var(--saf0o-radius-md)
       color var(--saf0o-bg-elevated)
       background-color var(--saf0o-accent-primary)
       background-image var(--saf0o-control-texture-light)
       box-shadow var(--saf0o-control-primary-shadow)
       font-family var(--saf0o-font-ui)
-      font-size 13px
+      font-size var(--saf0o-type-small)
       font-weight 500
       letter-spacing 0
       pointer-events auto
@@ -627,13 +627,13 @@ button,
   .accountTypeGroup
     overflow hidden
     border 1px solid rgba(140, 160, 182, .16)
-    border-radius 10px
+    border-radius var(--saf0o-radius-lg)
     background var(--saf0o-surface-card)
     box-shadow 0 10px 26px rgba(0, 0, 0, .38), inset 1px 1px 0 rgba(140, 160, 182, .04)
 
   .accountTypeGroupTitle
     margin 0
-    padding 12px 16px 10px
+    padding var(--saf0o-space-3) var(--saf0o-space-4) var(--saf0o-space-2)
     border-bottom 1px solid var(--saf0o-ledger-rule)
     color var(--saf0o-text-tertiary)
     font-family var(--saf0o-font-mono)
@@ -650,8 +650,8 @@ button,
     width 100%
     height 56px
     margin 0
-    gap 10px
-    padding 0 16px
+    gap var(--saf0o-space-2)
+    padding 0 var(--saf0o-space-4)
     justify-content flex-start
     border 0
     border-bottom 1px solid var(--saf0o-ledger-rule)
@@ -660,7 +660,7 @@ button,
     background transparent
     box-shadow none
     font-family var(--saf0o-font-ui)
-    font-size 15px
+    font-size var(--saf0o-type-body)
     font-weight 500
     text-align left
     transform none
@@ -813,7 +813,7 @@ button,
   p
     margin var(--saf0o-space-1) 0 0
     color var(--saf0o-text-secondary)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     line-height 1.45
 
 .delegationRevocationSelectors
@@ -828,11 +828,11 @@ button,
     flex-direction column
     gap var(--saf0o-space-1)
     color var(--saf0o-text-secondary)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
     small
       color var(--saf0o-text-muted)
-      font-size 12px
+      font-size var(--saf0o-type-caption)
       line-height 1.4
 
   select
@@ -848,7 +848,7 @@ button,
   margin 0
   padding var(--saf0o-space-3) 0 0
   color var(--saf0o-text-secondary)
-  font-size 12px
+  font-size var(--saf0o-type-caption)
   line-height 1.5
 
 .delegationRevocationEligible
@@ -872,12 +872,12 @@ button,
   span,
   small
     color var(--saf0o-text-secondary)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
 
   strong
     overflow hidden
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-weight 500
     text-overflow ellipsis
     white-space nowrap
@@ -934,7 +934,7 @@ button,
   button
     font inherit
     color var(--saf0o-text-primary)
-    padding 12px 18px
+    padding var(--saf0o-space-3) var(--saf0o-space-4)
     border 1px solid var(--saf0o-border-default)
     border-radius var(--saf0o-radius-md)
     background var(--saf0o-bg-elevated)
