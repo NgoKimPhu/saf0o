@@ -176,6 +176,11 @@ const generatedWalletVerificationAction = (kind) => ({
 
 const COMPACT_TARGET_EXCEPTIONS = Object.freeze([
   {
+    selector: '.requestFeatureButton, .dashModule, .dashCompanionBrowserActions button',
+    minimum: 36,
+    reason: 'Control-center navigation, tools and utility rows use the packed 36px row.'
+  },
+  {
     selector: '.saf0oControlChrome',
     minimum: 24,
     reason: 'Native window chrome is a compact desktop-only control.'
@@ -199,11 +204,6 @@ const COMPACT_TARGET_EXCEPTIONS = Object.freeze([
     selector: '.accountSwitcherTrigger',
     minimum: 40,
     reason: 'The persistent desktop account switcher uses the established compact shell-row target.'
-  },
-  {
-    selector: '.requestFeatureButton',
-    minimum: 38,
-    reason: 'Control-center support links are a compact tertiary utility row.'
   }
 ])
 
@@ -452,7 +452,7 @@ const sendComposerScenarios = () =>
             kind: 'computed-style',
             selector: '.sendModeSwitch',
             property: 'columnGap',
-            value: '4px'
+            value: '2px'
           },
           {
             kind: 'computed-style',
@@ -465,7 +465,7 @@ const sendComposerScenarios = () =>
             kind: 'computed-style',
             selector: '.sendInputWrap',
             property: 'paddingLeft',
-            value: '12px'
+            value: '6px'
           },
           {
             kind: 'computed-style',
@@ -532,7 +532,7 @@ const sendComposerScenarios = () =>
             kind: 'computed-style',
             selector: '.sendModeSwitch',
             property: 'columnGap',
-            value: '4px'
+            value: '2px'
           },
           {
             kind: 'computed-style',
@@ -545,7 +545,7 @@ const sendComposerScenarios = () =>
             kind: 'computed-style',
             selector: '.sendInputWrap',
             property: 'paddingLeft',
-            value: '12px'
+            value: '6px'
           },
           {
             kind: 'computed-style',
@@ -569,13 +569,13 @@ const sendComposerScenarios = () =>
             kind: 'computed-style',
             selector: '.sendSweepHeader',
             property: 'paddingTop',
-            value: '8px'
+            value: '4px'
           },
           {
             kind: 'computed-style',
             selector: '.sendSweepHeader',
             property: 'paddingBottom',
-            value: '8px'
+            value: '4px'
           },
           {
             kind: 'computed-style',
@@ -1377,7 +1377,7 @@ const reviewScenarios = () => [
       'Its guardrails will be removed, and it must request access again.'
     ],
     layoutExpectations: [
-      { kind: 'edge-clearance', selector: '.revokeAccessPanel', container: '#panel', inset: 16 }
+      { kind: 'edge-clearance', selector: '.revokeAccessPanel', container: '#panel', inset: 8 }
     ]
   })),
   {
@@ -2400,7 +2400,7 @@ const reviewScenarios = () => [
     logicalHeight,
     ready: '.connectedApps .sliceOrigin',
     layoutExpectations: [
-      { kind: 'full-width', selector: '.sliceOriginList', container: '.connectedApps', inset: 20 },
+      { kind: 'full-width', selector: '.sliceOriginList', container: '.connectedApps', inset: 7 },
       {
         kind: 'computed-style',
         selector: '.connectedAppsPerch .originTitle',
@@ -2440,7 +2440,7 @@ const reviewScenarios = () => [
     logicalHeight: SHORT_SHELL_HEIGHT,
     ready: '.connectedApps .sliceOrigin',
     layoutExpectations: [
-      { kind: 'full-width', selector: '.sliceOriginList', container: '.connectedApps', inset: 12 }
+      { kind: 'full-width', selector: '.sliceOriginList', container: '.connectedApps', inset: 7 }
     ],
     requiredControls: ['Open workshop.example app details, active · no account access'],
     requiredText: ['Connected apps', 'workshop.example', 'Active · No account access']
@@ -2462,7 +2462,7 @@ const reviewScenarios = () => [
         kind: 'full-width',
         selector: '.originSwapChainList',
         container: '.connectedAppsDetails',
-        inset: 20
+        inset: 6
       }
     ],
     requiredControls: ['Optimism Mainnet', 'Manage access'],
@@ -2657,13 +2657,13 @@ const reviewScenarios = () => [
         kind: 'computed-style',
         selector: '.accountPortfolioCard, .accountMainPerch .moduleHeader',
         property: 'paddingTop',
-        value: '16px'
+        value: '8px'
       },
       {
         kind: 'computed-style',
         selector: '.requestPreviewContent',
         property: 'paddingTop',
-        value: '12px'
+        value: '6px'
       },
       { kind: 'size', selector: '.balancesPreview .signerBalanceIcon', width: 32, height: 32 },
       {
@@ -3026,8 +3026,8 @@ const reviewScenarios = () => [
     layoutExpectations: [
       ...WALLET_VIEW_CHROME,
       { kind: 'hidden', selector: '.accountSelectorOpen' },
-      { kind: 'full-width', selector: '.activityFilters', container: '.accountViewMain', inset: 12 },
-      { kind: 'full-width', selector: '.activityList', container: '.accountViewMain', inset: 12 }
+      { kind: 'full-width', selector: '.activityFilters', container: '.accountViewMain', inset: 6 },
+      { kind: 'full-width', selector: '.activityList', container: '.accountViewMain', inset: 6 }
     ]
   },
   {
@@ -3280,13 +3280,13 @@ const reviewScenarios = () => [
         kind: 'computed-style',
         selector: '.accountMainPerch .balancesPreview .signerBalanceTotal',
         property: 'paddingTop',
-        value: '8px'
+        value: '4px'
       },
       {
         kind: 'computed-style',
         selector: '.activityContinuation',
         property: 'marginBottom',
-        value: '8px'
+        value: '4px'
       },
       { kind: 'size', selector: '.connectedAppsList .revokeAccessButton', height: 44 },
       {
@@ -3483,7 +3483,7 @@ const reviewScenarios = () => [
         kind: 'full-width',
         selector: '.accountSettingsEditor',
         container: '.accountSettingsExpandedView',
-        inset: 20
+        inset: 10
       }
     ]
   },
@@ -3747,7 +3747,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
         layoutExpectations: [
           ...WALLET_VIEW_CHROME,
           { kind: 'hidden', selector: '.accountSelectorOpen' },
-          { kind: 'edge-clearance', selector: '.balanceFilter', container: '.accountViewMain', inset: 12 },
+          { kind: 'edge-clearance', selector: '.balanceFilter', container: '.accountViewMain', inset: 6 },
           // Chain names are muted; only the dot carries the chain colour (red must not read as danger).
           {
             kind: 'computed-style',
@@ -3759,7 +3759,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             kind: 'edge-clearance',
             selector: '.balancesExpandedLedger',
             container: '.accountViewMain',
-            inset: 12
+            inset: 6
           },
           { kind: 'hidden', selector: '.balancesExpandedScroll > ._txMain' },
           { kind: 'size', selector: '.balancesAssetMark .assetMarkChain', width: 12, height: 12 },
@@ -4732,14 +4732,12 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
       // The shelf spans the 425px panel (shellWidth), not the 620px window; the lifecycle shelf is
       // taller while a hash row and confirmations are shown.
       const shelfHeight = ['transaction-confirming', 'transaction-confirmed'].includes(scenario.state)
-        ? 150
+        ? 126
         : scenario.state === 'wallet-calls-adjustment'
           ? 132
           : shelfSelector === '.requestApproveRecoveryStatus'
             ? 130
-            : scenario.state === 'transaction-submitted'
-              ? 120
-              : 114
+            : 114
       layout.push({ kind: 'size', selector: shelfSelector, width: PANEL_WIDTH, height: shelfHeight })
       layout.push({ kind: 'viewport-bottom', selector: shelfSelector })
     }

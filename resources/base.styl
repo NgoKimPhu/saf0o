@@ -168,19 +168,21 @@ body
   --saf0o-type-caption 12px
   --saf0o-type-label var(--saf0o-type-caption)
 
-  --saf0o-space-1 4px
-  --saf0o-space-2 8px
-  --saf0o-space-3 12px
-  --saf0o-space-4 16px
-  --saf0o-space-5 20px
-  --saf0o-space-6 24px
-  --saf0o-space-8 32px
-  --saf0o-space-10 40px
-  --saf0o-space-12 48px
-  --saf0o-page-gutter var(--saf0o-space-5)
+  // Packed scale: half the old 4px-step scale, so gutters, card gaps and card padding run 4-12px.
+  // The names stay (space-N), every padding/margin/gap uses them, so this is the one place to tune.
+  --saf0o-space-1 2px
+  --saf0o-space-2 4px
+  --saf0o-space-3 6px
+  --saf0o-space-4 8px
+  --saf0o-space-5 10px
+  --saf0o-space-6 12px
+  --saf0o-space-8 16px
+  --saf0o-space-10 20px
+  --saf0o-space-12 24px
+  --saf0o-page-gutter var(--saf0o-space-4)
   // Review ledgers share one label/value anchor and one compact row rhythm.
   --saf0o-review-label-column 112px
-  --saf0o-review-row-height 48px
+  --saf0o-review-row-height 44px
 
   --saf0o-radius-sm 5px
   --saf0o-radius-md 8px
@@ -557,7 +559,7 @@ button
 
 @media (max-width: 540px)
   body
-    --saf0o-page-gutter var(--saf0o-space-3)
+    --saf0o-page-gutter var(--saf0o-space-2)
 
 @keyframes cardShow
   0%
