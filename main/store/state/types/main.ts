@@ -68,6 +68,12 @@ const PreferencesSchema = {
     .boolean()
     .default(true)
     .describe('Look up recipient and contract addresses in MetaSleuth labels'),
+  etherscanReputation: z
+    .boolean()
+    .default(true)
+    .describe(
+      'Look up your address and recipient and contract addresses on Etherscan for reputation signals'
+    ),
   transactionNotifications: z
     .boolean()
     .default(true)

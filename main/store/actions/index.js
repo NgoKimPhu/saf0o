@@ -553,6 +553,9 @@ module.exports = {
   setMetasleuthLabels: (u, v) => {
     if (typeof v === 'boolean') u('main.metasleuthLabels', () => v)
   },
+  setEtherscanReputation: (u, v) => {
+    if (typeof v === 'boolean') u('main.etherscanReputation', () => v)
+  },
   setTransactionNotifications: (u, value) => {
     u('main.transactionNotifications', () => Boolean(value))
   },

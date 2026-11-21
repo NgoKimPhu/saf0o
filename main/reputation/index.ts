@@ -319,10 +319,11 @@ export function createReputationService(deps: Deps = {}) {
     states: Map<string, 'pending' | 'done'>
   ) {
     const account = req.account.toLowerCase()
+    const etherscanOn = read('main.etherscanReputation') !== false
     let key: string | undefined
     let keyFailure: Unavailable = 'no-key'
     try {
-      key = await getKey()
+      if (etherscanOn) key = await getKey()
     } catch {
       keyFailure = 'error'
     }
@@ -332,14 +333,16 @@ export function createReputationService(deps: Deps = {}) {
     await Promise.all(
       addresses.map(async (address) => {
         const parts = await Promise.all([
-          key
-            ? etherscanSignals(chainId, account, address, key)
-            : Promise.resolve<Partial<TargetSignals>>({
-                creation: none,
-                source: none,
-                usage: none,
-                yours: none
-              }),
+          !etherscanOn
+            ? Promise.resolve<Partial<TargetSignals>>({})
+            : key
+              ? etherscanSignals(chainId, account, address, key)
+              : Promise.resolve<Partial<TargetSignals>>({
+                  creation: none,
+                  source: none,
+                  usage: none,
+                  yours: none
+                }),
           ms ? ms(address) : Promise.resolve<Partial<TargetSignals>>({})
         ]).catch((): Partial<TargetSignals>[] => [{ creation: unavailable('error') }, {}])
         states.set(address, 'done')

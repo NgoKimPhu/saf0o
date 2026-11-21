@@ -696,6 +696,7 @@ const actionSchemas = {
   setAccountFilter: z.tuple([z.string().max(256)]),
   setAutohide: z.tuple([z.boolean()]),
   setMetasleuthLabels: z.tuple([z.boolean()]),
+  setEtherscanReputation: z.tuple([z.boolean()]),
   setTransactionNotifications: z.tuple([z.boolean()]),
   setRememberRecentRecipients: z.tuple([z.literal(true)]),
   setDash: z.tuple([z.object({ showing: z.boolean() }).strict()]),

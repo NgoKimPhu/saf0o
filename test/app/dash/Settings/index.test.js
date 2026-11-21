@@ -333,6 +333,11 @@ it.each([
   // on by default when the store has no saved value, so one click turns it off
   ['MetaSleuth labels', 'MetaSleuth labels', ['tray:action', 'setMetasleuthLabels', false]],
   [
+    'Etherscan reputation lookups',
+    'Etherscan reputation lookups',
+    ['tray:action', 'setEtherscanReputation', false]
+  ],
+  [
     'Wallet activity notifications',
     'Wallet activity notifications',
     ['tray:action', 'setTransactionNotifications', false]

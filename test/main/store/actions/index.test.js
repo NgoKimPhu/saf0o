@@ -78,6 +78,20 @@ describe('#clearActivity', () => {
   })
 })
 
+describe('#setEtherscanReputation', () => {
+  const run = (value) => {
+    const updates = []
+    storeActions.setEtherscanReputation((path, reducer) => updates.push([path, reducer()]), value)
+    return updates
+  }
+
+  it('stores only booleans, so a malformed call cannot flip the privacy toggle', () => {
+    expect(run(false)).toEqual([['main.etherscanReputation', false]])
+    expect(run(true)).toEqual([['main.etherscanReputation', true]])
+    for (const bad of ['false', 0, null, undefined, {}]) expect(run(bad)).toEqual([])
+  })
+})
+
 describe('#setMetasleuthLabels', () => {
   const run = (value) => {
     const updates = []

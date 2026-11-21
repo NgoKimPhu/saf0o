@@ -133,6 +133,7 @@ it('turns MetaSleuth labels on by default for profiles with no saved value', asy
   mockLatestVersion = 2
   const { default: fresh } = await import('../../../../main/store/state')
   expect(fresh().main.metasleuthLabels).toBe(true)
+  expect(fresh().main.etherscanReputation).toBe(true)
 })
 
 it('restores a supported requested interface scale', async () => {

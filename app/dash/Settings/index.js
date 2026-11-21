@@ -614,6 +614,21 @@ export class Settings extends Component {
                 </span>
               </div>
             </div>
+            <div className='signerPermission localSetting' style={{ zIndex: 212 }}>
+              <div className='signerPermissionControls'>
+                <div className='signerPermissionSetting'>Etherscan reputation lookups</div>
+                <Toggle
+                  checked={this.store('main.etherscanReputation') !== false}
+                  label='Etherscan reputation lookups'
+                  onChange={(on) => link.send('tray:action', 'setEtherscanReputation', on)}
+                />
+              </div>
+              <div className='signerPermissionDetails'>
+                <span>
+                  Sends your address and target addresses to Etherscan to show contract age, source and usage.
+                </span>
+              </div>
+            </div>
             <div
               id='saf0o-settings-wallet-notifications'
               className='signerPermission localSetting localSettingExplained'

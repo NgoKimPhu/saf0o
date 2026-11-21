@@ -162,6 +162,17 @@ describe('syncReputation service', () => {
     })
   })
 
+  it('makes no Etherscan request and reads no key when the toggle is off, MetaSleuth still runs', async () => {
+    const h = harness({ state: { 'main.etherscanReputation': false } })
+    const req = tx(addr(0xb1))
+    await h.service.sync(req, hooks())
+    expect(hostCalls(h.calls, 'api.etherscan.io')).toHaveLength(0)
+    expect(h.calls.length).toBeGreaterThan(0)
+    const { signals } = req.reputation.targets[0]
+    expect(signals).toMatchObject({ risk: { ok: true } })
+    for (const k of ['creation', 'source', 'usage', 'yours']) expect(signals[k]).toBeUndefined()
+  })
+
   it('reports error, not no-key, when the key cannot be read', async () => {
     const h = harness({ keyThrows: true, state: { 'main.metasleuthLabels': false } })
     const req = tx(addr(0xb1))

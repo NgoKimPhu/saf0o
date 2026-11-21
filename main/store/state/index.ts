@@ -192,6 +192,7 @@ const mainState = {
   showLocalNameWithENS: main('showLocalNameWithENS', false),
   autohide: main('autohide', true),
   metasleuthLabels: main('metasleuthLabels', true),
+  etherscanReputation: main('etherscanReputation', true),
   transactionNotifications: main('transactionNotifications', true),
   rememberRecentRecipients: main('rememberRecentRecipients', false),
   accountCloseLock: main('accountCloseLock', false),
