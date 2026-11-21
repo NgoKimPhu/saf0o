@@ -568,6 +568,7 @@ export class Settings extends Component {
                     Fades the window background so your desktop shows through. Text stays solid.
                   </div>
                 </div>
+                <output>{`${windowTransparency}%`}</output>
                 <div className='windowTransparencyControl'>
                   <input
                     type='range'
@@ -581,7 +582,6 @@ export class Settings extends Component {
                       link.send('tray:action', 'setWindowTransparency', Number(e.target.value))
                     }
                   />
-                  <output>{`${windowTransparency}%`}</output>
                 </div>
               </div>
             </div>
