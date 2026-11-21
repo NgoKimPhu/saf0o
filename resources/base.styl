@@ -398,8 +398,11 @@ button
   --saf0o-window-atmosphere-focus-blend normal
   --saf0o-window-atmosphere-focus-shadow none
   --saf0o-surface-card rgba(10, 12, 18, .38)
-  --saf0o-surface-hover #191e26
-  --saf0o-surface-active #1f2630
+  // One translucent tint for every hover/pressed row, so hovers never turn solid near-black.
+  --saf0o-hover rgba(255, 255, 255, .05)
+  --saf0o-pressed rgba(255, 255, 255, .08)
+  --saf0o-surface-hover var(--saf0o-hover)
+  --saf0o-surface-active var(--saf0o-pressed)
   --saf0o-surface-inset #06080b
   --saf0o-surface-overlay #0b0e13
   --saf0o-border-subtle #262d38
@@ -482,8 +485,8 @@ button
   --ghostB05 rgba(27, 33, 29, 0.5)
   --ghostB var(--saf0o-bg-elevated)
   --ghostC0 rgba(34, 41, 35, 0)
-  --ghostC var(--saf0o-surface-hover)
-  --ghostD var(--saf0o-surface-active)
+  --ghostC #191e26
+  --ghostD #1f2630
 
   --hardware var(--saf0o-info)
   --hardware2 #a8c2cc
