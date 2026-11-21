@@ -15,7 +15,8 @@ export type ShellLayout = {
 }
 
 export const shellMainTargetWidth = 425
-export const shellWorkspaceTargetWidth = 620
+// The dash (workspace) is as wide as the wallet panel; one constant, tested against app/tray/index.styl.
+export const shellWorkspaceTargetWidth = shellMainTargetWidth
 export const shellTargetHeight = 900
 const workspaceMinimumWidth = 400
 const verticalMargin = 12
@@ -28,7 +29,7 @@ export function getShellLayout(
 ): ShellLayout {
   // 425 * 1.25 and 425 * 1.5 are fractional; window bounds must be whole pixels.
   const mainTargetWidth = Math.round(shellMainTargetWidth * scale)
-  const workspaceTargetWidth = shellWorkspaceTargetWidth * scale
+  const workspaceTargetWidth = Math.round(shellWorkspaceTargetWidth * scale)
   const mainWidth = Math.min(mainTargetWidth, workArea.width)
   const height = Math.max(1, Math.min(shellTargetHeight * scale, workArea.height - verticalMargin * 2))
   const adjacentWidth = Math.max(0, workArea.width - mainWidth)

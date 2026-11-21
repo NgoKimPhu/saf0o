@@ -4,6 +4,7 @@ import {
   getShellLayout,
   shapesShellWindow,
   shellMainTargetWidth,
+  shellWorkspaceTargetWidth,
   shouldJoinWorkspace
 } from '../../../main/windows/shellGeometry'
 
@@ -28,9 +29,9 @@ describe('getShellLayout', () => {
       workspaceOverlaysMain: false
     })
     expect(expanded).toEqual({
-      window: { x: 614, y: 12, width: 1306, height: 1056 },
-      main: { x: 775, y: 0, width: 531, height: 1056 },
-      workspace: { x: 0, y: 0, width: 775, height: 1056 },
+      window: { x: 858, y: 12, width: 1062, height: 1056 },
+      main: { x: 531, y: 0, width: 531, height: 1056 },
+      workspace: { x: 0, y: 0, width: 531, height: 1056 },
       workspaceOverlaysMain: false
     })
     expect(expanded.window.x + expanded.main.x).toBe(compact.window.x)
@@ -67,9 +68,9 @@ describe('getShellLayout', () => {
     const expanded = getShellLayout({ x: 0, y: 48, width: 1920, height: 1032 }, 'right', true)
 
     expect(expanded).toEqual({
-      window: { x: 875, y: 114, width: 1045, height: 900 },
-      main: { x: 620, y: 0, width: 425, height: 900 },
-      workspace: { x: 0, y: 0, width: 620, height: 900 },
+      window: { x: 1070, y: 114, width: 850, height: 900 },
+      main: { x: 425, y: 0, width: 425, height: 900 },
+      workspace: { x: 0, y: 0, width: 425, height: 900 },
       workspaceOverlaysMain: false
     })
     expect(expanded.window.x + expanded.main.x).toBe(compact.window.x)
@@ -80,9 +81,9 @@ describe('getShellLayout', () => {
     const expanded = getShellLayout({ x: -1920, y: 0, width: 1920, height: 1080 }, 'left', true)
 
     expect(expanded).toEqual({
-      window: { x: -1920, y: 90, width: 1045, height: 900 },
+      window: { x: -1920, y: 90, width: 850, height: 900 },
       main: { x: 0, y: 0, width: 425, height: 900 },
-      workspace: { x: 425, y: 0, width: 620, height: 900 },
+      workspace: { x: 425, y: 0, width: 425, height: 900 },
       workspaceOverlaysMain: false
     })
     expect(expanded.window.x + expanded.main.x).toBe(compact.window.x)
@@ -90,27 +91,27 @@ describe('getShellLayout', () => {
 
   it('uses all available adjacent width before falling back to an overlay', () => {
     expect(getShellLayout({ x: 0, y: 0, width: 1000, height: 900 }, 'right', true)).toEqual({
-      window: { x: 0, y: 12, width: 1000, height: 876 },
-      main: { x: 575, y: 0, width: 425, height: 876 },
-      workspace: { x: 0, y: 0, width: 575, height: 876 },
+      window: { x: 150, y: 12, width: 850, height: 876 },
+      main: { x: 425, y: 0, width: 425, height: 876 },
+      workspace: { x: 0, y: 0, width: 425, height: 876 },
       workspaceOverlaysMain: false
     })
   })
 
   it('fits an adjacent workspace inside a common 1366x768 work area', () => {
     expect(getShellLayout({ x: 0, y: 0, width: 1366, height: 768 }, 'right', true)).toEqual({
-      window: { x: 321, y: 12, width: 1045, height: 744 },
-      main: { x: 620, y: 0, width: 425, height: 744 },
-      workspace: { x: 0, y: 0, width: 620, height: 744 },
+      window: { x: 516, y: 12, width: 850, height: 744 },
+      main: { x: 425, y: 0, width: 425, height: 744 },
+      workspace: { x: 0, y: 0, width: 425, height: 744 },
       workspaceOverlaysMain: false
     })
   })
 
   it('uses the available adjacent workspace on a common 1024x768 work area', () => {
     expect(getShellLayout({ x: 0, y: 0, width: 1024, height: 768 }, 'right', true)).toEqual({
-      window: { x: 0, y: 12, width: 1024, height: 744 },
-      main: { x: 599, y: 0, width: 425, height: 744 },
-      workspace: { x: 0, y: 0, width: 599, height: 744 },
+      window: { x: 174, y: 12, width: 850, height: 744 },
+      main: { x: 425, y: 0, width: 425, height: 744 },
+      workspace: { x: 0, y: 0, width: 425, height: 744 },
       workspaceOverlaysMain: false
     })
   })
@@ -151,6 +152,19 @@ describe('getShellLayout', () => {
     const styl = readFileSync(join(__dirname, '../../../app/tray/index.styl'), 'utf8')
     expect(styl).toContain(`shellWidth = ${shellMainTargetWidth}px`)
     expect(styl).not.toMatch(/width 620px/)
+  })
+
+  it('makes the dash pane exactly as wide as the wallet panel, from one constant', () => {
+    expect(shellWorkspaceTargetWidth).toBe(shellMainTargetWidth)
+    for (const scale of [1, 1.25, 1.5] as const) {
+      const { main, workspace } = getShellLayout(
+        { x: 0, y: 0, width: 3000, height: 1200 },
+        'right',
+        true,
+        scale
+      )
+      expect(workspace.width).toBe(main.width)
+    }
   })
 })
 

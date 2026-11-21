@@ -4625,7 +4625,12 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
         }
       })
     : []
-  return [...selected, ...disclosures].map((scenario) => {
+  return [...selected, ...disclosures].map((entry) => {
+    // The dash pane is as wide as the wallet panel (shellWorkspaceTargetWidth = shellMainTargetWidth).
+    const scenario =
+      entry.renderer === 'dash' && entry.logicalWidth === 620
+        ? { ...entry, logicalWidth: PANEL_WIDTH }
+        : entry
     const layout = [...(scenario.layoutExpectations || [])]
     if (scenario.state?.startsWith('account-add-') || scenario.state?.startsWith('account-create-')) {
       layout.push({
