@@ -17,8 +17,8 @@ npm run brand:verify
   `exports/mark/` and the social images still show the previous bird.
 - `exports/mark/` — transparent full-color, monochrome-light, and
   monochrome-dark marks as SVG and PNG from 32 to 1024px.
-- `exports/tray/` — optically corrected Windows color, macOS black template,
-  and Linux light tray assets at native 24px and 48px source sizes.
+- `exports/tray/` — the colour logo resampled from the master at 24px and 48px (@2x),
+  used on every platform (no macOS template image).
 - `exports/web/` — 16px and 32px favicons, a 180px Apple touch icon, and 192px
   and 512px web-app icons.
 - `saf0o-brand-sheet.png` — visual proof of the family at full and native sizes.

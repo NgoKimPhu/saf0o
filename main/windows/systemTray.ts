@@ -5,12 +5,8 @@ import { app, screen, BrowserWindow, Menu, KeyboardEvent, Rectangle, Tray as Ele
 import { capitalize } from '../../resources/utils'
 
 const isMacOS = process.platform === 'darwin'
-const systemTrayIcon =
-  process.platform === 'darwin'
-    ? 'IconTemplate.png'
-    : process.platform === 'linux'
-      ? 'LinuxTray.png'
-      : 'Icon.png'
+// Colour logo on every platform: it is not a template image, so no 'Template' suffix on macOS.
+const systemTrayIcon = 'Icon.png'
 let isUbuntu23OrGreater = false
 
 if (process.platform === 'linux') {
