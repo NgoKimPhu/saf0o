@@ -1,6 +1,6 @@
 import React from 'react'
 import Restore from 'react-restore'
-import saf0oMark from 'url:../../../asset/brand/exports/mark/saf0o-mark-color-32.png'
+import saf0oMark from 'url:../../../asset/brand/exports/app/saf0o-app-icon-64.png'
 import AccountTypeMark from '../../../resources/Components/AccountTypeMark'
 import Icon from '../../../resources/Components/Icon'
 import link from '../../../resources/link'

@@ -24,3 +24,11 @@ it('uses the logo emerald as the primary accent', () => {
 it('leaves no brown accent in the styles', () => {
   expect(grep('#a68a61|#b79a70|#947953|166, 138, 97|183, 154, 112|56, 43, 26')).toEqual([])
 })
+
+it('shows the app logo, not the old brown bird mark, in the wallet and dashboard headers', () => {
+  expect(grep('saf0o-mark-color')).toEqual([])
+  expect(grep('exports/app/saf0o-app-icon-64.png')).toEqual([
+    'app/dash/Command/index.js',
+    'app/tray/AccountSelector/index.js'
+  ])
+})

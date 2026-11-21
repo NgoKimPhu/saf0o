@@ -4,7 +4,7 @@ import Restore from 'react-restore'
 import AccountController from './AccountController'
 
 import emptyAccounts from 'url:../../../asset/ui/empty-accounts-v2.png'
-import saf0oMark from 'url:../../../asset/brand/exports/mark/saf0o-mark-color-32.png'
+import saf0oMark from 'url:../../../asset/brand/exports/app/saf0o-app-icon-64.png'
 import Icon from '../../../resources/Components/Icon'
 import DialogSurface from '../../../resources/Components/DialogSurface'
 import { accountDisplayIdentity, accountSort as byCreation } from '../../../resources/domain/account'
