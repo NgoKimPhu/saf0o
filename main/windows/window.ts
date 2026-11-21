@@ -243,7 +243,7 @@ export function createRendererView(
   denyDeviceSelection(rendererView.webContents)
 
   const backgroundColor = store('main.colorwayPrimary', store('main.colorway'), 'background')
-  rendererView.setBackgroundColor(backgroundColor || '#0b0f0d')
+  rendererView.setBackgroundColor(backgroundColor || '#0a0d12')
   rendererView.webContents.on('will-navigate', (event) => event.preventDefault())
   rendererView.webContents.on('will-attach-webview', (event) => event.preventDefault())
   rendererView.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))

@@ -59,7 +59,7 @@ const openedAtLogin =
   electronApp?.getLoginItemSettings() && electronApp.getLoginItemSettings().wasOpenedAtLogin
 const windows: Windows = {}
 const devHeight = 800
-const shellBackgroundColor = '#090c0a'
+const shellBackgroundColor = '#090b10'
 const isWindows = process.platform === 'win32'
 const isMacOS = process.platform === 'darwin'
 
