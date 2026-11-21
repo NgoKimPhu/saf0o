@@ -231,3 +231,52 @@ it('does not warn when device-specific review behavior is not known', () => {
     })
   ).toBeUndefined()
 })
+
+it('flags a dangerous Permit2 spender and token next to their addresses', () => {
+  const spender = '0x3333333333333333333333333333333333333333'
+  const token = '0x1111111111111111111111111111111111111111'
+  const flagged = (address, label) => ({
+    address,
+    state: 'done',
+    level: 'danger',
+    signals: {
+      lookalike: false,
+      label: { ok: true, value: { name: label } },
+      risk: { ok: true, value: { score: 5 } }
+    }
+  })
+  render(
+    <SimpleTypedData
+      req={request({
+        reputation: {
+          chainId: 1,
+          assessedAt: 1_800_000_000_000,
+          targets: [flagged(spender, 'Drainer'), flagged(token, 'Scam token')]
+        },
+        context: {
+          requestChainId: 1,
+          domainChainId: '1',
+          risks: ['permit2-allowance'],
+          permit2: {
+            kind: 'allowance',
+            primaryType: 'PermitSingle',
+            verifyingContract: '0x000000000022d473030f116ddee9f6b43ac78ba3',
+            canonicalContract: true,
+            spender,
+            deadline: '1900000000',
+            permissions: [{ token, amount: '100', expiration: '2000000000' }],
+            batch: false,
+            witness: false,
+            grantsAuthority: true,
+            maximumAmount: false
+          }
+        }
+      })}
+    />
+  )
+
+  // WHY: the spender and the token are the two addresses a Permit2 signature hands authority over
+  const texts = screen.getAllByRole('alert').map((a) => a.textContent)
+  expect(texts).toContain('Flagged: Drainer · Critical risk')
+  expect(texts).toContain('Flagged: Scam token · Critical risk')
+})

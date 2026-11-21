@@ -6,6 +6,7 @@ import {
   MAX_TOKEN_DECIMALS,
   parseTokenBaseUnitAmount
 } from '../../../../../resources/domain/token/amount'
+import AddressReputation from '../../../../../resources/Components/AddressReputation'
 import Icon from '../../../../../resources/Components/Icon'
 import link from '../../../../../resources/link'
 import EditTokenSpend, { formatApprovalExpiry } from '../../../../../resources/Components/EditTokenSpend'
@@ -79,6 +80,7 @@ const PermitOverview = ({ req, chainData, deviceWarning, originName, addressBook
                 : undefined)
           }
         />
+        <AddressReputation address={spender.address} reputation={req.reputation} />
         <div className='signingPermissionDates'>
           <div>
             <span className='signingAuthorityLabel'>Sign by</span>
@@ -91,7 +93,10 @@ const PermitOverview = ({ req, chainData, deviceWarning, originName, addressBook
         </div>
       </section>
       {tokenContract ? (
-        <ReviewAddress label='Token contract' name='permit token contract' address={tokenContract} />
+        <>
+          <ReviewAddress label='Token contract' name='permit token contract' address={tokenContract} />
+          <AddressReputation address={tokenContract} reputation={req.reputation} />
+        </>
       ) : (
         <p>Token contract unavailable</p>
       )}

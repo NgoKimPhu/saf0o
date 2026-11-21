@@ -3,6 +3,7 @@ import { formatTokenBaseUnitAmount } from '../../domain/token/amount'
 import { getPermit2Authority } from '../../../main/signatures/permit2'
 import { getEip3009Authorization } from '../../../main/signatures/eip3009'
 import Icon from '../Icon'
+import AddressReputation from '../AddressReputation'
 import { ReviewAddress, ReviewContext } from '../SigningReview'
 
 const tokenForSigning = (tokens, context, address) => {
@@ -293,7 +294,7 @@ export const TypedDataDeviceWarning = ({ warning }) =>
     </div>
   ) : null
 
-const Permit2Authority = ({ authority, context, tokenMetadata, spenderIdentity }) => {
+const Permit2Authority = ({ authority, context, tokenMetadata, spenderIdentity, reputation }) => {
   if (!authority) return null
 
   const authorityType = authority.kind === 'allowance' ? 'Standing allowance' : 'One-time transfer'
@@ -326,6 +327,7 @@ const Permit2Authority = ({ authority, context, tokenMetadata, spenderIdentity }
                 />
               </div>
               <CopyableAuthorityValue label={`permission ${index + 1} token address`} value={token} />
+              <AddressReputation address={token} reputation={reputation} />
               {expiration !== undefined && commonExpiration === undefined ? (
                 <div className='signingPermissionExpiration'>
                   <span className='signingAuthorityLabel'>Spending expires</span>
@@ -357,6 +359,7 @@ const Permit2Authority = ({ authority, context, tokenMetadata, spenderIdentity }
           address={authority.spender}
           source={spenderIdentity}
         />
+        <AddressReputation address={authority.spender} reputation={reputation} />
         <div>
           <span className='signingAuthorityLabel'>Permit2 contract</span>
           <CopyableAuthorityValue label='Permit2 contract address' value={authority.verifyingContract} />
@@ -422,7 +425,7 @@ const Eip3009Authorization = ({ authorization, context, tokenMetadata }) => {
   )
 }
 
-const SigningContext = ({ context, tokenMetadata, spenderIdentity }) => {
+const SigningContext = ({ context, tokenMetadata, spenderIdentity, reputation }) => {
   return (
     <>
       <Permit2Authority
@@ -430,6 +433,7 @@ const SigningContext = ({ context, tokenMetadata, spenderIdentity }) => {
         context={context}
         tokenMetadata={tokenMetadata}
         spenderIdentity={spenderIdentity}
+        reputation={reputation}
       />
       <Eip3009Authorization
         authorization={context?.eip3009}
@@ -509,6 +513,7 @@ export const SimpleTypedData = ({
           <SigningContext
             account={req.account}
             {...{ chainName, context, origin, originName, spenderIdentity }}
+            reputation={req.reputation}
             tokenMetadata={metadata}
           />
           {acknowledgements}

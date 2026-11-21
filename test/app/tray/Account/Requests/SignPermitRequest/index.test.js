@@ -267,3 +267,35 @@ it('keeps the complete token and spender identities visible while copying', asyn
     req.permit.spender.address
   )
 })
+
+const reputationFor = (address, level, label) => ({
+  address,
+  state: 'done',
+  level,
+  signals: {
+    lookalike: false,
+    label: { ok: true, value: { name: label } },
+    risk: { ok: true, value: { score: level === 'danger' ? 5 : 1 } }
+  }
+})
+
+it('flags a dangerous permit spender in the permit overview', () => {
+  const spender = req.permit.spender.address
+  render(
+    <SignPermitRequest
+      chainData={chainData}
+      originName='example.test'
+      req={{
+        ...req,
+        reputation: {
+          chainId: 1,
+          assessedAt: 1_800_000_000_000,
+          targets: [reputationFor(spender, 'danger', 'Drainer')]
+        }
+      }}
+    />
+  )
+
+  // WHY: the spender gets the allowance, so a flagged spender must be as loud as on a transaction
+  expect(screen.getAllByRole('alert').map((a) => a.textContent)).toContain('Flagged: Drainer · Critical risk')
+})
