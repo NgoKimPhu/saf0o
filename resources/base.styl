@@ -208,17 +208,17 @@ body
   // Shadows
   --cardDrop 0px 1px 1px rgba(0, 34, 32, 0.1)
 
-  // Transistions
-  --standardFaster .08s cubic-bezier(.82,0,.12,1) all
-  --standardFast .16s cubic-bezier(.82,0,.12,1) all
-  --standard .32s cubic-bezier(.82,0,.12,1) all
-  --standardVibe .48s cubic-bezier(.82,0,.12,1) all
-  --standardSlow .64s cubic-bezier(.82,0,.12,1) all
-  --standardSlower .96s cubic-bezier(.82,0,.12,1) all
-  --standardSlowest 1.6s cubic-bezier(.82,0,.12,1) all
-  --slowRocket 2.4s cubic-bezier(.52,0,.12,1) all
+  // Transitions: every legacy duration maps onto the Saf0o scale (120-240ms) and one easing curve.
+  --standardFaster var(--saf0o-motion-fast) var(--saf0o-ease) all
+  --standardFast var(--saf0o-motion-fast) var(--saf0o-ease) all
+  --standard var(--saf0o-motion-standard) var(--saf0o-ease) all
+  --standardVibe var(--saf0o-motion-standard) var(--saf0o-ease) all
+  --standardSlow var(--saf0o-motion-slow) var(--saf0o-ease) all
+  --standardSlower var(--saf0o-motion-slow) var(--saf0o-ease) all
+  --standardSlowest var(--saf0o-motion-slow) var(--saf0o-ease) all
+  --slowRocket var(--saf0o-motion-slow) var(--saf0o-ease) all
 
-  --cubic cubic-bezier(.82,0,.12,1)
+  --cubic var(--saf0o-ease)
 
   font-feature-settings 'ss04', 'zero'
   font-variation-settings var(--saf0o-font-body-settings)
