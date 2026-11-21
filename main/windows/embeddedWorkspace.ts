@@ -180,15 +180,10 @@ export class EmbeddedWorkspace {
     this.animationTimer = undefined
   }
 
-  private setThrottling(on: boolean) {
-    if (!this.view.webContents.isDestroyed()) this.view.webContents.setBackgroundThrottling(on)
-  }
-
   show() {
     if (this.destroyed) return
     this.targetVisible = true
     if (!this.canShow()) return
-    this.setThrottling(false) // current first frame
     this.view.setVisible(true)
     this.view.webContents.focus()
     this.visible = true
@@ -197,7 +192,6 @@ export class EmbeddedWorkspace {
   hide() {
     if (this.destroyed) return
     this.view.setVisible(false)
-    this.setThrottling(true)
     this.visible = false
     this.targetVisible = false
     this.recoverWhenHidden(true)

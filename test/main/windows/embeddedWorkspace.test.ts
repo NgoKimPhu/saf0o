@@ -11,7 +11,6 @@ const createSetup = (recoveryOptions: { beforeReload?: () => void; unresponsiveD
     openDevTools: jest.fn(),
     reload: jest.fn(),
     send: jest.fn(),
-    setBackgroundThrottling: jest.fn(),
     setZoomFactor: jest.fn()
   })
   const view = {
@@ -466,18 +465,4 @@ it('removes recovery listeners and ignores lifecycle events after destruction', 
   expect(webContents.listenerCount('unresponsive')).toBe(0)
   expect(webContents.listenerCount('responsive')).toBe(0)
   jest.useRealTimers()
-})
-
-it('lifts background throttling before showing and restores it on hide, so the first frame is current', () => {
-  const { view, webContents, workspace } = createSetup()
-  view.setVisible.mockClear()
-  webContents.setBackgroundThrottling.mockClear()
-  workspace.show()
-  expect(webContents.setBackgroundThrottling).toHaveBeenLastCalledWith(false)
-  expect(webContents.setBackgroundThrottling.mock.invocationCallOrder[0]).toBeLessThan(
-    view.setVisible.mock.invocationCallOrder[0]
-  )
-
-  workspace.hide()
-  expect(webContents.setBackgroundThrottling).toHaveBeenLastCalledWith(true)
 })

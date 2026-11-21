@@ -8,8 +8,7 @@ import {
   openBlockExplorer,
   openContractVerificationResult,
   openExternal,
-  restoreWindow,
-  throttleWhileHidden
+  restoreWindow
 } from '../../../main/windows/window'
 import store from '../../../main/store'
 
@@ -24,11 +23,6 @@ const createMockSession = () => ({
 
 const mockWindow = {
   on: jest.fn(),
-  once: jest.fn(),
-  show: jest.fn(),
-  showInactive: jest.fn(),
-  isDestroyed: jest.fn(() => false),
-  isVisible: jest.fn(() => false),
   isFullScreen: jest.fn(() => false),
   setFullScreen: jest.fn(),
   unmaximize: jest.fn(),
@@ -36,8 +30,7 @@ const mockWindow = {
     on: jest.fn(),
     once: jest.fn(),
     session: createMockSession(),
-    setWindowOpenHandler: jest.fn(),
-    setBackgroundThrottling: jest.fn()
+    setWindowOpenHandler: jest.fn()
   }
 }
 
@@ -77,70 +70,6 @@ afterAll(() => {
   } else {
     process.env.BUNDLE_LOCATION = originalBundleLocation
   }
-})
-
-describe('background throttling', () => {
-  const setup = () => {
-    const { EventEmitter } = require('events')
-    const win = Object.assign(new EventEmitter(), {
-      show: jest.fn(),
-      showInactive: jest.fn(),
-      isDestroyed: jest.fn(() => false),
-      isVisible: jest.fn(() => false),
-      webContents: { setBackgroundThrottling: jest.fn() }
-    })
-    const { show, showInactive } = win
-    throttleWhileHidden(win)
-    return { win, show, showInactive, set: win.webContents.setBackgroundThrottling }
-  }
-
-  it('starts unthrottled so the first paint is unaffected', () => {
-    const { set } = setup()
-    expect(set).not.toHaveBeenCalled()
-  })
-
-  it('throttles after the first paint of a window that stays hidden', () => {
-    const { win, set } = setup()
-    win.emit('ready-to-show')
-    expect(set).toHaveBeenLastCalledWith(true)
-  })
-
-  it('does not throttle a window that is already visible at first paint', () => {
-    const { win, set } = setup()
-    win.isVisible.mockReturnValue(true)
-    win.emit('ready-to-show')
-    expect(set).not.toHaveBeenCalled()
-  })
-
-  it('lifts the throttle before show and showInactive so the first visible frame is current', () => {
-    const { win, show, showInactive, set } = setup()
-    win.emit('hide')
-    set.mockClear()
-
-    win.show()
-    expect(set).toHaveBeenLastCalledWith(false)
-    expect(set.mock.invocationCallOrder[0]).toBeLessThan(show.mock.invocationCallOrder[0])
-
-    win.emit('hide')
-    expect(set).toHaveBeenLastCalledWith(true)
-
-    win.showInactive()
-    expect(set).toHaveBeenLastCalledWith(false)
-    expect(set.mock.invocationCallOrder.at(-1)).toBeLessThan(showInactive.mock.invocationCallOrder[0])
-  })
-
-  it('ignores a destroyed window', () => {
-    const { win, set } = setup()
-    win.isDestroyed.mockReturnValue(true)
-    win.emit('hide')
-    expect(set).not.toHaveBeenCalled()
-  })
-
-  it('createWindow installs it for every window', () => {
-    createWindow('dash')
-    expect(mockWindow.once).toHaveBeenCalledWith('ready-to-show', expect.any(Function))
-    expect(mockWindow.on).toHaveBeenCalledWith('hide', expect.any(Function))
-  })
 })
 
 describe('createWindow', () => {
