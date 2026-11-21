@@ -15,6 +15,7 @@ import AddressIdentity from '../../../../../../resources/Components/AddressIdent
 import AddressSafetyStatus, {
   addressSafetyTarget
 } from '../../../../../../resources/Components/AddressSafetyStatus'
+import AddressReputation from '../../../../../../resources/Components/AddressReputation'
 import { resolveLocalAddressIdentity } from '../../../../../../resources/domain/addressBook/identity'
 import { getAddress } from '../../../../../../resources/utils'
 
@@ -78,6 +79,7 @@ class TxRecipient extends React.Component {
                   <Icon name='copy' size={16} />
                 </span>
                 <AddressSafetyStatus address={address} assessment={req.addressSafety} />
+                <AddressReputation address={address} reputation={req.reputation} />
               </div>
               <span
                 aria-hidden='true'
