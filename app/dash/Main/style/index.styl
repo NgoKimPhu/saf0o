@@ -312,58 +312,54 @@ button.requestFeatureButton:focus-visible
 .dashModules
   display flex
   flex-direction column
-  gap 8px
-  margin-bottom 12px
+  gap var(--saf0o-space-2)
+  margin-bottom var(--saf0o-space-3)
 
+// Rows, cards and button strips on the Control page share one radius, one border, one 44px row.
 button.dashModule.saf0oControl
   position relative
   display grid
-  grid-template-columns 30px minmax(0, 1fr) auto
-  gap 12px
+  grid-template-columns 28px minmax(0, 1fr) auto
+  gap var(--saf0o-space-3)
   width 100%
-  height 50px
-  min-height 50px
+  height 44px
+  min-height 44px
   margin 0
-  padding 0 15px
+  padding 0 var(--saf0o-space-3)
   align-items center
-  border 1px solid rgba(140, 160, 182, .16)
-  border-radius 10px
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-md)
   color var(--saf0o-text-secondary)
-  background rgba(13, 17, 24, .55)
-  box-shadow 0 6px 14px rgba(0, 0, 0, .3)
+  background var(--saf0o-surface-card)
+  background-image none
+  box-shadow none
   font-family var(--saf0o-font-ui)
   text-align left
   transform none
 
   &:hover:not(:disabled)
     z-index auto
-    border-color rgba(140, 160, 182, .22)
-    background rgba(20, 25, 32, .6)
-    box-shadow 0 6px 14px rgba(0, 0, 0, .3)
+    border-color var(--saf0o-border-default)
+    color var(--saf0o-text-primary)
+    background var(--saf0o-surface-hover)
+    box-shadow none
     transform none
 
   &:active:not(:disabled)
-    background rgba(10, 13, 20, .72)
-    transform translateY(1px)
-
-  &:focus-visible
-    outline 2px solid var(--saf0o-focus)
-    outline-offset 2px
-    box-shadow 0 6px 14px rgba(0, 0, 0, .3)
+    background var(--saf0o-surface-active)
+    transform none
 
   .dashModuleIcon
     position static
     display flex
-    width 30px
-    height 30px
+    width 28px
+    height 28px
     margin 0
     align-items center
     justify-content center
-    border 1px solid rgba(140, 160, 182, .22)
-    border-radius 8px
-    color var(--saf0o-text-secondary)
-    background var(--saf0o-bg-elevated)
-    box-sizing border-box
+    border-radius var(--saf0o-radius-sm)
+    color var(--saf0o-text-tertiary)
+    transition color var(--saf0o-motion-fast) var(--saf0o-ease)
 
   .dashModuleCopy
     position static
@@ -373,7 +369,7 @@ button.dashModule.saf0oControl
   .dashModuleTitle
     display block
     color inherit
-    font-size 14px
+    font-size var(--saf0o-type-body)
     font-weight 500
     line-height 18px
 
@@ -388,7 +384,7 @@ button.dashModule.saf0oControl
   .dashModuleMeta
     color var(--saf0o-text-muted)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-weight 400
 
   .dashModuleArrow
@@ -396,52 +392,40 @@ button.dashModule.saf0oControl
     color var(--saf0o-text-muted)
 
 button.dashModule.saf0oControl.saf0oControlGhost
-  border-color rgba(140, 160, 182, .16)
-  background-color rgba(13, 17, 24, .55)
-  background-image none
-  box-shadow 0 6px 14px rgba(0, 0, 0, .3)
+  border-color var(--saf0o-border-subtle)
+  background-color var(--saf0o-surface-card)
 
   &:hover:not(:disabled)
-    border-color rgba(140, 160, 182, .22)
-    background-color rgba(20, 25, 32, .6)
-    background-image none
-    box-shadow 0 6px 14px rgba(0, 0, 0, .3)
+    border-color var(--saf0o-border-default)
+    background-color var(--saf0o-surface-hover)
 
+// Current page: the logo emerald, as a border and icon tint on the same card surface.
 button.dashModuleCurrent.saf0oControl
-  border-color rgba(0, 168, 128, .13)
-  background linear-gradient(180deg, rgba(0, 168, 128, .10), rgba(13, 17, 24, .55))
-  box-shadow inset 0 0 0 1px rgba(0, 168, 128, .34), 0 6px 14px rgba(0, 0, 0, .3)
+  border-color var(--saf0o-accent-primary)
+  color var(--saf0o-text-primary)
+  background var(--saf0o-accent-primary-soft)
 
-  .dashModuleTitle
-    color var(--saf0o-text-primary)
+  &:hover:not(:disabled)
+    border-color var(--saf0o-accent-primary)
+    background var(--saf0o-accent-primary-soft)
 
   .dashModuleIcon
-    border-color rgba(0, 168, 128, .13)
     color var(--saf0o-accent-primary)
 
 .dashHomeCard
   position relative
-  margin-bottom 12px
-  padding 16px
-  border 1px solid rgba(140, 160, 182, .16)
-  border-radius 10px
-  background linear-gradient(172deg, rgba(255, 255, 255, .022), rgba(255, 255, 255, 0) 46%), var(--saf0o-surface-card)
-  box-shadow 0 10px 26px rgba(0, 0, 0, .5)
+  margin-bottom var(--saf0o-space-3)
+  padding var(--saf0o-space-4)
+  border 1px solid var(--saf0o-border-subtle)
+  border-radius var(--saf0o-radius-md)
+  background var(--saf0o-surface-card)
   box-sizing border-box
 
-  &::before
-    position absolute
-    inset 0
-    border-radius inherit
-    box-shadow inset 1px 1px 0 rgba(140, 160, 182, .05), inset 0 1px 0 rgba(255, 255, 255, .05)
-    content ''
-    pointer-events none
-
   h2
-    margin 0 0 12px
-    color var(--saf0o-text-tertiary)
+    margin 0 0 var(--saf0o-space-2)
+    color var(--saf0o-text-muted)
     font-family var(--saf0o-font-mono)
-    font-size 12px
+    font-size var(--saf0o-type-caption)
     font-weight 600
     letter-spacing 1.4px
     line-height 16px
@@ -450,64 +434,63 @@ button.dashModuleCurrent.saf0oControl
 .dashCompanionBrowserActions
   display grid
   grid-template-columns repeat(2, minmax(0, 1fr))
-  gap 9px
-  margin-top 12px
+  gap var(--saf0o-space-2)
 
   button.saf0oControl.saf0oControlGhost
     width 100%
-    height 40px
-    min-height 40px
-    border 1px solid rgba(140, 160, 182, .22)
-    border-radius 10px
+    height 44px
+    min-height 44px
+    border 1px solid var(--saf0o-border-default)
+    border-radius var(--saf0o-radius-md)
     color var(--saf0o-text-secondary)
-    background linear-gradient(178deg, rgba(255, 255, 255, .03), rgba(15, 19, 26, .6))
-    box-shadow inset 0 -1px 0 rgba(0, 0, 0, .4)
-    font-size 12.5px
+    background var(--saf0o-surface-inset)
+    box-shadow none
+    font-size var(--saf0o-type-small)
 
     &:hover:not(:disabled)
-      border-color rgba(140, 160, 182, .3)
-      background-color transparent
-      background linear-gradient(178deg, rgba(255, 255, 255, .05), rgba(20, 25, 32, .6))
-      box-shadow inset 0 -1px 0 rgba(0, 0, 0, .4)
+      border-color var(--saf0o-border-strong)
+      color var(--saf0o-text-primary)
+      background var(--saf0o-surface-hover)
 
     span
-      font-size 12.5px
+      font-size var(--saf0o-type-small)
 
 .dashSupportActions
   display grid
   grid-template-columns repeat(3, minmax(0, 1fr))
-  gap 8px
+  gap var(--saf0o-space-2)
   margin-bottom 0
 
   button.requestFeatureButton.saf0oControl
     justify-content center
     width 100%
-    height 48px
-    min-height 48px
-    padding 0 10px
-    gap 7px
-    border 1px solid rgba(140, 160, 182, .16)
-    border-radius 9px
+    height 44px
+    min-height 44px
+    padding 0 var(--saf0o-space-2)
+    gap var(--saf0o-space-2)
+    border 1px solid var(--saf0o-border-subtle)
+    border-radius var(--saf0o-radius-md)
     color var(--saf0o-text-secondary)
-    background linear-gradient(178deg, rgba(255, 255, 255, .025), rgba(13, 17, 24, .62))
-    box-shadow 0 5px 12px rgba(0, 0, 0, .28), inset 0 -1px 0 rgba(0, 0, 0, .35)
-    font-size 12px
+    background var(--saf0o-surface-card)
+    background-image none
+    box-shadow none
+    font-size var(--saf0o-type-caption)
     font-weight 500
     white-space nowrap
 
     &:hover:not(:disabled)
       color var(--saf0o-text-primary)
-      border-color rgba(140, 160, 182, .24)
-      background linear-gradient(178deg, rgba(255, 255, 255, .045), rgba(20, 25, 32, .64))
-      box-shadow 0 6px 14px rgba(0, 0, 0, .32), inset 0 -1px 0 rgba(0, 0, 0, .35)
+      border-color var(--saf0o-border-default)
+      background var(--saf0o-surface-hover)
+      box-shadow none
 
   .requestFeatureDanger
-    color #df8377 !important
-    border-color rgba(223, 131, 119, .18) !important
-    background linear-gradient(178deg, rgba(223, 131, 119, .055), rgba(18, 12, 11, .5)) !important
+    color var(--saf0o-danger) !important
+    border-color var(--saf0o-danger-soft) !important
+    background var(--saf0o-danger-soft) !important
 
 .dashToolsCard
-  margin-bottom 12px
+  margin-bottom var(--saf0o-space-3)
 
 .dashToolList
   display flex
@@ -517,9 +500,9 @@ button.dashModuleCurrent.saf0oControl
     height 44px
     min-height 44px
     padding 0
-    grid-template-columns 30px minmax(0, 1fr) auto
+    grid-template-columns 28px minmax(0, 1fr) auto
     border 0
-    border-bottom 1px solid rgba(140, 160, 182, .10)
+    border-bottom 1px solid var(--saf0o-border-subtle)
     border-radius 0
     background transparent
     box-shadow none
@@ -528,7 +511,7 @@ button.dashModuleCurrent.saf0oControl
       border-bottom 0
 
     &:hover:not(:disabled)
-      border-color rgba(140, 160, 182, .10)
+      border-color var(--saf0o-border-subtle)
       background transparent
       box-shadow none
 
