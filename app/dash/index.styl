@@ -950,3 +950,36 @@ button,
     &:focus-visible
       outline 2px solid var(--saf0o-text-muted)
       outline-offset 3px
+
+// Slide out and park with the tray panel while the wallet is hidden, and slide back in with it.
+// Windows reshows the hidden view's last frame on reopen; parked, that frame is empty instead of
+// a stale sidebar flashing before the slide (same as .suspend in app/tray/index.styl).
+@keyframes dashSlideInRight
+  from
+    transform translateX(100%)
+
+@keyframes dashSlideInLeft
+  from
+    transform translateX(-100%)
+
+.workspace-edge-right.suspend .dash
+  transform translateX(100%)
+  transition transform 40ms ease-in
+
+.workspace-edge-left.suspend .dash
+  transform translateX(-100%)
+  transition transform 40ms ease-in
+
+.workspace-edge-right:not(.suspend) .dash
+  animation dashSlideInRight 180ms ease-out 40ms backwards
+
+.workspace-edge-left:not(.suspend) .dash
+  animation dashSlideInLeft 180ms ease-out 40ms backwards
+
+@media (prefers-reduced-motion: reduce)
+  .suspend .dash
+    transition none !important
+
+  .workspace-edge-right:not(.suspend) .dash,
+  .workspace-edge-left:not(.suspend) .dash
+    animation none !important

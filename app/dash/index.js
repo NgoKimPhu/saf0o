@@ -82,6 +82,8 @@ link.rpc('getState', (err, state) => {
     document.body.classList.toggle('workspace-edge-left', glideSide === 'left')
     document.body.classList.toggle('workspace-edge-right', glideSide === 'right')
   })
+  // Park with the tray panel while the wallet is hidden (see .suspend in index.styl).
+  store.observer(() => document.body.classList.toggle('suspend', !store('tray.open')))
   // RecoveryBoundary reports only the category, without the error payload.
   const root = createRoot(document.getElementById('dash'), { onCaughtError: () => {} })
   const Dash = Restore.connect(AppComponent, store)
