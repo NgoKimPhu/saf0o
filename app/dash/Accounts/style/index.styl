@@ -220,11 +220,43 @@
   margin var(--saf0o-space-5) 0
 
   > summary
+    display flex
+    align-items center
+    justify-content space-between
     min-height 44px
-    padding var(--saf0o-space-3) 0
+    padding 0 var(--saf0o-space-4)
     box-sizing border-box
+    border 1px solid var(--saf0o-border-subtle)
+    border-radius var(--saf0o-radius-md)
+    color var(--saf0o-text-muted)
+    background var(--saf0o-surface-card)
     cursor pointer
-    font-size var(--saf0o-type-body)
+    list-style none
+    font-family var(--saf0o-font-mono)
+    font-size var(--saf0o-type-caption)
+    font-weight 600
+    letter-spacing 1.4px
+    text-transform uppercase
+    transition border-color var(--saf0o-motion-fast) var(--saf0o-ease), color var(--saf0o-motion-fast) var(--saf0o-ease)
+
+    &::-webkit-details-marker
+      display none
+
+    &::after
+      width 6px
+      height 6px
+      border-right 1.5px solid currentColor
+      border-bottom 1.5px solid currentColor
+      content ''
+      transform translateY(-2px) rotate(45deg)
+      transition transform var(--saf0o-motion-fast) var(--saf0o-ease)
+
+    &:hover
+      border-color var(--saf0o-border-default)
+      color var(--saf0o-text-secondary)
+
+  &[open] > summary::after
+    transform translateY(2px) rotate(-135deg)
 
 .accountDelegationEntry .delegationRevocation
   margin-top 0
