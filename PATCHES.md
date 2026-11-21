@@ -197,3 +197,15 @@ Rebase notes: Never merge the generated commit. Instead:
    saf0o-companion `test/fixtures/saf0o-companion-auth-v3.json`.
 
 Upstream-PR candidate: no.
+
+## 14. Rebrand restyle
+
+Commits: the `saf0o:` restyle series from the policy alignment through 2fed66ea (tokens, palette, motion, nav, review
+rhythm, tx footer, copy).
+
+Intent: One token set in `resources/base.styl` (type 12-24 px, radius 5/8/10/14, 4 px spacing, motion 120/180/240 ms on
+one curve), the logo palette everywhere, aligned review screens, shorter copy. New rules sit in `saf0o-*.styl` files where possible.
+
+Rebase notes: Touches about 63 upstream style files by hand, not by script. On conflict keep upstream structure and
+re-apply our token values. `test/resources/theme/{tokens,motion,logoPalette}.test.js` and the UI harness policy
+(`pnpm run qualify:ui`) catch drift.
