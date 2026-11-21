@@ -220,14 +220,17 @@ div
     transform translateX(-100%)
 
 // While hidden, park the panel at the slide's start so the frame Windows shows on reopen is empty,
-// not the panel at its final spot (a flicker before the slide).
+// not the panel at its final spot (a flicker before the slide). Parking slides out over
+// TRAY_SLIDE_OUT_MS (main/windows/displayTransition.ts); main hides the window after it.
 .workspace-edge-right.suspend #panel,
 .workspace-edge-right.suspend::before
   transform translateX(100%)
+  transition transform 40ms ease-in
 
 .workspace-edge-left.suspend #panel,
 .workspace-edge-left.suspend::before
   transform translateX(-100%)
+  transition transform 40ms ease-in
 
 .workspace-edge-right:not(.suspend) #panel,
 .workspace-edge-right:not(.suspend)::before
@@ -243,6 +246,10 @@ div
   .workspace-edge-left:not(.suspend) #panel,
   .workspace-edge-left:not(.suspend)::before
     animation none !important
+
+  .suspend #panel,
+  .suspend::before
+    transition none !important
 
 .backdrop,
 .overlay

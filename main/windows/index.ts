@@ -25,7 +25,8 @@ import {
   shouldAnimateWorkspaceClose,
   shouldAnimateWorkspaceOpen,
   shouldAutoHideOnBlur,
-  shouldSuppressRepeatedShow
+  shouldSuppressRepeatedShow,
+  TRAY_SLIDE_OUT_MS
 } from './displayTransition'
 import { GlideDetector, shouldAutoHideGlide } from './glide'
 import { GlideSentinel } from './glideSentinel'
@@ -235,6 +236,7 @@ function initTrayWindow() {
 export class Tray {
   private recentDisplayEvent = false
   private recentDisplayEventTimeout?: NodeJS.Timeout
+  private slideOutTimer: NodeJS.Timeout | undefined
   private gasObserver: Observer
   private ready = false
   private readyHandler: () => void
@@ -322,14 +324,27 @@ export class Tray {
     } else {
       glideDetector?.stop()
     }
-    windows.tray.hide()
-    events.emit('tray:hide')
+    // Let the renderer slide the panel out first (TRAY_SLIDE_OUT_MS).
+    clearTimeout(this.slideOutTimer)
+    this.slideOutTimer = setTimeout(() => {
+      this.slideOutTimer = undefined
+      windows.tray?.hide()
+      events.emit('tray:hide')
+    }, TRAY_SLIDE_OUT_MS)
   }
 
   public show() {
     const trayWindow = windows.tray
     if (!trayWindow || trayWindow.isDestroyed()) {
       return init()
+    }
+    if (this.slideOutTimer) {
+      // Summoned again mid slide-out: cancel the hide and slide back in.
+      clearTimeout(this.slideOutTimer)
+      this.slideOutTimer = undefined
+      glideDetector?.stop()
+      requireStoreAction('trayOpen')(true)
+      return
     }
     if (shouldSuppressRepeatedShow(this.recentDisplayEvent, trayWindow.isVisible())) {
       return
@@ -394,6 +409,7 @@ export class Tray {
 
   destroy() {
     clearTimeout(this.recentDisplayEventTimeout)
+    clearTimeout(this.slideOutTimer)
     this.gasObserver.remove()
     this.removeReadyHandler()
   }
