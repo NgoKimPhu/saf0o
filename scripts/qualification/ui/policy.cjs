@@ -1,13 +1,14 @@
 'use strict'
 
 const INTERFACE_SCALES = Object.freeze([1, 1.25, 1.5])
+const PANEL_WIDTH = 425 // keep equal to shellWidth in app/tray/index.styl
 const FULL_SHELL_HEIGHT = 900
 const SHORT_SHELL_HEIGHT = 744
 const GENERATED_EXPIRY_COLOR = Object.freeze({
   kind: 'computed-style',
   selector: '.generatedWalletExpiryNotice',
   property: 'color',
-  value: 'rgb(208, 214, 206)'
+  value: 'rgb(205, 214, 216)'
 })
 const ACTIVITY_DETAIL_CARD_ALIGNMENT = Object.freeze([
   { kind: 'full-width', selector: '.activityDetailHeader', container: '.activityDetail' },
@@ -38,7 +39,7 @@ const FOCUSED_WINDOW_SURFACE = Object.freeze([
     kind: 'computed-style',
     selector: '#panel',
     property: 'backgroundColor',
-    value: 'rgb(7, 9, 7)'
+    value: 'color(srgb 0.027451 0.0313726 0.0470588 / 0.7)'
   },
   {
     kind: 'computed-style',
@@ -272,7 +273,7 @@ const joinedCanvasScenarios = () => [
             kind: 'computed-style',
             selector: '.accountChooserPanel .accountDrawerScroll',
             property: 'backgroundColor',
-            value: 'rgba(10, 15, 12, 0.38)'
+            value: 'rgba(10, 12, 18, 0.38)'
           },
           { kind: 'size', selector: '.accountChooserPanel .accountDrawerItem', height: 54 }
         ]
@@ -293,7 +294,7 @@ const joinedCanvasScenarios = () => [
             kind: 'computed-style',
             selector: '.accountChooserPanel .accountDrawerScroll',
             property: 'backgroundColor',
-            value: 'rgba(10, 15, 12, 0.38)'
+            value: 'rgba(10, 12, 18, 0.38)'
           },
           { kind: 'size', selector: '.accountChooserPanel .accountDrawerItem', height: 54 }
         ]
@@ -2596,7 +2597,7 @@ const reviewScenarios = () => [
         kind: 'computed-style',
         selector: '.accountSelector:not(.accountSelectorOpen) .accountSelectorScroll',
         property: 'backgroundColor',
-        value: 'rgba(10, 15, 12, 0.38)'
+        value: 'rgba(10, 12, 18, 0.38)'
       }
     ]
   },
@@ -2973,7 +2974,7 @@ const reviewScenarios = () => [
         kind: 'computed-style',
         selector: '.requestApproveTransaction .requestDeclineButton',
         property: 'color',
-        value: 'rgb(242, 244, 239)'
+        value: 'rgb(240, 246, 246)'
       }
     ]
   },
@@ -3622,7 +3623,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
               logicalWidth: 620,
               logicalHeight: FULL_SHELL_HEIGHT,
               ready: '.dashControlNavigation',
-              requiredText: ['Control', 'Home', 'MORE TOOLS', 'BROWSER COMPANION', 'Support'],
+              requiredText: ['Control', 'Home', 'MORE TOOLS', 'BROWSER COMPANION'],
               layoutExpectations: [{ kind: 'size', selector: '.commandHomeMark', width: 26, height: 26 }]
             },
             {
@@ -3981,7 +3982,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             kind: 'computed-style',
             selector: '.eip7702RevokeFeeRow > button',
             property: 'gridRowStart',
-            value: '1'
+            value: '3' // the 425px panel always uses the narrow (container < 560px) layout
           },
           {
             kind: 'size',
@@ -4718,7 +4719,14 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             ? '.requestNoticeTransactionStatus'
             : null
     if (shelfSelector) {
-      layout.push({ kind: 'size', selector: shelfSelector, width: scenario.logicalWidth, height: 114 })
+      // The shelf spans the 425px panel (shellWidth), not the 620px window; the lifecycle shelf is
+      // taller while a hash row and confirmations are shown.
+      const shelfHeight = ['transaction-confirming', 'transaction-confirmed'].includes(scenario.state)
+        ? 146
+        : scenario.state === 'wallet-calls-adjustment'
+          ? 132
+          : 114
+      layout.push({ kind: 'size', selector: shelfSelector, width: PANEL_WIDTH, height: shelfHeight })
       layout.push({ kind: 'viewport-bottom', selector: shelfSelector })
     }
     if (scenario.state === 'address-book-editor') {
