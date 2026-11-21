@@ -169,19 +169,15 @@ describe('createWindow', () => {
     }
   })
 
-  it('asks Windows for acrylic behind the tray unless transparency is 0', () => {
+  // Acrylic fills the whole window rectangle before the panel slides in and shows past its
+  // rounded corners; transparency is CSS alpha only.
+  it('never asks Windows for a background material behind the tray', () => {
     const platform = Object.getOwnPropertyDescriptor(process, 'platform')
     Object.defineProperty(process, 'platform', { value: 'win32' })
     try {
       createWindow('tray')
-      expect(BrowserWindow.mock.calls[0][0].backgroundMaterial).toBe('acrylic')
-
-      BrowserWindow.mockClear()
-      store.mockImplementation((path) => (path === 'main.windowTransparency' ? 0 : undefined))
-      createWindow('tray')
-      expect(BrowserWindow.mock.calls[0][0].backgroundMaterial).toBe('none')
+      expect(BrowserWindow.mock.calls[0][0]).not.toHaveProperty('backgroundMaterial')
     } finally {
-      store.mockReset()
       Object.defineProperty(process, 'platform', platform)
     }
   })

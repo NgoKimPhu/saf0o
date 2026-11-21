@@ -11,10 +11,6 @@ import path from 'path'
 import log from 'electron-log'
 import EventEmitter from 'events'
 import { hexToInt } from '../../resources/utils'
-import {
-  normalizeWindowTransparency,
-  windowBackgroundMaterial
-} from '../../resources/domain/windowTransparency'
 
 import store from '../store'
 import { requireStoreAction } from '../store/action'
@@ -759,30 +755,6 @@ const init = () => {
 
   // data change events
   let observedInterfaceScale = requestedInterfaceScale()
-  // The settings slider writes on every step; only a none/acrylic flip needs a DWM call.
-  let observedMaterial = windowBackgroundMaterial(
-    process.platform,
-    normalizeWindowTransparency(store('main.windowTransparency'))
-  )
-  lifecycleObservers.push(
-    store.observer(() => {
-      const material = windowBackgroundMaterial(
-        process.platform,
-        normalizeWindowTransparency(store('main.windowTransparency'))
-      )
-      const trayWindow = windows.tray
-      if (
-        material !== observedMaterial &&
-        process.platform === 'win32' &&
-        trayWindow &&
-        !trayWindow.isDestroyed()
-      ) {
-        observedMaterial = material
-        trayWindow.setBackgroundMaterial(material)
-      }
-    }, 'windows:transparency')
-  )
-
   lifecycleObservers.push(
     store.observer(() => {
       const nextScale = requestedInterfaceScale()

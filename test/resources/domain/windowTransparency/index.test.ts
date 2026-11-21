@@ -3,7 +3,6 @@
 import {
   applyWindowTransparencyCss,
   normalizeWindowTransparency,
-  windowBackgroundMaterial,
   windowCanvasAlpha
 } from '../../../../resources/domain/windowTransparency'
 
@@ -24,11 +23,4 @@ it('fades only the canvas: css alpha is 1 - transparency', () => {
   const root = document.createElement('div')
   applyWindowTransparencyCss(root, 45)
   expect(root.style.getPropertyValue('--saf0o-window-alpha')).toBe('0.55')
-})
-
-it('uses acrylic only on Windows and only when transparency is on', () => {
-  expect(windowBackgroundMaterial('win32', 30)).toBe('acrylic')
-  expect(windowBackgroundMaterial('win32', 0)).toBe('none')
-  expect(windowBackgroundMaterial('linux', 30)).toBe('none')
-  expect(windowBackgroundMaterial('darwin', 30)).toBe('none')
 })

@@ -11,8 +11,5 @@ export function normalizeWindowTransparency(value: unknown): number {
 export const windowCanvasAlpha = (transparency: number) =>
   (100 - normalizeWindowTransparency(transparency)) / 100
 
-export const windowBackgroundMaterial = (platform: string, transparency: number) =>
-  platform === 'win32' && normalizeWindowTransparency(transparency) > 0 ? 'acrylic' : 'none'
-
 export const applyWindowTransparencyCss = (root: HTMLElement, transparency: number) =>
   root.style.setProperty('--saf0o-window-alpha', String(windowCanvasAlpha(transparency)))

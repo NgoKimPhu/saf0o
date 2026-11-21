@@ -13,10 +13,6 @@ import packageInfo from '../../package.json'
 import store from '../store'
 
 import type { ChainId } from '../store/state'
-import {
-  normalizeWindowTransparency,
-  windowBackgroundMaterial
-} from '../../resources/domain/windowTransparency'
 import { rendererRoleForWindow } from '../../resources/bridge/roles'
 import type { ContractVerificationDestination } from '../../resources/domain/contractVerification'
 import {
@@ -80,14 +76,6 @@ export function createWindow(
     acceptFirstMouse: true,
     transparent: process.platform === 'darwin' || isShellWindow,
     show: false,
-    ...(isShellWindow && process.platform === 'win32'
-      ? {
-          backgroundMaterial: windowBackgroundMaterial(
-            process.platform,
-            normalizeWindowTransparency(store('main.windowTransparency'))
-          )
-        }
-      : {}),
     backgroundColor: isShellWindow
       ? '#00000000'
       : store('main.colorwayPrimary', store('main.colorway'), 'background'),
