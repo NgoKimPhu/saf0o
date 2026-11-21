@@ -11,7 +11,7 @@ import globals from 'globals'
 export default [
   // Ignored dirs
   {
-    ignores: ['dist/**/*', 'compiled/**/*', 'bundle/**/*']
+    ignores: ['dist/**/*', 'compiled/**/*', 'bundle/**/*', '.wt/**/*']
   },
   // All files
   {

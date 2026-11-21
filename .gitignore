@@ -17,6 +17,7 @@ test/**/.userData
 *.code-workspace
 /PLAN.md
 /NOTES.md
+/.wt/
 /DESIGN.md
 /IMAGE_GEN.md
 /reproducibility-report.json
