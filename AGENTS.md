@@ -53,6 +53,9 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 | Windows build, unpacked, from any host                            | `pnpm run package:windows:dir:x64`                                                                                                                                   |
 | Main-process bundle (Parcel, `compiled/main` → `compiled-bundle`) | `pnpm run bundle:main`. Only Windows packaging uses it. Externals and path-loaded entries: `scripts/bundle-main.mjs`, guarded by `test/scripts/main-bundle.test.mjs` |
 
+- Source maps: `pnpm run bundle` and `bundle:main` write them to `sourcemaps/{bundle,main}/` (gitignored) and strip them and the
+  `sourceMappingURL` comments from the shipped files. Map a minified stack with
+  `node scripts/map-stack.mjs <main|bundle> < stack.txt`, using the maps of the same build.
 - App icons: replace `asset/brand/saf0o-app-icon-master.png`, then run `pnpm run brand:generate` (it needs Electron). In the sandbox the
   brand sheet and X header render blank, so `git restore` those two files.
 - Companion icons: `node scripts/generate-companion-icons.mjs <companion checkout>` after the master changes.

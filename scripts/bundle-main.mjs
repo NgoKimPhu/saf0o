@@ -6,6 +6,7 @@ import { cp, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { splitSourceMaps } from './split-sourcemaps.mjs'
 
 const require = createRequire(import.meta.url)
 
@@ -76,7 +77,7 @@ export async function parcelBuild(entries, distDir) {
     shouldDisableCache: true,
     shouldAutoInstall: false,
     mode: 'production',
-    defaultTargetOptions: { shouldOptimize: !process.env.MAIN_BUNDLE_NO_MINIFY, sourceMaps: false },
+    defaultTargetOptions: { shouldOptimize: !process.env.MAIN_BUNDLE_NO_MINIFY, sourceMaps: true },
     targets: {
       main: {
         context: 'electron-main',
@@ -101,6 +102,7 @@ export async function bundleMain() {
     if (rewritten !== code) await writeFile(file, rewritten)
   }
   await copyAssets()
+  await splitSourceMaps(out, 'main')
   await verifyBundle()
 }
 
