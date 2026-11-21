@@ -71,6 +71,8 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 - UI screenshots: `pnpm run qualify:ui`. It starts its own Xvfb, so under WSLg run it in a sandbox with a fresh `/tmp`.
   `SAF0O_UI_QUALIFICATION_SCENARIOS=<a,b>` limits the run; `SAF0O_UI_QUALIFICATION_EXPORT=<0700 dir>` keeps the PNGs.
 - Keep test time small: while iterating, run only the suites and scenarios you touched. Run the full set once, at the end.
+- Jest runs safely with `-w 8` (about 4x faster), except `test/main/signers/hot`: its scrypt tests have 100-500 ms
+  timeouts and fail under parallel load. Run that directory with `--runInBand`.
 - Tests that touch `document` under `test/resources` (outside `Components/` and `Hooks/`) need a
   `/** @jest-environment jsdom */` docblock, because that suite runs with `--env=node`.
 - `scripts/prepare-package.mjs` records a build identity and requires a clean tree. Commit first, then package.
