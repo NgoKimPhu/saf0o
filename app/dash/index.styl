@@ -497,7 +497,7 @@ button,
       height 24px
       box-sizing border-box
       border 1px solid var(--saf0o-border-default)
-      border-radius 2px
+      border-radius var(--saf0o-radius-sm)
       content ''
       background var(--saf0o-surface-inset)
       box-shadow var(--saf0o-shadow-inset)
@@ -518,11 +518,12 @@ button,
 
   .network .signerPermissionToggleOn
     &::before
-      border-color var(--saf0o-success)
-      background var(--saf0o-success-soft)
+      border-color var(--saf0o-accent-primary)
+      background var(--saf0o-accent-primary-soft)
 
     .signerPermissionToggleSwitch
-      background var(--saf0o-success)
+      border-bottom-color var(--saf0o-accent-primary-active)
+      background var(--saf0o-accent-primary)
       transform translateX(20px)
 
   .network .signerPermissionToggle:disabled

@@ -38,3 +38,9 @@ it('leaves no old-brand sage borders, warm greys, amber highlights or green-tint
   const sage = 'rgba\\((150, 182, 150|168, 116, 63|120, 84, 54)'
   expect(grep(`${warm}|${sage}`)).toEqual([])
 })
+
+it('uses no sage/olive status or toggle colours', () => {
+  expect(grep('#a5ad8f|#8fb585')).toEqual([])
+  const toggles = ['app/dash/index.styl', 'resources/Components/Toggle/index.styl']
+  expect(grep('saf0o-success').filter((file) => toggles.includes(file))).toEqual([])
+})

@@ -628,13 +628,14 @@
 .dashNetworksCard
   padding var(--saf0o-space-3) var(--saf0o-space-5) var(--saf0o-space-2)
 
-.dashNetworksCardHeader
+.dashHomeCard .dashNetworksCardHeader
   display grid
   grid-template-columns minmax(0, 1fr) auto auto
   gap var(--saf0o-space-2)
   min-height 50px
   align-items center
 
+  // The card h2 has a bottom margin; it would sit 5px above the controls.
   h2
     margin 0
 
@@ -743,10 +744,10 @@ button.dashNetworksAdd.saf0oControl
     text-align right
 
   .networkRowStatusConnected
-    color #a5ad8f
+    color var(--saf0o-text-tertiary)
 
   .networkRowStatusUnavailable
-    color #c98c76
+    color var(--saf0o-warning)
 
   .signerMenuItems
     padding-right 0
