@@ -57,13 +57,14 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
   brand sheet and X header render blank, so `git restore` those two files.
 - Companion icons: `node scripts/generate-companion-icons.mjs <companion checkout>` after the master changes.
 - Main-process tests write under `$HOME`. Set `HOME` to a scratch directory in a sandbox.
-- With no Electron binary or no network, a few `test/main` suites fail for environment reasons only: `worker`,
-  `trezor/bridge` (also flaky under load; passes alone), `dapps/cache`, `contractVerification/artifactIntake`,
-  `windows/glideSentinel`.
-- Any other failing suite is real. `ipc/inventory`, `ipc/schemas`, `provider/index` and `signers/hot/*` were once written
+- Every `test/main` suite passes offline and without an Electron binary. Pass `./test/main` as a path, never
+  `--roots=test/main`: that override hides `test/__mocks__` (`child_process`, `@trezor/connect`), so `worker` and
+  `trezor/bridge` load real modules and fail.
+- Every failing suite is real. `worker` and `trezor/bridge` were written off as environment noise for weeks; the cause
+  was the `--roots` override above. `ipc/inventory`, `ipc/schemas`, `provider/index` and `signers/hot/*` were once written
   off as noise. All were real regressions: the transparency slider shipped broken, and ring-signer unlock failed, so
   imported keys were never saved.
-- Before you write off a suite, read its failure message. A failure in a listed suite can still be real.
+- Read every failure message before you blame the environment.
 - Tests that touch `document` under `test/resources` (outside `Components/` and `Hooks/`) need a
   `/** @jest-environment jsdom */` docblock, because that suite runs with `--env=node`.
 - `scripts/prepare-package.mjs` records a build identity and requires a clean tree. Commit first, then package.
