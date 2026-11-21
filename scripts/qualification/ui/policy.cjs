@@ -3794,6 +3794,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             value: 'flex'
           },
           { kind: 'text-unclipped', selector: '.txLifecycleFacts dd[title]' },
+          { kind: 'no-overlap', selector: '.txLifecycleFacts dt, .txLifecycleFacts dd' },
           { kind: 'viewport-bottom', selector: '.requestNoticeTransactionStatus' }
         ]
       },
@@ -3821,6 +3822,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             value: 'flex'
           },
           { kind: 'text-unclipped', selector: '.txLifecycleFacts dd[title]' },
+          { kind: 'no-overlap', selector: '.txLifecycleFacts dt, .txLifecycleFacts dd' },
           { kind: 'viewport-bottom', selector: '.requestNoticeTransactionStatus' }
         ]
       },
@@ -3837,6 +3839,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
         layoutExpectations: [
           { kind: 'text-unclipped', selector: '.txLifecycleDetailVisible' },
           { kind: 'text-unclipped', selector: '.txLifecycleFacts dd[title]' },
+          { kind: 'no-overlap', selector: '.txLifecycleFacts dt, .txLifecycleFacts dd' },
           { kind: 'viewport-bottom', selector: '.requestNoticeTransactionStatus' }
         ]
       },
@@ -3864,6 +3867,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             value: 'flex'
           },
           { kind: 'text-unclipped', selector: '.txLifecycleFacts dd[title]' },
+          { kind: 'no-overlap', selector: '.txLifecycleFacts dt, .txLifecycleFacts dd' },
           { kind: 'viewport-bottom', selector: '.requestNoticeTransactionStatus' }
         ]
       },

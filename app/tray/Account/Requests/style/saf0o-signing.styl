@@ -1634,6 +1634,18 @@
     > div:nth-child(2):last-child
       grid-column auto
 
+  // Two long pairs (hash, RPC acceptance) do not fit side by side in the 425px panel: one per row.
+  .requestNoticeTransactionUnconfirmed
+    .requestNoticeInner
+      grid-template-rows none
+
+    .txLifecycleFacts
+      grid-template-columns minmax(0, 1fr)
+      gap 2px
+
+      > div:last-child
+        justify-self start
+
   .txLifecycleEvidence
     grid-template-columns 1fr
 

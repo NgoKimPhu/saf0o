@@ -213,6 +213,19 @@ const auditPage = async ({
           })
         }
       }
+    } else if (expectation.kind === 'no-overlap') {
+      // No two matched boxes may intersect, so adjacent label/value pairs cannot print over each other.
+      const rects = elements.map((element) => element.getBoundingClientRect())
+      for (let i = 0; i < rects.length; i += 1)
+        for (let j = i + 1; j < rects.length; j += 1) {
+          const a = rects[i]
+          const b = rects[j]
+          if (a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1)
+            violations.push({
+              kind: 'required-layout',
+              detail: `${expectation.selector} overlaps: ${describe(elements[i])} and ${describe(elements[j])}`
+            })
+        }
     } else if (expectation.kind === 'text-unclipped') {
       for (const element of elements) {
         if (
@@ -330,7 +343,9 @@ const auditPage = async ({
   const modalRoot = Array.from(document.querySelectorAll('[aria-modal="true"]')).find(visible)
   // Open popovers cover background controls; the closed home is qualified separately.
   const popoverRoot = document.querySelector('.receivePanel')
-  const controls = Array.from((modalRoot || popoverRoot || document).querySelectorAll(controlSelector)).filter(
+  const controls = Array.from(
+    (modalRoot || popoverRoot || document).querySelectorAll(controlSelector)
+  ).filter(
     (element) => visible(element) && !element.disabled && !element.closest('[aria-hidden="true"], [inert]')
   )
 
@@ -405,12 +420,31 @@ const auditPage = async ({
   }
 
   return {
-    horizontalGeometry: [...document.querySelectorAll('.dashMainScroll, .addAccountItem, .addAccountItemOptionSetupFrame, .addAccountItemOptionTitle, .addAccountItemOptionInput, .networkEditorBody, .sendComposer, .permissionsLedgerView, .dappGuardrailEditor')]
-      .filter((element) => visible(element) && element.getBoundingClientRect().left < viewport.width && element.getBoundingClientRect().right > 0)
+    horizontalGeometry: [
+      ...document.querySelectorAll(
+        '.dashMainScroll, .addAccountItem, .addAccountItemOptionSetupFrame, .addAccountItemOptionTitle, .addAccountItemOptionInput, .networkEditorBody, .sendComposer, .permissionsLedgerView, .dappGuardrailEditor'
+      )
+    ]
+      .filter(
+        (element) =>
+          visible(element) &&
+          element.getBoundingClientRect().left < viewport.width &&
+          element.getBoundingClientRect().right > 0
+      )
       .map((element) => {
         const rect = element.getBoundingClientRect()
         const style = getComputedStyle(element)
-        return { selector: element.className, left: rect.left, right: rect.right, centerOffset: (rect.left + rect.right - viewport.width) / 2, clientWidth: element.clientWidth, scrollbar: element.offsetWidth - element.clientWidth, gutter: style.scrollbarGutter, paddingLeft: style.paddingLeft, paddingRight: style.paddingRight }
+        return {
+          selector: element.className,
+          left: rect.left,
+          right: rect.right,
+          centerOffset: (rect.left + rect.right - viewport.width) / 2,
+          clientWidth: element.clientWidth,
+          scrollbar: element.offsetWidth - element.clientWidth,
+          gutter: style.scrollbarGutter,
+          paddingLeft: style.paddingLeft,
+          paddingRight: style.paddingRight
+        }
       }),
     controlCount: controls.length,
     exceptions,
