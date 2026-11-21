@@ -1268,15 +1268,9 @@
 #panel:has(.tokenApprovalsView),
 #panel:has(.accountSettingsExpandedView),
 #panel:has(.requestViewScroll)
-  --saf0o-bg-elevated #121813
-  --saf0o-border-subtle rgba(150, 182, 150, .10)
-  --saf0o-border-default rgba(150, 182, 150, .16)
-  --saf0o-border-strong rgba(150, 182, 150, .22)
-  --saf0o-text-primary #f2efe8
-  --saf0o-text-secondary #d6d2c8
-  --saf0o-text-tertiary #97917f
-  --saf0o-text-muted #97917f
-  --saf0o-text-disabled #6d7568
+  --saf0o-border-subtle rgba(140, 160, 182, .10)
+  --saf0o-border-default rgba(140, 160, 182, .16)
+  --saf0o-border-strong rgba(140, 160, 182, .22)
 // Focused signing uses one opaque canvas through the review bar and body,
 // without carrying the ordinary wallet's atmospheric color fields into it.
 #panel:has(.accountViewRequest),
@@ -1331,7 +1325,7 @@
   z-index 19999999
   height 32px
   opacity 0
-  background linear-gradient(to bottom, rgba(7, 9, 7, 0), rgba(7, 9, 7, .26) 52%, rgba(7, 9, 7, .78))
+  background linear-gradient(to bottom, rgba(7, 8, 15, 0), rgba(7, 8, 15, .26) 52%, rgba(7, 8, 15, .78))
   transition opacity var(--saf0o-motion-fast) var(--saf0o-ease)
   pointer-events none
 
@@ -1348,7 +1342,7 @@
   border-radius 10px
   background linear-gradient(172deg, rgba(255, 255, 255, .028), transparent 46%), var(--saf0o-surface-card)
   backdrop-filter blur(10px)
-  box-shadow 0 10px 26px rgba(0, 0, 0, .5), inset 1px 1px 0 rgba(150, 182, 150, .05), inset 0 1px 0 rgba(255, 255, 255, .05)
+  box-shadow 0 10px 26px rgba(0, 0, 0, .5), inset 1px 1px 0 rgba(140, 160, 182, .05), inset 0 1px 0 rgba(255, 255, 255, .05)
 
 .accountPortfolioGlow
   position absolute
@@ -1356,7 +1350,7 @@
   left 50%
   width 360px
   height 210px
-  background radial-gradient(58% 62% at 50% 42%, rgba(168, 116, 63, .16), rgba(120, 84, 54, .05) 46%, transparent 72%)
+  background radial-gradient(58% 62% at 50% 42%, rgba(0, 168, 128, .16), rgba(0, 136, 104, .05) 46%, transparent 72%)
   transform translateX(-50%)
   pointer-events none
 
@@ -1422,7 +1416,7 @@
     border-radius 10px
     background linear-gradient(172deg, rgba(255, 255, 255, .028), transparent 46%), var(--saf0o-surface-card)
     backdrop-filter blur(10px)
-    box-shadow 0 10px 26px rgba(0, 0, 0, .5), inset 1px 1px 0 rgba(150, 182, 150, .05), inset 0 1px 0 rgba(255, 255, 255, .05)
+    box-shadow 0 10px 26px rgba(0, 0, 0, .5), inset 1px 1px 0 rgba(140, 160, 182, .05), inset 0 1px 0 rgba(255, 255, 255, .05)
 
 .accountMainPerch .moduleHeader
   display flex
@@ -1474,7 +1468,7 @@
       margin 0
 
     span:last-child
-      color #6d7568
+      color var(--saf0o-text-muted)
       font-weight 400
       letter-spacing 0
       text-transform none
@@ -1519,7 +1513,7 @@
   .requestPreviewReview
     margin 0
     flex none
-    color #c08d54
+    color var(--saf0o-accent-primary)
     font-family var(--saf0o-font-mono)
     font-size 12px
     font-weight 600

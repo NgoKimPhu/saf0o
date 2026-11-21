@@ -32,3 +32,9 @@ it('shows the app logo, not the old brown bird mark, in the wallet and dashboard
     'app/tray/AccountSelector/index.js'
   ])
 })
+
+it('leaves no old-brand sage borders, warm greys, amber highlights or green-tinted blacks in the styles', () => {
+  const warm = '#d6d2c8|#f2efe8|#97917f|#6d7568|#c08d54|#121813|#11130f'
+  const sage = 'rgba\\((150, 182, 150|168, 116, 63|120, 84, 54)'
+  expect(grep(`${warm}|${sage}`)).toEqual([])
+})

@@ -617,7 +617,7 @@
 
 // Perch Networks landing
 .dashNetworksPerch
-  color #d6d2c8
+  color var(--saf0o-text-secondary)
   justify-content flex-start
 
   .localSettingsWrap
@@ -650,7 +650,7 @@ button.dashNetworksAdd.saf0oControl
   justify-content center
   gap 8px
   border 0
-  color #d6d2c8
+  color var(--saf0o-text-secondary)
   background transparent
   box-shadow none
   font-size 13px
@@ -660,10 +660,10 @@ button.dashNetworksAdd.saf0oControl
     position absolute
     z-index -1
     inset 6px 0
-    border 1px solid rgba(150, 182, 150, .14)
+    border 1px solid rgba(140, 160, 182, .14)
     border-radius 7px
     content ''
-    background linear-gradient(178deg, rgba(255, 255, 255, .04), rgba(18, 24, 20, .62))
+    background linear-gradient(178deg, rgba(255, 255, 255, .04), rgba(18, 23, 30, .62))
     box-shadow 0 2px 5px rgba(0, 0, 0, .18), inset 0 -1px 0 rgba(0, 0, 0, .25)
 
   &:hover:not(:disabled)
@@ -672,8 +672,8 @@ button.dashNetworksAdd.saf0oControl
     box-shadow none
 
     &::before
-      border-color rgba(150, 182, 150, .24)
-      background linear-gradient(178deg, rgba(255, 255, 255, .065), rgba(24, 31, 26, .7))
+      border-color rgba(140, 160, 182, .24)
+      background linear-gradient(178deg, rgba(255, 255, 255, .065), rgba(24, 30, 37, .7))
 
   &:active:not(:disabled)
     transform none
@@ -689,7 +689,7 @@ button.dashNetworksAdd.saf0oControl
 
   .network
     margin 0
-    border-bottom 1px solid rgba(150, 182, 150, .10)
+    border-bottom 1px solid rgba(140, 160, 182, .10)
 
   .network:last-child
     border-bottom 0
@@ -714,15 +714,15 @@ button.dashNetworksAdd.saf0oControl
     background transparent
 
   .networkDetailsTrigger:active
-    background rgba(10, 14, 12, .5)
+    background rgba(10, 13, 20, .5)
 
   .networkDetailsTrigger .signerName
-    color #f2efe8
+    color var(--saf0o-text-primary)
     font-size 14px
     font-weight 500
 
   .networkDetailsTrigger .networkChainId
-    color #97917f
+    color var(--saf0o-text-tertiary)
     font-family var(--saf0o-font-mono)
     font-size 12px
 
@@ -737,7 +737,7 @@ button.dashNetworksAdd.saf0oControl
   .networkRowStatus
     flex none
     min-width 68px
-    color #97917f
+    color var(--saf0o-text-tertiary)
     font-family var(--saf0o-font-mono)
     font-size 12px
     text-align right
@@ -755,10 +755,10 @@ button.dashNetworksAdd.saf0oControl
   .networkBreak
     margin 0
     padding 11px 0 5px
-    border-bottom 1px solid rgba(150, 182, 150, .10)
+    border-bottom 1px solid rgba(140, 160, 182, .10)
 
   .networkBreakLayer
-    color #97917f
+    color var(--saf0o-text-tertiary)
     font-family var(--saf0o-font-mono)
     font-size 10px
     font-weight 600
@@ -779,10 +779,10 @@ button.dashNetworksAdd.saf0oControl
     position absolute
     z-index -2
     inset 6px 0
-    border 1px solid rgba(150, 182, 150, .12)
+    border 1px solid rgba(140, 160, 182, .12)
     border-radius 7px
     content ''
-    background rgba(8, 12, 10, .34)
+    background rgba(8, 11, 18, .34)
 
 .dashNetworkScopeButton
   position relative
@@ -808,21 +808,21 @@ button.dashNetworksAdd.saf0oControl
     background transparent
 
   &:hover
-    color #d6d2c8
+    color var(--saf0o-text-secondary)
 
     &::before
-      background rgba(150, 182, 150, .035)
+      background rgba(140, 160, 182, .035)
 
   &:focus-visible
     outline 2px solid var(--saf0o-focus)
     outline-offset 1px
 
 .dashNetworkScopeButtonSelected
-  color #d6d2c8
+  color var(--saf0o-text-secondary)
 
   &::before
-    border-color rgba(150, 182, 150, .18)
-    background rgba(25, 34, 28, .56)
+    border-color rgba(140, 160, 182, .18)
+    background rgba(25, 33, 40, .56)
     box-shadow inset 0 1px 0 rgba(255, 255, 255, .025), 0 2px 5px rgba(0, 0, 0, .16)
 
 .chainConfig
