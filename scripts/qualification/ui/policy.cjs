@@ -4138,7 +4138,7 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
       requiredText: ['Delegation evidence', 'Network fee'],
       layoutExpectations: [
         {
-          kind: 'full-width',
+          kind: 'contained',
           selector: '.eip7702RevokeFeeRow > button',
           container: '.eip7702RevokeFeeRow'
         }
