@@ -1,7 +1,7 @@
 import net from 'net'
 import log from 'electron-log'
 
-import { installNodeGuard, installSessionGuard, setDynamicHosts } from '../../../main/egress'
+import { egressMode, installNodeGuard, installSessionGuard, setDynamicHosts } from '../../../main/egress'
 import { denyAllButLoopback } from '../../../main/egress/connect'
 
 jest.mock('electron-log', () => ({ warn: jest.fn() }))
@@ -51,6 +51,19 @@ test('enforce mode passes loopback, listed services and runtime RPC hosts', () =
   expect(reached).toHaveBeenCalledTimes(5)
 })
 
+// The guard must block without any setup; log-only is an explicit opt-out.
+test('enforce is the default mode', () => {
+  const env = process.env['SAF0O_EGRESS']
+  delete process.env['SAF0O_EGRESS']
+  expect(egressMode()).toBe('enforce')
+  process.env['SAF0O_EGRESS'] = 'log'
+  expect(egressMode()).toBe('log')
+  process.env['SAF0O_EGRESS'] = 'anything'
+  expect(egressMode()).toBe('enforce')
+  if (env === undefined) delete process.env['SAF0O_EGRESS']
+  else process.env['SAF0O_EGRESS'] = env
+})
+
 // Log mode exists to collect the real host list without breaking anything.
 test('log mode lets an unlisted host through and logs it once', () => {
   installNodeGuard('log')
@@ -77,21 +90,24 @@ test('deny-all blocks listed services but keeps loopback', async () => {
 // RPC URLs often carry API keys in the path, so the log names the host only.
 test('the session guard cancels unlisted renderer requests and never logs the path', () => {
   let listener: (
-    details: { url: string },
+    details: { url: string; resourceType?: string },
     callback: (response: { cancel?: boolean }) => void
   ) => void = () => {}
   const session = { webRequest: { onBeforeRequest: (fn: typeof listener) => (listener = fn) } }
   installSessionGuard(session as never, 'enforce')
 
-  const decide = (url: string) => {
+  const decide = (url: string, resourceType = 'xhr') => {
     let cancel: boolean | undefined
-    listener({ url }, (response) => (cancel = response.cancel))
+    listener({ url, resourceType }, (response) => (cancel = response.cancel))
     return cancel
   }
 
   expect(decide('https://leak.example/v1/secret-key?addr=0xabc')).toBe(true)
   expect(decide('https://api.etherscan.io/v2/api')).toBe(false)
   expect(decide('file:///app/tray/index.html')).toBeUndefined()
+  // Token logos load from arbitrary logoURI hosts; blocking them would blank the balances list.
+  expect(decide('https://assets.coingecko.com/coins/images/1/large/x.png', 'image')).toBeUndefined()
+  expect(decide('https://assets.coingecko.com/api/leak', 'script')).toBe(true)
   expect(log.warn).toHaveBeenCalledWith('egress blocked: chromium leak.example:')
   expect(JSON.stringify((log.warn as jest.Mock).mock.calls)).not.toContain('secret-key')
 })

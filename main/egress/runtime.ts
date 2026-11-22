@@ -18,6 +18,9 @@ function* runtimeHosts() {
     for (const url of Object.values(presets[id] || {})) yield hostOf(url)
   }
   yield hostOf(store('main.latticeSettings.endpointCustom'))
+  // IPFS endpoints the user set explicitly (main/nebula/ipfs.ts).
+  for (const name of ['SAF0O_IPFS_GATEWAY_URL', 'SAF0O_IPFS_API_URL', 'FRAME_IPFS_API_URL'])
+    yield hostOf(process.env[name])
 }
 
 // Side-effect import, placed right after the store so chain connections made at load time match.

@@ -220,8 +220,9 @@ re-apply our token values. `test/resources/theme/{tokens,motion,logoPalette}.tes
 Commit: the `saf0o: outbound connection allowlist` commit.
 
 Intent: Defend against exfiltration by a compromised dependency. Main-process Node sockets and the default Electron session
-are checked against an allowlist (services, RPC presets, custom RPCs, custom Lattice relay, loopback). Log mode by default;
-`SAF0O_EGRESS=enforce` blocks. Hot-signer workers refuse every non-loopback connection.
+are checked against an allowlist (services, RPC presets, custom RPCs, custom Lattice relay, env-set IPFS endpoints,
+loopback). Enforce by default; `SAF0O_EGRESS=log` only logs. Session image requests pass, because token logos come from
+any logoURI host. Hot-signer workers refuse every non-loopback connection.
 
 Files: `main/egress/*` (new), first-line imports in `main/index.ts`, `main/application.ts` (after `store`),
 `main/externalData/balances/worker.ts`, `main/signers/hot/HotSigner/worker.js`, `test/main/egress/*`.

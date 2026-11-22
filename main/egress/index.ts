@@ -6,10 +6,10 @@ import type { Session } from 'electron'
 
 // Outbound allowlist against exfiltration by a compromised dependency. In-process only: code that
 // targets the guard can undo it or spawn a binary, and dns.resolve* queries pass. Use an OS firewall
-// for hard enforcement. Default mode logs; SAF0O_EGRESS=enforce blocks.
+// for hard enforcement. Default mode blocks; SAF0O_EGRESS=log only logs, to collect missing hosts.
 export type EgressMode = 'log' | 'enforce'
 
-export const egressMode = (): EgressMode => (process.env['SAF0O_EGRESS'] === 'enforce' ? 'enforce' : 'log')
+export const egressMode = (): EgressMode => (process.env['SAF0O_EGRESS'] === 'log' ? 'log' : 'enforce')
 
 const staticHosts = new Set([
   'api.etherscan.io',
@@ -66,6 +66,7 @@ export const installNodeGuard = (mode: EgressMode = egressMode()) =>
 const networkProtocols = new Set(['http:', 'https:', 'ws:', 'wss:'])
 
 // Covers the wallet renderers and electron.net in main. Dapp views use their own partitions.
+// Images pass: token logos come from any logoURI host. Scripts, fetch and websockets stay checked.
 export const installSessionGuard = (session: Session, mode: EgressMode = egressMode()) => {
   session.webRequest.onBeforeRequest((details, callback) => {
     let url: URL
@@ -74,7 +75,7 @@ export const installSessionGuard = (session: Session, mode: EgressMode = egressM
     } catch {
       return callback({ cancel: mode !== 'log' })
     }
-    if (!networkProtocols.has(url.protocol)) return callback({})
+    if (!networkProtocols.has(url.protocol) || details.resourceType === 'image') return callback({})
     callback({ cancel: !permit(url.hostname, url.port, 'chromium', mode) })
   })
 }
