@@ -1,3 +1,4 @@
+require('../../../egress/connect').denyAllButLoopback()
 const crypto = require('crypto')
 const { signTypedData, personalSign } = require('@metamask/eth-sig-util')
 const { createTx } = require('@ethereumjs/tx')

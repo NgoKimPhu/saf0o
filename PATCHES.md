@@ -142,7 +142,7 @@ Commits, in order:
 - 9d6e209a bump dependencies to latest (min age 3d)
 - 7b04c9f5 drop the Babel toolchain; keep `@babel/parser` for the IPC inventory test
 - 5ddb9b29 conf 16 with an object-only path setter in `PersistStore` (dot-prop 10 made numeric segments array indexes)
-- eslint 10 with `@eslint-react/eslint-plugin` (eslint-plugin-react stops at eslint 9)
+- c1d0576c eslint 10 with `@eslint-react/eslint-plugin` (eslint-plugin-react stops at eslint 9)
 
 Intent: Run on current dependency majors. Each fix follows from one upgrade.
 
@@ -214,3 +214,19 @@ one curve), the logo palette everywhere, aligned review screens, shorter copy. N
 Rebase notes: Touches about 63 upstream style files by hand, not by script. On conflict keep upstream structure and
 re-apply our token values. `test/resources/theme/{tokens,motion,logoPalette}.test.js` and the UI harness policy
 (`pnpm run qualify:ui`) catch drift.
+
+## 15. Outbound connection allowlist
+
+Commit: the `saf0o: outbound connection allowlist` commit.
+
+Intent: Defend against exfiltration by a compromised dependency. Main-process Node sockets and the default Electron session
+are checked against an allowlist (services, RPC presets, custom RPCs, custom Lattice relay, loopback). Log mode by default;
+`SAF0O_EGRESS=enforce` blocks. Hot-signer workers refuse every non-loopback connection.
+
+Files: `main/egress/*` (new), first-line imports in `main/index.ts`, `main/application.ts` (after `store`),
+`main/externalData/balances/worker.ts`, `main/signers/hot/HotSigner/worker.js`, `test/main/egress/*`.
+
+Rebase notes: Keep `./egress/install` the first import of `main/index.ts`. A new upstream service host needs an entry in
+`staticHosts`, or it logs as unlisted.
+
+Upstream-PR candidate: maybe.

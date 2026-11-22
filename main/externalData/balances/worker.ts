@@ -1,3 +1,4 @@
+import '../../egress/install'
 import log from 'electron-log'
 
 log.transports.console.format = '[scanWorker] {h}:{i}:{s}.{ms} {text}'

@@ -1,3 +1,4 @@
+import './egress/install'
 import { app, dialog } from 'electron'
 import log from 'electron-log'
 
