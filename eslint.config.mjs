@@ -2,7 +2,7 @@ import eslint from '@eslint/js'
 import ts from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import prettier from 'eslint-config-prettier'
-import react from 'eslint-plugin-react'
+import eslintReact from '@eslint-react/eslint-plugin'
 import reactHooks from 'eslint-plugin-react-hooks'
 import testingLibrary from 'eslint-plugin-testing-library'
 import jest from 'eslint-plugin-jest'
@@ -11,7 +11,14 @@ import globals from 'globals'
 export default [
   // Ignored dirs
   {
-    ignores: ['dist/**/*', 'compiled/**/*', 'bundle/**/*', '.wt/**/*']
+    ignores: [
+      'dist/**/*',
+      'compiled/**/*',
+      'compiled-bundle/**/*',
+      'bundle/**/*',
+      'sourcemaps/**/*',
+      '.wt/**/*'
+    ]
   },
   // All files
   {
@@ -24,6 +31,9 @@ export default [
     },
     rules: {
       ...eslint.configs.recommended.rules,
+      // New in the eslint 10 recommended set; existing upstream code trips them, so they warn.
+      'no-useless-assignment': 'warn',
+      'preserve-caught-error': 'warn',
       'no-unused-vars': [
         'error',
         {
@@ -40,6 +50,7 @@ export default [
     files: [
       '*.{js,mjs,ts}',
       'scripts/**/*.mjs',
+      'test/scripts/**/*.mjs',
       'main/**/*.{js,ts}',
       'build/**/*.js',
       'resources/**/*.{js,ts}',
@@ -140,7 +151,7 @@ export default [
       'test/jest.svg.js'
     ],
     plugins: {
-      react,
+      ...eslintReact.configs.recommended.plugins,
       'react-hooks': reactHooks
     },
     languageOptions: {
@@ -150,16 +161,13 @@ export default [
         }
       }
     },
-    settings: {
-      react: {
-        version: 'detect'
-      }
-    },
+    settings: eslintReact.configs.recommended.settings,
     rules: {
-      ...react.configs.recommended.rules,
-      ...react.configs['jsx-runtime'].rules,
+      ...eslintReact.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      'react/prop-types': 'off' // all type checking to be done in TS
+      // New with @eslint-react; existing upstream code trips them, so they warn instead of block.
+      '@eslint-react/no-access-state-in-setstate': 'warn',
+      '@eslint-react/static-components': 'warn'
     }
   },
   // Test files

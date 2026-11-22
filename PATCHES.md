@@ -141,7 +141,8 @@ Commits, in order:
 - d3962445 jest on `@swc/jest` instead of Babel
 - 9d6e209a bump dependencies to latest (min age 3d)
 - 7b04c9f5 drop the Babel toolchain; keep `@babel/parser` for the IPC inventory test
-- conf 16 with an object-only path setter in `PersistStore` (dot-prop 10 made numeric segments array indexes)
+- 5ddb9b29 conf 16 with an object-only path setter in `PersistStore` (dot-prop 10 made numeric segments array indexes)
+- eslint 10 with `@eslint-react/eslint-plugin` (eslint-plugin-react stops at eslint 9)
 
 Intent: Run on current dependency majors. Each fix follows from one upgrade.
 
