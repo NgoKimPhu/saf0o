@@ -8,16 +8,58 @@
     "\\.svg$": "<rootDir>/test/jest.svg.js"
   },
   "transform": {
-    "\\.[jt]sx?$": [
-      "<rootDir>/test/jest.babelTransform.cjs",
+    "\\.ts$": [
+      "@swc/jest",
       {
-        "configFile": "./.babelrc.json",
-        "overrides": [
-          {
-            "test": "./test/**",
-            "plugins": ["@babel/plugin-transform-dynamic-import"]
+        "jsc": {
+          "target": "es2021",
+          "parser": {
+            "syntax": "typescript"
           }
-        ]
+        },
+        "module": {
+          "type": "commonjs"
+        }
+      }
+    ],
+    "\\.tsx$": [
+      "@swc/jest",
+      {
+        "jsc": {
+          "target": "es2021",
+          "parser": {
+            "syntax": "typescript",
+            "tsx": true
+          },
+          "transform": {
+            "react": {
+              "runtime": "automatic"
+            }
+          }
+        },
+        "module": {
+          "type": "commonjs"
+        }
+      }
+    ],
+    "\\.jsx?$": [
+      "@swc/jest",
+      {
+        "jsc": {
+          "target": "es2021",
+          "parser": {
+            "syntax": "ecmascript",
+            "jsx": true
+          },
+          "transform": {
+            "react": {
+              "runtime": "automatic"
+            }
+          }
+        },
+        "module": {
+          "type": "commonjs"
+        }
       }
     ]
   },

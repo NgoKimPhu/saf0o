@@ -4,7 +4,60 @@
   "testTimeout": 10000,
   "setupFiles": ["<rootDir>/test/e2e/setup/isolation.js"],
   "transform": {
-    "\\.[jt]sx?$": ["<rootDir>/test/jest.babelTransform.cjs", { "configFile": "./.babelrc.json" }]
+    "\\.ts$": [
+      "@swc/jest",
+      {
+        "jsc": {
+          "target": "es2021",
+          "parser": {
+            "syntax": "typescript"
+          }
+        },
+        "module": {
+          "type": "commonjs"
+        }
+      }
+    ],
+    "\\.tsx$": [
+      "@swc/jest",
+      {
+        "jsc": {
+          "target": "es2021",
+          "parser": {
+            "syntax": "typescript",
+            "tsx": true
+          },
+          "transform": {
+            "react": {
+              "runtime": "automatic"
+            }
+          }
+        },
+        "module": {
+          "type": "commonjs"
+        }
+      }
+    ],
+    "\\.jsx?$": [
+      "@swc/jest",
+      {
+        "jsc": {
+          "target": "es2021",
+          "parser": {
+            "syntax": "ecmascript",
+            "jsx": true
+          },
+          "transform": {
+            "react": {
+              "runtime": "automatic"
+            }
+          }
+        },
+        "module": {
+          "type": "commonjs"
+        }
+      }
+    ]
   },
   "transformIgnorePatterns": [
     "/node_modules/(?!(@ethereumjs/wallet|@ethereumjs/util|ethereum-cryptography|@noble/[^/]+|@scure/[^/]+)(/|$))"

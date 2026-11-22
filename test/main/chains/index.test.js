@@ -83,81 +83,84 @@ const fallbackTarget = 'https://polygon-fallback.example'
 const staleTarget = 'https://polygon-stale.example'
 const replacementTarget = 'https://polygon-replacement.example'
 
-const state = {
-  main: {
-    currentNetwork: {
-      type: 'ethereum',
-      id: '11155111'
-    },
-    networks: {
-      ethereum: {
-        11155111: {
-          id: 11155111,
-          type: 'ethereum',
-          name: 'Sepolia',
-          connection: {
-            endpoints: [
-              {
-                id: 'rpc-1',
-                on: false,
-                current: 'publicnode',
-                status: 'loading',
-                connected: false,
-                type: '',
-                network: '',
-                custom: ''
-              }
-            ]
+// A function declaration hoists above the imports, which call it while main/store loads.
+function mockState() {
+  return {
+    main: {
+      currentNetwork: {
+        type: 'ethereum',
+        id: '11155111'
+      },
+      networks: {
+        ethereum: {
+          11155111: {
+            id: 11155111,
+            type: 'ethereum',
+            name: 'Sepolia',
+            connection: {
+              endpoints: [
+                {
+                  id: 'rpc-1',
+                  on: false,
+                  current: 'publicnode',
+                  status: 'loading',
+                  connected: false,
+                  type: '',
+                  network: '',
+                  custom: ''
+                }
+              ]
+            },
+            on: true
           },
-          on: true
-        },
-        137: {
-          id: 137,
-          type: 'ethereum',
-          name: 'Polygon',
-          connection: {
-            endpoints: [
-              {
-                id: 'rpc-1',
-                on: false,
-                current: 'publicnode',
-                status: 'loading',
-                connected: false,
-                type: '',
-                network: '',
-                custom: ''
-              },
-              {
-                id: 'rpc-2',
-                on: false,
-                current: 'custom',
-                status: 'off',
-                connected: false,
-                type: '',
-                network: '',
-                custom: 'https://polygon-fallback.example'
-              }
-            ]
-          },
-          on: true
-        }
-      }
-    },
-    networksMeta: {
-      ethereum: {
-        11155111: {
-          gas: {
-            price: {
-              selected: 'standard',
-              levels: { slow: '', standard: '', fast: '', asap: '', custom: '' }
-            }
+          137: {
+            id: 137,
+            type: 'ethereum',
+            name: 'Polygon',
+            connection: {
+              endpoints: [
+                {
+                  id: 'rpc-1',
+                  on: false,
+                  current: 'publicnode',
+                  status: 'loading',
+                  connected: false,
+                  type: '',
+                  network: '',
+                  custom: ''
+                },
+                {
+                  id: 'rpc-2',
+                  on: false,
+                  current: 'custom',
+                  status: 'off',
+                  connected: false,
+                  type: '',
+                  network: '',
+                  custom: 'https://polygon-fallback.example'
+                }
+              ]
+            },
+            on: true
           }
-        },
-        137: {
-          gas: {
-            price: {
-              selected: 'standard',
-              levels: { slow: '', standard: '', fast: '', asap: '', custom: '' }
+        }
+      },
+      networksMeta: {
+        ethereum: {
+          11155111: {
+            gas: {
+              price: {
+                selected: 'standard',
+                levels: { slow: '', standard: '', fast: '', asap: '', custom: '' }
+              }
+            }
+          },
+          137: {
+            gas: {
+              price: {
+                selected: 'standard',
+                levels: { slow: '', standard: '', fast: '', asap: '', custom: '' }
+              }
             }
           }
         }
@@ -174,7 +177,7 @@ const mockEthProvider = jest.fn(
     (target === fallbackTarget ? fallbackConnection : mockConnections[target].connection)
 )
 jest.mock('eth-provider', () => (target, options) => mockEthProvider(target, options))
-jest.mock('../../../main/store/state', () => () => state)
+jest.mock('../../../main/store/state', () => mockState)
 jest.mock('../../../main/accounts', () => ({ updatePendingFees: jest.fn() }))
 jest.mock('../../../main/store/persist')
 

@@ -155,6 +155,8 @@
     "@parcel/transformer-css": "2.16.4",
     "@parcel/transformer-stylus": "2.16.4",
     "@parcel/transformer-typescript-tsc": "2.16.4",
+    "@swc/core": "1.16.22",
+    "@swc/jest": "0.2.39",
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",
     "@testing-library/user-event": "14.6.12",

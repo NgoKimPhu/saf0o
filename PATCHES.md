@@ -141,13 +141,13 @@ Commits, in order:
 
 Intent: Run on current dependency majors. Each fix follows from one upgrade.
 
-Files: `package.json`, `pnpm-lock.yaml`, `.babelrc.json`, `jest*.json`, `test/jest.babelTransform.cjs`, `test/jest.textEncoder.js`, `main/provider/helpers.ts`, `main/chains/*`, `main/signers/**`, `main/security/secretClipboard.ts`, tx and signer tests.
+Files: `package.json`, `pnpm-lock.yaml`, `jest*.json`, `test/jest.textEncoder.js`, `main/provider/helpers.ts`, `main/chains/*`, `main/signers/**`, `main/security/secretClipboard.ts`, tx and signer tests.
 
 Rebase notes:
 
 - Resolve `pnpm-lock.yaml` by regenerating (see section 1). Keep our versions in `package.json` unless upstream bumps the same package higher.
 - Upstream code written for the old `@ethereumjs` or Electron APIs will compile-fail after rebase. Port it the same way.
-- After rebase, run compile, bundle and the jest suites. The jest and Babel setup is ours; do not take upstream `.babelrc.json` or jest config blindly.
+- After rebase, run compile, bundle and the jest suites. The jest setup is ours: it transforms with `@swc/jest`, not Babel. Do not take upstream `.babelrc.json` or jest config blindly; SWC hoists only `jest.mock` calls, so a mock factory must not read a `const` declared below the imports.
 
 Upstream-PR candidate: no.
 
