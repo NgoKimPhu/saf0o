@@ -8,6 +8,22 @@ import { ensureVersionContainer, pruneTransientPersistedState, sanitizePersisted
 type PersistedConfig = Record<string, unknown>
 type PersistOpts<T extends PersistedConfig> = Options<T>
 
+const blockedSegments = new Set(['__proto__', 'prototype', 'constructor'])
+
+// conf 16 (dot-prop 10) turns a numeric segment under a missing parent into an array index, so
+// `main.__.77` or a chain id became an array. Missing parents here are always objects, as in dot-prop 6.
+const setPath = (target: PersistedConfig, path: string, value: unknown) => {
+  const segments = path.split('.')
+  if (segments.some((segment) => blockedSegments.has(segment))) return
+  const last = segments.pop() as string
+  let node = target
+  for (const segment of segments) {
+    const child = node[segment]
+    node = node[segment] = (child !== null && typeof child === 'object' ? child : {}) as PersistedConfig
+  }
+  node[last] = value
+}
+
 export class PersistStore extends Conf<PersistedConfig> {
   private blockUpdates = false
   private updates: PersistedConfig | null = {}
@@ -34,7 +50,13 @@ export class PersistStore extends Conf<PersistedConfig> {
 
     const updates = { ...this.updates }
     this.updates = null
-    if (Object.keys(updates || {}).length > 0) super.set(updates)
+    if (Object.keys(updates || {}).length > 0) this.writePaths(updates)
+  }
+
+  private writePaths(updates: PersistedConfig) {
+    const next = this.store
+    for (const [path, value] of Object.entries(updates)) setPath(next, path, value)
+    this.store = next
   }
 
   pruneTransientState() {
@@ -58,7 +80,7 @@ export class PersistStore extends Conf<PersistedConfig> {
     const sanitized = sanitizePersistedStateUpdate(path, value)
     if (!sanitized) return
     path = `main.__.${migrations.latest}.${sanitized.path}`
-    super.set(path, sanitized.value)
+    this.writePaths({ [path]: sanitized.value })
   }
 
   override clear() {

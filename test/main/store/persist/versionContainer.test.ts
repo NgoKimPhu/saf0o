@@ -39,14 +39,25 @@ test('repairs a config written with the array form', async () => {
   expect(store.get('main.__')).toEqual({ 77: { main: { _version: 77, colorway: 'light' } } })
 })
 
-// Pins conf 10 (dot-prop 6). conf 16 (dot-prop 10) turns the numeric segment under a missing parent into an array
-// index. Use Conf directly: PersistStore repairs the container on construction, which would hide the difference.
-test('conf writes a numeric key under a missing parent as an object, not an array', async () => {
-  const { default: Conf } = await import('conf')
-  const store = new Conf<Record<string, unknown>>({ cwd: mockUserData, configName: 'raw' })
-  store.set('main.__.77.main', { _version: 77 })
+// conf 16 (dot-prop 10) makes a numeric segment under a missing parent an array index. A chain id
+// in a queued path would then save as an array with thousands of null slots.
+test('a numeric segment under a missing parent saves as an object key', async () => {
+  const store = await load()
+  store.set('main', { _version: 77 })
+  store.queue('main.networksMeta.ethereum.137', { gas: 'x' })
+  store.writeUpdates()
 
-  const onDisk = JSON.parse(fs.readFileSync(path.join(mockUserData, 'raw.json'), 'utf8'))
-  expect(Array.isArray(onDisk.main.__)).toBe(false)
-  expect(onDisk.main.__).toEqual({ 77: { main: { _version: 77 } } })
+  const onDisk = JSON.parse(fs.readFileSync(path.join(mockUserData, 'config.json'), 'utf8'))
+  expect(onDisk.main.__).toEqual({
+    77: { main: { _version: 77, networksMeta: { ethereum: { 137: { gas: 'x' } } } } }
+  })
+})
+
+test('ignores prototype segments in a path', async () => {
+  const store = await load()
+  store.set('main', { _version: 77 })
+  store.queue('main.__proto__.polluted', true)
+  store.writeUpdates()
+
+  expect(({} as Record<string, unknown>).polluted).toBeUndefined()
 })

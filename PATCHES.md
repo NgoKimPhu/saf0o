@@ -140,11 +140,12 @@ Commits, in order:
 - df925b71 drop empty `@types/node-hid` stub and unused overrides; `engines.electron` 45
 - d3962445 jest on `@swc/jest` instead of Babel
 - 9d6e209a bump dependencies to latest (min age 3d)
-- drop the Babel toolchain; keep `@babel/parser` for the IPC inventory test
+- 7b04c9f5 drop the Babel toolchain; keep `@babel/parser` for the IPC inventory test
+- conf 16 with an object-only path setter in `PersistStore` (dot-prop 10 made numeric segments array indexes)
 
 Intent: Run on current dependency majors. Each fix follows from one upgrade.
 
-Files: `package.json`, `pnpm-lock.yaml`, `jest*.json`, `test/jest.textEncoder.js`, `main/provider/helpers.ts`, `main/chains/*`, `main/signers/**`, `main/security/secretClipboard.ts`, tx and signer tests.
+Files: `package.json`, `pnpm-lock.yaml`, `jest*.json`, `main/store/persist/index.ts`, `test/jest.textEncoder.js`, `main/provider/helpers.ts`, `main/chains/*`, `main/signers/**`, `main/security/secretClipboard.ts`, tx and signer tests.
 
 Rebase notes:
 
