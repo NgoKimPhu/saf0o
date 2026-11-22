@@ -138,6 +138,9 @@ Commits, in order:
 - b7e8159b hex-valid fake addresses in the Lattice test
 - 1009e933 store/state test uses a real temp dir (conf 16 is ESM)
 - df925b71 drop empty `@types/node-hid` stub and unused overrides; `engines.electron` 45
+- d3962445 jest on `@swc/jest` instead of Babel
+- 9d6e209a bump dependencies to latest (min age 3d)
+- drop the Babel toolchain; keep `@babel/parser` for the IPC inventory test
 
 Intent: Run on current dependency majors. Each fix follows from one upgrade.
 
