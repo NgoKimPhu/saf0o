@@ -3660,7 +3660,20 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
         logicalWidth: 620,
         logicalHeight: FULL_SHELL_HEIGHT,
         ready: '.dashControlNavigation',
-        layoutExpectations: [{ kind: 'size', selector: '.commandHomeMark', width: 26, height: 26 }]
+        layoutExpectations: [
+          { kind: 'size', selector: '.commandHomeMark', width: 26, height: 26 },
+          // Browser and support buttons each stay on one row, at every scale.
+          {
+            kind: 'aligned-top',
+            selector: '.dashCompanionBrowserActions button',
+            with: '.dashCompanionBrowserActions button'
+          },
+          { kind: 'aligned-top', selector: '.dashSupportActions button', with: '.dashSupportActions button' },
+          {
+            kind: 'text-unclipped',
+            selector: '.dashSupportActions button, .dashCompanionBrowserActions button'
+          }
+        ]
       },
       {
         id: `dash-control-center-short-${scale}`,
