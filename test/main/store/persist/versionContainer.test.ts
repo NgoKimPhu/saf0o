@@ -28,17 +28,6 @@ test('saved state round-trips across a restart as a version-keyed object', async
   expect(versions).toEqual({ 77: { main: { _version: 77, colorway: 'light' } } })
 })
 
-test('repairs a config written with the array form', async () => {
-  const file = path.join(mockUserData, 'config.json')
-  const holes = Array(77)
-    .fill(null)
-    .concat([{ main: { _version: 77, colorway: 'light' } }])
-  fs.writeFileSync(file, JSON.stringify({ main: { __: holes } }))
-
-  const store = await load()
-  expect(store.get('main.__')).toEqual({ 77: { main: { _version: 77, colorway: 'light' } } })
-})
-
 // conf 16 (dot-prop 10) makes a numeric segment under a missing parent an array index. A chain id
 // in a queued path would then save as an array with thousands of null slots.
 test('a numeric segment under a missing parent saves as an object key', async () => {

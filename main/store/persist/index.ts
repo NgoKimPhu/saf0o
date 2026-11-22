@@ -3,7 +3,7 @@ import electron from 'electron'
 import Conf, { Options } from 'conf'
 
 import migrations from '../migrate'
-import { ensureVersionContainer, pruneTransientPersistedState, sanitizePersistedStateUpdate } from './state'
+import { pruneTransientPersistedState, sanitizePersistedStateUpdate } from './state'
 
 type PersistedConfig = Record<string, unknown>
 type PersistOpts<T extends PersistedConfig> = Options<T>
@@ -39,9 +39,6 @@ export class PersistStore extends Conf<PersistedConfig> {
     }
     electron.app.on('quit', () => this.writeUpdates())
     super(options)
-    const main = super.get('main')
-    const ensured = ensureVersionContainer(main)
-    if (ensured !== main) super.set('main', ensured)
     setInterval(() => this.writeUpdates(), 30 * 1000)
   }
 
