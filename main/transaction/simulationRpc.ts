@@ -61,10 +61,14 @@ async function request(network: string, payload: JSONRPCRequestPayload): Promise
     try {
       const { status, body } = await post(network, key, payload)
       const code = (body?.error as { code?: unknown } | undefined)?.code
-      const exhausted = code === 10
+      // Code 4: "Your token is invalid or expired". A dead key never recovers, so treat it like a spent one.
+      const exhausted = code === 10 || code === 4
       if (key && (exhausted || status === 429)) {
         cooldownUntil.set(key, Date.now() + (exhausted ? EXHAUSTED_COOLDOWN_MS : RATE_LIMIT_COOLDOWN_MS))
-        log.warn('Simulation RPC key unavailable', { network, reason: exhausted ? 'balance' : 'rate-limit' })
+        log.warn('Simulation RPC key unavailable', {
+          network,
+          reason: code === 4 ? 'invalid' : exhausted ? 'balance' : 'rate-limit'
+        })
         continue
       }
       if (body && typeof body === 'object') return body

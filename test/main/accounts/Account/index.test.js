@@ -1894,11 +1894,11 @@ describe('#addRequest', () => {
     expect(request.approvals).toEqual([gasApproval])
   })
 
-  it('keeps raw RPC errors out of execution-check approval copy', async () => {
+  it('shows the RPC error in execution-check approval copy with URLs and keys redacted', async () => {
     simulateTransaction.mockResolvedValueOnce({
       status: 'failed',
       source: 'eth_simulateV1',
-      reason: 'invalid argument 0: private RPC detail'
+      reason: 'token invalid at https://lb.drpc.org/ogrpc?dkey=AbCdEfGhIjKlMnOpQrStUvWxYz012345'
     })
     const request = {
       handlerId: 'simulation-rpc-detail',
@@ -1914,9 +1914,8 @@ describe('#addRequest', () => {
 
     const approval = request.approvals[0]
     expect(approval.data.message).toBe(
-      'Saf0o could not determine whether this transaction will execute successfully.'
+      'Saf0o could not determine whether this transaction will execute successfully. token invalid at [url]'
     )
-    expect(approval.data.message).not.toContain('private RPC detail')
   })
 
   it('requires stable explicit consent while the selected account remains delegated', async () => {

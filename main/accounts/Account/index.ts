@@ -50,6 +50,7 @@ import { suggestCallData } from '../../contracts'
 import {
   assertAccountCodeEvidenceStable,
   inspectTransactionAccountCode,
+  redactRpcReason,
   simulateTransaction,
   simulateWalletCalls
 } from '../../transaction/simulation'
@@ -934,7 +935,11 @@ class FrameAccount {
         return
     }
     const revertDetail =
-      simulation.status === 'reverted' && simulation.reason ? ` ${simulation.reason.slice(0, 96)}` : ''
+      simulation.status === 'reverted' && simulation.reason
+        ? ` ${simulation.reason.slice(0, 96)}`
+        : simulation.status === 'failed' && simulation.reason
+          ? ` ${redactRpcReason(simulation.reason)}`
+          : ''
     const data = { ...copy, message: `${copy.message}${revertDetail}`, confirmLabel: 'Sign anyway' }
     this.syncManagedApproval(req, ApprovalType.SimulationApproval, data)
   }

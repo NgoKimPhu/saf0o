@@ -50,6 +50,25 @@ it('skips a key whose balance is used up and keeps it out of rotation', async ()
   expect(used.slice(1).every((k) => k === KEYS[1] || k === KEYS[2])).toBe(true)
 })
 
+// dRPC answers an expired key with code 4. Returning that as the result made every simulation
+// fail with "Execution Check Failed" while a working key or the public endpoint was available.
+it('skips an invalid or expired key instead of returning its error', async () => {
+  const invalid = {
+    status: 200,
+    json: async () => ({
+      id: 1,
+      jsonrpc: '2.0',
+      error: { code: 4, message: 'Your token is invalid or expired' }
+    })
+  }
+  fetchMock.mockImplementation(async (url: string) => (url.includes(KEYS[0]!) ? invalid : ok))
+  expect((await run()).result).toBe('ok')
+  await run()
+  await run()
+  const used = urls(fetchMock).map((u) => u.split('dkey=')[1])
+  expect(used.filter((k) => k === KEYS[0])).toHaveLength(1)
+})
+
 it('falls back to the public endpoint when every key is spent, and when none are stored', async () => {
   fetchMock.mockImplementation(async (url: string) => (url.includes('dkey=') ? exhausted : ok))
   expect((await run()).result).toBe('ok')

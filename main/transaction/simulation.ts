@@ -426,6 +426,15 @@ function parseGasUsed(value: unknown) {
   return gasUsed !== undefined && gasUsed <= MAX_UINT64 ? (value as string) : undefined
 }
 
+// RPC errors can echo the endpoint or its API key, so strip URLs and key-like tokens before
+// the reason reaches the log or the approval dialog.
+export function redactRpcReason(reason: string) {
+  return reason
+    .replace(/\b\w+:\/\/\S+/g, '[url]')
+    .replace(/[A-Za-z0-9_-]{24,}/g, '[token]')
+    .slice(0, 160)
+}
+
 function errorResult(source: SimulationSource, error: EVMError): TransactionSimulation {
   const reason = boundedMessage(error.message, 'RPC execution check failed')
 
@@ -433,16 +442,7 @@ function errorResult(source: SimulationSource, error: EVMError): TransactionSimu
     return { status: 'reverted', source, reason }
   }
 
-  // Local log only: the approval copy never shows the reason. Strip URLs and
-  // key-like tokens, since RPC errors can echo the endpoint or its API key.
-  log.warn('transaction simulation failed', {
-    source,
-    code: error.code,
-    reason: reason
-      .replace(/\b\w+:\/\/\S+/g, '[url]')
-      .replace(/[A-Za-z0-9_-]{24,}/g, '[token]')
-      .slice(0, 160)
-  })
+  log.warn('transaction simulation failed', { source, code: error.code, reason: redactRpcReason(reason) })
   return { status: 'failed', source, reason }
 }
 
