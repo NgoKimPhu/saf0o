@@ -294,8 +294,11 @@ it('shows window transparency at the 30% default and routes changes', () => {
 
 it('imports dRPC simulation keys and rejects a malformed line', () => {
   renderSettings()
+  fireEvent.click(screen.getByRole('button', { name: 'Advanced' }))
 
   const keys = setting('Simulation RPC keys')
+  // The user keeps API keys together: the dRPC keys belong beside the Etherscan key under Advanced.
+  expect(keys.closest('section')).toBe(setting('Etherscan API key').closest('section'))
   const box = within(keys).getByLabelText('dRPC keys')
   fireEvent.change(box, { target: { value: 'not a key' } })
   fireEvent.click(within(keys).getByRole('button', { name: 'Import keys' }))

@@ -615,49 +615,6 @@ export class Settings extends Component {
             </div>
             <div className='signerPermission localSetting' style={{ zIndex: 212 }}>
               <div className='signerPermissionControls'>
-                <div className='signerPermissionSetting'>Simulation RPC keys</div>
-                <output>{simulationKeyCount ? `${simulationKeyCount} imported` : 'Public dRPC'}</output>
-              </div>
-              <div className='signerPermissionDetails'>
-                <span>
-                  Pending transactions are simulated through dRPC to show native balance changes. The request
-                  details, including the sending account, go to dRPC. Paste one key per line; Saf0o rotates
-                  through them. Without keys it uses the public endpoint.
-                </span>
-              </div>
-              <textarea
-                className='saf0oInput'
-                aria-label='dRPC keys'
-                rows={3}
-                spellCheck={false}
-                autoComplete='off'
-                value={this.state.simulationKeysDraft}
-                onChange={(e) =>
-                  this.setState({ simulationKeysDraft: e.target.value, simulationKeysError: false })
-                }
-              />
-              {this.state.simulationKeysError ? (
-                <div role='alert'>Each line must be one dRPC key (16 to 128 letters, digits, - or _).</div>
-              ) : null}
-              <button
-                type='button'
-                className='saf0oControl saf0oControlGhost'
-                onClick={() => this.importSimulationKeys()}
-              >
-                Import keys
-              </button>
-              {simulationKeyCount ? (
-                <button
-                  type='button'
-                  className='saf0oControl saf0oControlGhost'
-                  onClick={() => link.send('tray:action', 'setSimulationRpcKeys', [])}
-                >
-                  Remove all keys
-                </button>
-              ) : null}
-            </div>
-            <div className='signerPermission localSetting' style={{ zIndex: 212 }}>
-              <div className='signerPermissionControls'>
                 <div className='signerPermissionSetting'>MetaSleuth labels</div>
                 <Toggle
                   checked={this.store('main.metasleuthLabels') !== false}
@@ -1243,6 +1200,49 @@ export class Settings extends Component {
               Contract verification
             </h2>
             <ContractVerificationCredential />
+            <div className='signerPermission localSetting' style={{ zIndex: 212 }}>
+              <div className='signerPermissionControls'>
+                <div className='signerPermissionSetting'>Simulation RPC keys</div>
+                <output>{simulationKeyCount ? `${simulationKeyCount} imported` : 'No keys'}</output>
+              </div>
+              <div className='signerPermissionDetails'>
+                <span>
+                  Pending transactions are simulated through dRPC to show native balance changes. The request
+                  details, including the sending account, go to dRPC. Paste one key per line; Saf0o rotates
+                  through them. Without a working key it uses your configured RPC.
+                </span>
+              </div>
+              <textarea
+                className='saf0oInput'
+                aria-label='dRPC keys'
+                rows={3}
+                spellCheck={false}
+                autoComplete='off'
+                value={this.state.simulationKeysDraft}
+                onChange={(e) =>
+                  this.setState({ simulationKeysDraft: e.target.value, simulationKeysError: false })
+                }
+              />
+              {this.state.simulationKeysError ? (
+                <div role='alert'>Each line must be one dRPC key (16 to 128 letters, digits, - or _).</div>
+              ) : null}
+              <button
+                type='button'
+                className='saf0oControl saf0oControlGhost'
+                onClick={() => this.importSimulationKeys()}
+              >
+                Import keys
+              </button>
+              {simulationKeyCount ? (
+                <button
+                  type='button'
+                  className='saf0oControl saf0oControlGhost'
+                  onClick={() => link.send('tray:action', 'setSimulationRpcKeys', [])}
+                >
+                  Remove all keys
+                </button>
+              ) : null}
+            </div>
           </section>
           <section
             hidden={this.state.category !== 'security'}
