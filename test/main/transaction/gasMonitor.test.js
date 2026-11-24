@@ -14,6 +14,8 @@ let testConnection = {
 
 describe('#getGasPrices', () => {
   const gasPrice = '0x3baa1028'
+  // The base fee can rise before the transaction lands, so every level carries a 10% buffer.
+  const buffered = `0x${((BigInt(gasPrice) * 11n) / 10n).toString(16)}`
 
   beforeEach(() => {
     requestHandlers = {
@@ -26,7 +28,7 @@ describe('#getGasPrices', () => {
 
     const gas = await monitor.getGasPrices()
 
-    expect(gas.slow).toBe(gasPrice)
+    expect(gas.slow).toBe(buffered)
   })
 
   it('sets the standard gas price', async () => {
@@ -34,7 +36,7 @@ describe('#getGasPrices', () => {
 
     const gas = await monitor.getGasPrices()
 
-    expect(gas.standard).toBe(gasPrice)
+    expect(gas.standard).toBe(buffered)
   })
 
   it('sets the fast gas price', async () => {
@@ -42,7 +44,7 @@ describe('#getGasPrices', () => {
 
     const gas = await monitor.getGasPrices()
 
-    expect(gas.fast).toBe(gasPrice)
+    expect(gas.fast).toBe(buffered)
   })
 
   it('sets the asap gas price', async () => {
@@ -50,7 +52,7 @@ describe('#getGasPrices', () => {
 
     const gas = await monitor.getGasPrices()
 
-    expect(gas.asap).toBe(gasPrice)
+    expect(gas.asap).toBe(buffered)
   })
 
   it.each([null, 1, '1', '0x01'])('rejects an invalid gas price response: %p', async (response) => {
