@@ -64,3 +64,12 @@ it('counts NFT items without a price', () => {
   expect(screen.getByText('2 items')).toBeTruthy()
   expect(screen.queryByText('no price')).toBeNull()
 })
+
+it('says native changes are not shown, and why, when the trace did not run', () => {
+  const reason = 'Configured RPC does not support native balance-change tracing'
+  const { rerender } = render(<BalancePreview preview={preview({ nativeNote: reason })} symbol='ETH' />)
+  expect(screen.getByRole('note').textContent).toBe(`ETH changes not shown: ${reason}`)
+
+  rerender(<BalancePreview preview={preview()} symbol='ETH' />)
+  expect(screen.queryByRole('note')).toBeNull()
+})

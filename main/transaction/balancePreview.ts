@@ -27,6 +27,8 @@ export type BalancePreview = Readonly<{
   changes: readonly BalancePreviewChange[]
   tokens: Readonly<Record<string, BalancePreviewToken>>
   enriched: boolean
+  // Why native (ETH) changes are missing, when the trace behind them did not run.
+  nativeNote?: string | undefined
 }>
 
 export interface Deps {
@@ -75,7 +77,17 @@ const nativeIn = (req: TransactionRequest | WalletCallsRequest) => {
       nativeChange === undefined && req.classification !== 'NATIVE_TRANSFER' && value
         ? value.toString()
         : undefined
-    return { status: simulation.status, effects, nativeChange, fallbackNativeOut, chainId: req.data.chainId }
+    const traceEvidence = simulation.nativeBalanceChanges
+    const nativeNote =
+      traceEvidence && traceEvidence.status !== 'succeeded' ? traceEvidence.reason : undefined
+    return {
+      status: simulation.status,
+      effects,
+      nativeChange,
+      fallbackNativeOut,
+      nativeNote,
+      chainId: req.data.chainId
+    }
   }
   const simulation = req.simulation
   const effects = simulation.calls.flatMap((call) => (call.effects || []) as EffectLike[])
@@ -85,6 +97,7 @@ const nativeIn = (req: TransactionRequest | WalletCallsRequest) => {
     effects,
     nativeChange: undefined,
     fallbackNativeOut: value ? value.toString() : undefined,
+    nativeNote: undefined,
     chainId: req.chainId
   }
 }
@@ -122,7 +135,8 @@ export function syncBalancePreview(
         chainId,
         effects: evidence.effects,
         native: evidence.nativeChange,
-        fallback: evidence.fallbackNativeOut
+        fallback: evidence.fallbackNativeOut,
+        note: evidence.nativeNote
       })
     )
     .digest('hex')
@@ -135,7 +149,8 @@ export function syncBalancePreview(
     if (balance.chainId === chainId && address)
       tokens[address] = { symbol: balance.symbol, decimals: balance.decimals, known: true }
   }
-  const raw: BalancePreview = { key, assessedAt: deps.now(), changes, tokens, enriched: false }
+  const note = evidence.nativeNote ? { nativeNote: evidence.nativeNote } : {}
+  const raw: BalancePreview = { key, assessedAt: deps.now(), changes, tokens, enriched: false, ...note }
   req.balancePreview = raw
 
   const erc20 = changes.filter((c) => c.standard === 'erc20')
@@ -177,7 +192,7 @@ export function syncBalancePreview(
         ? { ...c, usd: usdOf(c.delta, decimals, price.price) }
         : c
     })
-    return { key, assessedAt: deps.now(), changes: enriched, tokens: merged, enriched: true }
+    return { key, assessedAt: deps.now(), changes: enriched, tokens: merged, enriched: true, ...note }
   }
 
   let timer: ReturnType<typeof setTimeout> | undefined

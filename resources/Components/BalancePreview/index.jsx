@@ -79,6 +79,11 @@ const BalancePreview = ({ preview, symbol }) => {
           <Usd value={totalUsd} />
         </div>
       )}
+      {preview.nativeNote && (
+        <div className='balancePreviewFooter balancePreviewNativeNote' role='note'>
+          {`${symbol} changes not shown: ${preview.nativeNote}`}
+        </div>
+      )}
       {swapLoss && (
         <div className='balancePreviewLoss' role='alert'>
           {`Receives about ${Math.round(swapLoss.lossPct)}% less than it sends (USD, trusted prices)`}

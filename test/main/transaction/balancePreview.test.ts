@@ -223,3 +223,22 @@ it('flattens effects across wallet calls and falls back to call values for nativ
     { asset: usdc, standard: 'erc20', delta: '-7' }
   ])
 })
+
+// A missing trace used to look the same as "no ETH moves". The preview must say the number is absent.
+it('flags that native changes are missing when the trace is unavailable', () => {
+  const req = makeTx(
+    succeeded({
+      nativeBalanceChanges: {
+        status: 'unavailable',
+        source: 'debug_traceCall',
+        reason: 'Configured RPC does not support native balance-change tracing'
+      }
+    })
+  )
+  setup().run(req)
+  expect(req.balancePreview.nativeNote).toBe('Configured RPC does not support native balance-change tracing')
+
+  const traced = makeTx(succeeded())
+  setup().run(traced)
+  expect(traced.balancePreview.nativeNote).toBeUndefined()
+})
