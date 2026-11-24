@@ -81,6 +81,7 @@ export const requestInvokeChannels = new Set([
   'tokenImport:save',
   'tokenImport:saveCredential',
   'tokens:save',
+  'chains:lookup',
   'tray:addChain',
   'tray:adjustWalletCalls',
   'tray:continueContractVerification',

@@ -332,3 +332,19 @@ Files: `app/tray/Account/Requests/TransactionRequest/TxRecipient/index.js`.
 Rebase notes: none.
 
 Upstream-PR candidate: no.
+
+## 21. Add a network from chainlist.org
+
+Commit: the `saf0o: add a network by chain id from chainlist.org` commit.
+
+Intent: The add-network form has a "Look up on chainlist.org" Chain ID input. Main fetches `chainlist.org/rpcs.json` once per
+session through the `chains:lookup` channel (dash only) and returns bounded data: HTTPS RPCs without key placeholders or
+credentials, least-tracking first, at most 5, plus the first HTTPS explorer. The form fills its fields. It is hidden for dapp
+requests. The user reviews the fields before adding.
+
+Files: `main/chains/lookup.ts`, `main/application.ts`, `main/ipc/schemas.ts`, `resources/bridge/{index.js,protocol.js,roles.ts}`,
+`app/dash/Chains/Chain/ChainNew/index.js`, tests.
+
+Rebase notes: The `chains:lookup` entry sits next to `tray:addChain` in each registry.
+
+Upstream-PR candidate: no.

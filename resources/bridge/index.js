@@ -43,7 +43,7 @@ window.addEventListener(
           const result =
             data.args[0] === 'tray:revokeAccess'
               ? { success: false, uncertain: true, error: 'Revocation confirmation is unavailable' }
-              : ['tokens:save', 'tray:addChain'].includes(data.args[0])
+              : ['chains:lookup', 'tokens:save', 'tray:addChain'].includes(data.args[0])
                 ? { success: false, error: 'Main IPC invocation failed' }
                 : {}
           postToRenderer({

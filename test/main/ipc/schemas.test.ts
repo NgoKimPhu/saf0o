@@ -1237,3 +1237,22 @@ describe('contract verification renderer IPC', () => {
     ).toBe(false)
   })
 })
+
+test('chains:lookup takes a numeric chain id and returns bounded data', () => {
+  expect(parseRendererIpcArgs('invoke', 'chains:lookup', [56]).success).toBe(true)
+  expect(parseRendererIpcArgs('invoke', 'chains:lookup', ['56']).success).toBe(false)
+  const chain = {
+    id: 56,
+    name: 'BNB',
+    symbol: 'BNB',
+    nativeCurrencyName: 'BNB',
+    nativeCurrencyDecimals: 18,
+    explorer: '',
+    isTestnet: false,
+    rpcUrls: ['https://a.example']
+  }
+  expect(parseRendererInvokeResult('chains:lookup', { success: true, chain }).success).toBe(true)
+  expect(
+    parseRendererInvokeResult('chains:lookup', { success: true, chain: { ...chain, rpcUrls: [] } }).success
+  ).toBe(false)
+})

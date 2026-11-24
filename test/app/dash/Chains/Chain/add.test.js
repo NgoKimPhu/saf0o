@@ -268,3 +268,28 @@ describe('PublicNode presets', () => {
     }
   })
 })
+
+test('looks up a chain id on chainlist.org and fills every field and RPC', async () => {
+  link.invoke.mockResolvedValueOnce({
+    success: true,
+    chain: {
+      id: 56,
+      name: 'BNB Smart Chain',
+      symbol: 'BNB',
+      nativeCurrencyName: 'BNB',
+      nativeCurrencyDecimals: 18,
+      explorer: 'https://bscscan.com',
+      isTestnet: false,
+      rpcUrls: ['https://a.example', 'https://b.example']
+    }
+  })
+  const { user } = render(<Chain view='setup' {...polygon} id='' name='' symbol='' rpcUrls={['']} />)
+
+  await user.type(screen.getByLabelText('Look up on chainlist.org'), '56')
+  await user.click(screen.getByRole('button', { name: 'Look up' }))
+
+  expect(link.invoke).toHaveBeenCalledWith('chains:lookup', 56)
+  expect(await screen.findByDisplayValue('BNB Smart Chain')).toBeTruthy()
+  expect(screen.getByLabelText('RPC URL 2').value).toBe('https://b.example')
+  expect(screen.getByLabelText('Block explorer').value).toBe('https://bscscan.com')
+})

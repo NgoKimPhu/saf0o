@@ -933,6 +933,7 @@ const invokeSchemas = {
   'send:queueSweep': z.tuple([SweepQueueRequestSchema]),
   'send:resolveRecipient': z.tuple([z.string().trim().min(1).max(255)]),
   'tokens:save': z.tuple([TokenSchema, AssetSuggestionReferenceSchema.optional()]),
+  'chains:lookup': z.tuple([ChainNumberSchema]),
   'tray:addChain': z.tuple([AddChainSchema, AddChainRequestReferenceSchema.nullish()]),
   'tray:continueContractVerification': z.tuple([ContractVerificationRequestReferenceSchema]),
   'tray:getTokenDetails': z.tuple([AddressSchema, ChainNumberSchema]),
@@ -1163,6 +1164,26 @@ const invokeResultSchemas = {
   ]),
   'tokens:save': z.union([
     z.object({ success: z.literal(true) }).strict(),
+    z.object({ success: z.literal(false), error: z.string().min(1).max(240) }).strict()
+  ]),
+  'chains:lookup': z.union([
+    z
+      .object({
+        success: z.literal(true),
+        chain: z
+          .object({
+            id: ChainNumberSchema,
+            name: z.string().max(128),
+            symbol: z.string().max(32),
+            nativeCurrencyName: z.string().max(128),
+            nativeCurrencyDecimals: z.number().int().min(0).max(255),
+            explorer: z.string().max(2048),
+            isTestnet: z.boolean(),
+            rpcUrls: z.array(z.string().max(2048)).min(1).max(5)
+          })
+          .strict()
+      })
+      .strict(),
     z.object({ success: z.literal(false), error: z.string().min(1).max(240) }).strict()
   ]),
   'tray:addChain': z.union([

@@ -17,6 +17,7 @@ import store from './store'
 import './egress/runtime'
 import { requireStoreAction } from './store/action'
 import { addRequestedChain } from './chains/addRequestedChain'
+import { lookupChain } from './chains/lookup'
 import dapps from './dapps'
 import accounts from './accounts'
 import provider from './provider'
@@ -369,6 +370,11 @@ handleRenderer('tray:addChain', async (e, chain, requestReference) => {
     log.warn('Could not add requested chain', error)
     return { success: false, error: (error as Error).message }
   }
+})
+
+handleRenderer('chains:lookup', async (e, chainId) => {
+  const result = await lookupChain(chainId)
+  return 'error' in result ? { success: false, error: result.error } : { success: true, chain: result }
 })
 
 handleRenderer('tray:getTokenDetails', async (e, contractAddress, chainId) => {

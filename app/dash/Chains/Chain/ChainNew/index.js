@@ -92,6 +92,9 @@ export const Chain = ({
   const [endpointTouched, setEndpointTouched] = useState({})
   const [submissionError, setSubmissionError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [lookupId, setLookupId] = useState('')
+  const [lookupStatus, setLookupStatus] = useState('')
+  const [looking, setLooking] = useState(false)
   const submissionErrorRef = useRef(null)
 
   useEffect(() => {
@@ -207,6 +210,35 @@ export const Chain = ({
     setEndpointTouched({})
   }
 
+  const lookupChain = async () => {
+    const chainId = Number(lookupId)
+    if (!Number.isSafeInteger(chainId) || chainId <= 0) return setLookupStatus('Enter a valid Chain ID.')
+    if (existingChains.includes(chainId))
+      return setLookupStatus('A network with this Chain ID already exists.')
+    setLooking(true)
+    setLookupStatus('')
+    const result = await link.invoke('chains:lookup', chainId).catch(() => ({ success: false }))
+    setLooking(false)
+    if (!result.success) return setLookupStatus(result.error || 'Couldn’t look up this Chain ID.')
+    const { chain } = result
+    setName(chain.name)
+    setChainId(String(chain.id))
+    setSymbol(chain.symbol)
+    setNativeCurrencyName(chain.nativeCurrencyName)
+    setDecimals(chain.nativeCurrencyDecimals)
+    setExplorer(chain.explorer)
+    setTestnet(chain.isTestnet)
+    const items = chain.rpcUrls.map((url, index) => ({
+      ...endpoints[0],
+      id: `rpc-${index + 1}`,
+      custom: url
+    }))
+    setEndpoints(items)
+    setEndpointValues(Object.fromEntries(items.map((item) => [item.id, item.custom])))
+    setEndpointTouched({})
+    setLookupStatus('Filled from chainlist.org. Check the details before adding.')
+  }
+
   const moveEndpoint = (endpointId, offset) => {
     setEndpoints((items) => {
       const index = items.findIndex((endpoint) => endpoint.id === endpointId)
@@ -268,6 +300,26 @@ export const Chain = ({
                 ))}
             </select>
           </label>
+        )}
+        {!requestReference && (
+          <div className='networkEditorWide'>
+            <NetworkEditorField
+              label='Look up on chainlist.org'
+              value={lookupId}
+              technical
+              inputMode='numeric'
+              status={lookupStatus}
+              onChange={setLookupId}
+            />
+            <button
+              type='button'
+              className='networkEditorInput saf0oInput'
+              disabled={!lookupId || looking}
+              onClick={lookupChain}
+            >
+              {looking ? 'Looking up…' : 'Look up'}
+            </button>
+          </div>
         )}
         <div className='networkEditorGrid'>
           <NetworkEditorField label='Network name' value={currentName} onChange={setName} />
