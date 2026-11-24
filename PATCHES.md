@@ -239,14 +239,20 @@ Commit: the `saf0o: simulate through dRPC` commit.
 Intent: Most RPCs lack `debug_traceCall`, so the review lost native (ETH) balance changes. Simulation calls now go to
 `lb.drpc.org` with imported keys, tried in rotation. A key that reports code 10 (balance used up) or 429 cools down for an
 hour or 30 s. A key that reports code 4 (invalid or expired) is skipped the same way. The keyless endpoint is the last dRPC attempt,
-but dRPC now rejects it with code 4. When dRPC cannot answer, and for chains it does not serve, the configured RPC runs. The review shows why native changes are missing when the trace does not run.
+but dRPC now rejects it with code 4. When dRPC cannot answer, and for chains it does not serve, the configured RPC runs.
+The review shows why native changes are missing when the trace does not run.
+
+A failed execution check shows its RPC reason in the "Execution Check Failed" dialog and logs it
+(`transaction simulation failed`). `redactRpcReason` strips URLs and key-like tokens and caps the text at 160 characters.
+`eth_call` and the traces raise a fee cap under the execution block's base fee to that base fee (`buildEthCall`), because
+the base fee can pass the cap while the review is open. The fee fields stay in the call.
 
 Privacy: the pending request, including the sending account, goes to dRPC. Keys live in the profile store in plaintext
 (`main.simulationRpcKeys`), like custom RPC URLs, and are imported in Settings. The log never records a key or URL.
 
 Files: `main/transaction/simulationRpc.ts` (new), `viaSimulationRpc` wrapped around `send` at five simulation call sites in
 `main/accounts/Account/index.ts` and `main/provider/index.ts`, `setSimulationRpcKeys` in store and IPC schemas,
-`lb.drpc.org` in `main/egress`, a Settings block in `app/dash/Settings`.
+`lb.drpc.org` in `main/egress`, a Settings block in `app/dash/Settings` (Advanced tab, under the Etherscan key).
 
 Rebase notes: A new upstream simulation call site needs the same wrapper. Signing-time code checks stay on the configured RPC.
 
@@ -273,5 +279,51 @@ Files: `main/tokenImport/*` (new), `createApiKeyStore` factory and `createAlchem
 
 Rebase notes: `credentialStorage.ts` is upstream's. The Etherscan constants became `ETHERSCAN_SPEC` and the schemas became
 `wrapperSchema(spec)` and `payloadSchema(spec)`. Keep the `createEtherscanApiKeyStore` signature.
+
+Upstream-PR candidate: no.
+
+## 18. Legacy gas price predictor
+
+Commit: the `saf0o: predict legacy gas price from block history` commit.
+
+Intent: Chains without a fee market (Arbitrum, Fantom) use `eth_gasPrice`, which the base fee can pass before the
+transaction lands. `GasPricePredictor` tracks the per-block price change with a smoothed trend and a smoothed variance,
+projects 2 blocks ahead and adds 2 standard deviations. The buffer is at least 0.5% and at most 25%. Its state lives on
+`ChainConnection`, because `GasMonitor` is new for every block. `getGasPrices` still returns the raw price.
+
+Files: `main/transaction/gasPricePredictor.ts` (new), the legacy branch of `_createBlockMonitor` in `main/chains/index.js`.
+
+Rebase notes: Keep the predictor call in the branch where no fee market loads.
+
+Upstream-PR candidate: maybe.
+
+## 19. Transaction recheck pacing
+
+Commit: the `saf0o: recheck a submitted tx` and `saf0o: pace transaction rechecks` commits.
+
+Intent: The lifecycle runtime checked a new transaction once, before an Arbitrum block could include it, then waited for
+the 15 s sweep. The UI stayed on "Submitted". While the operation is `submitted` or `reorged`, `reconcile` now retries for
+20 s of wall time. The delay is the chain's cached block time, clamped to 250 ms to 5 s, or 1 s with no sample.
+`main/chains/blockTime.ts` keeps the cache in memory. It averages over spans of at least 10 s of header time, because
+headers have 1 s resolution. A chain has no sample for about 10 s after start.
+
+Files: `main/chains/blockTime.ts` (new), `main/operationLifecycle/runtime.ts`, `recordBlock` call in the `data` handler of
+`main/chains/index.js`.
+
+Rebase notes: Keep the `recordBlock` call in the block monitor `data` handler.
+
+Upstream-PR candidate: maybe.
+
+## 20. Save contract from the review
+
+Commit: the `saf0o: save the called contract to Contacts` commit.
+
+Intent: A "Save contract" button on the Contract row of a transaction request adds the contract to Contacts through the
+existing `addressBook:save` channel. It shows only for contracts not in Contacts. The name is `Contract 0x12345678`, not the
+reputation label, because remote labels are attacker-chosen. Wallet-calls requests do not have the button.
+
+Files: `app/tray/Account/Requests/TransactionRequest/TxRecipient/index.js`.
+
+Rebase notes: none.
 
 Upstream-PR candidate: no.
