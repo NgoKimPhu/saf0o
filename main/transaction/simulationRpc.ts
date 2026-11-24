@@ -81,6 +81,7 @@ async function request(
       // timeout or network failure: try the next key
     }
   }
+  return undefined
 }
 
 // Routes simulation reads to dRPC so debug_traceCall is available. Chains without a dRPC network, and
