@@ -59,6 +59,8 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 - App icons: replace `asset/brand/saf0o-app-icon-master.png`, then run `pnpm run brand:generate` (it needs Electron). In the sandbox the
   brand sheet and X header render blank, so `git restore` those two files.
 - Companion icons: `node scripts/generate-companion-icons.mjs <companion checkout>` after the master changes.
+  It does not touch the EIP-6963 icon: re-embed `src/icons/icon128.png` in the companion's `src/provider-info.js` and update the
+  hash in `test/provider-info.test.js`.
 - Main-process tests write under `$HOME`. Set `HOME` to a scratch directory in a sandbox.
 - Every `test/main` suite passes offline and without an Electron binary. Pass `./test/main` as a path, never
   `--roots=test/main`: that override hides `test/__mocks__` (`child_process`, `@trezor/connect`), so `worker` and
