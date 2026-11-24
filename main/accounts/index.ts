@@ -1941,6 +1941,12 @@ export class Accounts extends EventEmitter {
         }
       })
 
+    try {
+      provider.requestAccessAfterAccountSwitch()
+    } catch (error) {
+      log.warn('Could not request dapp access after account switch', (error as Error).message)
+    }
+
     // If the account has any current requests, make sure fees are current
     this.updatePendingFees()
   }

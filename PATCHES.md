@@ -361,3 +361,18 @@ Files: `app/tray/AccountSelector/AccountController/index.js`, `app/tray/AccountS
 Rebase notes: Upstream tests that query the row button by name need an anchored regex, such as `/^Garden/`.
 
 Upstream-PR candidate: maybe.
+
+## 23. Ask dapp access after an account switch
+
+Commit: the `saf0o: ask dapp access after an account switch` commit.
+
+Intent: Switching to an account a connected dapp has no permission for made `accountsChanged` and `eth_accounts` return `[]`,
+so dapps failed sign-in with "No accounts found". `provider.requestAccessAfterAccountSwitch()` now opens the normal access
+prompt for subscribed origins that hold a permission on another account but not on the new one. Dapps never connected get no
+prompt. Revocations do not re-prompt: only `accounts.setSigner` calls it.
+
+Files: `main/provider/index.ts`, `main/accounts/index.ts`, `test/main/provider/index.test.js`.
+
+Rebase notes: none.
+
+Upstream-PR candidate: no.

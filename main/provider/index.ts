@@ -461,6 +461,35 @@ export class Provider extends EventEmitter {
     })
   }
 
+  // After an account switch, ask for access on behalf of dapps that are connected to another account but not
+  // to this one. Without it they only see [] and fail sign-in. Dapps never connected get no prompt.
+  requestAccessAfterAccountSwitch() {
+    const address = accounts.getSelectedAddresses()[0]?.toLowerCase()
+    if (!address) return
+
+    const connectedElsewhere = (originId: string) =>
+      Object.entries((store('main.permissions') || {}) as Record<string, Record<string, unknown>>).some(
+        ([account, permissions]) => account.toLowerCase() !== address && originId in (permissions || {})
+      )
+    const originIds = new Set(this.subscriptions.accountsChanged.map(({ originId }) => originId))
+
+    originIds.forEach((originId) => {
+      if (hasSubscriptionPermission(SubscriptionType.ACCOUNTS, address, originId)) return
+      if (!connectedElsewhere(originId)) return
+
+      requestOriginAccess(
+        {
+          id: 0,
+          jsonrpc: '2.0',
+          method: 'eth_requestAccounts',
+          params: [],
+          _origin: originId
+        } as RPCRequestPayload,
+        address as Address
+      ).catch((error) => log.warn('Could not request access after account switch', (error as Error).message))
+    })
+  }
+
   assetsChanged(address: string, assets: RPC.GetAssets.Assets) {
     this.subscriptions.assetsChanged
       .filter((subscription) =>

@@ -5566,6 +5566,39 @@ describe('#send', () => {
       ])
     })
 
+    it('asks access after an account switch only for dapps connected to another account', async () => {
+      // A dapp that only sees [] fails sign-in, so the wallet prompts. Never-connected dapps must not be prompted.
+      const other = '0x00000000000000000000000000000000000000aa'
+      store.set('main.origins', 'connected-origin', { name: 'dapp.test', chain: { id: 1, type: 'ethereum' } })
+      store.set('main.origins', 'new-origin', { name: 'new.test', chain: { id: 1, type: 'ethereum' } })
+      store.set('main.permissions', other, { 'connected-origin': { handlerId: 'connected-origin' } })
+      provider.subscriptions.accountsChanged = [
+        { id: 's1', originId: 'connected-origin' },
+        { id: 's2', originId: 'new-origin' }
+      ]
+      hasSubscriptionPermission.mockReturnValue(false)
+
+      provider.requestAccessAfterAccountSwitch()
+      for (let i = 0; i < 10; i++) await Promise.resolve()
+
+      expect(accountRequests.map((req) => req.origin)).toEqual(['connected-origin'])
+      expect(accountRequests[0]).toMatchObject({ type: 'access', account: address })
+    })
+
+    it('does not prompt dapps that already have access to the new account', async () => {
+      store.set('main.origins', 'connected-origin', { name: 'dapp.test', chain: { id: 1, type: 'ethereum' } })
+      store.set('main.permissions', '0x00000000000000000000000000000000000000aa', {
+        'connected-origin': { handlerId: 'connected-origin' }
+      })
+      provider.subscriptions.accountsChanged = [{ id: 's1', originId: 'connected-origin' }]
+      hasSubscriptionPermission.mockReturnValue(true)
+
+      provider.requestAccessAfterAccountSwitch()
+      for (let i = 0; i < 10; i++) await Promise.resolve()
+
+      expect(accountRequests).toEqual([])
+    })
+
     it('publishes a permission change only to the affected origin', () => {
       provider.subscriptions.accountsChanged = [
         { id: 'affected-subscription', originId: 'affected-origin' },
