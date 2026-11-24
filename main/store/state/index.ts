@@ -189,6 +189,7 @@ const mainState = {
   glideSide: main('glideSide', 'right'),
   interfaceScale: normalizeInterfaceScale(main('interfaceScale', 1)),
   windowTransparency: normalizeWindowTransparency(main('windowTransparency', DEFAULT_WINDOW_TRANSPARENCY)),
+  simulationRpcKeys: main('simulationRpcKeys', []),
   showLocalNameWithENS: main('showLocalNameWithENS', false),
   autohide: main('autohide', true),
   metasleuthLabels: main('metasleuthLabels', true),

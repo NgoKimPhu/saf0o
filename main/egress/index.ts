@@ -18,6 +18,7 @@ const staticHosts = new Set([
   'coins.llama.fi',
   'extension.blocksec.com',
   'ipfs.io',
+  'lb.drpc.org',
   'signing.gridpl.us',
   'sourcify.dev',
   'tokens.uniswap.org'

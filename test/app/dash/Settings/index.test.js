@@ -292,6 +292,25 @@ it('shows window transparency at the 30% default and routes changes', () => {
   expect(link.send).toHaveBeenCalledWith('tray:action', 'setWindowTransparency', 85)
 })
 
+it('imports dRPC simulation keys and rejects a malformed line', () => {
+  renderSettings()
+
+  const keys = setting('Simulation RPC keys')
+  const box = within(keys).getByLabelText('dRPC keys')
+  fireEvent.change(box, { target: { value: 'not a key' } })
+  fireEvent.click(within(keys).getByRole('button', { name: 'Import keys' }))
+  expect(within(keys).getByRole('alert')).toBeTruthy()
+  expect(link.send).not.toHaveBeenCalledWith('tray:action', 'setSimulationRpcKeys', expect.anything())
+
+  fireEvent.change(box, { target: { value: `${'a'.repeat(20)}\n${'b'.repeat(20)}\n` } })
+  fireEvent.click(within(keys).getByRole('button', { name: 'Import keys' }))
+  expect(link.send).toHaveBeenCalledWith('tray:action', 'setSimulationRpcKeys', [
+    'a'.repeat(20),
+    'b'.repeat(20)
+  ])
+  expect(box.value).toBe('')
+})
+
 it('keeps app identity, license, and reset actions in About', async () => {
   const { user } = renderSettings()
   const about = screen.getByRole('region', { name: 'About' })

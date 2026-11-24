@@ -53,6 +53,7 @@ import {
   simulateTransaction,
   simulateWalletCalls
 } from '../../transaction/simulation'
+import { viaSimulationRpc } from '../../transaction/simulationRpc'
 import { snapshotWalletCalls } from '../../provider/walletCallExecution'
 import { prepareWalletCallBatch, type PreparedWalletCallBatch } from '../../provider/walletCallPreparation'
 import {
@@ -1222,7 +1223,9 @@ class FrameAccount {
 
       const simulationData = candidateData || req.data
       simulateTransaction(simulationData, {
-        send: (payload, callback, targetChain) => provider.connection.send(payload, callback, targetChain),
+        send: viaSimulationRpc((payload, callback, targetChain) =>
+          provider.connection.send(payload, callback, targetChain)
+        ),
         onCoreResult: (simulation) => {
           if (candidateData) return
           const knownRequest = this.requests[req.handlerId]
@@ -1299,7 +1302,9 @@ class FrameAccount {
         from: req.account
       }))
       simulateWalletCalls(calls, {
-        send: (payload, callback, targetChain) => provider.connection.send(payload, callback, targetChain)
+        send: viaSimulationRpc((payload, callback, targetChain) =>
+          provider.connection.send(payload, callback, targetChain)
+        )
       })
         .then((simulation) => {
           const knownRequest = this.requests[req.handlerId]

@@ -163,6 +163,12 @@ module.exports = {
     if (Number.isInteger(percent) && percent >= 0 && percent <= MAX_WINDOW_TRANSPARENCY)
       u('main.windowTransparency', () => percent)
   },
+  // Keys are secrets: import replaces the whole list, and anything malformed is ignored.
+  setSimulationRpcKeys: (u, keys) => {
+    if (!Array.isArray(keys) || keys.length > 32) return
+    if (!keys.every((key) => typeof key === 'string' && /^[A-Za-z0-9_-]{16,128}$/u.test(key))) return
+    u('main.simulationRpcKeys', () => [...new Set(keys)])
+  },
   setInterfaceScaleEffective: (u, scale) => {
     if ([1, 1.25, 1.5].includes(scale)) u('view.interfaceScaleEffective', () => scale)
   },

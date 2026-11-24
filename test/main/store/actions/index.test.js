@@ -34,6 +34,7 @@ import {
   setInterfaceScale as setInterfaceScaleAction,
   setInterfaceScaleEffective as setInterfaceScaleEffectiveAction,
   setWindowTransparency as setWindowTransparencyAction,
+  setSimulationRpcKeys as setSimulationRpcKeysAction,
   showAccountActivity as showAccountActivityAction
 } from '../../../../main/store/actions'
 import { toTokenId } from '../../../../resources/domain/balance'
@@ -2191,4 +2192,32 @@ it('merges late Saf0o references without removing another account’s observed t
     }
   )
   expect(state['main.activity']).toEqual([{ account: recipient, chainId: 1, observed: { hash } }])
+})
+
+describe('#setSimulationRpcKeys', () => {
+  const key = (c) => c.repeat(20)
+
+  // Keys are secrets sent to a third party: one malformed line must not store a partial list.
+  it('stores a deduplicated list and rejects anything malformed', () => {
+    const update = jest.fn()
+
+    setSimulationRpcKeysAction(update, [key('a'), key('b'), key('a')])
+    setSimulationRpcKeysAction(update, [key('a'), 'short'])
+    setSimulationRpcKeysAction(update, [key('a'), 'has space in it 1234'])
+    setSimulationRpcKeysAction(update, 'not-a-list')
+    setSimulationRpcKeysAction(
+      update,
+      Array.from({ length: 33 }, (_, i) => `${i}`.padStart(20, 'k'))
+    )
+
+    expect(update).toHaveBeenCalledTimes(1)
+    expect(update.mock.calls[0][0]).toBe('main.simulationRpcKeys')
+    expect(update.mock.calls[0][1]()).toEqual([key('a'), key('b')])
+  })
+
+  it('clears the list with an empty array', () => {
+    const update = jest.fn()
+    setSimulationRpcKeysAction(update, [])
+    expect(update.mock.calls[0][1]()).toEqual([])
+  })
 })

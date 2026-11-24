@@ -731,6 +731,15 @@ test('dispatches only recognized store actions with validated arguments', () => 
   expect(parse('event', 'tray:action', ['setInterfaceScale', 1.25])).toEqual(['setInterfaceScale', 1.25])
   expect(parseRendererIpcArgs('event', 'tray:action', ['setInterfaceScale', 2]).success).toBe(false)
   // The slider sent this action but main rejected it as unrecognized, so it did nothing.
+  const key = 'k'.repeat(20)
+  expect(parse('event', 'tray:action', ['setSimulationRpcKeys', [key]])).toEqual([
+    'setSimulationRpcKeys',
+    [key]
+  ])
+  expect(parse('event', 'tray:action', ['setSimulationRpcKeys', []])).toEqual(['setSimulationRpcKeys', []])
+  for (const bad of [['short'], [key, 1], 'k', Array.from({ length: 33 }, () => key)]) {
+    expect(parseRendererIpcArgs('event', 'tray:action', ['setSimulationRpcKeys', bad]).success).toBe(false)
+  }
   expect(parse('event', 'tray:action', ['setWindowTransparency', 0])).toEqual(['setWindowTransparency', 0])
   expect(parse('event', 'tray:action', ['setWindowTransparency', 100])).toEqual([
     'setWindowTransparency',

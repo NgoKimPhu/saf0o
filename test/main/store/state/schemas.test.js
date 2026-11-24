@@ -60,6 +60,12 @@ describe('persisted state schema compatibility', () => {
     expect(() => MainSchema.shape.interfaceScale.parse(2)).toThrow()
   })
 
+  it('defaults simulation RPC keys to none and rejects a malformed key', () => {
+    expect(MainSchema.shape.simulationRpcKeys.parse(undefined)).toEqual([])
+    expect(MainSchema.shape.simulationRpcKeys.parse(['k'.repeat(20)])).toEqual(['k'.repeat(20)])
+    expect(() => MainSchema.shape.simulationRpcKeys.parse(['bad key'])).toThrow()
+  })
+
   it('defaults window transparency to 30 and rejects out-of-range values', () => {
     expect(MainSchema.shape.windowTransparency.parse(undefined)).toBe(30)
     expect(MainSchema.shape.windowTransparency.parse(0)).toBe(0)

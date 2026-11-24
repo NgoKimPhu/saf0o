@@ -69,6 +69,8 @@ jest.mock('../../../main/provider/walletCallEvidenceRuntime', () => ({
   default: { wake: jest.fn() }
 }))
 jest.mock('../../../main/provider/walletCallStatusView', () => ({ showWalletCallStatus: jest.fn() }))
+// Simulation transport is covered in simulationRpc.test; here simulations use the mocked connection.
+jest.mock('../../../main/transaction/simulationRpc', () => ({ viaSimulationRpc: (send) => send }))
 // These tests use opaque fake signed bytes to exercise broadcast/lifecycle handling.
 // Signed-vs-reviewed verification is covered in signAndSendVerification.test.js.
 jest.mock('../../../main/provider/walletCallPreparedExecution', () => ({

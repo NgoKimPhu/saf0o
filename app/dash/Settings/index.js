@@ -128,6 +128,8 @@ export class Settings extends Component {
     this.recentClearTriggerRef = createRef()
     this.recentClearCancelRef = createRef()
     this.state = {
+      simulationKeysDraft: '',
+      simulationKeysError: false,
       category: props.data?.category || 'general',
       latticeEndpoint,
       latticeEndpointMode,
@@ -420,7 +422,20 @@ export class Settings extends Component {
     )
   }
 
+  importSimulationKeys() {
+    const keys = this.state.simulationKeysDraft
+      .split(/\s+/u)
+      .map((key) => key.trim())
+      .filter(Boolean)
+    if (!keys.length || !keys.every((key) => /^[A-Za-z0-9_-]{16,128}$/u.test(key)) || keys.length > 32) {
+      return this.setState({ simulationKeysError: true })
+    }
+    link.send('tray:action', 'setSimulationRpcKeys', keys)
+    this.setState({ simulationKeysDraft: '', simulationKeysError: false })
+  }
+
   render() {
+    const simulationKeyCount = (this.store('main.simulationRpcKeys') || []).length
     const summonShortcut = this.store('main.shortcuts.summon')
     const platform = this.store('platform')
     const requestedInterfaceScale = this.store('main.interfaceScale') || 1
@@ -597,6 +612,49 @@ export class Settings extends Component {
               <div className='signerPermissionDetails'>
                 <span>Hide Saf0o when it loses focus.</span>
               </div>
+            </div>
+            <div className='signerPermission localSetting' style={{ zIndex: 212 }}>
+              <div className='signerPermissionControls'>
+                <div className='signerPermissionSetting'>Simulation RPC keys</div>
+                <output>{simulationKeyCount ? `${simulationKeyCount} imported` : 'Public dRPC'}</output>
+              </div>
+              <div className='signerPermissionDetails'>
+                <span>
+                  Pending transactions are simulated through dRPC to show native balance changes. The request
+                  details, including the sending account, go to dRPC. Paste one key per line; Saf0o rotates
+                  through them. Without keys it uses the public endpoint.
+                </span>
+              </div>
+              <textarea
+                className='saf0oInput'
+                aria-label='dRPC keys'
+                rows={3}
+                spellCheck={false}
+                autoComplete='off'
+                value={this.state.simulationKeysDraft}
+                onChange={(e) =>
+                  this.setState({ simulationKeysDraft: e.target.value, simulationKeysError: false })
+                }
+              />
+              {this.state.simulationKeysError ? (
+                <div role='alert'>Each line must be one dRPC key (16 to 128 letters, digits, - or _).</div>
+              ) : null}
+              <button
+                type='button'
+                className='saf0oControl saf0oControlGhost'
+                onClick={() => this.importSimulationKeys()}
+              >
+                Import keys
+              </button>
+              {simulationKeyCount ? (
+                <button
+                  type='button'
+                  className='saf0oControl saf0oControlGhost'
+                  onClick={() => link.send('tray:action', 'setSimulationRpcKeys', [])}
+                >
+                  Remove all keys
+                </button>
+              ) : null}
             </div>
             <div className='signerPermission localSetting' style={{ zIndex: 212 }}>
               <div className='signerPermissionControls'>

@@ -231,3 +231,23 @@ Rebase notes: Keep `./egress/install` the first import of `main/index.ts`. A new
 `staticHosts`, or it logs as unlisted.
 
 Upstream-PR candidate: maybe.
+
+## 16. Simulation through dRPC
+
+Commit: the `saf0o: simulate through dRPC` commit.
+
+Intent: Most RPCs lack `debug_traceCall`, so the review lost native (ETH) balance changes. Simulation calls now go to
+`lb.drpc.org` with imported keys, tried in rotation. A key that reports code 10 (balance used up) or 429 cools down for an
+hour or 30 s. The public endpoint is the last attempt, so a request is always answered. Chains dRPC does not serve use the
+configured RPC. The review shows why native changes are missing when the trace does not run.
+
+Privacy: the pending request, including the sending account, goes to dRPC. Keys live in the profile store in plaintext
+(`main.simulationRpcKeys`), like custom RPC URLs, and are imported in Settings. The log never records a key or URL.
+
+Files: `main/transaction/simulationRpc.ts` (new), `viaSimulationRpc` wrapped around `send` at five simulation call sites in
+`main/accounts/Account/index.ts` and `main/provider/index.ts`, `setSimulationRpcKeys` in store and IPC schemas,
+`lb.drpc.org` in `main/egress`, a Settings block in `app/dash/Settings`.
+
+Rebase notes: A new upstream simulation call site needs the same wrapper. Signing-time code checks stay on the configured RPC.
+
+Upstream-PR candidate: no.

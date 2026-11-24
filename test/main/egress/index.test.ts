@@ -46,9 +46,10 @@ test('enforce mode passes loopback, listed services and runtime RPC hosts', () =
   new net.Socket().connect({ host: 'api.github.com', port: 443 })
   new net.Socket().connect({ host: 'ethereum-rpc.publicnode.com', port: 443 })
   new net.Socket().connect({ host: 'rpc.custom.example', port: 443 })
+  new net.Socket().connect({ host: 'lb.drpc.org', port: 443 })
   new net.Socket().connect({ path: '/tmp/ipc.sock' })
 
-  expect(reached).toHaveBeenCalledTimes(5)
+  expect(reached).toHaveBeenCalledTimes(6)
 })
 
 // The guard must block without any setup; log-only is an explicit opt-out.

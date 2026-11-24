@@ -81,6 +81,7 @@ import { isUnsafeRpcForwardingMethod, unsupportedRawTransactionFamily } from './
 import { getRequestSignal, inheritRequestSignal } from './requestSignal'
 import { summarizeRpcError } from '../security/rpcLogging'
 import { isRecoverableAccountCodeEvidenceError, simulateWalletCalls } from '../transaction/simulation'
+import { viaSimulationRpc } from '../transaction/simulationRpc'
 import { assertDappGuardrailReviewStable, guardrailWarningData, reviewDappGuardrail } from './dappGuardrails'
 import {
   isCurrentPreAccessSwitchOriginAuthorized,
@@ -1496,7 +1497,9 @@ export class Provider extends EventEmitter {
     const currentPrepared = remainingTransactions[0]
     if (!currentPrepared) throw new ManagedSweepError('managed-sweep-changed', 'Sweep call is unavailable')
     const simulation = await simulateWalletCalls([{ ...currentPrepared }], {
-      send: (payload, callback, targetChain) => this.connection.send(payload, callback, targetChain)
+      send: viaSimulationRpc((payload, callback, targetChain) =>
+        this.connection.send(payload, callback, targetChain)
+      )
     })
     assertManagedSweepSimulationSucceeded(simulation, 1, evidence.tokens[index] ? 1 : 0)
   }
@@ -1553,7 +1556,9 @@ export class Provider extends EventEmitter {
       simulateWalletCalls(
         transactions.map((transaction) => ({ ...transaction })),
         {
-          send: (payload, callback, targetChain) => this.connection.send(payload, callback, targetChain)
+          send: viaSimulationRpc((payload, callback, targetChain) =>
+            this.connection.send(payload, callback, targetChain)
+          )
         }
       )
     ]).catch((error) => {
@@ -1945,7 +1950,11 @@ export class Provider extends EventEmitter {
       simulate: (transactions: readonly TransactionData[]) =>
         simulateWalletCalls(
           transactions.map((transaction) => ({ ...transaction })),
-          { send: (payload, callback, targetChain) => this.connection.send(payload, callback, targetChain) }
+          {
+            send: viaSimulationRpc((payload, callback, targetChain) =>
+              this.connection.send(payload, callback, targetChain)
+            )
+          }
         )
     }
   }

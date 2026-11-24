@@ -63,6 +63,11 @@ const PreferencesSchema = {
     .max(100)
     .default(30)
     .describe('Window background transparency in percent'),
+  simulationRpcKeys: z
+    .array(z.string().regex(/^[A-Za-z0-9_-]{16,128}$/u))
+    .max(32)
+    .default([])
+    .describe('dRPC keys used to simulate transactions, tried in rotation'),
   autohide: z.boolean().default(false).describe('Automatically hide Saf0o when it loses focus'),
   metasleuthLabels: z
     .boolean()
