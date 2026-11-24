@@ -88,9 +88,23 @@ it('uses the configured RPC for a chain dRPC does not serve', async () => {
   expect(fetchMock).not.toHaveBeenCalled()
 })
 
-it('returns an error response when dRPC cannot be reached', async () => {
+// dRPC now rejects the keyless endpoint with code 4. With every key dead, simulation must use the
+// configured RPC, as it did before dRPC, and not report dRPC's token error as the result.
+it('uses the configured RPC when dRPC cannot answer', async () => {
+  const invalid = {
+    status: 200,
+    json: async () => ({
+      id: 1,
+      jsonrpc: '2.0',
+      error: { code: 4, message: 'Your token is invalid or expired' }
+    })
+  }
+  const configured = jest.fn((_p, cb) => cb({ id: 1, jsonrpc: '2.0', result: 'configured' }))
+  fetchMock.mockResolvedValue(invalid)
+  expect((await run(arbitrum, configured)).result).toBe('configured')
+
   fetchMock.mockRejectedValue(new Error('offline'))
-  expect((await run()).error.message).toBe('Simulation RPC unavailable')
+  expect((await run(arbitrum, configured)).result).toBe('configured')
 })
 
 // Keys and URLs can identify the account, so a cooldown warning may name only the network and reason.

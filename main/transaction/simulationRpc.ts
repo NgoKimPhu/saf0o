@@ -53,8 +53,11 @@ const post = async (network: string, key: string | undefined, payload: JSONRPCRe
   return { status: response.status, body }
 }
 
-async function request(network: string, payload: JSONRPCRequestPayload): Promise<RPCResponsePayload> {
-  // The public endpoint is always the last attempt, so spent keys never leave a request unanswered.
+async function request(
+  network: string,
+  payload: JSONRPCRequestPayload
+): Promise<RPCResponsePayload | undefined> {
+  // The keyless endpoint is the last dRPC attempt. If dRPC answers nothing usable, the caller uses the configured RPC.
   const attempts = candidates()
   if (!attempts.includes(undefined)) attempts.push(undefined)
   for (const key of attempts) {
@@ -71,24 +74,23 @@ async function request(network: string, payload: JSONRPCRequestPayload): Promise
         })
         continue
       }
+      // The keyless endpoint rejects everything with code 4 now. Do not return that as the result.
+      if (!key && code === 4) continue
       if (body && typeof body === 'object') return body
     } catch {
       // timeout or network failure: try the next key
     }
   }
-  return {
-    id: payload.id,
-    jsonrpc: payload.jsonrpc,
-    error: { message: 'Simulation RPC unavailable', code: -32000 }
-  } as RPCResponsePayload
 }
 
-// Routes simulation reads to dRPC so debug_traceCall is available. Chains without a dRPC network use
-// the configured RPC.
+// Routes simulation reads to dRPC so debug_traceCall is available. Chains without a dRPC network, and
+// requests dRPC cannot answer, use the configured RPC.
 export const viaSimulationRpc =
   (configured: Send): Send =>
   (payload, callback, targetChain) => {
     const network = DRPC_NETWORKS[targetChain.id]
     if (!network) return configured(payload, callback, targetChain)
-    void request(network, payload).then(callback)
+    void request(network, payload).then((response) =>
+      response ? callback(response) : configured(payload, callback, targetChain)
+    )
   }

@@ -238,8 +238,8 @@ Commit: the `saf0o: simulate through dRPC` commit.
 
 Intent: Most RPCs lack `debug_traceCall`, so the review lost native (ETH) balance changes. Simulation calls now go to
 `lb.drpc.org` with imported keys, tried in rotation. A key that reports code 10 (balance used up) or 429 cools down for an
-hour or 30 s. The public endpoint is the last attempt, so a request is always answered. Chains dRPC does not serve use the
-configured RPC. The review shows why native changes are missing when the trace does not run.
+hour or 30 s. A key that reports code 4 (invalid or expired) is skipped the same way. The keyless endpoint is the last dRPC attempt,
+but dRPC now rejects it with code 4. When dRPC cannot answer, and for chains it does not serve, the configured RPC runs. The review shows why native changes are missing when the trace does not run.
 
 Privacy: the pending request, including the sending account, goes to dRPC. Keys live in the profile store in plaintext
 (`main.simulationRpcKeys`), like custom RPC URLs, and are imported in Settings. The log never records a key or URL.
