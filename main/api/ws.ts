@@ -170,7 +170,11 @@ const nativePairingRequired = {
   message: 'Saf0o requires a paired native protocol 3 client for local requests.'
 } as const
 
+const channelOf = (socket: FrameWebSocket) =>
+  socket.frameExtension ? `ext-${socket.frameExtension.role}` : socket.nativeAuth ? 'native' : 'direct'
+
 const terminateSocket = (socket: FrameWebSocket, code: number, reason: string) => {
+  log.warn('Socket closed by Saf0o', { channel: channelOf(socket), code, reason })
   socket.disposeSession()
   socket.close(code, reason)
 }
@@ -293,6 +297,7 @@ const handler = (
       authDeadline = undefined
       if (payload.step === 'error') terminateSocket(socket, 1008, payload.code)
       if (payload.step === 'authenticated') {
+        log.info('Companion authenticated', { channel: channelOf(socket) })
         registerAuthenticatedExtension(socket, payload.client.fingerprint)
       }
     }
@@ -377,6 +382,7 @@ const handler = (
           () => terminateSocket(socket, 1008, 'Native authentication session expired'),
           Math.max(1, authenticated.expiresAt - Date.now())
         )
+        log.info('Native client authenticated')
         sendResponse({ type: 'saf0o-native-auth', version: 3, ...authenticated })
       } catch {
         terminateSocket(socket, 1008, 'Native authentication failed')
@@ -538,6 +544,10 @@ const handler = (
           ? { provenance: 'internal' as const }
           : { provenance: 'companion' as const, sourceId: socket.extensionFingerprint || '' }
     if ((invoker.provenance === 'companion' || invoker.provenance === 'native') && !invoker.sourceId) {
+      log.warn('Request rejected: peer not authenticated', {
+        channel: channelOf(socket),
+        method: rawPayload.method
+      })
       return res({
         id: rawPayload.id,
         jsonrpc: rawPayload.jsonrpc,
@@ -582,6 +592,11 @@ const handler = (
     if (!trusted) {
       let error = { message: 'Origin is not authorized', code: 4100 }
       if (!accounts.getSelectedAddresses()[0]) error = { message: 'No Saf0o account selected', code: 4100 }
+      log.warn('Request rejected: not trusted', {
+        channel: channelOf(socket),
+        method: payload.method,
+        reason: error.message
+      })
       res({ id: payload.id, jsonrpc: payload.jsonrpc, error })
     } else {
       const params = Array.isArray(payload.params) ? payload.params : []
@@ -690,10 +705,17 @@ export default function (server: Server, options: WebSocketServerOptions = {}) {
     server,
     maxPayload: MAX_REQUEST_BYTES,
     perMessageDeflate: false,
-    verifyClient: ({ req }: { req: IncomingMessage }) =>
-      isAllowedLocalRpcHost(req.headers.host, req.socket.localPort) &&
-      supportedSocketPath(req) &&
-      reservedIdentityRequestValid(req)
+    verifyClient: ({ req }: { req: IncomingMessage }) => {
+      const reason = !isAllowedLocalRpcHost(req.headers.host, req.socket.localPort)
+        ? 'host'
+        : !supportedSocketPath(req)
+          ? 'path'
+          : !reservedIdentityRequestValid(req)
+            ? 'identity'
+            : undefined
+      if (reason) log.warn('WebSocket upgrade refused', { reason })
+      return !reason
+    }
   })
   ws.on('connection', (socket: FrameWebSocket, req: IncomingMessage) => {
     if (clients.size >= maxClients) {
