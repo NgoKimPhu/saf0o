@@ -222,6 +222,31 @@ describe('confirm', () => {
     expect(screen.getByText('Recipient Account')).toBeTruthy()
   })
 
+  // Users re-use the same dapp contracts, so the review offers to keep one without a trip to Contacts.
+  // Only contracts get the button, and a remote label must never become the saved name.
+  it('saves the called contract to Contacts under a neutral name', async () => {
+    const contract = '0x1111111111111111111111111111111111111111'
+    const req = (recipientType) => ({
+      data: { to: contract, value: '0x0' },
+      recipientType,
+      reputation: { signals: { label: { ok: true, value: { name: 'Evil Name' } } } }
+    })
+    const { unmount } = render(<TxRecipient i={0} req={req('external')} />)
+    expect(screen.queryByRole('button', { name: 'Save contract' })).toBeNull()
+    unmount()
+
+    const { user } = render(<TxRecipient i={0} req={req('contract')} />)
+    await user.click(screen.getByRole('button', { name: 'Save contract' }))
+
+    expect(await screen.findByText('Contract saved to Contacts')).toBeTruthy()
+    expect(link.invoke).toHaveBeenCalledWith('addressBook:save', {
+      mode: 'add',
+      address: contract,
+      name: `Contract ${contract.slice(0, 10)}`,
+      note: ''
+    })
+  })
+
   it('does not show a decode failure in ordinary review during an in-flight lookup', () => {
     const recipient = '0x1111111111111111111111111111111111111111'
 

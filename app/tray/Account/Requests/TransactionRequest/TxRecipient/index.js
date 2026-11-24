@@ -23,7 +23,26 @@ class TxRecipient extends React.Component {
   constructor(...args) {
     super(...args)
     this.state = {
-      copied: false
+      copied: false,
+      saved: false,
+      saveError: ''
+    }
+  }
+
+  // Saves the contract to the address book under a neutral name. Remote labels are attacker-chosen,
+  // so none is used. The user renames it in Contacts.
+  async saveContract(address) {
+    try {
+      const result = await link.invoke('addressBook:save', {
+        mode: 'add',
+        address,
+        name: `Contract ${address.slice(0, 10)}`,
+        note: ''
+      })
+      if (!result?.success) throw new Error(result?.error || 'Contract could not be saved')
+      this.setState({ saved: true, saveError: '' })
+    } catch (error) {
+      this.setState({ saveError: error instanceof Error ? error.message : 'Contract could not be saved' })
     }
   }
 
@@ -90,6 +109,25 @@ class TxRecipient extends React.Component {
             </ClusterValue>
             <ClusterStatus>{this.state.copied ? 'Transaction recipient address copied' : ''}</ClusterStatus>
           </ClusterRow>
+
+          {req.recipientType === 'contract' && (!localIdentity || this.state.saved) ? (
+            <ClusterRow>
+              <ClusterValue>
+                {this.state.saved ? (
+                  <div className='clusterTag'>Contract saved to Contacts</div>
+                ) : (
+                  <button
+                    type='button'
+                    className='saf0oControl saf0oControlGhost'
+                    onClick={() => this.saveContract(address)}
+                  >
+                    Save contract
+                  </button>
+                )}
+                {this.state.saveError ? <div role='alert'>{this.state.saveError}</div> : null}
+              </ClusterValue>
+            </ClusterRow>
+          ) : null}
 
           {this.props.technical && req.decodedData && req.decodedData.method ? (
             <ClusterRow>
