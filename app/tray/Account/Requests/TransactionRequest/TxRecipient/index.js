@@ -112,7 +112,7 @@ class TxRecipient extends React.Component {
 
           {req.recipientType === 'contract' && (!localIdentity || this.state.saved) ? (
             <ClusterRow>
-              <ClusterValue>
+              <ClusterValue pointerEvents={true}>
                 {this.state.saved ? (
                   <div className='clusterTag'>Contract saved to Contacts</div>
                 ) : (

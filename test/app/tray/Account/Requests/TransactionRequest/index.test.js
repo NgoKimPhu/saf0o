@@ -236,7 +236,10 @@ describe('confirm', () => {
     unmount()
 
     const { user } = render(<TxRecipient i={0} req={req('contract')} />)
-    await user.click(screen.getByRole('button', { name: 'Save contract' }))
+    // Cluster CSS sets pointer-events none on every child unless the value opts in, which made the button dead.
+    const saveButton = screen.getByRole('button', { name: 'Save contract' })
+    expect(saveButton.closest('.clusterValue').classList.contains('clusterValueInteractable')).toBe(true)
+    await user.click(saveButton)
 
     expect(await screen.findByText('Contract saved to Contacts')).toBeTruthy()
     expect(link.invoke).toHaveBeenCalledWith('addressBook:save', {
