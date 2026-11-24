@@ -469,6 +469,25 @@ describe('confirm', () => {
     expect(notice.textContent).toBe('confirming')
   })
 
+  // Contract data is the most useful detail to check, so it must not hide inside the collapsed disclosure.
+  it('shows the contract data row outside Advanced details, directly above it', () => {
+    const req = {
+      account,
+      handlerId: 'data-row-review',
+      type: 'transaction',
+      data: { chainId: '0x89' },
+      classification: TxClassification.NATIVE_TRANSFER
+    }
+
+    addRequest(req)
+    render(<TxRequest req={req} step='confirm' />)
+
+    const row = screen.getByRole('button', { name: 'View transaction data' })
+    const details = document.querySelector('details.signingReviewDetails')
+    expect(details.contains(row)).toBe(false)
+    expect(row.nextElementSibling).toBe(details)
+  })
+
   it('shows exact FIFO context while reviewing one of several pending signatures', () => {
     const req = {
       account,

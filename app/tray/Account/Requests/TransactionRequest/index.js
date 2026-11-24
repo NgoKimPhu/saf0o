@@ -134,6 +134,7 @@ export class TransactionRequest extends React.Component {
                 <TxRecipient i={1} {...this.props} req={req} />
                 {!approval ? actions : null}
                 <ReviewAcknowledgements req={req} readOnly={readOnly} />
+                <TransactionDataRow method={req.decodedData?.method} />
                 <ReviewDetails initiallyOpen={feeInitiallyExpanded}>
                   <TxFee
                     i={2 + recognizedActions.length}
@@ -148,7 +149,6 @@ export class TransactionRequest extends React.Component {
                       <NonceControl req={req} hint='Transaction sequence' readOnly={readOnly} />
                     </div>
                   </div>
-                  <TransactionDataRow method={req.decodedData?.method} />
                   {req.decodedData?.source ? (
                     <div className='signingReviewTechnical'>ABI source: {req.decodedData.source}</div>
                   ) : null}
