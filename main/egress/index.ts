@@ -13,6 +13,7 @@ export const egressMode = (): EgressMode => (process.env['SAF0O_EGRESS'] === 'lo
 
 const staticHosts = new Set([
   'api.etherscan.io',
+  'api.g.alchemy.com',
   'api.geckoterminal.com',
   'api.github.com',
   'coins.llama.fi',

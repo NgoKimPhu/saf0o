@@ -3,10 +3,20 @@ import fs from 'fs'
 import path from 'path'
 import { z } from 'zod'
 
-const CREDENTIAL_FILE = '.etherscan-v2-api-key.json'
-const CREDENTIAL_NAME = 'etherscan-v2-api-key'
-const WRAPPER_FORMAT = 'saf0o-contract-verification-credential'
-const PAYLOAD_FORMAT = 'saf0o-contract-verification-credential-payload'
+// Names one stored API key: its file, credential name and the two format tags written into it.
+export type ApiKeyStoreSpec = Readonly<{
+  file: string
+  name: string
+  wrapperFormat: string
+  payloadFormat: string
+}>
+
+const ETHERSCAN_SPEC: ApiKeyStoreSpec = {
+  file: '.etherscan-v2-api-key.json',
+  name: 'etherscan-v2-api-key',
+  wrapperFormat: 'saf0o-contract-verification-credential',
+  payloadFormat: 'saf0o-contract-verification-credential-payload'
+}
 const VERSION = 1
 const MAX_API_KEY_LENGTH = 128
 const MAX_CIPHERTEXT_BYTES = 16 * 1024
@@ -55,26 +65,28 @@ const Base64Schema = z
   .min(1)
   .max(MAX_CIPHERTEXT_BYTES * 2)
 const SecureBackendSchema = z.enum(['kwallet', 'kwallet5', 'kwallet6', 'secret_service', 'windows_dpapi'])
-const WrapperSchema = z
-  .object({
-    format: z.literal(WRAPPER_FORMAT),
-    version: z.literal(VERSION),
-    name: z.literal(CREDENTIAL_NAME),
-    platform: z.enum(['linux', 'windows']),
-    backend: SecureBackendSchema,
-    ciphertext: Base64Schema
-  })
-  .strict()
-const PayloadSchema = z
-  .object({
-    format: z.literal(PAYLOAD_FORMAT),
-    version: z.literal(VERSION),
-    name: z.literal(CREDENTIAL_NAME),
-    apiKey: ApiKeySchema
-  })
-  .strict()
+const wrapperSchema = (spec: ApiKeyStoreSpec) =>
+  z
+    .object({
+      format: z.literal(spec.wrapperFormat),
+      version: z.literal(VERSION),
+      name: z.literal(spec.name),
+      platform: z.enum(['linux', 'windows']),
+      backend: SecureBackendSchema,
+      ciphertext: Base64Schema
+    })
+    .strict()
+const payloadSchema = (spec: ApiKeyStoreSpec) =>
+  z
+    .object({
+      format: z.literal(spec.payloadFormat),
+      version: z.literal(VERSION),
+      name: z.literal(spec.name),
+      apiKey: ApiKeySchema
+    })
+    .strict()
 
-type StoredWrapper = z.infer<typeof WrapperSchema>
+type StoredWrapper = z.infer<ReturnType<typeof wrapperSchema>>
 
 const canonicalBase64 = (value: string) => {
   if (!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/u.test(value)) {
@@ -166,9 +178,9 @@ const readRegularFile = (fileSystem: FileSystem, source: string, platform: NodeJ
   }
 }
 
-const parseWrapper = (bytes: Buffer): StoredWrapper => {
+const parseWrapper = (bytes: Buffer, schema: ReturnType<typeof wrapperSchema>): StoredWrapper => {
   try {
-    const parsed = WrapperSchema.safeParse(JSON.parse(bytes.toString('utf8')))
+    const parsed = schema.safeParse(JSON.parse(bytes.toString('utf8')))
     if (!parsed.success) throw new Error(STORED_CREDENTIAL_ERROR)
     canonicalBase64(parsed.data.ciphertext).fill(0)
     return parsed.data
@@ -215,19 +227,24 @@ const atomicWrite = (
   }
 }
 
-export const createEtherscanApiKeyStore = (
+export type ApiKeyStoreOptions = {
+  fileSystem?: FileSystem
+  platform?: NodeJS.Platform
+  safeStorage: SafeStorageLike
+}
+
+export const createApiKeyStore = (
   profileRoot: string,
-  options: {
-    fileSystem?: FileSystem
-    platform?: NodeJS.Platform
-    safeStorage: SafeStorageLike
-  }
+  options: ApiKeyStoreOptions,
+  spec: ApiKeyStoreSpec
 ) => {
+  const WrapperSchema = wrapperSchema(spec)
+  const PayloadSchema = payloadSchema(spec)
   const fileSystem = options.fileSystem || fs
   const platform = options.platform || process.platform
   const safeStorage = options.safeStorage
   const root = path.resolve(profileRoot)
-  const credentialPath = path.join(root, CREDENTIAL_FILE)
+  const credentialPath = path.join(root, spec.file)
 
   const hasCredential = () => {
     try {
@@ -268,7 +285,7 @@ export const createEtherscanApiKeyStore = (
 
   const readWrapper = () => {
     try {
-      const wrapper = parseWrapper(readRegularFile(fileSystem, credentialPath, platform))
+      const wrapper = parseWrapper(readRegularFile(fileSystem, credentialPath, platform), WrapperSchema)
       const expectedPlatform = selectedPlatform(platform)
       if (!expectedPlatform || wrapper.platform !== expectedPlatform) {
         throw new Error(STORED_CREDENTIAL_ERROR)
@@ -330,9 +347,9 @@ export const createEtherscanApiKeyStore = (
       if (current.backend !== selected) throw new Error(STORED_CREDENTIAL_ERROR)
     }
     const plaintext = JSON.stringify({
-      format: PAYLOAD_FORMAT,
+      format: spec.payloadFormat,
       version: VERSION,
-      name: CREDENTIAL_NAME,
+      name: spec.name,
       apiKey: parsedKey.data
     })
     let ciphertext: Buffer
@@ -344,9 +361,9 @@ export const createEtherscanApiKeyStore = (
     try {
       const wrapper = Buffer.from(
         `${JSON.stringify({
-          format: WRAPPER_FORMAT,
+          format: spec.wrapperFormat,
           version: VERSION,
-          name: CREDENTIAL_NAME,
+          name: spec.name,
           platform: selectedOs,
           backend: selected,
           ciphertext: ciphertext.toString('base64')
@@ -382,5 +399,18 @@ export const createEtherscanApiKeyStore = (
 
   return Object.freeze({ credentialPath, load, remove, save, status })
 }
+
+export const createEtherscanApiKeyStore = (profileRoot: string, options: ApiKeyStoreOptions) =>
+  createApiKeyStore(profileRoot, options, ETHERSCAN_SPEC)
+
+const ALCHEMY_SPEC: ApiKeyStoreSpec = {
+  file: '.alchemy-api-key.json',
+  name: 'alchemy-api-key',
+  wrapperFormat: 'saf0o-token-import-credential',
+  payloadFormat: 'saf0o-token-import-credential-payload'
+}
+
+export const createAlchemyApiKeyStore = (profileRoot: string, options: ApiKeyStoreOptions) =>
+  createApiKeyStore(profileRoot, options, ALCHEMY_SPEC)
 
 export type EtherscanApiKeyStore = ReturnType<typeof createEtherscanApiKeyStore>

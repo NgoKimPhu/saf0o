@@ -69,6 +69,7 @@ import contractVerification, {
   contractVerificationPollingRuntime
 } from './contractVerification/runtime'
 import { contractVerificationArtifactErrorCode } from './contractVerification/artifactIntake'
+import tokenImport from './tokenImport/runtime'
 import { wakeContractVerificationPollingForActiveResult } from './contractVerification/pollingRuntime'
 import { createSecretClipboard } from './security/secretClipboard'
 import activityDetails from './activity/detailsRuntime'
@@ -505,6 +506,11 @@ handleRenderer('contractVerification:saveCredential', async (e, apiKey) =>
   contractVerification.saveCredential(apiKey)
 )
 handleRenderer('contractVerification:removeCredential', async () => contractVerification.removeCredential())
+handleRenderer('tokenImport:credentialStatus', async () => tokenImport.credentialStatus())
+handleRenderer('tokenImport:saveCredential', async (e, apiKey) => tokenImport.saveCredential(apiKey))
+handleRenderer('tokenImport:removeCredential', async () => tokenImport.removeCredential())
+handleRenderer('tokenImport:preview', async (e, account) => tokenImport.preview(account))
+handleRenderer('tokenImport:save', async (e, account, tokens) => tokenImport.save(account, tokens))
 handleRenderer('tray:continueContractVerification', async (e, request) => {
   const target = accounts.confirmedDeploymentOperation(request.handlerId, request.account)
   return target

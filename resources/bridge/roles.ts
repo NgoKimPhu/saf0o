@@ -46,7 +46,12 @@ const dashboardOnlyInvokeChannels = new Set([
   'contractVerification:removeCredential',
   'contractVerification:reselect',
   'contractVerification:saveCredential',
-  'contractVerification:selectArtifact'
+  'contractVerification:selectArtifact',
+  'tokenImport:credentialStatus',
+  'tokenImport:preview',
+  'tokenImport:removeCredential',
+  'tokenImport:save',
+  'tokenImport:saveCredential'
 ])
 
 const trustedWindowInvokeChannels = new Set(['tray:continueContractVerification'])

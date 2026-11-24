@@ -579,6 +579,24 @@ const ContractVerificationApiKeySchema = z
   .min(16)
   .max(128)
   .regex(/^[A-Za-z0-9_-]+$/)
+const TokenImportCredentialResultSchema = z.union([
+  z.object({ success: z.literal(true), credential: ContractVerificationCredentialSchema }).strict(),
+  z.object({ success: z.literal(false), error: z.string().min(1).max(64) }).strict()
+])
+const TokenImportAddressSchema = z.string().regex(/^0x[0-9a-fA-F]{40}$/)
+const TokenImportRefSchema = z
+  .object({ chainId: z.number().int().positive(), address: TokenImportAddressSchema })
+  .strict()
+const TokenImportCandidateSchema = z
+  .object({
+    chainId: z.number().int().positive(),
+    address: TokenImportAddressSchema,
+    name: z.string().max(64),
+    symbol: z.string().max(24),
+    decimals: z.number().int().min(0).max(36),
+    balance: z.string().regex(/^[0-9]{1,78}$/)
+  })
+  .strict()
 const ContractVerificationServiceFailureSchema = z
   .object({ success: z.literal(false), error: z.enum(CONTRACT_VERIFICATION_SERVICE_ERROR_CODES) })
   .strict()
@@ -818,6 +836,11 @@ const invokeSchemas = {
   'addressBook:remove': z.tuple([AddressBookAddressInputSchema]),
   'addressBook:save': z.tuple([AddressBookSaveRequestSchema]),
   'settings:clearRecentRecipients': z.tuple([z.enum(['disable', 'clear'])]),
+  'tokenImport:credentialStatus': z.tuple([]),
+  'tokenImport:preview': z.tuple([TokenImportAddressSchema]),
+  'tokenImport:removeCredential': z.tuple([]),
+  'tokenImport:save': z.tuple([TokenImportAddressSchema, z.array(TokenImportRefSchema).min(1).max(200)]),
+  'tokenImport:saveCredential': z.tuple([ContractVerificationApiKeySchema]),
   'contractVerification:credentialStatus': z.tuple([]),
   'contractVerification:get': z.tuple([z.uuid()]),
   'contractVerification:inspectArtifact': z.tuple([]),
@@ -959,6 +982,24 @@ const invokeResultSchemas = {
     z.object({ success: z.literal(false), error: z.string().min(1).max(240) }).strict()
   ]),
   'settings:clearRecentRecipients': PrivacyClearResultSchema,
+  'tokenImport:credentialStatus': TokenImportCredentialResultSchema,
+  'tokenImport:preview': z.union([
+    z
+      .object({
+        success: z.literal(true),
+        candidates: z.array(TokenImportCandidateSchema).max(1000),
+        skippedChainIds: z.array(z.number().int().positive()),
+        failedChainIds: z.array(z.number().int().positive())
+      })
+      .strict(),
+    z.object({ success: z.literal(false), error: z.string().min(1).max(64) }).strict()
+  ]),
+  'tokenImport:removeCredential': TokenImportCredentialResultSchema,
+  'tokenImport:save': z.union([
+    z.object({ success: z.literal(true), saved: z.number().int().min(1).max(200) }).strict(),
+    z.object({ success: z.literal(false), error: z.string().min(1).max(64) }).strict()
+  ]),
+  'tokenImport:saveCredential': TokenImportCredentialResultSchema,
   'contractVerification:credentialStatus': z.union([
     z.object({ success: z.literal(true), credential: ContractVerificationCredentialSchema }).strict(),
     ContractVerificationServiceFailureSchema

@@ -5,6 +5,7 @@ import AssetMark from '../../../../resources/Components/AssetMark'
 import DialogSurface from '../../../../resources/Components/DialogSurface'
 import Icon from '../../../../resources/Components/Icon'
 import link from '../../../../resources/link'
+import ImportTokens from '../ImportTokens'
 
 const tokenIdentity = (token) => `${token.chainId}:${token.address.toLowerCase()}`
 const sortTokens = (tokens) =>
@@ -287,6 +288,10 @@ class CustomTokens extends React.Component {
               </div>
             )}
           </div>
+          <ImportTokens
+            account={this.store('selected.current')}
+            chainName={(id) => this.store('main.networks.ethereum', id, 'name') || `Chain ${id}`}
+          />
         </div>
       </div>
     )

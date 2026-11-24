@@ -251,3 +251,27 @@ Files: `main/transaction/simulationRpc.ts` (new), `viaSimulationRpc` wrapped aro
 Rebase notes: A new upstream simulation call site needs the same wrapper. Signing-time code checks stay on the configured RPC.
 
 Upstream-PR candidate: no.
+
+## 17. Token import from Alchemy
+
+Commit: the `saf0o: import tokens from Alchemy` commit.
+
+Intent: Discover an account's ERC-20 holdings once and add the ones the user ticks as custom tokens. The main process calls
+Alchemy's Portfolio API (`tokens/by-address`) with plain `fetch`, one chunk of five networks at a time. Nothing is
+pre-ticked. Tokens already tracked (default list, custom, known) and the default list's blacklist are hidden. Name and
+symbol are stripped of control and bidi characters and capped. Save reads token metadata from the last preview in main, so
+the renderer only names chain id and address.
+
+Privacy: the account address goes to `api.g.alchemy.com`. The API key lives in the OS keyring file
+`.alchemy-api-key.json` (same store as the Etherscan key), is excluded from backups, never reaches the renderer and never
+appears in logs or results. Without a keyring (WSL) the dashboard says so and offers no key field.
+
+Files: `main/tokenImport/*` (new), `createApiKeyStore` factory and `createAlchemyApiKeyStore` in
+`main/contractVerification/credentialStorage.ts`, five `tokenImport:*` channels in `main/ipc/schemas.ts`,
+`resources/bridge/{protocol.js,roles.ts}` and `main/application.ts`, `api.g.alchemy.com` in `main/egress`,
+`app/dash/Tokens/ImportTokens` (new) mounted in `CustomTokens`.
+
+Rebase notes: `credentialStorage.ts` is upstream's. The Etherscan constants became `ETHERSCAN_SPEC` and the schemas became
+`wrapperSchema(spec)` and `payloadSchema(spec)`. Keep the `createEtherscanApiKeyStore` signature.
+
+Upstream-PR candidate: no.
