@@ -17,7 +17,7 @@ test('selects an account from the startup chooser', () => {
   }
 
   render(account.render())
-  fireEvent.click(screen.getByRole('button', { name: /Garden/ }))
+  fireEvent.click(screen.getByRole('button', { name: /^Garden/ }))
 
   expect(link.rpc).toHaveBeenCalledWith('setSigner', id, expect.any(Function))
 })
@@ -101,7 +101,7 @@ test('switches directly from the account drawer without collapsing the account v
   account.store.toggleShowAccounts = jest.fn()
 
   render(account.render())
-  fireEvent.click(screen.getByRole('button', { name: /Hardware/ }))
+  fireEvent.click(screen.getByRole('button', { name: /^Hardware/ }))
 
   expect(account.store.toggleShowAccounts).toHaveBeenCalledWith(false)
   expect(link.rpc).toHaveBeenCalledWith(
@@ -122,8 +122,24 @@ test('closes the drawer when the current account is chosen again', () => {
   account.store.toggleShowAccounts = jest.fn()
 
   render(account.render())
-  fireEvent.click(screen.getByRole('button', { name: /Workshop/ }))
+  fireEvent.click(screen.getByRole('button', { name: /^Workshop/ }))
 
   expect(account.store.toggleShowAccounts).toHaveBeenCalledWith(false)
+  expect(link.rpc).not.toHaveBeenCalled()
+})
+
+test('copies a row address without selecting that account', () => {
+  // The copy button sits beside the row so the address can be copied without switching accounts.
+  const id = '0x0000000000000000000000000000000000000002'
+  const account = new Account({ id, name: 'Garden', status: 'ok', lastSignerType: 'seed' })
+  account.store = (...path) =>
+    path.join('.') === `main.accounts.${id}` ? { address: id, name: 'Garden', requests: {} } : ''
+  link.rpc.mockClear()
+  link.send.mockClear()
+
+  render(account.render())
+  fireEvent.click(screen.getByRole('button', { name: 'Copy address of Garden' }))
+
+  expect(link.send).toHaveBeenCalledWith('tray:clipboardData', expect.stringMatching(/^0x0{39}2$/i))
   expect(link.rpc).not.toHaveBeenCalled()
 })

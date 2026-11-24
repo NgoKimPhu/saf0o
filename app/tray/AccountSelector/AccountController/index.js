@@ -44,35 +44,45 @@ export class Account extends React.Component {
     requests = Object.keys(requests).filter((requestId) => requests[requestId].mode === 'normal')
 
     return (
-      <button
-        type='button'
-        className={current ? 'accountDrawerItem accountDrawerItemSelected' : 'accountDrawerItem'}
-        disabled={status !== 'ok'}
-        aria-current={current ? 'true' : undefined}
-        onClick={() => (drawer ? this.selectFromDrawer() : this.selectFromChooser())}
-      >
-        <span className='accountDrawerItemIcon'>
-          <AccountTypeMark type={lastSignerType} size={18} />
-        </span>
-        <span className='accountDrawerItemIdentity'>
-          <span className='accountDrawerItemName'>{identity.primary}</span>
-          <span className='accountDrawerItemAddress'>
-            {identity.secondary || `${address.substring(0, 8)}…${address.slice(-6)}`}
+      <div className='accountDrawerRow'>
+        <button
+          type='button'
+          className={current ? 'accountDrawerItem accountDrawerItemSelected' : 'accountDrawerItem'}
+          disabled={status !== 'ok'}
+          aria-current={current ? 'true' : undefined}
+          onClick={() => (drawer ? this.selectFromDrawer() : this.selectFromChooser())}
+        >
+          <span className='accountDrawerItemIcon'>
+            <AccountTypeMark type={lastSignerType} size={18} />
           </span>
-        </span>
-        <span className='accountDrawerItemEnd'>
-          {current ? <Icon name='check' size={15} /> : null}
-          {!current && requests.length ? (
-            <span
-              className='accountDrawerRequestCount'
-              role='status'
-              aria-label={`${requests.length} pending account ${requests.length === 1 ? 'request' : 'requests'}`}
-            >
-              {requests.length}
+          <span className='accountDrawerItemIdentity'>
+            <span className='accountDrawerItemName'>{identity.primary}</span>
+            <span className='accountDrawerItemAddress'>
+              {identity.secondary || `${address.substring(0, 8)}…${address.slice(-6)}`}
             </span>
-          ) : null}
-        </span>
-      </button>
+          </span>
+          <span className='accountDrawerItemEnd'>
+            {current ? <Icon name='check' size={15} /> : null}
+            {!current && requests.length ? (
+              <span
+                className='accountDrawerRequestCount'
+                role='status'
+                aria-label={`${requests.length} pending account ${requests.length === 1 ? 'request' : 'requests'}`}
+              >
+                {requests.length}
+              </span>
+            ) : null}
+          </span>
+        </button>
+        <button
+          type='button'
+          className='accountDrawerCopy saf0oControl saf0oControlGhost saf0oControlIcon'
+          aria-label={`Copy address of ${identity.primary}`}
+          onClick={() => link.send('tray:clipboardData', address)}
+        >
+          <Icon name='copy' size={15} />
+        </button>
+      </div>
     )
   }
 

@@ -348,3 +348,16 @@ Files: `main/chains/lookup.ts`, `main/application.ts`, `main/ipc/schemas.ts`, `r
 Rebase notes: The `chains:lookup` entry sits next to `tray:addChain` in each registry.
 
 Upstream-PR candidate: no.
+
+## 22. Copy button on account rows
+
+Commit: the `saf0o: add a copy button to account rows` commit.
+
+Intent: Each row in the account dropdown has a copy button beside it that copies the address without switching accounts.
+It uses the existing `tray:clipboardData` channel. The row is wrapped in `.accountDrawerRow` because a button cannot nest in a button.
+
+Files: `app/tray/AccountSelector/AccountController/index.js`, `app/tray/AccountSelector/style/index.styl`, test.
+
+Rebase notes: Upstream tests that query the row button by name need an anchored regex, such as `/^Garden/`.
+
+Upstream-PR candidate: maybe.

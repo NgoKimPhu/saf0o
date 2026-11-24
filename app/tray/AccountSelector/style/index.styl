@@ -570,6 +570,26 @@
     gap 0
     pointer-events auto
 
+.accountDrawerRow
+  position relative
+
+  &:last-child .accountDrawerItem
+    border-bottom 0
+
+  .accountDrawerItem
+    padding-right 34px
+
+.accountDrawerCopy
+  position absolute
+  top 50%
+  right 30px
+  width 28px
+  min-width 28px
+  height 28px
+  min-height 28px
+  padding 0
+  transform translateY(-50%)
+
 .accountDrawerItem
   appearance none
   display grid
