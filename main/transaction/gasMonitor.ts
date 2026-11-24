@@ -120,22 +120,17 @@ export default class GasMonitor {
 
   async getGasPrices(): Promise<GasPrices> {
     const gasPrice = await this.connection.send({ method: 'eth_gasPrice' })
-    const quantity = typeof gasPrice === 'string' ? parseRpcQuantity(gasPrice) : undefined
-    if (quantity === undefined) {
+    if (typeof gasPrice !== 'string' || parseRpcQuantity(gasPrice) === undefined) {
       throw new Error('Invalid eth_gasPrice response')
     }
-
-    // Legacy-fee chains (Arbitrum) have no fee market to buffer, and the base fee can rise before the
-    // transaction lands. Add 10% so the cap does not fall under the next block's base fee.
-    const buffered = `0x${((quantity * 11n) / 10n).toString(16)}`
 
     // in the future we may want to have specific calculators to calculate variations
     // in the gas price or eliminate this structure altogether
     return {
-      slow: buffered,
-      standard: buffered,
-      fast: buffered,
-      asap: buffered
+      slow: gasPrice,
+      standard: gasPrice,
+      fast: gasPrice,
+      asap: gasPrice
     }
   }
 }

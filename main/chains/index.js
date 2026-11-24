@@ -12,6 +12,7 @@ const store = require('../store').default
 const { default: BlockMonitor } = require('./blocks')
 const { default: chainConfig } = require('./config')
 const { default: GasMonitor } = require('../transaction/gasMonitor')
+const { GasPricePredictor } = require('../transaction/gasPricePredictor')
 const { createGasCalculator } = require('./gas')
 const { supportsFeeHistory } = require('./policy')
 const { recordBlock } = require('./blockTime')
@@ -56,6 +57,8 @@ class ChainConnection extends EventEmitter {
     this.chainConfig = chainConfig(parseInt(this.chainId), 'istanbul')
 
     this.gasCalculator = createGasCalculator(this.chainId)
+    // Outlives the per-block GasMonitor, so the price history builds up across blocks.
+    this.gasPricePredictor = new GasPricePredictor()
 
     this.active = {
       id: '',
@@ -220,8 +223,10 @@ class ChainConnection extends EventEmitter {
           store.setGasPrices(this.type, this.chainId, { fast: addHexPrefix(gasPrice.toString(16)) })
           store.setGasDefault(this.type, this.chainId, 'fast')
         } else {
-          const gas = await gasMonitor.getGasPrices()
+          const raw = await gasMonitor.getGasPrices()
           if (!isCurrent()) return
+          const predicted = addHexPrefix(this.gasPricePredictor.next(BigInt(raw.fast)).toString(16))
+          const gas = { slow: predicted, standard: predicted, fast: predicted, asap: predicted }
           const customLevel = store('main.networksMeta', this.type, this.chainId, 'gas.price.levels.custom')
 
           store.setGasPrices(this.type, this.chainId, {

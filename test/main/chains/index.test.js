@@ -79,8 +79,8 @@ class MockConnection extends EventEmitter {
 }
 
 let block, feeHistoryResponse, gasPrice, observer, connectionObserver
-// Legacy gas prices carry a 10% buffer so the cap survives a base fee rise.
-const buffered = (price) => addHexPrefix(((BigInt(price) * 11n) / 10n).toString(16))
+// A flat history gets only the predictor's 0.5% floor buffer.
+const withFloor = (price) => addHexPrefix(((BigInt(price) * 1005n) / 1000n).toString(16))
 const fallbackTarget = 'https://polygon-fallback.example'
 const staleTarget = 'https://polygon-stale.example'
 const replacementTarget = 'https://polygon-replacement.example'
@@ -492,7 +492,7 @@ Object.values(mockConnections).forEach((chain) => {
       const gas = store(`main.networksMeta.ethereum.${chain.id}.gas.price.levels`)
 
       if (gas.fast) {
-        expect(gas.fast).toBe(buffered(gweiToHex(6)))
+        expect(gas.fast).toBe(withFloor(gweiToHex(6)))
 
         done()
       }
@@ -546,7 +546,7 @@ it('falls back to legacy gas pricing when fee history is malformed', (done) => {
   observer = store.observer(() => {
     const gas = store(`main.networksMeta.ethereum.${chain.id}.gas.price`)
 
-    if (gas.levels.fast === buffered(gasPrice)) {
+    if (gas.levels.fast === withFloor(gasPrice)) {
       expect(gas.fees).toBeNull()
       done()
     }
