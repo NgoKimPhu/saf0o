@@ -117,6 +117,9 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
 - One topic per commit, subject prefix `saf0o: `. Each commit carries a test that fails without the change and encodes why.
 - Keep diffs surgical. Prefer new files or data entries over edits to upstream logic, because they rebase more easily.
 - Push `main` after verified work without asking (owner's standing approval). Never push `upstream` or other branches.
+- After verified work, also do the routine follow-ups without asking: the `PATCHES.md` entry, `qualify:ui` fixture channels,
+  commit, and the local build and install (`~/.cache/saf0o-check/release-local.sh`). Do not end with "say if you want X".
+- The owner approved force-killing a running app for an install: `taskkill.exe /F /IM Saf0o.exe`, exact image name only.
 - Local builds for the owner replace the previous one in place: the unpacked Windows app goes to `%USERPROFILE%\Saf0o`,
   and the companion `.xpi` sits in the same folder. Re-copy the `.xpi` after you replace the folder.
   Keep an old build only when asked. Windows locks a running exe, so the app must be closed before the copy.
