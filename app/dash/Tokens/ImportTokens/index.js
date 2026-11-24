@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 
 import link from '../../../../resources/link'
 
-const KEY_FORMAT = /^[A-Za-z0-9_-]{16,128}$/u
+// Highest value first. Tokens without a price go last.
+export const byUsdValueDesc = (a, b) => (b.usdValue ?? -1) - (a.usdValue ?? -1)
+const formatUsd = (value) =>
+  value === undefined ? '' : `$${value.toLocaleString('en-US', { maximumFractionDigits: 2 })}`
 const tokenId = (token) => `${token.chainId}:${token.address.toLowerCase()}`
 
 // Raw integer balance to a short decimal string. Display only.
@@ -20,20 +23,19 @@ const MESSAGES = {
   'credential-unavailable': 'Secure storage is unavailable.',
   'discovery-failed': 'Alchemy did not answer. Check the API key and try again.',
   'invalid-request': 'Select an account first.',
-  'key-missing': 'Save an Alchemy API key first.',
+  'key-missing': 'Save an Alchemy API key in Settings → Advanced first.',
   'preview-expired': 'The list is out of date. Scan again.'
 }
 
 export default function ImportTokens({ account, chainName }) {
-  const keyRef = useRef(null)
   const mountedRef = useRef(true)
   const [open, setOpen] = useState(false)
   const [credential, setCredential] = useState(null)
-  const [keyReady, setKeyReady] = useState(false)
   const [busy, setBusy] = useState(false)
   const [preview, setPreview] = useState(null)
   const [selected, setSelected] = useState(() => new Set())
   const [message, setMessage] = useState('')
+  const [minUsd, setMinUsd] = useState('100')
 
   useEffect(() => {
     mountedRef.current = true
@@ -64,39 +66,18 @@ export default function ImportTokens({ account, chainName }) {
     }
   }
 
-  const saveKey = () =>
-    run(async () => {
-      const apiKey = keyRef.current.value
-      keyRef.current.value = ''
-      setKeyReady(false)
-      const result = await link.invoke('tokenImport:saveCredential', apiKey)
-      if (!mountedRef.current) return
-      if (result?.success) setCredential(result.credential)
-      else setMessage('API key could not be saved.')
-    })
-
-  const removeKey = () =>
-    run(async () => {
-      const result = await link.invoke('tokenImport:removeCredential')
-      if (!mountedRef.current) return
-      if (result?.success) {
-        setCredential(result.credential)
-        setPreview(null)
-      } else setMessage('API key could not be removed.')
-    })
-
   const scan = () =>
     run(async () => {
       const result = await link.invoke('tokenImport:preview', account)
       if (!mountedRef.current) return
       if (!result?.success) return setMessage(MESSAGES[result?.error] || 'Scan failed.')
-      setPreview(result)
+      setPreview({ ...result, candidates: [...result.candidates].sort(byUsdValueDesc) })
       setSelected(new Set())
     })
 
   const importSelected = () =>
     run(async () => {
-      const tokens = preview.candidates
+      const tokens = candidates
         .filter((token) => selected.has(tokenId(token)))
         .map(({ chainId, address }) => ({ chainId, address }))
       const result = await link.invoke('tokenImport:save', account, tokens)
@@ -110,6 +91,18 @@ export default function ImportTokens({ account, chainName }) {
     setSelected((current) => {
       const next = new Set(current)
       if (!next.delete(id)) next.add(id)
+      return next
+    })
+
+  const candidates = preview?.candidates ?? []
+  const min = Number(minUsd)
+  const aboveMin = minUsd.trim() !== '' && min >= 0 ? candidates.filter((t) => (t.usdValue ?? -1) >= min) : []
+  const allSelected = candidates.length > 0 && candidates.every((t) => selected.has(tokenId(t)))
+  const aboveSelected = aboveMin.length > 0 && aboveMin.every((t) => selected.has(tokenId(t)))
+  const setMany = (tokens, on) =>
+    setSelected((current) => {
+      const next = new Set(current)
+      for (const t of tokens) on ? next.add(tokenId(t)) : next.delete(tokenId(t))
       return next
     })
 
@@ -134,69 +127,67 @@ export default function ImportTokens({ account, chainName }) {
         did not expect are often scams. Your API key stays in this device’s secure storage.
       </div>
       {!credential ? null : !credential.available ? (
-        <div>Secure storage unavailable. Cannot save an API key.</div>
+        <div>Secure storage unavailable. Cannot use an API key.</div>
+      ) : !credential.configured ? (
+        <div>Save an Alchemy API key in Settings → Advanced first.</div>
       ) : (
         <div className='importTokensKey'>
-          {credential.configured ? (
-            <>
-              <button type='button' className='saf0oControl' disabled={busy || !account} onClick={scan}>
-                {busy ? 'Scanning…' : 'Scan account'}
-              </button>
-              <button
-                type='button'
-                className='saf0oControl saf0oControlGhost'
-                disabled={busy}
-                onClick={removeKey}
-              >
-                Remove key
-              </button>
-            </>
-          ) : (
-            <>
-              <input
-                ref={keyRef}
-                type='password'
-                className='saf0oInput'
-                aria-label='Alchemy API key'
-                autoComplete='off'
-                spellCheck={false}
-                maxLength='128'
-                disabled={busy}
-                placeholder='Alchemy API key'
-                onInput={(event) => setKeyReady(KEY_FORMAT.test(event.currentTarget.value))}
-              />
-              <button
-                type='button'
-                className='saf0oControl saf0oControlGhost'
-                disabled={busy || !keyReady}
-                onClick={saveKey}
-              >
-                Save key
-              </button>
-            </>
-          )}
+          <button type='button' className='saf0oControl' disabled={busy || !account} onClick={scan}>
+            {busy ? 'Scanning…' : 'Scan account'}
+          </button>
         </div>
       )}
       {preview ? (
         <div className='importTokensResults'>
-          {preview.candidates.length ? (
-            <ul aria-label='Tokens found'>
-              {preview.candidates.map((token) => {
-                const id = tokenId(token)
-                return (
-                  <li key={id}>
-                    <label>
-                      <input type='checkbox' checked={selected.has(id)} onChange={() => toggle(id)} />
-                      <span className='importTokensSymbol'>{token.symbol}</span>
-                      <span>{token.name}</span>
-                      <span>{chainName(token.chainId)}</span>
-                      <span>{formatBalance(token.balance, token.decimals)}</span>
-                      <span className='importTokensAddress'>{token.address}</span>
-                    </label>
-                  </li>
-                )
-              })}
-            </ul>
+          {candidates.length ? (
+            <>
+              <div className='importTokensBulk'>
+                <label>
+                  <input
+                    type='checkbox'
+                    checked={allSelected}
+                    onChange={() => setMany(candidates, !allSelected)}
+                  />
+                  <span>Select all</span>
+                </label>
+                <label>
+                  <input
+                    type='checkbox'
+                    checked={aboveSelected}
+                    disabled={!aboveMin.length}
+                    onChange={() => setMany(aboveMin, !aboveSelected)}
+                  />
+                  <span>Select above $</span>
+                  <input
+                    type='number'
+                    min='0'
+                    className='saf0oInput importTokensMinUsd'
+                    aria-label='Minimum USD value'
+                    value={minUsd}
+                    onChange={(event) => setMinUsd(event.target.value)}
+                  />
+                  <span>{`(${aboveMin.length})`}</span>
+                </label>
+              </div>
+              <ul aria-label='Tokens found'>
+                {candidates.map((token) => {
+                  const id = tokenId(token)
+                  return (
+                    <li key={id}>
+                      <label>
+                        <input type='checkbox' checked={selected.has(id)} onChange={() => toggle(id)} />
+                        <span className='importTokensSymbol'>{token.symbol}</span>
+                        <span>{token.name}</span>
+                        <span>{chainName(token.chainId)}</span>
+                        <span>{formatBalance(token.balance, token.decimals)}</span>
+                        <span>{formatUsd(token.usdValue)}</span>
+                        <span className='importTokensAddress'>{token.address}</span>
+                      </label>
+                    </li>
+                  )
+                })}
+              </ul>
+            </>
           ) : (
             <div>No new tokens found.</div>
           )}

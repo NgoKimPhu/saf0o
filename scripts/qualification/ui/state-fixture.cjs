@@ -41,7 +41,12 @@ const QUALIFICATION_INVOKE_CHANNELS = Object.freeze([
   'contractVerification:removeCredential',
   'contractVerification:reselect',
   'contractVerification:saveCredential',
-  'contractVerification:selectArtifact'
+  'contractVerification:selectArtifact',
+  'tokenImport:credentialStatus',
+  'tokenImport:preview',
+  'tokenImport:removeCredential',
+  'tokenImport:save',
+  'tokenImport:saveCredential'
 ])
 
 const qualificationPairingCode = () => {

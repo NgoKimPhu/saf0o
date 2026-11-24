@@ -270,12 +270,17 @@ the renderer only names chain id and address.
 
 Privacy: the account address goes to `api.g.alchemy.com`. The API key lives in the OS keyring file
 `.alchemy-api-key.json` (same store as the Etherscan key), is excluded from backups, never reaches the renderer and never
-appears in logs or results. Without a keyring (WSL) the dashboard says so and offers no key field.
+appears in logs or results. The key is entered in Settings → Advanced (the Etherscan key component, reused through props);
+the import panel only points there. Without a keyring (WSL) the dashboard says so and offers no key field.
+
+Values: the request asks for prices; the preview sorts by USD value (highest first), shows it, and offers Select all and
+Select above $x. Tokens without a price sort last.
 
 Files: `main/tokenImport/*` (new), `createApiKeyStore` factory and `createAlchemyApiKeyStore` in
 `main/contractVerification/credentialStorage.ts`, five `tokenImport:*` channels in `main/ipc/schemas.ts`,
 `resources/bridge/{protocol.js,roles.ts}` and `main/application.ts`, `api.g.alchemy.com` in `main/egress`,
-`app/dash/Tokens/ImportTokens` (new) mounted in `CustomTokens`.
+`app/dash/Tokens/ImportTokens` (new) mounted in `CustomTokens`, `app/dash/Settings/ContractVerificationCredential` (props).
+`app/dash/index.styl` limits the text cursor to text inputs.
 
 Rebase notes: `credentialStorage.ts` is upstream's. The Etherscan constants became `ETHERSCAN_SPEC` and the schemas became
 `wrapperSchema(spec)` and `payloadSchema(spec)`. Keep the `createEtherscanApiKeyStore` signature.

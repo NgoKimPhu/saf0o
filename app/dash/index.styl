@@ -356,11 +356,16 @@ button,
   cursor default
   user-select none
 
-  input,
+  input:not([type='checkbox']):not([type='radio']):not([type='range']),
   textarea,
   [contenteditable='true']
     cursor text
     user-select text
+
+  input[type='checkbox'],
+  input[type='radio'],
+  input[type='range']
+    cursor pointer
 
   > .command,
   > .dashMain,

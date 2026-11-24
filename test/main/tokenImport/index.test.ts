@@ -51,6 +51,18 @@ const safeStorage = (): SafeStorageLike => {
 const response = (body: unknown, status = 200) => ({ status, json: async () => body })
 
 describe('toCandidate', () => {
+  it('computes the USD value from the usd price and ignores other currencies', () => {
+    const prices = [
+      { currency: 'eur', value: '9' },
+      { currency: 'usd', value: '2.5' }
+    ]
+    // entry() balance is 0x10 = 16 raw units at its decimals.
+    const meta = { decimals: 1, symbol: 'X' }
+    const withPrice = toCandidate(entry({ tokenMetadata: meta, tokenPrices: prices }), slugs)
+    expect(withPrice?.usdValue).toBeCloseTo(4)
+    expect(toCandidate(entry({ tokenMetadata: meta, tokenPrices: [] }), slugs)?.usdValue).toBeUndefined()
+  })
+
   it('drops entries that must never be imported: native, zero balance, bad address, bad decimals', () => {
     expect(toCandidate(entry(), slugs)).toMatchObject({ chainId: 1, address: TOKEN_A, balance: '16' })
     expect(toCandidate(entry({ tokenAddress: null }), slugs)).toBeUndefined()

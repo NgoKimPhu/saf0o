@@ -3,7 +3,13 @@ import { Component, createRef } from 'react'
 import link from '../../../../resources/link'
 
 const emptyCredential = { available: false, configured: false, backend: 'unsupported' }
-const keyFormatId = 'contract-verification-credential-key-format'
+
+// Defaults to the Etherscan key. The Alchemy key reuses it through props; both channel sets share one shape.
+const ETHERSCAN = {
+  name: 'Etherscan',
+  channel: 'contractVerification',
+  detail: 'For direct Etherscan source verification.'
+}
 
 export class ContractVerificationCredential extends Component {
   constructor(props) {
@@ -20,6 +26,10 @@ export class ContractVerificationCredential extends Component {
     }
   }
 
+  provider() {
+    return { ...ETHERSCAN, ...this.props }
+  }
+
   componentDidMount() {
     this.mounted = true
     void this.loadStatus()
@@ -32,7 +42,7 @@ export class ContractVerificationCredential extends Component {
 
   async loadStatus() {
     try {
-      const result = await link.invoke('contractVerification:credentialStatus')
+      const result = await link.invoke(`${this.provider().channel}:credentialStatus`)
       if (!this.mounted) return
       if (!result?.success || !result.credential) throw new Error('status unavailable')
       this.setState({ credential: result.credential, statusKnown: true, loading: false, error: '' })
@@ -54,14 +64,14 @@ export class ContractVerificationCredential extends Component {
     this.apiKeyRef.current.value = ''
     this.setState({ busy: true, keyReady: false, error: '', notice: '' })
     try {
-      const result = await link.invoke('contractVerification:saveCredential', apiKey)
+      const result = await link.invoke(`${this.provider().channel}:saveCredential`, apiKey)
       apiKey = ''
       if (!this.mounted) return
       if (!result?.success) throw new Error('save unavailable')
       this.setState({
         credential: result.credential,
         busy: false,
-        notice: 'Etherscan API key saved.',
+        notice: `${this.provider().name} API key saved.`,
         error: ''
       })
     } catch {
@@ -74,13 +84,13 @@ export class ContractVerificationCredential extends Component {
     if (this.state.busy) return
     this.setState({ busy: true, error: '', notice: '' })
     try {
-      const result = await link.invoke('contractVerification:removeCredential')
+      const result = await link.invoke(`${this.provider().channel}:removeCredential`)
       if (!this.mounted) return
       if (!result?.success) throw new Error('remove unavailable')
       this.setState({
         credential: result.credential,
         busy: false,
-        notice: 'Etherscan API key removed.',
+        notice: `${this.provider().name} API key removed.`,
         error: ''
       })
     } catch {
@@ -89,6 +99,8 @@ export class ContractVerificationCredential extends Component {
   }
 
   render() {
+    const { name, detail, channel } = this.provider()
+    const keyFormatId = `${channel}-credential-key-format`
     const { credential, statusKnown, loading, busy, keyReady, error, notice } = this.state
     const unavailable = !loading && !credential.available
     const formatHintVisible = credential.available && !busy && !keyReady
@@ -96,7 +108,7 @@ export class ContractVerificationCredential extends Component {
       <div className='signerPermission localSetting localSettingExplained contractVerificationCredential'>
         <div className='signerPermissionControls contractVerificationCredentialControls'>
           <div className='contractVerificationCredentialIdentity'>
-            <div className='signerPermissionSetting'>Etherscan API key</div>
+            <div className='signerPermissionSetting'>{`${name} API key`}</div>
             <div className='contractVerificationCredentialStatus'>
               {loading
                 ? 'Checking secure storage…'
@@ -117,7 +129,7 @@ export class ContractVerificationCredential extends Component {
                     ref={this.apiKeyRef}
                     type='password'
                     className='saf0oInput contractVerificationCredentialInput'
-                    aria-label={credential.configured ? 'Replace Etherscan API key' : 'Etherscan API key'}
+                    aria-label={credential.configured ? `Replace ${name} API key` : `${name} API key`}
                     aria-describedby={formatHintVisible ? keyFormatId : undefined}
                     autoComplete='off'
                     spellCheck={false}
@@ -159,7 +171,7 @@ export class ContractVerificationCredential extends Component {
           </div>
         ) : null}
         <div className='signerPermissionDetails'>
-          For direct Etherscan source verification.
+          {detail}
           {loading
             ? ' Checking secure storage…'
             : !statusKnown

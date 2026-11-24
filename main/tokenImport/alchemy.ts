@@ -8,6 +8,8 @@ export type ImportCandidate = {
   symbol: string
   decimals: number
   balance: string
+  // Value in USD from Alchemy's price. Absent when Alchemy has no price.
+  usdValue?: number
 }
 
 export type DiscoveryResult = {
@@ -80,7 +82,25 @@ export const toCandidate = (entry: unknown, chainIdBySlug: ReadonlyMap<string, n
     return
   if (!symbol) return
 
-  return { chainId, address, name: cleanText(meta['name'], MAX_NAME) ?? symbol, symbol, decimals, balance }
+  const name = cleanText(meta['name'], MAX_NAME) ?? symbol
+  const usdValue = toUsdValue(entry['tokenPrices'], balance, decimals)
+  return {
+    chainId,
+    address,
+    name,
+    symbol,
+    decimals,
+    balance,
+    ...(usdValue === undefined ? {} : { usdValue })
+  }
+}
+
+// Display-only estimate: float math is fine here.
+const toUsdValue = (prices: unknown, balance: string, decimals: number) => {
+  const usd = Array.isArray(prices) ? prices.find((p) => isRecord(p) && p['currency'] === 'usd') : undefined
+  const price = isRecord(usd) ? Number(usd['value']) : NaN
+  const value = (Number(balance) / 10 ** decimals) * price
+  return Number.isFinite(value) ? value : undefined
 }
 
 export async function discoverTokens(
@@ -106,7 +126,7 @@ export async function discoverTokens(
           body: JSON.stringify({
             addresses: [{ address: account, networks: chunk }],
             withMetadata: true,
-            withPrices: false,
+            withPrices: true,
             includeNativeTokens: false,
             includeErc20Tokens: true,
             ...(pageKey ? { pageKey } : {})

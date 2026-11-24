@@ -48,7 +48,7 @@ test('selects nothing by default, so an unwanted airdrop is never imported by ac
   await user.click(screen.getByRole('button', { name: 'Import from Alchemy' }))
   await user.click(await screen.findByRole('button', { name: 'Scan account' }))
 
-  const box = await screen.findByRole('checkbox')
+  const box = await screen.findByRole('checkbox', { name: /DROP/ })
   expect(box.checked).toBe(false)
   expect(screen.queryByRole('button', { name: /^Import \d+ selected/ })).toBeNull()
   expect(screen.getByText(/list is incomplete/)).toBeTruthy()
@@ -69,14 +69,14 @@ test('sends only chain id and address on import, so the renderer cannot change t
 
   await user.click(screen.getByRole('button', { name: 'Import from Alchemy' }))
   await user.click(await screen.findByRole('button', { name: 'Scan account' }))
-  await user.click(await screen.findByRole('checkbox'))
+  await user.click(await screen.findByRole('checkbox', { name: /DROP/ }))
   await user.click(screen.getByRole('button', { name: 'Import 1 selected' }))
 
   expect(await screen.findByText('Imported 1 token.')).toBeTruthy()
   expect(calls.at(-1)).toEqual(['tokenImport:save', ACCOUNT, [{ chainId: 1, address: token.address }]])
 })
 
-test('says so when the OS keyring is missing instead of offering a key field', async () => {
+test('says so when the OS keyring is missing instead of offering a scan', async () => {
   const { user } = setup(() => ({
     success: true,
     credential: { available: false, backend: 'unsupported', configured: false }
@@ -84,24 +84,53 @@ test('says so when the OS keyring is missing instead of offering a key field', a
 
   await user.click(screen.getByRole('button', { name: 'Import from Alchemy' }))
 
-  expect(await screen.findByText('Secure storage unavailable. Cannot save an API key.')).toBeTruthy()
+  expect(await screen.findByText('Secure storage unavailable. Cannot use an API key.')).toBeTruthy()
+  expect(screen.queryByRole('button', { name: 'Scan account' })).toBeNull()
+})
+
+test('points to Settings when no key is saved, since the key now lives there', async () => {
+  const { user } = setup(() => ({
+    success: true,
+    credential: { available: true, backend: 'secret_service', configured: false }
+  }))
+
+  await user.click(screen.getByRole('button', { name: 'Import from Alchemy' }))
+
+  expect(await screen.findByText(/Settings → Advanced/)).toBeTruthy()
   expect(screen.queryByLabelText('Alchemy API key')).toBeNull()
 })
 
-test('clears the key field after saving and never echoes the key back', async () => {
-  const key = 'AbCdEf0123456789_alchemy_secret_key'
+test('lists tokens by USD value, and select all / select above $x pick the right tokens', async () => {
+  const mk = (n, usdValue) => ({
+    ...token,
+    address: `0x${String(n).repeat(40)}`,
+    symbol: `T${n}`,
+    ...(usdValue === undefined ? {} : { usdValue })
+  })
   const { user } = setup((channel) =>
     channel === 'tokenImport:credentialStatus'
-      ? { success: true, credential: { available: true, backend: 'secret_service', configured: false } }
-      : configured
+      ? configured
+      : {
+          success: true,
+          candidates: [mk(1, 5), mk(2), mk(3, 500), mk(4, 150)],
+          skippedChainIds: [],
+          failedChainIds: [],
+          truncated: false
+        }
   )
 
   await user.click(screen.getByRole('button', { name: 'Import from Alchemy' }))
-  const input = await screen.findByLabelText('Alchemy API key')
-  await user.type(input, key)
-  await user.click(screen.getByRole('button', { name: 'Save key' }))
+  await user.click(await screen.findByRole('button', { name: 'Scan account' }))
+  await screen.findByRole('checkbox', { name: /Select all/ })
 
-  expect(await screen.findByRole('button', { name: 'Scan account' })).toBeTruthy()
-  expect(link.invoke).toHaveBeenCalledWith('tokenImport:saveCredential', key)
-  expect(document.body.textContent).not.toContain(key)
+  const rows = screen.getAllByRole('listitem').map((li) => li.textContent.slice(0, 2))
+  expect(rows).toEqual(['T3', 'T4', 'T1', 'T2'])
+
+  await user.click(screen.getByRole('checkbox', { name: /Select above/ }))
+  expect(screen.getByRole('button', { name: 'Import 2 selected' })).toBeTruthy()
+
+  await user.click(screen.getByRole('checkbox', { name: /Select all/ }))
+  expect(screen.getByRole('button', { name: 'Import 4 selected' })).toBeTruthy()
+  await user.click(screen.getByRole('checkbox', { name: /Select all/ }))
+  expect(screen.queryByRole('button', { name: /^Import \d+ selected/ })).toBeNull()
 })

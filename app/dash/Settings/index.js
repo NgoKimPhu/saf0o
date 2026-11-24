@@ -1200,6 +1200,11 @@ export class Settings extends Component {
               Contract verification
             </h2>
             <ContractVerificationCredential />
+            <ContractVerificationCredential
+              name='Alchemy'
+              channel='tokenImport'
+              detail='For importing tokens from your account (Tokens → Import from Alchemy). Your address goes to Alchemy when you scan.'
+            />
             <div className='signerPermission localSetting' style={{ zIndex: 212 }}>
               <div className='signerPermissionControls'>
                 <div className='signerPermissionSetting'>Simulation RPC keys</div>
