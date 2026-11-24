@@ -148,10 +148,19 @@ it('builds bounded single-call RPC inputs from transaction data', () => {
     to: transaction.to,
     gas: '0x5208',
     value: '0x1',
-    data: '0x1234',
-    maxPriorityFeePerGas: '0x2',
-    maxFeePerGas: '0x64'
+    data: '0x1234'
   })
+})
+
+// The base fee can overtake the user's fee cap while the review is open. eth_call and traces reject
+// that, which hid ETH changes, so they must not carry fee fields.
+it('omits fee fields from eth_call and trace input', () => {
+  for (const fees of [{ gasPrice: '0x64' }, { maxFeePerGas: '0x64', maxPriorityFeePerGas: '0x2' }]) {
+    const call = buildEthCall({ ...transaction, ...fees })
+    expect(call).not.toHaveProperty('gasPrice')
+    expect(call).not.toHaveProperty('maxFeePerGas')
+    expect(call).not.toHaveProperty('maxPriorityFeePerGas')
+  }
 })
 
 it('canonicalizes transaction quantities and omits placeholder gas from simulation calls', () => {

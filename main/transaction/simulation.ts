@@ -583,7 +583,17 @@ export function buildSimulationCall(transaction: SimulationCallData) {
 
 export function buildEthCall(transaction: SimulationCallData) {
   const call = buildSimulationCall(transaction)
-  const { input, nonce: _nonce, type: _type, ...ethCall } = call
+  // eth_call and debug_traceCall enforce the fee cap against the block base fee, so a cap the base fee
+  // overtook fails with "max fee per gas less than block base fee". Fees do not change execution.
+  const {
+    input,
+    nonce: _nonce,
+    type: _type,
+    gasPrice: _gasPrice,
+    maxFeePerGas: _maxFeePerGas,
+    maxPriorityFeePerGas: _maxPriorityFeePerGas,
+    ...ethCall
+  } = call
 
   if (input !== undefined) ethCall.data = input
   return ethCall
