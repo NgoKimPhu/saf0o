@@ -91,6 +91,13 @@ describe('discoverTokens', () => {
     expect(JSON.parse(fetchImpl.mock.calls[1][1].body).pageKey).toBe('p2')
   })
 
+  it('is not truncated when the last page has no pageKey', async () => {
+    const result = await discoverTokens(KEY, ACCOUNT, [1], async () =>
+      response({ data: { tokens: [entry()] } })
+    )
+    expect(result.truncated).toBe(false)
+  })
+
   it('reports every chain of a request as failed on a bad status and does not leak the key', async () => {
     const result = await discoverTokens(KEY, ACCOUNT, [1, 8453], async () => response({}, 401))
     expect(result.candidates).toEqual([])
@@ -100,8 +107,10 @@ describe('discoverTokens', () => {
 
   it('stops paging at a bound so a hostile server cannot loop forever', async () => {
     const fetchImpl = jest.fn(async () => response({ data: { tokens: [], pageKey: 'again' } }))
-    await discoverTokens(KEY, ACCOUNT, [1], fetchImpl)
+    const result = await discoverTokens(KEY, ACCOUNT, [1], fetchImpl)
     expect(fetchImpl.mock.calls.length).toBeLessThanOrEqual(10)
+    // The user must learn the list is incomplete instead of trusting a silent cut.
+    expect(result.truncated).toBe(true)
   })
 })
 
@@ -113,7 +122,7 @@ describe('token import service', () => {
 
   const build = (over: Record<string, unknown> = {}) => {
     const saveTokens = jest.fn()
-    const discover = jest.fn(async () => ({ candidates, failedChainIds: [] as number[] }))
+    const discover = jest.fn(async () => ({ candidates, failedChainIds: [] as number[], truncated: false }))
     const service = createTokenImportService({
       credentialStore: { load: () => KEY, remove: jest.fn(), save: jest.fn(), status: jest.fn() } as never,
       discover,
@@ -140,7 +149,7 @@ describe('token import service', () => {
     const { service, discover } = build()
     const result = await service.preview(ACCOUNT)
     expect(discover).toHaveBeenCalledWith(KEY, ACCOUNT, [1])
-    expect(result).toMatchObject({ success: true, skippedChainIds: [369] })
+    expect(result).toMatchObject({ success: true, skippedChainIds: [369], truncated: false })
     expect(JSON.stringify(result)).not.toContain(KEY)
   })
 
@@ -153,7 +162,9 @@ describe('token import service', () => {
       success: false,
       error: 'invalid-request'
     })
-    const allFailed = build({ discover: async () => ({ candidates: [], failedChainIds: [1] }) })
+    const allFailed = build({
+      discover: async () => ({ candidates: [], failedChainIds: [1], truncated: false })
+    })
     expect(await allFailed.service.preview(ACCOUNT)).toEqual({ success: false, error: 'discovery-failed' })
   })
 

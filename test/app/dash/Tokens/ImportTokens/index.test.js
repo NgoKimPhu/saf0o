@@ -36,7 +36,13 @@ test('selects nothing by default, so an unwanted airdrop is never imported by ac
   const { user } = setup((channel) =>
     channel === 'tokenImport:credentialStatus'
       ? configured
-      : { success: true, candidates: [token], skippedChainIds: [369], failedChainIds: [8453] }
+      : {
+          success: true,
+          candidates: [token],
+          skippedChainIds: [369],
+          failedChainIds: [8453],
+          truncated: true
+        }
   )
 
   await user.click(screen.getByRole('button', { name: 'Import from Alchemy' }))
@@ -45,6 +51,7 @@ test('selects nothing by default, so an unwanted airdrop is never imported by ac
   const box = await screen.findByRole('checkbox')
   expect(box.checked).toBe(false)
   expect(screen.queryByRole('button', { name: /^Import \d+ selected/ })).toBeNull()
+  expect(screen.getByText(/list is incomplete/)).toBeTruthy()
   expect(screen.getByText('No answer for: Chain 8453.')).toBeTruthy()
   expect(screen.getByText('Not supported by Alchemy here: Chain 369.')).toBeTruthy()
 })
@@ -55,7 +62,7 @@ test('sends only chain id and address on import, so the renderer cannot change t
     calls.push([channel, ...args])
     if (channel === 'tokenImport:credentialStatus') return configured
     if (channel === 'tokenImport:preview') {
-      return { success: true, candidates: [token], skippedChainIds: [], failedChainIds: [] }
+      return { success: true, candidates: [token], skippedChainIds: [], failedChainIds: [], truncated: false }
     }
     return { success: true, saved: 1 }
   })

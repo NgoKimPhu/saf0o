@@ -989,7 +989,8 @@ const invokeResultSchemas = {
         success: z.literal(true),
         candidates: z.array(TokenImportCandidateSchema).max(1000),
         skippedChainIds: z.array(z.number().int().positive()),
-        failedChainIds: z.array(z.number().int().positive())
+        failedChainIds: z.array(z.number().int().positive()),
+        truncated: z.boolean()
       })
       .strict(),
     z.object({ success: z.literal(false), error: z.string().min(1).max(64) }).strict()

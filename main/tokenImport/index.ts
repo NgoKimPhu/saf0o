@@ -34,6 +34,7 @@ export type TokenImportPreview = {
   // Enabled chains Alchemy has no network for.
   skippedChainIds: number[]
   failedChainIds: number[]
+  truncated: boolean
 }
 
 const MAX_SAVE = 200
@@ -103,7 +104,13 @@ export const createTokenImportService = (dependencies: TokenImportDependencies) 
       (token) => !dependencies.isBlocked(token) && !dependencies.isTracked(address, token)
     )
     previews.set(address, new Map(candidates.map((token) => [idOf(token), token])))
-    return { success: true, candidates, skippedChainIds, failedChainIds: found.failedChainIds }
+    return {
+      success: true,
+      candidates,
+      skippedChainIds,
+      failedChainIds: found.failedChainIds,
+      truncated: found.truncated
+    }
   }
 
   const save = (account: unknown, selected: unknown): Result<{ saved: number }> => {

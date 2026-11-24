@@ -200,6 +200,9 @@ export default function ImportTokens({ account, chainName }) {
           ) : (
             <div>No new tokens found.</div>
           )}
+          {preview.truncated ? (
+            <div>The list is incomplete: Alchemy returned more tokens than Saf0o loads.</div>
+          ) : null}
           {preview.failedChainIds.length ? <div>No answer for: {names(preview.failedChainIds)}.</div> : null}
           {preview.skippedChainIds.length ? (
             <div>Not supported by Alchemy here: {names(preview.skippedChainIds)}.</div>

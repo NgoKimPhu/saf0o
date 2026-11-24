@@ -14,6 +14,8 @@ export type DiscoveryResult = {
   candidates: ImportCandidate[]
   // Chains Alchemy did not answer for (unsupported slug, upstream error, or a failed request).
   failedChainIds: number[]
+  // More tokens exist than the list holds (token cap or page cap reached).
+  truncated: boolean
 }
 
 type Fetch = (
@@ -91,6 +93,7 @@ export async function discoverTokens(
   const slugs = [...chainIdBySlug.keys()]
   const candidates = new Map<string, ImportCandidate>()
   const failed = new Set<string>()
+  let truncated = false
 
   for (let i = 0; i < slugs.length; i += NETWORKS_PER_REQUEST) {
     const chunk = slugs.slice(i, i + NETWORKS_PER_REQUEST)
@@ -123,9 +126,12 @@ export async function discoverTokens(
           const candidate = toCandidate(entry, chainIdBySlug)
           if (candidate) candidates.set(`${candidate.chainId}:${candidate.address}`, candidate)
         }
-        if (candidates.size >= MAX_TOKENS) break
         pageKey = typeof data['pageKey'] === 'string' && data['pageKey'] ? data['pageKey'] : undefined
         if (!pageKey) break
+        if (candidates.size >= MAX_TOKENS || page === MAX_PAGES - 1) {
+          truncated = true
+          break
+        }
       }
     } catch {
       // Timeout, bad status or malformed body: report the whole chunk as failed. Keep earlier pages.
@@ -135,6 +141,7 @@ export async function discoverTokens(
 
   return {
     candidates: [...candidates.values()].slice(0, MAX_TOKENS),
+    truncated: truncated || candidates.size > MAX_TOKENS,
     failedChainIds: [...failed].flatMap((slug) => chainIdBySlug.get(slug) ?? [])
   }
 }
