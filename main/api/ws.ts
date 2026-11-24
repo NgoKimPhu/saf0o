@@ -222,6 +222,7 @@ const handler = (
   extensionChallenges: FixedWindowRateLimiter
 ) => {
   socket.id = uuid()
+  const openedAt = Date.now()
   const frameExtension = parseFrameExtension(req)
   const frameExtensionRole = frameExtension?.role
   // Extension Origin is transport admission evidence. Retain only the channel
@@ -297,7 +298,7 @@ const handler = (
       authDeadline = undefined
       if (payload.step === 'error') terminateSocket(socket, 1008, payload.code)
       if (payload.step === 'authenticated') {
-        log.info('Companion authenticated', { channel: channelOf(socket) })
+        log.info('Companion authenticated', { channel: channelOf(socket), ms: Date.now() - openedAt })
         registerAuthenticatedExtension(socket, payload.client.fingerprint)
       }
     }
@@ -382,7 +383,7 @@ const handler = (
           () => terminateSocket(socket, 1008, 'Native authentication session expired'),
           Math.max(1, authenticated.expiresAt - Date.now())
         )
-        log.info('Native client authenticated')
+        log.info('Native client authenticated', { ms: Date.now() - openedAt })
         sendResponse({ type: 'saf0o-native-auth', version: 3, ...authenticated })
       } catch {
         terminateSocket(socket, 1008, 'Native authentication failed')
@@ -691,7 +692,15 @@ const handler = (
     log.error(err)
     socket.disposeSession()
   })
-  socket.on('close', socket.disposeSession)
+  socket.on('close', (code, reason) => {
+    log.info('Socket closed', {
+      channel: channelOf(socket),
+      code,
+      reason: String(reason ?? ''),
+      ms: Date.now() - openedAt
+    })
+    socket.disposeSession()
+  })
 }
 
 export default function (server: Server, options: WebSocketServerOptions = {}) {
