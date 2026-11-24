@@ -722,7 +722,16 @@ export default function (server: Server, options: WebSocketServerOptions = {}) {
           : !reservedIdentityRequestValid(req)
             ? 'identity'
             : undefined
-      if (reason) log.warn('WebSocket upgrade refused', { reason })
+      if (reason) {
+        const query = socketQuery(req)
+        log.warn('WebSocket upgrade refused', {
+          reason,
+          identity: query?.getAll('identity'),
+          role: query?.getAll('role'),
+          queryKeys: query ? [...query.keys()] : undefined,
+          originScheme: /^[a-z-]+(?=:)/iu.exec(req.headers.origin || '')?.[0] ?? null
+        })
+      }
       return !reason
     }
   })
