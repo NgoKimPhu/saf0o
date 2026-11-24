@@ -4742,9 +4742,13 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
             ? '.requestNoticeTransactionStatus'
             : null
     if (shelfSelector) {
-      // The shelf spans the 425px panel (shellWidth), not the 620px window; the lifecycle shelf is
-      // taller while a hash row and confirmations are shown.
-      const shelfHeight = ['transaction-confirming', 'transaction-confirmed'].includes(scenario.state)
+      // The shelf spans the 425px panel (shellWidth), not the 620px window. The lifecycle shelf keeps
+      // one height from submit to confirmed, so the panel does not jump when the facts grow.
+      const shelfHeight = [
+        'transaction-confirming',
+        'transaction-confirmed',
+        'transaction-submitted'
+      ].includes(scenario.state)
         ? 126
         : scenario.state === 'wallet-calls-adjustment'
           ? 132

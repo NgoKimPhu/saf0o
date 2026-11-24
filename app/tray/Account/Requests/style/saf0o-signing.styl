@@ -1619,8 +1619,12 @@
 @container panel (max-width: 610px)
   // Steps stack under the summary and facts wrap to two rows here, so the fixed 114px card and
   // its 44px/18px rows overlap them. Size to content; Footer measures it for the review's bottom.
+  // min-height is the tallest state (confirmed: two facts rows), so the shelf keeps one height from
+  // submit to confirmed. The steps keep one width, as the action buttons beside them change per state.
   .requestNoticeTransactionStatus
     height auto
+    min-height 126px
+    align-items flex-start
 
     .requestNoticeInner
       grid-template-rows none
@@ -1629,6 +1633,9 @@
   .txLifecycle
     grid-template-columns 1fr
     gap var(--saf0o-space-3)
+
+  .txLifecycleSteps
+    width 140px
 
   // Label and value columns are shared by every row, so all values start at one x.
   .txLifecycleFacts

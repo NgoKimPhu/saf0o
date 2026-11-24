@@ -19,3 +19,12 @@ it('lets the narrow status card grow to fit stacked steps and wrapped facts', ()
 it('does not pin a second fact to column 4 of the two-column narrow grid', () => {
   expect(narrowBlock).toMatch(/\.txLifecycleFacts > div:nth-child\(2\):last-child \{[^}]*grid-column: auto;/)
 })
+
+// Submit, confirm and the facts that arrive with the hash must not move the card or its steps.
+// The card is as tall as its fullest state (confirmed, two facts rows) and anchored to the top.
+// The steps keep one width because the action buttons beside them change per state.
+it('keeps one card height, top anchor and steps width across submit to confirmed', () => {
+  expect(narrowBlock).toMatch(/\.requestNoticeTransactionStatus \{[^}]*min-height: 126px;/)
+  expect(narrowBlock).toMatch(/\.requestNoticeTransactionStatus \{[^}]*align-items: flex-start;/)
+  expect(narrowBlock).toMatch(/\.txLifecycleSteps \{[^}]*width: 140px;/)
+})
