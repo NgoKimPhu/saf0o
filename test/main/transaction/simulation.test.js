@@ -148,19 +148,41 @@ it('builds bounded single-call RPC inputs from transaction data', () => {
     to: transaction.to,
     gas: '0x5208',
     value: '0x1',
-    data: '0x1234'
+    data: '0x1234',
+    maxPriorityFeePerGas: '0x2',
+    maxFeePerGas: '0x64'
   })
 })
 
-// The base fee can overtake the user's fee cap while the review is open. eth_call and traces reject
-// that, which hid ETH changes, so they must not carry fee fields.
-it('omits fee fields from eth_call and trace input', () => {
-  for (const fees of [{ gasPrice: '0x64' }, { maxFeePerGas: '0x64', maxPriorityFeePerGas: '0x2' }]) {
-    const call = buildEthCall({ ...transaction, ...fees })
-    expect(call).not.toHaveProperty('gasPrice')
-    expect(call).not.toHaveProperty('maxFeePerGas')
-    expect(call).not.toHaveProperty('maxPriorityFeePerGas')
+// The base fee can overtake the user's fee cap while the review is open, and eth_call and traces reject
+// that, which hid ETH changes. The cap rises to the base fee, and fees stay in the call so tx.gasprice
+// checks in contracts still run.
+it('raises a stale fee cap to the block base fee in eth_call and trace input', async () => {
+  const header = {
+    hash: `0x${'ab'.repeat(32)}`,
+    number: '0x10',
+    baseFeePerGas: '0x1f4'
   }
+  const calls = []
+  const send = jest.fn((payload, callback) => {
+    if (payload.method === 'eth_simulateV1')
+      return callback({ error: { code: -32601, message: 'method not found' } })
+    if (payload.method === 'eth_getBlockByNumber') return callback({ id: 6, jsonrpc: '2.0', result: header })
+    calls.push(payload)
+    callback({ id: payload.id, jsonrpc: '2.0', result: '0x' })
+  })
+  await simulateTransaction({ ...transaction, type: '0x0', gasPrice: '0x64' }, { send, timeoutMs: 200 })
+  const ethCall = calls.find((payload) => payload.method === 'eth_call')
+  expect(ethCall.params[0].gasPrice).toBe('0x1f4')
+  const trace = calls.find((payload) => payload.method === 'debug_traceCall')
+  expect(trace.params[0].gasPrice).toBe('0x1f4')
+
+  calls.length = 0
+  await simulateTransaction(
+    { ...transaction, maxFeePerGas: '0x9999', maxPriorityFeePerGas: '0x2' },
+    { send, timeoutMs: 200 }
+  )
+  expect(calls.find((payload) => payload.method === 'eth_call').params[0].maxFeePerGas).toBe('0x9999')
 })
 
 it('canonicalizes transaction quantities and omits placeholder gas from simulation calls', () => {

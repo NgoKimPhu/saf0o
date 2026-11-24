@@ -505,7 +505,10 @@ async function readExecutionBlock(send: ChainSend, targetChain: Chain, timeoutMs
     parseRpcQuantity(header['number']) === undefined
   )
     return
-  return { hash: header['hash'].toLowerCase(), number: (header['number'] as string).toLowerCase() }
+  const block = { hash: header['hash'].toLowerCase(), number: (header['number'] as string).toLowerCase() }
+  const baseFee = parseRpcQuantity(header['baseFeePerGas'])
+  if (baseFee !== undefined) blockBaseFees.set(block, baseFee)
+  return block
 }
 
 function normalizeRpcError(value: unknown): EVMError | undefined {
@@ -581,21 +584,24 @@ export function buildSimulationCall(transaction: SimulationCallData) {
   return call
 }
 
-export function buildEthCall(transaction: SimulationCallData) {
+// Base fee of each execution block. Kept off the block object: the Inspector schema is strict.
+const blockBaseFees = new WeakMap<object, bigint>()
+
+// eth_call and debug_traceCall reject a fee cap under the block base fee. The base fee can pass the
+// user's cap while the review is open. Raise the cap to the base fee: fees stay in the call, so
+// gas accounting and contract checks on tx.gasprice still run.
+export function buildEthCall(transaction: SimulationCallData, block?: object) {
   const call = buildSimulationCall(transaction)
-  // eth_call and debug_traceCall enforce the fee cap against the block base fee, so a cap the base fee
-  // overtook fails with "max fee per gas less than block base fee". Fees do not change execution.
-  const {
-    input,
-    nonce: _nonce,
-    type: _type,
-    gasPrice: _gasPrice,
-    maxFeePerGas: _maxFeePerGas,
-    maxPriorityFeePerGas: _maxPriorityFeePerGas,
-    ...ethCall
-  } = call
+  const { input, nonce: _nonce, type: _type, ...ethCall } = call
 
   if (input !== undefined) ethCall.data = input
+  const baseFee = block && blockBaseFees.get(block)
+  if (baseFee !== undefined) {
+    for (const key of ['gasPrice', 'maxFeePerGas'] as const) {
+      const fee = parseRpcQuantity(ethCall[key])
+      if (fee !== undefined && fee < baseFee) ethCall[key] = toRpcQuantity(baseFee)
+    }
+  }
   return ethCall
 }
 
@@ -1068,7 +1074,7 @@ async function readPrestateTrace(
       jsonrpc: '2.0',
       method: 'debug_traceCall',
       params: [
-        buildEthCall(transaction),
+        buildEthCall(transaction, block),
         blockSelector(block),
         {
           tracer: 'prestateTracer',
@@ -1194,7 +1200,7 @@ async function readCallTrace(
       jsonrpc: '2.0',
       method: 'debug_traceCall',
       params: [
-        buildEthCall(transaction),
+        buildEthCall(transaction, block),
         blockSelector(block),
         {
           tracer: 'callTracer',
@@ -1613,7 +1619,7 @@ async function simulateExecution(
     id: 1,
     jsonrpc: '2.0',
     method: 'eth_call',
-    params: [buildEthCall(transaction), blockSelector(executionBlock)]
+    params: [buildEthCall(transaction, executionBlock), blockSelector(executionBlock)]
   }
   if (remaining() <= 0)
     return { status: 'failed', source: 'eth_call', reason: 'RPC execution check timed out' }
