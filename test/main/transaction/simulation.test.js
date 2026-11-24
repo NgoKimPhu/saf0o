@@ -1630,3 +1630,22 @@ it('bounds a missing allowance response without changing a successful execution 
     }
   })
 })
+
+it('logs a redacted reason when the execution check fails, since the dialog hides it', async () => {
+  const log = require('electron-log').default || require('electron-log')
+  const warn = jest.spyOn(log, 'warn').mockImplementation(() => {})
+  const send = jest.fn((_payload, callback) =>
+    callback({
+      error: {
+        code: -32602,
+        message:
+          'bad param at https://lb.drpc.org/ogrpc?network=arbitrum&dkey=AbCdEfGhIjKlMnOpQrStUvWxYz012345'
+      }
+    })
+  )
+  const result = await simulateTransaction(transaction, { send })
+  expect(result.status).toBe('failed')
+  const [, entry] = warn.mock.calls.find(([message]) => message === 'transaction simulation failed')
+  expect(entry).toMatchObject({ code: -32602, reason: 'bad param at [url]' })
+  warn.mockRestore()
+})
