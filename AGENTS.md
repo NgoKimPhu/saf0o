@@ -79,7 +79,7 @@ repo, `saf0o-companion` (see its AGENTS.md). Read `PATCHES.md` before you change
   `/** @jest-environment jsdom */` docblock, because that suite runs with `--env=node`.
 - `scripts/prepare-package.mjs` records a build identity and requires a clean tree. Commit first, then package.
 - Offline packaging needs `COREPACK_HOME` pointing at a populated corepack cache. Append
-  `-c.electronDist=<dir holding electron-v45.3.3-win32-x64.zip>` to the Windows script. Do not put `--` before it: pnpm 10
+  `-c.electronDist=<dir holding electron-v45.4.1-win32-x64.zip>` to the Windows script. Do not put `--` before it: pnpm 10
   passes the `--` through, electron-builder then ignores the flag and tries to download Electron.
 - The Windows dir build sets `signAndEditExecutable=false`. The result is unsigned and keeps the default Electron icon.
   It needs no Wine. `-c.win.signExecutable=false` (resource editing, so the exe icon) fails offline: electron-builder downloads rcedit
