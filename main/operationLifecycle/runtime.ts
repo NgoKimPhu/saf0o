@@ -1,5 +1,6 @@
 import log from 'electron-log'
 
+import { getBlockTimeMs } from '../chains/blockTime'
 import ledger from './index'
 import { operationLifecycleRpc } from './rpc'
 import { OperationLifecycleReconciler, type OperationReconciliationObserver } from './reconciler'
@@ -8,9 +9,11 @@ import { observeOperationLifecycles, publishOperationLifecycleObservation } from
 const RECONCILIATION_INTERVAL_MS = 15_000
 // A fast chain (Arbitrum, ~250 ms blocks) mines before the first check at submission, which finds no
 // receipt yet. Without a quick retry the operation waits for the 15 s sweep and the UI stays on
-// "Submitted". Retry every second for the first 20 s, then leave it to the sweep.
-const FAST_RETRY_MS = 1_000
-const FAST_RETRIES = 20
+// "Submitted". Retry once per block, using the cached block time of the chain, for the first 20 s.
+const FALLBACK_RETRY_MS = 1_000
+const MIN_RETRY_MS = 250
+const MAX_RETRY_MS = 5_000
+const FAST_RETRY_WINDOW_MS = 20_000
 
 class OperationLifecycleRuntime {
   private timer: ReturnType<typeof setInterval> | undefined
@@ -62,13 +65,21 @@ class OperationLifecycleRuntime {
     this.timer = undefined
   }
 
-  async reconcile(operationId: string, attempt = 0) {
+  async reconcile(operationId: string, startedAt = Date.now()) {
     if (this.claimed.has(operationId)) return undefined
     const operation = await this.reconciler.reconcile(operationId)
-    if (operation && ['submitted', 'reorged'].includes(operation.state) && attempt < FAST_RETRIES) {
+    if (
+      operation &&
+      ['submitted', 'reorged'].includes(operation.state) &&
+      Date.now() - startedAt < FAST_RETRY_WINDOW_MS
+    ) {
+      const delay = Math.min(
+        MAX_RETRY_MS,
+        Math.max(MIN_RETRY_MS, getBlockTimeMs(operation.chainId) ?? FALLBACK_RETRY_MS)
+      )
       const timer = setTimeout(() => {
-        this.reconcile(operationId, attempt + 1).catch(() => {})
-      }, FAST_RETRY_MS)
+        this.reconcile(operationId, startedAt).catch(() => {})
+      }, delay)
       timer.unref?.()
     }
     return operation

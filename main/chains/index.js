@@ -14,6 +14,7 @@ const { default: chainConfig } = require('./config')
 const { default: GasMonitor } = require('../transaction/gasMonitor')
 const { createGasCalculator } = require('./gas')
 const { supportsFeeHistory } = require('./policy')
+const { recordBlock } = require('./blockTime')
 const { createRpcProvider, estimateL1GasCost } = require('./optimism')
 const { NETWORK_PRESETS } = require('../../resources/constants')
 const { chainUsesOptimismFees } = require('../../resources/utils/chains')
@@ -186,6 +187,7 @@ class ChainConnection extends EventEmitter {
     monitor.on('data', async (block) => {
       if (!isCurrent()) return
       log.debug(`Updating to block ${parseInt(block.number)} for chain ${parseInt(this.chainId)}`)
+      recordBlock(Number(this.chainId), parseInt(block.number, 16), parseInt(block.timestamp, 16))
 
       let feeMarket = null
 
