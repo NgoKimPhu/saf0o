@@ -4,6 +4,20 @@ import link from '../../../../resources/link'
 
 const emptyCredential = { available: false, configured: false, backend: 'unsupported' }
 
+// Literal channel names, so the IPC inventory test can check each against a schema.
+const CALLS = {
+  contractVerification: {
+    status: () => link.invoke('contractVerification:credentialStatus'),
+    save: (apiKey) => link.invoke('contractVerification:saveCredential', apiKey),
+    remove: () => link.invoke('contractVerification:removeCredential')
+  },
+  tokenImport: {
+    status: () => link.invoke('tokenImport:credentialStatus'),
+    save: (apiKey) => link.invoke('tokenImport:saveCredential', apiKey),
+    remove: () => link.invoke('tokenImport:removeCredential')
+  }
+}
+
 // Defaults to the Etherscan key. The Alchemy key reuses it through props; both channel sets share one shape.
 const ETHERSCAN = {
   name: 'Etherscan',
@@ -42,7 +56,7 @@ export class ContractVerificationCredential extends Component {
 
   async loadStatus() {
     try {
-      const result = await link.invoke(`${this.provider().channel}:credentialStatus`)
+      const result = await CALLS[this.provider().channel].status()
       if (!this.mounted) return
       if (!result?.success || !result.credential) throw new Error('status unavailable')
       this.setState({ credential: result.credential, statusKnown: true, loading: false, error: '' })
@@ -64,7 +78,7 @@ export class ContractVerificationCredential extends Component {
     this.apiKeyRef.current.value = ''
     this.setState({ busy: true, keyReady: false, error: '', notice: '' })
     try {
-      const result = await link.invoke(`${this.provider().channel}:saveCredential`, apiKey)
+      const result = await CALLS[this.provider().channel].save(apiKey)
       apiKey = ''
       if (!this.mounted) return
       if (!result?.success) throw new Error('save unavailable')
@@ -84,7 +98,7 @@ export class ContractVerificationCredential extends Component {
     if (this.state.busy) return
     this.setState({ busy: true, error: '', notice: '' })
     try {
-      const result = await link.invoke(`${this.provider().channel}:removeCredential`)
+      const result = await CALLS[this.provider().channel].remove()
       if (!this.mounted) return
       if (!result?.success) throw new Error('remove unavailable')
       this.setState({
