@@ -1,5 +1,8 @@
 import HotSignerWorker from '../../../../../main/signers/hot/HotSigner/worker'
 
+// The worker denies non-loopback sockets on load. In-process that patch would block every later suite.
+jest.mock('../../../../../main/egress/connect', () => ({ denyAllButLoopback: jest.fn() }))
+
 let worker
 
 // mnemonic: test test test test test test test test test test test junk

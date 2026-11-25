@@ -6,6 +6,9 @@ import { createHash } from 'crypto'
 import { v5 as uuidv5 } from 'uuid'
 import { deriveHDAccounts } from '../../../../main/signers/Signer/derive'
 
+// The worker denies non-loopback sockets on load. In-process that patch would block every later suite.
+jest.mock('../../../../main/egress/connect', () => ({ denyAllButLoopback: jest.fn() }))
+
 // The dependency bump moved @ethereumjs/{tx,common,util} and @metamask/eth-sig-util across majors
 // without a byte-level check. ethers is independent of both, so it is the oracle: a changed
 // signature byte or serialization in the bumped packages fails here.
