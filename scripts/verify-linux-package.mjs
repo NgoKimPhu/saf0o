@@ -67,6 +67,8 @@ const ledgerPackages = [
 ]
 const appRoot = path.join(process.resourcesPath, 'app.asar')
 const appModules = path.join(appRoot, 'node_modules')
+// Resolve by package name so packages that only define exports load.
+const appRequire = createRequire(path.join(appRoot, 'package.json'))
 for (const module of modules) require(path.join(appModules, module))
 const trezorTransportRequire = createRequire(path.join(appModules, '@trezor/transport/package.json'))
 trezorTransportRequire('usb')
@@ -74,14 +76,14 @@ const ledgerModules = ledgerPackages.map((module) => require(path.join(appModule
 const ledgerVersions = Object.fromEntries(
   ledgerPackages.map((module) => [module, require(path.join(appModules, module, 'package.json')).version])
 )
-const { SiweMessage } = require(path.join(appModules, 'siwe'))
-const ethers = require(path.join(appModules, 'ethers'))
-const sigUtil = require(path.join(appModules, '@metamask/eth-sig-util'))
-const tarFs = require(path.join(appModules, 'tar-fs'))
+const { SiweMessage } = appRequire('siwe')
+const ethers = appRequire('ethers')
+const sigUtil = appRequire('@metamask/eth-sig-util')
+const tarFs = appRequire('tar-fs')
 const tarFsRequire = createRequire(path.join(appModules, 'tar-fs', 'package.json'))
 const tarStream = tarFsRequire('tar-stream')
-const electronLog = require(path.join(appModules, 'electron-log'))
-const { z } = require(path.join(appModules, 'zod'))
+const electronLog = appRequire('electron-log')
+const { z } = appRequire('zod')
 const siwe = new SiweMessage(\`example.com wants you to sign in with your Ethereum account:
 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
 
@@ -133,7 +135,7 @@ const { nodeWorkerEnvironment } = require(path.join(appRoot, 'compiled/main/work
 const buildIdentity = require(path.join(appRoot, 'compiled/main/build-identity.json'))
 const rendererBuildIdentity = require(path.join(appRoot, 'bundle/build-identity.json'))
 const packagedMetadata = require(path.join(appRoot, 'package.json'))
-const { Wallet } = require(path.join(appModules, '@ethereumjs/wallet'))
+const { Wallet } = appRequire('@ethereumjs/wallet')
 const walletAddress = Wallet.fromPrivateKey(Buffer.from('46'.repeat(32), 'hex')).getAddressString()
 const signerSecret = 'packaged-software-signer-probe'
 const encryptedSignerSecret = signerCrypto.encryptSecret(signerSecret, 'package-test-password')

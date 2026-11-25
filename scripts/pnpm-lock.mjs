@@ -75,7 +75,12 @@ export const readPnpmLock = (root = process.cwd()) =>
 // Locked version of a direct dependency, or of `name` as resolved by `parent` when given.
 export function lockedVersion(lock, name, parent) {
   if (parent) {
-    const ref = lock.snapshots.get(`${parent}@${lockedVersion(lock, parent)}`)?.get(name)
+    // A transitive parent has no importer entry: take its snapshot by name.
+    const direct = lockedVersion(lock, parent)
+    const key = direct
+      ? `${parent}@${direct}`
+      : [...lock.snapshots.keys()].find((k) => k.startsWith(`${parent}@`))
+    const ref = lock.snapshots.get(key)?.get(name)
     return ref && lock.resolveRef(ref).slice(name.length + 1)
   }
   const { dependencies, devDependencies, optionalDependencies } = lock.importer

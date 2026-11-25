@@ -36,3 +36,7 @@ test('local file dependency uses its package version and scoped names split into
     ['@scope', 'pkg:npm/%40scope/pkg@1.0.0']
   )
 })
+
+test('a transitive parent resolves its own dependency version', () => {
+  assert.match(lockedVersion(lock, 'usb', '@trezor/transport'), /^\d+\.\d+\.\d+$/)
+})

@@ -4,7 +4,9 @@ const path = require('node:path')
 
 const appRoot = path.join(process.resourcesPath, 'app.asar')
 const appModules = path.join(appRoot, 'node_modules')
-const fromApp = (module) => require(path.join(appModules, module))
+// Resolve by package name so packages that only define `exports` load.
+const appRequire = createRequire(path.join(appRoot, 'package.json'))
+const fromApp = (module) => appRequire(module)
 const packageVersion = (module) => require(path.join(appModules, module, 'package.json')).version
 
 const nodeHid = fromApp('node-hid')
