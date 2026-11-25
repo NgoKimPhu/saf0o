@@ -903,7 +903,12 @@ function parseTraceAccounts(value: unknown) {
   return accounts
 }
 
-export function parseNativeBalanceChanges(result: unknown):
+// The node charges the full gas limit before the trace's "pre" balance, so the sender's diff is only the
+// unused-gas refund (positive). Subtracting gasLimit * price gives swap flows minus gas actually used.
+export function parseNativeBalanceChanges(
+  result: unknown,
+  senderGasCost?: { account: string; cost: bigint }
+):
   | {
       changes: NativeBalanceChange[]
       truncated: boolean
@@ -924,12 +929,14 @@ export function parseNativeBalanceChanges(result: unknown):
 
     const preHasBalance = pre !== undefined && hasOwn(pre, 'balance')
     const postHasBalance = post !== undefined && hasOwn(post, 'balance')
-    if (!postHasBalance && post !== undefined) continue
+    const isSender = senderGasCost?.account === address.toLowerCase()
+    if (!postHasBalance && post !== undefined && !isSender) continue
     if (!preHasBalance && pre !== undefined && postHasBalance) return
 
     const before = pre === undefined ? 0n : parseBalance(pre['balance'])
-    const after = post === undefined ? 0n : parseBalance(post['balance'])
+    let after = post === undefined ? 0n : postHasBalance ? parseBalance(post['balance']) : before
     if (before === undefined || after === undefined) return
+    if (isSender) after -= senderGasCost.cost
     if (before === after) continue
 
     changes.push({
@@ -1044,6 +1051,22 @@ function proxyImplementationCheck(
     slot: ERC1967_IMPLEMENTATION_SLOT,
     reason
   }
+}
+
+// gas * effective price of the traced call. Undefined without a gas limit or a price: no adjustment.
+function senderGasCost(transaction: SimulationCallData, block?: object) {
+  const call = buildEthCall(transaction, block)
+  const gas = parseRpcQuantity(call['gas'])
+  const baseFee = block && blockBaseFees.get(block)
+  const maxFee = parseRpcQuantity(call['maxFeePerGas'])
+  const tip = parseRpcQuantity(call['maxPriorityFeePerGas']) ?? 0n
+  const capped = maxFee !== undefined && baseFee !== undefined ? baseFee + tip : undefined
+  const price =
+    parseRpcQuantity(call['gasPrice']) ??
+    (capped !== undefined && maxFee !== undefined && capped < maxFee ? capped : maxFee)
+  const account = typeof call['from'] === 'string' ? call['from'].toLowerCase() : undefined
+  if (!gas || price === undefined || !account) return
+  return { account, cost: gas * price }
 }
 
 async function readPrestateTrace(
@@ -1161,7 +1184,7 @@ async function readPrestateTrace(
         'failed',
         'RPC returned an invalid or oversized ERC-1967 implementation-slot result'
       )
-  const parsed = parseNativeBalanceChanges(outcome.response.result)
+  const parsed = parseNativeBalanceChanges(outcome.response.result, senderGasCost(transaction, block))
   if (!parsed) {
     return {
       nativeBalanceChanges: {

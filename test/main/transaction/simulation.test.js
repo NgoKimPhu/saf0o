@@ -220,6 +220,22 @@ it('preserves an exact access list in configured-RPC simulation input', () => {
   expect(buildEthCall({ ...transaction, accessList })).toMatchObject({ accessList })
 })
 
+it('nets the gas fee out of the sender diff, which holds only the unused-gas refund', () => {
+  // Node charges gasLimit*price before "pre", so a no-BNB swap shows +refund. User must see the fee.
+  const trace = {
+    pre: { [transaction.from]: { balance: '0x64' } },
+    post: { [transaction.from]: { balance: '0x69' } }
+  }
+  const gasCost = { account: transaction.from, cost: 26n }
+
+  expect(parseNativeBalanceChanges(trace).changes[0].change).toBe('5')
+  expect(parseNativeBalanceChanges(trace, gasCost).changes[0].change).toBe('-21')
+  // Unchanged balance is omitted from post, yet the sender still pays the fee.
+  expect(
+    parseNativeBalanceChanges({ pre: trace.pre, post: { [transaction.from]: { nonce: 2 } } }, gasCost).changes
+  ).toEqual([{ account: transaction.from, before: '100', after: '74', change: '-26' }])
+})
+
 it('strictly parses bounded native balance changes, creations, and deletions', () => {
   const created = '0x3333333333333333333333333333333333333333'
   const deleted = '0x4444444444444444444444444444444444444444'
@@ -781,7 +797,8 @@ it('attaches exact configured-RPC native balance changes after execution succeed
     nativeBalanceChanges: {
       status: 'succeeded',
       source: 'debug_traceCall',
-      changes: [{ account: transaction.from, before: '10', after: '7', change: '-3' }]
+      // Traced -3, minus the fee: gasLimit 21000 * maxFeePerGas 100.
+      changes: [{ account: transaction.from, before: '10', after: '-2099993', change: '-2100003' }]
     }
   })
   expect(send).toHaveBeenCalledWith(

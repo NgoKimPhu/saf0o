@@ -376,3 +376,18 @@ Files: `main/provider/index.ts`, `main/accounts/index.ts`, `test/main/provider/i
 Rebase notes: none.
 
 Upstream-PR candidate: no.
+
+## 24. Net the gas fee out of the native balance preview
+
+Commit: the `saf0o: net the gas fee out of the native balance preview` commit.
+
+Intent: The prestate trace charges the full gas limit before its "pre" balance, so the sender's diff held only the unused-gas
+refund. A swap that moves no BNB showed `+0.000005 BNB`. `parseNativeBalanceChanges` now subtracts `gas * price` of the traced
+call from the sender, so the row reads swap flows minus the fee. Measured on dRPC BSC: a gas price of 0 gave a delta of 0, and
+5 gwei gave exactly the refund.
+
+Files: `main/transaction/simulation.ts`, `test/main/transaction/simulation.test.js`.
+
+Rebase notes: A node whose tracer rebuilds "pre" before the gas charge would count the fee twice. Re-check on a new RPC provider.
+
+Upstream-PR candidate: no.
