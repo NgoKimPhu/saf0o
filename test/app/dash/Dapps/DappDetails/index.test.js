@@ -14,6 +14,8 @@ jest.mock(
 
 let permissions
 let origin
+let blockedApps = {}
+const ACCOUNT = '0x0000000000000000000000000000000000000001'
 
 class DappDetailsHarness extends DappDetails {
   store(...path) {
@@ -21,6 +23,9 @@ class DappDetailsHarness extends DappDetails {
     if (key === 'main.permissions') return permissions
     if (path[0] === 'main.permissions' && path[1]) return permissions[path[1]]
     if (key === 'main.origins.origin') return origin
+    if (key === 'main.blockedApps') return blockedApps
+    if (key === 'main.accounts') return { [ACCOUNT]: { name: 'Personal' } }
+    if (key === `main.accounts.${ACCOUNT}.name`) return 'Personal'
     if (key === 'main.networks.ethereum') return { 1: { on: true }, 137: { on: true } }
     if (key === 'main.networks.ethereum.1.on') return true
     if (key === 'main.networks.ethereum.137.on') return true
@@ -33,6 +38,7 @@ class DappDetailsHarness extends DappDetails {
 
 beforeEach(() => {
   permissions = {}
+  blockedApps = {}
   link.rpc.mockReset()
   link.send.mockClear()
   origin = { chain: { id: 1 }, name: 'example.test' }
@@ -104,4 +110,19 @@ test('opens permissions on the exact account after selecting it', async () => {
     view: 'expandedModule',
     data: { id: 'permissions', account, title: 'Apps with access' }
   })
+})
+
+test('blocks an account by hand and lists the block for removal', async () => {
+  const { user } = render(<DappDetailsHarness originId='origin' />)
+
+  await user.click(screen.getByRole('button', { name: 'Block' }))
+  expect(link.send).toHaveBeenLastCalledWith('tray:action', 'blockApp', ACCOUNT, 'origin', 'example.test')
+})
+
+test('lists a remembered decline and removes it', async () => {
+  blockedApps = { [ACCOUNT]: { origin: { origin: 'example.test' } } }
+  const { user } = render(<DappDetailsHarness originId='origin' />)
+
+  await user.click(screen.getByRole('button', { name: 'Remove block for Personal' }))
+  expect(link.send).toHaveBeenLastCalledWith('tray:action', 'unblockApp', ACCOUNT, 'origin')
 })

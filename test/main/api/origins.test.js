@@ -51,6 +51,7 @@ beforeEach(() => {
 
   store.set('main.origins', {})
   store.set('main.permissions', {})
+  store.set('main.blockedApps', {})
 })
 
 describe('#updateOrigin', () => {
@@ -518,6 +519,18 @@ describe('#isTrusted', () => {
     jest.runAllTimers()
 
     return expect(runTest).resolves
+  })
+
+  it('rejects without a prompt when the user remembered a decline for this account and app', async () => {
+    const address = '0xDAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5'
+    const payload = { method: 'eth_requestAccounts', _origin: frameTestOriginId }
+    accounts.current.mockReturnValue({ address })
+    store.set('main.blockedApps', address.toLowerCase(), {
+      [frameTestOriginId]: { origin: 'test.frame.eth' }
+    })
+
+    await expect(requestOriginAccess(payload)).resolves.toBe(false)
+    expect(accounts.addRequest).not.toHaveBeenCalled()
   })
 
   it('prompts for a replacement grant when enabled networks exceed the existing scope', async () => {

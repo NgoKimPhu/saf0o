@@ -63,6 +63,10 @@ const storeApi = {
   getPermission: (address: Address, originId: string) => {
     const permissions: Record<string, Permission> = store('main.permissions', address) || {}
     return permissions[originId]
+  },
+  isBlocked: (address: Address, originId: string) => {
+    const blocked = (store('main.blockedApps', address.toLowerCase()) || {}) as Record<string, unknown>
+    return originId in blocked
   }
 }
 
@@ -281,6 +285,8 @@ export async function requestOriginAccess(
       })
     )
   if (existingPermissionCoversProposal) return true
+  // The user chose to remember a decline for this account and app: reject without a prompt.
+  if (storeApi.isBlocked(access.address, payload._origin)) return false
 
   const permission = await requestPermission(access.address, payload, proposedPermission, signal)
   if (signal?.aborted) return false

@@ -375,8 +375,11 @@ class FrameAccount {
     return availableSigners[0]
   }
 
-  setAccess(req: AccessRequest, access: boolean) {
+  setAccess(req: AccessRequest, access: boolean, rememberDecline = false) {
     const { origin, account } = req
+    if (!access && rememberDecline && account.toLowerCase() === this.address) {
+      requireStoreAction('blockApp')(this.address, req.handlerId, origin)
+    }
     if (account.toLowerCase() === this.address) {
       // Permissions do no live inside the account summary
       applyPermissionAction(

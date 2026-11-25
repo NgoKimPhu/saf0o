@@ -2474,11 +2474,11 @@ export class Accounts extends EventEmitter {
     // usbDetect.stopMonitoring()
   }
 
-  setAccess(req: AccessRequest, access: boolean) {
+  setAccess(req: AccessRequest, access: boolean, rememberDecline = false) {
     const currentAccount = this.requestAccount(req.handlerId, req.account)
     const request = currentAccount?.getActiveReviewRequest<AccessRequest>(req.handlerId)
     if (!currentAccount || !request || request.type !== 'access') return false
-    currentAccount.setAccess(request, access)
+    currentAccount.setAccess(request, access, rememberDecline)
     return true
   }
 

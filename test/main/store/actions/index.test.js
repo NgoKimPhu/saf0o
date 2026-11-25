@@ -2221,3 +2221,20 @@ describe('#setSimulationRpcKeys', () => {
     expect(update.mock.calls[0][1]()).toEqual([])
   })
 })
+
+describe('#blockApp', () => {
+  it('stores and removes a remembered decline per account and app', () => {
+    let blocked = {}
+    const update = (path, account, reducer) => {
+      expect(path).toBe('main.blockedApps')
+      blocked = { ...blocked, [account]: reducer(blocked[account]) }
+    }
+
+    storeActions.blockApp(update, owner.toUpperCase().replace('0X', '0x'), 'origin-a', 'a.test')
+    storeActions.blockApp(update, owner, 'origin-b', 'b.test')
+    expect(blocked[owner]).toEqual({ 'origin-a': { origin: 'a.test' }, 'origin-b': { origin: 'b.test' } })
+
+    storeActions.unblockApp(update, owner, 'origin-a')
+    expect(blocked[owner]).toEqual({ 'origin-b': { origin: 'b.test' } })
+  })
+})

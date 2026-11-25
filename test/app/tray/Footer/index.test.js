@@ -722,6 +722,22 @@ it.each([
   expect(link.send).toHaveBeenCalledWith(...expected)
 })
 
+it('sends the remember flag only when the access decline box is checked', async () => {
+  const req = {
+    type: 'access',
+    handlerId: 'remember-footer-action',
+    account: '0x0000000000000000000000000000000000000001'
+  }
+  const { user } = renderRequestFooter(req)
+
+  await user.click(screen.getByRole('button', { name: 'Decline' }))
+  expect(link.send).toHaveBeenLastCalledWith('tray:giveAccess', req, false, false)
+
+  await user.click(screen.getByRole('checkbox', { name: 'Remember my decision for this account' }))
+  await user.click(screen.getByRole('button', { name: 'Decline' }))
+  expect(link.send).toHaveBeenLastCalledWith('tray:giveAccess', req, false, true)
+})
+
 it('routes network consent approval through the stored request lifecycle', async () => {
   const req = {
     type: 'switchChain',

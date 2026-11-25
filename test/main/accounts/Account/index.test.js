@@ -72,6 +72,7 @@ jest.mock('../../../../main/windows/nav', () => ({
 jest.mock('../../../../main/store', () => {
   const store = jest.fn()
   store.setPermission = jest.fn()
+  store.blockApp = jest.fn()
   store.setSignerView = jest.fn()
   store.setPanelView = jest.fn()
   store.navDash = jest.fn()
@@ -380,6 +381,27 @@ it('publishes account visibility after resolving access for the selected account
   expect(provider.accountsChanged).toHaveBeenCalledWith(
     [accountState.address.toLowerCase()],
     [request.origin]
+  )
+})
+
+it('blocks the app for this account only when a decline is remembered', () => {
+  const request = {
+    handlerId: 'decline-request',
+    origin: 'example.test',
+    account: accountState.address,
+    type: 'access'
+  }
+  account.requests[request.handlerId] = request
+
+  account.setAccess(request, false)
+  expect(store.blockApp).not.toHaveBeenCalled()
+
+  account.requests[request.handlerId] = request
+  account.setAccess(request, false, true)
+  expect(store.blockApp).toHaveBeenCalledWith(
+    accountState.address.toLowerCase(),
+    'decline-request',
+    'example.test'
   )
 })
 

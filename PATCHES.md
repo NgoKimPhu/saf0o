@@ -406,3 +406,20 @@ Files: `app/dash/Command/index.js`, `app/dash/ControlNavigation/index.js`, `app/
 Rebase notes: The tray expanded list (`DappsExpanded`) is no longer reachable from the preview.
 
 Upstream-PR candidate: no.
+
+## 26. Remember a declined app connection per account
+
+Commit: the `saf0o: remember a declined app connection per account` commit.
+
+Intent: Decline on an account-access request had no memory, so an app could prompt again at once. The access request now has
+"Remember my decision for this account". It stores `main.blockedApps[account][originId]`, and `requestOriginAccess` then rejects
+that account and app with 4001 and no prompt. The app's Connected apps page lists the blocks with Remove, and can add one by hand
+for an account without access. Removing an account drops its blocks.
+
+Files: `main/api/origins.ts`, `main/accounts/Account/index.ts`, `main/accounts/index.ts`, `main/application.ts`,
+`main/ipc/schemas.ts` (`tray:giveAccess` takes a third argument, `blockApp`, `unblockApp`), `main/store/actions/index.js`,
+`main/store/state/index.ts`, `app/tray/Footer/index.js`, `app/dash/Dapps/DappDetails/index.js`, and their tests.
+
+Rebase notes: A block applies only when no existing grant covers the request. A manual block does not revoke an existing grant.
+
+Upstream-PR candidate: no.

@@ -247,6 +247,7 @@ const mainState = {
   addressBook: main('addressBook', {}),
   ...(persistedMigrationVersion < 7 && get('addresses') !== undefined ? { addresses: get('addresses') } : {}),
   permissions: pendingRemovalState.permissions,
+  blockedApps: main('blockedApps', {}),
   dappGuardrails: pendingRemovalState.dappGuardrails,
   balances: {},
   tokens: main('tokens', { custom: [], known: {} }),

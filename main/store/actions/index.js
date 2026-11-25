@@ -198,6 +198,16 @@ module.exports = {
       return next
     })
   },
+  blockApp: (u, address, originId, origin) => {
+    u('main.blockedApps', address.toLowerCase(), (apps = {}) => ({ ...apps, [originId]: { origin } }))
+  },
+  unblockApp: (u, address, originId) => {
+    u('main.blockedApps', address.toLowerCase(), (apps = {}) => {
+      const next = { ...apps }
+      delete next[originId]
+      return next
+    })
+  },
   saveDappGuardrail: (u, guardrail) => {
     u(
       'main.dappGuardrails',
@@ -443,6 +453,13 @@ module.exports = {
       const account = typeof id === 'string' ? id.toLowerCase() : ''
       if (!account || !Object.prototype.hasOwnProperty.call(permissions, account)) return permissions
       const next = { ...permissions }
+      delete next[account]
+      return next
+    })
+    u('main.blockedApps', (blocked = {}) => {
+      const account = typeof id === 'string' ? id.toLowerCase() : ''
+      if (!account || !Object.prototype.hasOwnProperty.call(blocked, account)) return blocked
+      const next = { ...blocked }
       delete next[account]
       return next
     })

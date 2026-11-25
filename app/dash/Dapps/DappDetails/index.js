@@ -7,7 +7,7 @@ import ChainIdentityMark from '../../../../resources/Components/ChainIdentityMar
 import { safeNetworkMetadata } from '../../../../resources/domain/networkMetadata'
 
 export class DappDetails extends React.Component {
-  state = { switchingChainId: null, openingAccount: '', accessError: '' }
+  state = { switchingChainId: null, openingAccount: '', accessError: '', blockChoice: '' }
 
   componentDidMount() {
     this.mounted = true
@@ -56,6 +56,62 @@ export class DappDetails extends React.Component {
       link.send('tray:action', 'closeDash')
       this.setState({ openingAccount: '' })
     })
+  }
+
+  renderBlocked(origin) {
+    const { originId } = this.props
+    const blockedApps = this.store('main.blockedApps') || {}
+    const accounts = this.store('main.accounts') || {}
+    const permissions = this.store('main.permissions') || {}
+    const blocked = Object.keys(blockedApps).filter((account) => originId in blockedApps[account])
+    const candidates = Object.keys(accounts).filter(
+      (account) => !blocked.includes(account.toLowerCase()) && !(originId in (permissions[account] || {}))
+    )
+    const choice = candidates.includes(this.state.blockChoice) ? this.state.blockChoice : candidates[0]
+    const accountName = (account) => this.store('main.accounts', account, 'name') || 'Account'
+
+    return (
+      <section className='originAccessContext originBlocked'>
+        <div className='originSwapTitle'>Blocked</div>
+        {blocked.map((account) => (
+          <div className='originAccountAccess' key={account}>
+            <span>{accountName(account)}</span>
+            <code>{account}</code>
+            <button
+              type='button'
+              className='saf0oControl saf0oControlGhost'
+              aria-label={`Remove block for ${accountName(account)}`}
+              onClick={() => link.send('tray:action', 'unblockApp', account, originId)}
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        {!blocked.length ? <p>No blocked accounts</p> : null}
+        {candidates.length ? (
+          <div className='originBlockAdd'>
+            <select
+              aria-label='Account to block'
+              value={choice}
+              onChange={(e) => this.setState({ blockChoice: e.target.value })}
+            >
+              {candidates.map((account) => (
+                <option key={account} value={account}>
+                  {accountName(account)}
+                </option>
+              ))}
+            </select>
+            <button
+              type='button'
+              className='saf0oControl saf0oControlGhost'
+              onClick={() => link.send('tray:action', 'blockApp', choice, originId, origin.name)}
+            >
+              Block
+            </button>
+          </div>
+        ) : null}
+      </section>
+    )
   }
 
   updateOriginChain(origin) {
@@ -148,6 +204,7 @@ export class DappDetails extends React.Component {
           ) : null}
         </section>
         {this.state.accessError ? <p role='alert'>{this.state.accessError}</p> : null}
+        {this.renderBlocked(origin)}
         <div className='originSwapTitle'>Default network</div>
         <div>{this.updateOriginChain(origin)}</div>
       </div>

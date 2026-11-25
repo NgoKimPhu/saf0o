@@ -172,6 +172,7 @@ export class Footer extends React.Component {
     contextDetail,
     contextIcon,
     contextTitle,
+    declineOption,
     onApprove,
     onDecline
   }) {
@@ -214,6 +215,7 @@ export class Footer extends React.Component {
             </span>
           </button>
         </div>
+        {declineOption}
       </div>
     )
   }
@@ -931,8 +933,21 @@ export class Footer extends React.Component {
             contextDetail: 'Only this account',
             contextIcon: 'accounts',
             contextTitle: 'Account access',
+            declineOption: (
+              <label className='requestRememberDecline'>
+                <input
+                  type='checkbox'
+                  checked={this.state.rememberDeclineFor === req.handlerId}
+                  onChange={(e) =>
+                    this.setState({ rememberDeclineFor: e.target.checked ? req.handlerId : undefined })
+                  }
+                />
+                <span>Remember my decision for this account</span>
+              </label>
+            ),
             onApprove: () => link.send('tray:giveAccess', req, true),
-            onDecline: () => link.send('tray:giveAccess', req, false)
+            onDecline: () =>
+              link.send('tray:giveAccess', req, false, this.state.rememberDeclineFor === req.handlerId)
           })
         } else if (isSignatureRequest(req) && crumb.data.step === 'confirm') {
           return (

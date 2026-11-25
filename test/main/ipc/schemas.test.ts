@@ -677,6 +677,13 @@ test('keeps only trusted request reference fields', () => {
       true
     ])
   ).toEqual([{ type: 'access', handlerId, origin: 'example.test', account: address }, true])
+  expect(
+    parse('event', 'tray:giveAccess', [
+      { type: 'access', handlerId, origin: 'example.test', account: address },
+      false,
+      true
+    ])
+  ).toEqual([{ type: 'access', handlerId, origin: 'example.test', account: address }, false, true])
 
   for (const [channel, trailingArgs] of [
     ['tray:adjustNonce', [-1]],

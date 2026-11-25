@@ -353,8 +353,8 @@ onRenderer('tray:copyTxHash', (e, hash) => {
   if (hash) managedClipboard.writePublic(hash)
 })
 
-onRenderer('tray:giveAccess', (e, req, access) => {
-  accounts.setAccess(req, access)
+onRenderer('tray:giveAccess', (e, req, access, rememberDecline) => {
+  accounts.setAccess(req, access, rememberDecline === true)
 })
 
 handleRenderer('tray:addChain', async (e, chain, requestReference) => {

@@ -735,6 +735,8 @@ const actionSchemas = {
   setShortcut: z.tuple([z.literal('summon'), ShortcutSchema]),
   setTrezorDerivation: z.tuple([z.enum(['standard', 'legacy', 'testnet'])]),
   switchOriginChain: z.tuple([HandlerIdSchema, ChainNumberSchema, NetworkTypeSchema]),
+  blockApp: z.tuple([AddressSchema, HandlerIdSchema, OriginSchema]),
+  unblockApp: z.tuple([AddressSchema, HandlerIdSchema]),
   toggleEndpoint: z.tuple([NetworkTypeSchema, ChainKeySchema, EndpointIdSchema, z.boolean().optional()]),
   moveEndpoint: z.tuple([
     NetworkTypeSchema,
@@ -808,7 +810,7 @@ const eventSchemas: Record<string, z.ZodType> = {
   'tray:clipboardData': z.tuple([BoundedStringSchema]),
   'tray:copyTxHash': z.tuple([HashSchema]),
   'tray:dismissUpdate': z.tuple([z.string().min(1).max(128), z.boolean()]),
-  'tray:giveAccess': z.tuple([AccessReferenceSchema, z.boolean()]),
+  'tray:giveAccess': z.tuple([AccessReferenceSchema, z.boolean(), z.boolean().optional()]),
   'tray:installAvailableUpdate': noArgs,
   'tray:mouseout': noArgs,
   'tray:openExplorer': z.tuple([
