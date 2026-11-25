@@ -7,9 +7,21 @@ import link from '../../../resources/link'
 import { requestDashNavigation } from '../navigationGuard'
 
 export class Command extends React.Component {
-  renderSectionChrome(title) {
+  renderSectionChrome(title, back = false) {
     return (
       <div className='command commandHome'>
+        {back ? (
+          <button
+            type='button'
+            aria-label='Back'
+            className='commandHomeClose saf0oControl saf0oControlGhost saf0oControlIcon saf0oShellNav'
+            onClick={() => {
+              requestDashNavigation('back', () => link.send('tray:action', 'backDash'))
+            }}
+          >
+            <Icon name='back' size={18} />
+          </button>
+        ) : null}
         <img className='commandHomeMark' src={saf0oMark} alt='' aria-hidden='true' />
         <span className='commandHomeIdentity'>
           <strong>{title}</strong>
@@ -81,9 +93,13 @@ export class Command extends React.Component {
     }
     const title = data.title || titles[view || 'default'] || view
     if (!nav.length) return this.renderSectionChrome('Control')
-    if (view === 'accounts' && Object.keys(data).length === 0) return this.renderSectionChrome('Accounts')
-    if (view === 'chains' && Object.keys(data).length === 0) return this.renderSectionChrome('Networks')
-    if (view === 'settings' && Object.keys(data).length === 0) return this.renderSectionChrome('Settings')
+    if (view === 'accounts' && Object.keys(data).length === 0)
+      return this.renderSectionChrome('Accounts', true)
+    if (view === 'chains' && Object.keys(data).length === 0) return this.renderSectionChrome('Networks', true)
+    if (view === 'settings' && Object.keys(data).length === 0)
+      return this.renderSectionChrome('Settings', true)
+    if (view === 'dapps' && Object.keys(data).length === 0)
+      return this.renderSectionChrome('Connected apps', true)
     return (
       <div className='command'>
         {nav.length ? (

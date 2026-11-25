@@ -566,3 +566,22 @@ button.dashModuleCurrent.saf0oControl
   padding var(--saf0o-space-3)
   code
     overflow-wrap anywhere
+
+// Five destinations on one line: icons hidden, labels centered.
+.dashControlNavigation
+  flex-direction row
+
+  button.dashModule.saf0oControl
+    flex 1 1 0
+    min-width 0
+    grid-template-columns minmax(0, 1fr)
+    justify-items center
+    padding 0 var(--saf0o-space-2)
+
+    .dashModuleIcon
+      display none
+
+    .dashModuleTitle
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap

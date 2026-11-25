@@ -49,3 +49,9 @@ it('uses the active crumb title for a nested dashboard surface', () => {
   expect(screen.getByText('Choose an asset')).toBeTruthy()
   expect(screen.getAllByRole('button', { name: 'Back' })).toHaveLength(1)
 })
+
+it.each(['accounts', 'chains', 'settings', 'dapps'])('shows Back on the top-level %s tab', (view) => {
+  renderCommand([{ view, data: {} }])
+
+  expect(screen.getAllByRole('button', { name: 'Back' })).toHaveLength(1)
+})

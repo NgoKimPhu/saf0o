@@ -670,7 +670,7 @@ it('ends cleanly when every connected app is visible', () => {
   expect(screen.queryByRole('button', { name: 'View all app access' })).toBeNull()
 })
 
-it('opens truncated permission management once from a continuation row', async () => {
+it('opens the Connected apps dashboard from the section header and the continuation row', async () => {
   const crowdedPermissions = {
     managed: permissions.managed,
     first: permission('first', 'alpha.example'),
@@ -682,12 +682,11 @@ it('opens truncated permission management once from a continuation row', async (
   const { user } = renderWithStore(DappsPermissionsPreview, {}, crowdedPermissions)
   const more = screen.getByRole('button', { name: 'View all app access' })
 
-  await user.dblClick(more)
+  await user.click(more)
+  await user.click(screen.getByRole('button', { name: 'Apps with access' }))
 
-  expect(link.send.mock.calls).toEqual([
-    ['nav:forward', 'panel', { view: 'expandedModule', data: { id: 'permissions', account } }]
-  ])
-  expect(more.disabled).toBe(true)
+  const dapps = ['tray:action', 'navDash', { view: 'dapps', data: {} }]
+  expect(link.send.mock.calls).toEqual([dapps, dapps])
 })
 
 it('requires safe confirmation and keeps a delayed clear pending without a false timeout', async () => {

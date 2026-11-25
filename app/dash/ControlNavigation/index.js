@@ -25,7 +25,7 @@ export const primaryDashboardItems = [
   },
   {
     view: 'dapps',
-    title: 'Connected apps',
+    title: 'Apps',
     description: 'Review active and recent apps, account access, and default networks.',
     icon: 'sync',
     count: 'dapps'

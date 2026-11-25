@@ -216,6 +216,10 @@ export class DappsPermissionsPreview extends React.Component {
     link.send('nav:forward', 'panel', crumb)
   }
 
+  openConnectedApps() {
+    link.send('tray:action', 'navDash', { view: 'dapps', data: {} })
+  }
+
   render() {
     const permissions = this.store('main.permissions', this.props.account) || {}
     const allPermissionIds = getPermissionIds(permissions)
@@ -234,7 +238,9 @@ export class DappsPermissionsPreview extends React.Component {
           <span>
             <Icon name='apps' size={14} />
           </span>
-          <span>Apps with access</span>
+          <button type='button' className='permissionsModuleLink' onClick={() => this.openConnectedApps()}>
+            Apps with access
+          </button>
         </div>
         {permissionList.length === 0 ? (
           allPermissionIds.length ? (
@@ -284,8 +290,7 @@ export class DappsPermissionsPreview extends React.Component {
           <button
             type='button'
             className='accountContinuationRow connectedAppsContinuation'
-            disabled={this.state.navigating}
-            onClick={() => this.openExpanded()}
+            onClick={() => this.openConnectedApps()}
           >
             <span>View all app access</span>
             <Icon name='chevron-right' size={16} />
