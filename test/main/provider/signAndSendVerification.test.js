@@ -48,10 +48,7 @@ const reviewed = {
 
 const sign = (overrides = {}) => {
   const fields = { ...reviewed, ...overrides }
-  const tx = createTx(
-    { ...fields, gasLimit: fields.gasLimit },
-    { common: chainConfig(1, 'london') }
-  )
+  const tx = createTx({ ...fields, gasLimit: fields.gasLimit }, { common: chainConfig(1, 'london') })
   return `0x${Buffer.from(tx.sign(privateKey).serialize()).toString('hex')}`
 }
 

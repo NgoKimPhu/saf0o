@@ -44,9 +44,12 @@ export function createSecretClipboard(
       const text = clipboard.readText()
       if (typeof text === 'string') clearIfMatches(text)
       else {
-        const current: Promise<void> = text.then(clearIfMatches).catch(onError).finally(() => {
-          if (clearing === current) clearing = undefined
-        })
+        const current: Promise<void> = text
+          .then(clearIfMatches)
+          .catch(onError)
+          .finally(() => {
+            if (clearing === current) clearing = undefined
+          })
         clearing = current
       }
     } catch (error) {

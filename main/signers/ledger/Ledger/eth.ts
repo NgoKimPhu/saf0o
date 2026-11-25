@@ -58,20 +58,10 @@ export default class LedgerEthereumApp {
     try {
       const { domain, types, primaryType, message } = TypedDataUtils.sanitizeData(typedData)
       domainSeparatorHex = bytesToUnprefixedHex(
-        TypedDataUtils.hashStruct(
-          'EIP712Domain',
-          domain,
-          types,
-          SignTypedDataVersion.V4
-        )
+        TypedDataUtils.hashStruct('EIP712Domain', domain, types, SignTypedDataVersion.V4)
       )
       hashStructMessageHex = bytesToUnprefixedHex(
-        TypedDataUtils.hashStruct(
-          primaryType as string,
-          message,
-          types,
-          SignTypedDataVersion.V4
-        )
+        TypedDataUtils.hashStruct(primaryType as string, message, types, SignTypedDataVersion.V4)
       )
     } catch (e) {
       throw new DeviceError('Invalid typed data', 99901)
