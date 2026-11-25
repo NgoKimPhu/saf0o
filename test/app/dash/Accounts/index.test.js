@@ -150,7 +150,7 @@ it('keeps watch-only accounts visible and opens them directly', () => {
   expect(link.rpc).toHaveBeenCalledWith('setSigner', account, expect.any(Function))
 })
 
-it('keeps ready signing accounts as direct account selection', () => {
+it('opens signer management for a ready signing account so it can add subaccounts', () => {
   render(<SignerAccountsHarness data={{}} />)
   link.rpc.mockImplementationOnce((_method, _account, callback) => callback(null, {}))
 
@@ -159,7 +159,7 @@ it('keeps ready signing accounts as direct account selection', () => {
   fireEvent.click(screen.getByRole('button', { name: `Select Personal ${getAddress(account)}` }))
 
   expect(link.rpc).toHaveBeenCalledWith('setSigner', account, expect.any(Function))
-  expect(link.send).not.toHaveBeenCalledWith(
+  expect(link.send).toHaveBeenCalledWith(
     'tray:action',
     'navDash',
     expect.objectContaining({ view: 'expandedSigner' })

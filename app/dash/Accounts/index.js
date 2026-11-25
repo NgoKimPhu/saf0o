@@ -406,8 +406,6 @@ export class Dash extends React.Component {
         }
         return
       }
-      if (status.ready) return
-
       link.send('tray:action', 'navDash', signerPanelCrumb(signer))
     })
   }

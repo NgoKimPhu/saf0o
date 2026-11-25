@@ -21,7 +21,9 @@ export class Command extends React.Component {
           >
             <Icon name='back' size={18} />
           </button>
-        ) : null}
+        ) : (
+          <span className='commandHomeBackSpace' aria-hidden='true' />
+        )}
         <img className='commandHomeMark' src={saf0oMark} alt='' aria-hidden='true' />
         <span className='commandHomeIdentity'>
           <strong>{title}</strong>

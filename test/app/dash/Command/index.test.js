@@ -55,3 +55,11 @@ it.each(['accounts', 'chains', 'settings', 'dapps'])('shows Back on the top-leve
 
   expect(screen.getAllByRole('button', { name: 'Back' })).toHaveLength(1)
 })
+
+it('reserves the Back slot on Home so the logo does not move between tabs', () => {
+  const { container: home } = renderCommand([])
+  const { container: accounts } = renderCommand([{ view: 'accounts', data: {} }])
+
+  expect(home.querySelector('.commandHomeBackSpace')).toBeTruthy()
+  expect(accounts.querySelector('.commandHomeBackSpace')).toBeNull()
+})
