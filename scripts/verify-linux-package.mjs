@@ -117,9 +117,8 @@ const signature = sigUtil.signTypedData({
   data: signatureData,
   version: sigUtil.SignTypedDataVersion.V4
 })
-const signatureHash = sigUtil.TypedDataUtils.eip712Hash(
-  signatureData,
-  sigUtil.SignTypedDataVersion.V4
+const signatureHash = Buffer.from(
+  sigUtil.TypedDataUtils.eip712Hash(signatureData, sigUtil.SignTypedDataVersion.V4)
 ).toString('hex')
 const recoveredSignatureAddress = sigUtil.recoverTypedSignature({
   data: signatureData,
