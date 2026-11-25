@@ -391,3 +391,18 @@ Files: `main/transaction/simulation.ts`, `test/main/transaction/simulation.test.
 Rebase notes: A node whose tracer rebuilds "pre" before the gas charge would count the fee twice. Re-check on a new RPC provider.
 
 Upstream-PR candidate: no.
+
+## 25. Control tabs on one line, Back on every tab, Apps with access opens Connected apps
+
+Commit: the `saf0o: one-line control tabs, Back on every tab, Apps with access opens Connected apps` commit.
+
+Intent: The five dash tabs stack in a column and Back shows only on Connected apps. The tabs now sit in one row without icons
+("Connected apps" reads "Apps"), Accounts, Networks, Settings and Apps all show Back, and the wallet's "Apps with access" title and
+"View all app access" row open the Connected apps page.
+
+Files: `app/dash/Command/index.js`, `app/dash/ControlNavigation/index.js`, `app/dash/Main/style/index.styl`,
+`app/tray/Account/Permissions/DappsPreview/index.js`, `app/tray/Account/style/account.styl`, and their tests.
+
+Rebase notes: The tray expanded list (`DappsExpanded`) is no longer reachable from the preview.
+
+Upstream-PR candidate: no.
