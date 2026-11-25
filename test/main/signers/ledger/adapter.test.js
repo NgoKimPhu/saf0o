@@ -5,6 +5,10 @@ import LedgerSignerAdapter from '../../../../main/signers/ledger/adapter'
 import { Status } from '../../../../main/signers/ledger/Ledger'
 
 jest.mock('node-hid')
+// hw-transport-node-hid-noevents bundles its own node-hid, which the mock above does not reach.
+jest.mock('../../../../node_modules/@ledgerhq/hw-transport-node-hid-noevents/node_modules/node-hid', () =>
+  jest.requireMock('node-hid')
+)
 
 jest.mock('../../../../main/store/persist')
 
