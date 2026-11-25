@@ -60,6 +60,9 @@ it('reserves the Back slot on Home so the logo does not move between tabs', () =
   const { container: home } = renderCommand([])
   const { container: accounts } = renderCommand([{ view: 'accounts', data: {} }])
 
+  // The spacer has no role or text, so Testing Library queries cannot reach it
+  /* eslint-disable testing-library/no-container */
   expect(home.querySelector('.commandHomeBackSpace')).toBeTruthy()
   expect(accounts.querySelector('.commandHomeBackSpace')).toBeNull()
+  /* eslint-enable testing-library/no-container */
 })
