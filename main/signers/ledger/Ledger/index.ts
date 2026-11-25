@@ -6,6 +6,7 @@ import { SignTypedDataVersion } from '@metamask/eth-sig-util'
 import { Request, RequestQueue } from './requestQueue'
 import Signer from '../../Signer'
 import LedgerEthereumApp from './eth'
+import { DeviceError } from './deviceError'
 import { Derivation, getDerivationPath } from '../../Signer/derive'
 import { TransactionData } from '../../../../resources/domain/transaction'
 import { signerCompatibility, londonToLegacy } from '../../../transaction'
@@ -116,14 +117,7 @@ function getStatusForError(err: DeviceError) {
   return Status.NEEDS_RECONNECTION
 }
 
-export class DeviceError extends Error {
-  readonly statusCode
-
-  constructor(msg: string, code = -1) {
-    super(msg)
-    this.statusCode = code
-  }
-}
+export { DeviceError }
 
 export default class Ledger extends Signer {
   private eth: LedgerEthereumApp | undefined

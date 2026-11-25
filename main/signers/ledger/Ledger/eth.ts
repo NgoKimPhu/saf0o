@@ -7,7 +7,7 @@ import Eth from '@ledgerhq/hw-app-eth'
 
 import { Derivation, getDerivationPath, deriveHDAccounts } from '../../Signer/derive'
 import { sign } from '../../../transaction'
-import { DeviceError } from '.'
+import { DeviceError } from './deviceError'
 
 import type { TypedData } from '../../../accounts/types'
 import type { TransactionData } from '../../../../resources/domain/transaction'
