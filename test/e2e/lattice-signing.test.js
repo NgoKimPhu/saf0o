@@ -1,8 +1,8 @@
 import { Client, Constants } from 'gridplus-sdk'
-import { Common } from '@ethereumjs/common'
-import { TransactionFactory } from '@ethereumjs/tx'
-import { ecsign, privateToAddress } from '@ethereumjs/util'
-import { Interface, keccak256 } from 'ethers'
+import { Common, Mainnet } from '@ethereumjs/common'
+import { createTx, createTxFromRLP } from '@ethereumjs/tx'
+import { privateToAddress } from '@ethereumjs/util'
+import { Interface, SigningKey, keccak256 } from 'ethers'
 import log from 'electron-log'
 import {
   SignTypedDataVersion,
@@ -17,8 +17,8 @@ import { parseInspectorInput } from '../../resources/domain/inspector'
 import { hyperliquidFixture, saveIssueEvidence } from './support/issue105'
 
 const key = Buffer.alloc(32, 1)
-const account = `0x${privateToAddress(key).toString('hex')}`
-const common = new Common({ chain: 1, hardfork: 'london' })
+const account = `0x${Buffer.from(privateToAddress(key)).toString('hex')}`
+const common = new Common({ chain: Mainnet, hardfork: 'london' })
 const contract = new Interface(['function approve(address spender,uint256 amount)'])
 const target = '0x2222222222222222222222222222222222222222'
 const relay = 'https://lattice-fixture.invalid/device'
@@ -71,9 +71,17 @@ beforeEach(() => {
     submitted.push({ ...options, data: { ...options.data } })
     await expect(signWithSdk(options)).rejects.toThrow('fixture-device-boundary')
     const digest = Buffer.from(keccak256(options.data.payload).slice(2), 'hex')
-    expect(digest).toEqual(expected.getMessageToSign(true))
-    const sig = ecsign(digest, key, expected.type === 0 ? common.chainId() : undefined)
-    return { sig: { r: sig.r, s: sig.s, v: expected.type === 0 ? sig.v : sig.v - 27n } }
+    expect(digest).toEqual(expected.getHashedMessageToSign())
+    // ethers replaces @ethereumjs/util's removed ecsign. Legacy v carries the EIP-155 chain id.
+    const sig = new SigningKey(`0x${key.toString('hex')}`).sign(digest)
+    const recovery = BigInt(sig.yParity)
+    return {
+      sig: {
+        r: Buffer.from(sig.r.slice(2), 'hex'),
+        s: Buffer.from(sig.s.slice(2), 'hex'),
+        v: expected.type === 0 ? recovery + 35n + 2n * common.chainId() : recovery
+      }
+    }
   })
   jest.spyOn(global, 'fetch').mockImplementation(async (url) => {
     requests.push(String(url))
@@ -98,11 +106,11 @@ afterEach(() => {
 })
 
 async function signFixture(raw) {
-  expected = TransactionFactory.fromTxData(raw, { common })
+  expected = createTx(raw, { common })
   const signed = await new Promise((resolve, reject) => {
     lattice.signTransaction(4, raw, (error, result) => (error ? reject(error) : resolve(result)))
   })
-  const decoded = TransactionFactory.fromSerializedData(Buffer.from(signed.slice(2), 'hex'), { common })
+  const decoded = createTxFromRLP(Buffer.from(signed.slice(2), 'hex'), { common })
   expect(decoded.getSenderAddress().toString()).toBe(account)
   expect(decoded.toJSON()).toEqual(expected.sign(key).toJSON())
   expect(requests).toEqual([relay])
