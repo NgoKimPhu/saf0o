@@ -65,6 +65,20 @@ describe('HotSigner worker lifecycle', () => {
     signer.close()
   })
 
+  it('dispatches EIP-7702 upgrade signing to the worker, where the allowlist is checked', () => {
+    const { signer, worker } = createSigner()
+    const request = { kind: 'eip7702-upgrade-v1' }
+    worker.emit('message', { type: 'token', token: 'worker-token' })
+
+    signer.signEip7702Authorization(1, request, jest.fn())
+
+    expect(worker.send.mock.calls[0][0]).toMatchObject({
+      method: 'signEip7702Authorization',
+      params: { index: 1, request }
+    })
+    signer.close()
+  })
+
   it('times out a pre-token call and does not revive it later', () => {
     const { signer, worker } = createSigner(25)
     const callback = jest.fn()

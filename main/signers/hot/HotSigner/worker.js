@@ -115,6 +115,16 @@ class HotSignerWorker {
     }
   }
 
+  // Signs only an upgrade to an allowlisted delegate; the check runs here, not only in the caller.
+  signEip7702Authorization(key, request, pseudoCallback) {
+    try {
+      const { signEip7702UpgradeRequest } = require('../../../transaction/eip7702')
+      pseudoCallback(null, signEip7702UpgradeRequest(key, request))
+    } catch (error) {
+      pseudoCallback(error)
+    }
+  }
+
   verifyAddress({ index, address }, pseudoCallback) {
     const message = '0x' + crypto.randomBytes(32).toString('hex')
     this.signMessage({ index, message }, (err, signedMessage) => {

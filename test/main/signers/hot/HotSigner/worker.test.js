@@ -148,6 +148,49 @@ describe('#signEip7702Revoke', () => {
   })
 })
 
+// The worker holds the key, so it re-checks the delegate allowlist itself: a compromised caller
+// must not get an authorization that hands the account to an arbitrary contract or chain.
+describe('#signEip7702Authorization', () => {
+  const authority = '0x14dC79964da2C08b23698B3D3cc7Ca32193d9955'
+  const request = {
+    kind: 'eip7702-upgrade-v1',
+    type: '0x4',
+    authority,
+    from: authority,
+    to: authority,
+    delegate: '0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d',
+    chainId: '0x1',
+    nonce: '0x0',
+    authorizationNonce: '0x1',
+    expectedFinalNonce: '0x2',
+    value: '0x0',
+    data: '0xabcd',
+    gasLimit: '0x30d40',
+    maxFeePerGas: '0xb2d05e00',
+    maxPriorityFeePerGas: '0x3b9aca00'
+  }
+  const sign = (change) =>
+    new Promise((resolve) =>
+      worker.signEip7702Authorization(key, { ...request, ...change }, (err, raw) => resolve({ err, raw }))
+    )
+
+  it('signs an upgrade to the allowlisted delegate', async () => {
+    const { err, raw } = await sign({})
+    expect(err).toBe(null)
+    expect(raw).toMatch(/^0x04/)
+  })
+
+  it.each([
+    ['a non-allowlisted delegate', { delegate: '0x1111111111111111111111111111111111111111' }],
+    ['a chain outside the allowlist', { chainId: '0x89' }],
+    ['the wildcard chain', { chainId: '0x0' }]
+  ])('refuses %s', async (_label, change) => {
+    const { err, raw } = await sign(change)
+    expect(err.message).toBe('EIP-7702 upgrade delegate is not allowed on this chain')
+    expect(raw).toBeUndefined()
+  })
+})
+
 describe('#handleMessage', () => {
   beforeEach(() => {
     jest.spyOn(process, 'send').mockClear()

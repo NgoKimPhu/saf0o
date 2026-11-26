@@ -100,6 +100,19 @@ class SeedSignerWorker extends HotSignerWorker {
     }
   }
 
+  signEip7702Authorization({ index, request }, pseudoCallback) {
+    if (!this.seed) return pseudoCallback('Signer locked')
+    if (!Number.isSafeInteger(index) || index < 0) {
+      return pseudoCallback('Invalid signer address index')
+    }
+    const key = this._derivePrivateKey(index)
+    try {
+      super.signEip7702Authorization(key, request, pseudoCallback)
+    } finally {
+      key.fill(0)
+    }
+  }
+
   _derivePrivateKey(index) {
     let key = HDKey.fromMasterSeed(this.seed)
     key = key.derive("m/44'/60'/0'/0/" + index)
