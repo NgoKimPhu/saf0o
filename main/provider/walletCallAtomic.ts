@@ -23,6 +23,8 @@ import {
 export type WalletCallsAtomicStatus = 'supported' | 'ready' | 'unsupported'
 export type WalletCallsAtomicMode = false | 'delegated' | 'upgrade'
 
+const ZERO_ADDRESS = `0x${'0'.repeat(40)}`
+
 // EIP-7702 PER_EMPTY_ACCOUNT_COST. eth_estimateGas without an authorization list omits it.
 export const EIP7702_AUTHORIZATION_GAS = 25_000n
 
@@ -81,8 +83,9 @@ export async function chooseWalletCallsAtomicMode(
   status: WalletCallsAtomicStatus,
   confirmUpgrade: () => Promise<boolean>
 ): Promise<WalletCallsAtomicMode> {
+  // executeBatch skips a call to the zero address, so it would silently do nothing inside the batch.
   const wrappable =
-    request.calls.every((call) => typeof call.to === 'string') &&
+    request.calls.every((call) => typeof call.to === 'string' && call.to !== ZERO_ADDRESS) &&
     (executeBySenderData(request.calls).length - 2) / 2 <= MAX_WALLET_CALL_DATA_BYTES
   if (status === 'unsupported' || !wrappable) {
     if (request.atomicRequired) throw { code: 5760, message: 'Atomicity not supported' }

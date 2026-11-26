@@ -76,6 +76,17 @@ describe('chooseWalletCallsAtomicMode', () => {
   ]
   const request = (overrides = {}) => ({ atomicRequired: false, calls, ...overrides })
 
+  // executeBatch skips a zero-address call, so a wrapped transfer to it would silently do nothing.
+  it('answers 5760 for a required batch with a zero-address call, else runs it sequentially', async () => {
+    const confirm = jest.fn()
+    const zero = [...calls, { to: `0x${'0'.repeat(40)}`, data: '0x', value: '0x1' }]
+    await expect(
+      chooseWalletCallsAtomicMode(request({ atomicRequired: true, calls: zero }), 'supported', confirm)
+    ).rejects.toMatchObject({ code: 5760 })
+    await expect(chooseWalletCallsAtomicMode(request({ calls: zero }), 'ready', confirm)).resolves.toBe(false)
+    expect(confirm).not.toHaveBeenCalled()
+  })
+
   it('answers 5760 for required atomicity on an unsupported account, else runs sequentially', async () => {
     const confirm = jest.fn()
     await expect(
