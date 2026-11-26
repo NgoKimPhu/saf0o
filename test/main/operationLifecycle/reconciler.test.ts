@@ -345,6 +345,25 @@ test('EIP-7702 keeps canonical nonterminal receipts as positive pending evidence
   )
 })
 
+// A dash upgrade reuses the revoke lifecycle. After a restart, its success is a delegation to the
+// requested delegate; reading "not no-code" as failure would mark every upgrade failed.
+test.each([
+  ['an upgrade whose delegate is set', '0x5a7fc11397e9a8ad41bf10bf13f22b0a63f96f6d', 'verified-clearance'],
+  ['a revoke whose delegation remains', undefined, 'failed'],
+  ['an upgrade to a different delegate', `0x${'9'.repeat(40)}`, 'failed']
+] as const)('EIP-7702 restart verification of %s', async (_label, delegate, state) => {
+  const current = operation({
+    kind: 'eip7702Revoke',
+    transaction: undefined,
+    eip7702Revoke: { hash, expectedFinalNonce: '0x2', ...(delegate ? { delegate } : {}) }
+  })
+  const subject = fixture(current, {
+    ...canonical('0x1', '0x20'),
+    eth_getCode: '0xef01005a7fc11397e9a8ad41bf10bf13f22b0a63f96f6d'
+  })
+  await expect(subject.reconciler.reconcile(current.id, 20)).resolves.toMatchObject({ state })
+})
+
 test('a known confirmed sibling with the same account, chain, and nonce replaces a pending tx', async () => {
   let stored: OperationLifecycles = {
     [operation().id]: operation(),

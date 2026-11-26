@@ -680,7 +680,8 @@ class _AccountBody extends React.Component {
     )
   }
 
-  getAccountViewTitle({ type }) {
+  getAccountViewTitle({ type, delegate }) {
+    if (type === 'eip7702Revoke' && delegate) return 'Upgrade account'
     return accountViewTitles[type]
   }
 

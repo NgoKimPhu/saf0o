@@ -11,7 +11,46 @@ import { chainUsesOptimismFees } from '../../../../../resources/utils/chains'
 import { CopyableRequestValue } from '../LightweightRequest'
 import AdjustFee from '../TransactionRequest/AdjustFee'
 
+// A request with `delegate` is a dash upgrade (Trezor) that reuses the revoke flow.
+const upgradeLifecyclePresentation = (req) => {
+  if (!req?.status) {
+    return { kind: 'review', title: 'Ready to upgrade', detail: 'Confirm this upgrade on your Trezor.' }
+  }
+  if (req.status === 'pending') {
+    return { kind: 'signing', title: 'Ready to sign', detail: 'Confirm this upgrade on your Trezor.' }
+  }
+  if (
+    ['sending', 'verifying', 'confirming'].includes(req.status) &&
+    req.submission?.status !== 'unconfirmed'
+  ) {
+    return {
+      kind: 'pending',
+      title: 'Upgrade transaction pending',
+      detail: 'Wait for the network to confirm it.'
+    }
+  }
+  if (req.status === 'confirmed' && req.result?.revocationStatus === 'cleared') {
+    return {
+      kind: 'verified',
+      title: 'Delegation set',
+      detail:
+        'Transaction confirmed. Saf0o’s latest RPC check reports the account delegates to the new delegate.'
+    }
+  }
+  if (req.tx?.hash && req.status !== 'verifying') {
+    return {
+      kind: 'unverified',
+      title: 'Delegation not verified',
+      detail: 'Transaction sent. Saf0o could not verify that the delegation is set.'
+    }
+  }
+}
+
 export const revokeLifecyclePresentation = (req, active = true) => {
+  if (req?.delegate && (active || req.mode === 'monitor')) {
+    const upgrade = upgradeLifecyclePresentation(req)
+    if (upgrade) return upgrade
+  }
   if (!active && req?.mode !== 'monitor') {
     return {
       kind: 'waiting',
@@ -36,7 +75,7 @@ export const revokeLifecyclePresentation = (req, active = true) => {
     return {
       kind: 'signing',
       title: 'Ready to sign',
-      detail: 'Confirm this revocation with your Saf0o software signer.'
+      detail: 'Confirm this revocation with your signer.'
     }
   }
 
@@ -208,7 +247,8 @@ export class Eip7702RevokeRequest extends React.Component {
     const active = req.mode === 'monitor' || req.handlerId === activeRequestId
     const presentation = revokeLifecyclePresentation(req, active)
     const accountAddress = getAddress(req.account)
-    const delegateAddress = getAddress(req.evidence.delegate)
+    const upgrade = Boolean(req.delegate)
+    const delegateAddress = getAddress(req.delegate || req.evidence.delegate)
     const accountIdentity = { label: accountName }
     const resolvedDelegateIdentity = resolveLocalAddressIdentity(addressBook, accounts, delegateAddress)
     const delegateIdentity = resolvedDelegateIdentity
@@ -224,12 +264,22 @@ export class Eip7702RevokeRequest extends React.Component {
       <article className={`eip7702RevokeRequest eip7702RevokeRequest-${presentation.kind}`}>
         <div className='eip7702RevokeDocument'>
           <header className='eip7702RevokeSummary'>
-            <h1>Remove delegated access?</h1>
-            <p>This account will stop using the current delegate.</p>
-            <p>
-              The delegate’s storage stays. If the account delegates to the same contract again, such as
-              Ambire, keys added by any wallet regain control.
-            </p>
+            {upgrade ? (
+              <>
+                <h1>Upgrade to a smart account?</h1>
+                <p>This account will delegate its execution to the contract below.</p>
+                <p>The delegation stays until you revoke it.</p>
+              </>
+            ) : (
+              <>
+                <h1>Remove delegated access?</h1>
+                <p>This account will stop using the current delegate.</p>
+                <p>
+                  The delegate’s storage stays. If the account delegates to the same contract again, such as
+                  Ambire, keys added by any wallet regain control.
+                </p>
+              </>
+            )}
           </header>
 
           <section className='eip7702RevokeSection' aria-labelledby='revoke-identities-title'>
@@ -240,7 +290,11 @@ export class Eip7702RevokeRequest extends React.Component {
                 <dt>Network</dt>
                 <dd>{chainData.chainName || `Chain ${req.chainId}`}</dd>
               </div>
-              {this.renderIdentity('Current delegate', delegateAddress, delegateIdentity)}
+              {this.renderIdentity(
+                upgrade ? 'New delegate' : 'Current delegate',
+                delegateAddress,
+                delegateIdentity
+              )}
             </dl>
           </section>
 

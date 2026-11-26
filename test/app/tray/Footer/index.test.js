@@ -105,6 +105,23 @@ it('submits an active delegation revocation with the reduced request reference',
   expect(screen.getByRole('button', { name: 'Cancel' }).disabled).toBe(true)
 })
 
+// A dash upgrade reuses the revoke request; its approve button must not say "Revoke".
+it('labels the approve button of an account upgrade as an upgrade', () => {
+  renderRequestFooter(
+    {
+      type: 'eip7702Revoke',
+      handlerId: 'upgrade-1',
+      account: '0x0000000000000000000000000000000000000001',
+      delegate: '0x5a7fc11397e9a8ad41bf10bf13f22b0a63f96f6d',
+      evidence: { delegate: '0x0000000000000000000000000000000000000000' }
+    },
+    'trezor'
+  )
+
+  expect(screen.getByRole('button', { name: 'Upgrade account' })).toBeTruthy()
+  expect(screen.queryByRole('button', { name: 'Revoke delegation' })).toBeNull()
+})
+
 it('keeps a waiting delegation revocation non-actionable', () => {
   const req = {
     type: 'eip7702Revoke',

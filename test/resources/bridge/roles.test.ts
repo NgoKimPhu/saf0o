@@ -65,6 +65,15 @@ test('limits Ambire account key management to the dashboard role', () => {
   }
 })
 
+// An upgrade hands the account's execution to a contract, so only the dash Accounts view may ask.
+test('limits the EIP-7702 account upgrade to the dashboard role', () => {
+  for (const method of ['getEip7702UpgradeEligibility', 'requestEip7702Upgrade']) {
+    expect(hasRendererCapability('dash', 'rpc', [method])).toBe(true)
+    expect(hasRendererCapability('tray', 'rpc', [method])).toBe(false)
+    expect(hasRendererCapability('dapp', 'rpc', [method])).toBe(false)
+  }
+})
+
 test('limits signer removal to the dashboard role', () => {
   expect(hasRendererCapability('dash', 'rpc', ['removeSigner'])).toBe(true)
   expect(hasRendererCapability('tray', 'rpc', ['removeSigner'])).toBe(false)

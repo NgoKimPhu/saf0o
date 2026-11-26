@@ -37,7 +37,9 @@ export const ActivityEntrySchema = z
     broadcastPhase: z.enum(['broadcasting', 'unconfirmed', 'acknowledged']).optional(),
     createdAt: z.number().int().nonnegative(),
     completedAt: z.number().int().nonnegative(),
-    chainId: z.number().int().positive().optional()
+    chainId: z.number().int().positive().optional(),
+    // EIP-7702 upgrade target; absent on a revoke.
+    delegate: AddressSchema.optional()
   })
   .strict()
   .refine((entry) => !entry.observed || (entry.type === 'transaction' && entry.chainId !== undefined), {

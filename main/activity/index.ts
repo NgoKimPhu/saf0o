@@ -75,7 +75,8 @@ export const requestActivityEntry = (
       outcome: normalizedOutcome(outcome),
       createdAt: Math.min(request.created ?? completedAt, completedAt),
       completedAt,
-      ...(chainId === undefined ? {} : { chainId })
+      ...(chainId === undefined ? {} : { chainId }),
+      ...(request.type === 'eip7702Revoke' && request.delegate ? { delegate: request.delegate } : {})
     }
     const parsed = ActivityEntrySchema.safeParse(candidate)
     return parsed.success ? parsed.data : undefined

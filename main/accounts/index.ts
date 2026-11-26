@@ -72,6 +72,15 @@ import {
 import { EIP7702_REVOKE_INTRINSIC_GAS } from '../transaction/eip7702'
 import { signSoftwareEip7702Authorization, type SoftwareEip7702AuthorizationSigner } from '../eip7702'
 import type { Eip7702UpgradeRequest } from '../eip7702'
+import { createEip7702UpgradeRequest } from '../transaction/eip7702'
+import {
+  assertTrezorEip7702UpgradeSigner,
+  EIP7702_UPGRADE_GAS_LIMIT,
+  inspectEip7702UpgradePreflight,
+  signTrezorEip7702Upgrade,
+  trezorUpgradeDelegate,
+  type TrezorEip7702UpgradeSigner
+} from '../eip7702/upgrade'
 import { isRecoverableAccountCodeEvidenceError } from '../transaction/simulation'
 import { parseAccountCode, type ParsedAccountCode } from '../../resources/domain/account/code'
 import { recordRequestActivity } from '../activity'
@@ -411,7 +420,8 @@ export class Accounts extends EventEmitter {
       notification: {},
       eip7702Revoke: {
         hash: hash.toLowerCase(),
-        expectedFinalNonce: toRpcQuantity(nonce + 2n)
+        expectedFinalNonce: toRpcQuantity(nonce + 2n),
+        ...(request.delegate ? { delegate: request.delegate } : {})
       }
     }
   }
@@ -619,7 +629,7 @@ export class Accounts extends EventEmitter {
       }
     } else if (operation.state === 'verified-clearance' && request.type === 'eip7702Revoke') {
       request.status = RequestStatus.Confirmed
-      request.notice = 'Delegation removed'
+      request.notice = request.delegate ? 'Delegation set' : 'Delegation removed'
       request.completed = operation.updatedAt
       request.result = Object.freeze({
         receiptStatus: operation.receipt?.status === '0x1' ? 'success' : 'failed',
@@ -629,7 +639,12 @@ export class Accounts extends EventEmitter {
       recordObservedActivity('verified-clearance')
     } else if (operation.state === 'failed') {
       request.status = RequestStatus.Error
-      request.notice = request.type === 'eip7702Revoke' ? 'Delegation remains' : 'Failed'
+      request.notice =
+        request.type === 'eip7702Revoke'
+          ? request.delegate
+            ? 'Delegation not set'
+            : 'Delegation remains'
+          : 'Failed'
       request.completed = operation.updatedAt
       recordObservedActivity('failed')
     } else if (operation.state === 'replaced' && request.type === 'transaction') {
@@ -643,7 +658,7 @@ export class Accounts extends EventEmitter {
       request.completed = operation.updatedAt
     } else if (operation.state === 'clearance-unverified' && request.type === 'eip7702Revoke') {
       request.status = RequestStatus.Error
-      request.notice = 'Clearance not verified'
+      request.notice = request.delegate ? 'Delegation not verified' : 'Clearance not verified'
       request.completed = operation.updatedAt
       request.result = Object.freeze({
         receiptStatus: operation.receipt?.status === '0x1' ? 'success' : 'failed',
@@ -871,7 +886,10 @@ export class Accounts extends EventEmitter {
     return { signer: signer as unknown as SoftwareEip7702RevokeSigner, signerIndex }
   }
 
-  private eip7702FeeSnapshot(chainId: number): Eip7702RevokeRequest['fees'] {
+  private eip7702FeeSnapshot(
+    chainId: number,
+    gasLimit = EIP7702_REVOKE_GAS_LIMIT
+  ): Eip7702RevokeRequest['fees'] {
     const feeMarket = store('main.networksMeta', 'ethereum', chainId, 'gas.price.fees') || {}
     const maxBaseFeePerGas = parseRpcQuantity(feeMarket.maxBaseFeePerGas)
     const maxPriorityFeePerGas = parseRpcQuantity(feeMarket.maxPriorityFeePerGas)
@@ -885,25 +903,33 @@ export class Accounts extends EventEmitter {
     }
     const maxFeePerGas = maxBaseFeePerGas + maxPriorityFeePerGas
     const chainFeeCap = maxFee({ chainId: toRpcQuantity(BigInt(chainId)) } as TransactionData)
-    if (maxFeePerGas > MAX_FEE_PER_GAS || EIP7702_REVOKE_GAS_LIMIT * maxFeePerGas > chainFeeCap) {
+    if (maxFeePerGas > MAX_FEE_PER_GAS || gasLimit * maxFeePerGas > chainFeeCap) {
       throw new Error('Current EIP-7702 fee estimate exceeds the safety cap')
     }
     return {
-      gasLimit: toRpcQuantity(EIP7702_REVOKE_GAS_LIMIT),
+      gasLimit: toRpcQuantity(gasLimit),
       maxFeePerGas: toRpcQuantity(maxFeePerGas),
       maxPriorityFeePerGas: toRpcQuantity(maxPriorityFeePerGas),
-      maxFee: toRpcQuantity(EIP7702_REVOKE_GAS_LIMIT * maxFeePerGas)
+      maxFee: toRpcQuantity(gasLimit * maxFeePerGas)
     }
   }
 
-  private async eip7702Preflight(account: FrameAccount, chainId: number) {
-    const [authorityCode, latestNonce, pendingNonce] = await Promise.all([
+  private async eip7702Preflight(account: FrameAccount, chainId: number, delegate?: string) {
+    const [authorityCode, latestNonce, pendingNonce, delegateCode] = await Promise.all([
       this.sendEip7702Rpc<unknown>(chainId, 'eth_getCode', [account.id, 'latest']),
       this.sendEip7702Rpc<unknown>(chainId, 'eth_getTransactionCount', [account.id, 'latest']),
-      this.sendEip7702Rpc<unknown>(chainId, 'eth_getTransactionCount', [account.id, 'pending'])
+      this.sendEip7702Rpc<unknown>(chainId, 'eth_getTransactionCount', [account.id, 'pending']),
+      delegate ? this.sendEip7702Rpc<unknown>(chainId, 'eth_getCode', [delegate, 'latest']) : undefined
     ])
     const preflight = Object.freeze({ authorityCode, latestNonce, pendingNonce })
-    return Object.freeze({ preflight, evidence: inspectEip7702RevokePreflight(account.id, preflight) })
+    if (!delegate) {
+      return Object.freeze({ preflight, evidence: inspectEip7702RevokePreflight(account.id, preflight) })
+    }
+    // Upgrade: the delegate address must hold the verified code, or the account hands control elsewhere.
+    if (parseAccountCode(delegateCode)?.codeHash !== trezorUpgradeDelegate(BigInt(chainId))?.codeHash) {
+      throw new Error('EIP-7702 delegate code does not match the verified contract')
+    }
+    return Object.freeze({ preflight, evidence: inspectEip7702UpgradePreflight(account.id, preflight) })
   }
 
   private assertEip7702ReadinessStillCurrent(
@@ -945,7 +971,8 @@ export class Accounts extends EventEmitter {
   private async eip7702Readiness(
     accountId: string,
     chainId: number,
-    requireAdmissionReservation = false
+    requireAdmissionReservation = false,
+    delegate?: string
   ): Promise<Eip7702Admission> {
     if (!Number.isSafeInteger(chainId) || chainId <= 0) {
       throw new Eip7702EligibilityError('unavailable', 'Invalid EIP-7702 chain')
@@ -980,9 +1007,15 @@ export class Accounts extends EventEmitter {
     let fees: Eip7702RevokeRequest['fees']
     let preflight: Eip7702RevokePreflight
     let evidence: Eip7702RevokeEvidence
+    if (delegate && signerMatch.signer.type !== 'trezor') {
+      throw new Eip7702EligibilityError(
+        'unsupported-signer',
+        'EIP-7702 upgrade from the dash requires a Trezor'
+      )
+    }
     try {
-      fees = this.eip7702FeeSnapshot(chainId)
-      const inspected = await this.eip7702Preflight(account, chainId)
+      fees = this.eip7702FeeSnapshot(chainId, delegate ? EIP7702_UPGRADE_GAS_LIMIT : EIP7702_REVOKE_GAS_LIMIT)
+      const inspected = await this.eip7702Preflight(account, chainId, delegate)
       preflight = inspected.preflight
       evidence = inspected.evidence
     } catch (error) {
@@ -1003,12 +1036,64 @@ export class Accounts extends EventEmitter {
       maxFeePerGas: BigInt(fees.maxFeePerGas),
       maxPriorityFeePerGas: BigInt(fees.maxPriorityFeePerGas)
     }
-    prepareSoftwareEip7702Revoke(currentSignerMatch.signer, currentSignerMatch.signerIndex, input, preflight)
+    if (delegate) {
+      createEip7702UpgradeRequest({ ...input, delegate, data: '0x' })
+      assertTrezorEip7702UpgradeSigner(
+        currentSignerMatch.signer as unknown as TrezorEip7702UpgradeSigner,
+        currentSignerMatch.signerIndex,
+        account.id
+      )
+    } else {
+      prepareSoftwareEip7702Revoke(
+        currentSignerMatch.signer,
+        currentSignerMatch.signerIndex,
+        input,
+        preflight
+      )
+    }
     return Object.freeze({ account, chainId, preflight, evidence, fees, ...currentSignerMatch })
   }
 
-  private async eip7702Admission(accountId: string, chainId: number): Promise<Eip7702Admission> {
-    return this.eip7702Readiness(accountId, chainId, true)
+  private async eip7702Admission(
+    accountId: string,
+    chainId: number,
+    delegate?: string
+  ): Promise<Eip7702Admission> {
+    return this.eip7702Readiness(accountId, chainId, true, delegate)
+  }
+
+  // Dash upgrade of a codeless Trezor account to the allowlisted delegate, through the revoke request flow.
+  async getEip7702UpgradeEligibility(
+    accountId: string,
+    chainId: number
+  ): Promise<Eip7702RevocationEligibility> {
+    const base = { account: accountId.toLowerCase(), chainId }
+    const delegate =
+      Number.isSafeInteger(chainId) && chainId > 0 ? trezorUpgradeDelegate(BigInt(chainId)) : undefined
+    if (!delegate) return Object.freeze({ ...base, status: 'unavailable' })
+    try {
+      await this.eip7702Readiness(accountId, chainId, false, delegate.address)
+      return Object.freeze({
+        ...base,
+        status: 'eligible',
+        source: 'eth_getCode',
+        delegate: delegate.address.toLowerCase(),
+        codeHash: delegate.codeHash
+      })
+    } catch (error) {
+      const status = error instanceof Eip7702EligibilityError ? error.status : 'unavailable'
+      return Object.freeze({ ...base, status: status === 'not-delegated' ? 'unavailable' : status })
+    }
+  }
+
+  async requestEip7702Upgrade(
+    accountId: string,
+    chainId: number
+  ): Promise<Eip7702RevocationRequestReference> {
+    const delegate =
+      Number.isSafeInteger(chainId) && chainId > 0 ? trezorUpgradeDelegate(BigInt(chainId)) : undefined
+    if (!delegate) throw new Error('No EIP-7702 delegate a Trezor can sign on this chain')
+    return this.admitEip7702Request(accountId, chainId, delegate.address)
   }
 
   async getEip7702RevocationEligibility(
@@ -1055,13 +1140,21 @@ export class Accounts extends EventEmitter {
     accountId: string,
     chainId: number
   ): Promise<Eip7702RevocationRequestReference> {
+    return this.admitEip7702Request(accountId, chainId)
+  }
+
+  private async admitEip7702Request(
+    accountId: string,
+    chainId: number,
+    delegate?: string
+  ): Promise<Eip7702RevocationRequestReference> {
     const reservation = accountId.toLowerCase()
     if (this.eip7702Admissions.has(reservation)) {
       throw new Error('An EIP-7702 revocation is already being prepared for this account')
     }
     this.eip7702Admissions.add(reservation)
     try {
-      const admission = await this.eip7702Admission(accountId, chainId)
+      const admission = await this.eip7702Admission(accountId, chainId, delegate)
       const handlerId = uuidv4()
       const request: Eip7702RevokeRequest = {
         type: 'eip7702Revoke',
@@ -1072,9 +1165,10 @@ export class Accounts extends EventEmitter {
         payload: {
           id: 1,
           jsonrpc: '2.0',
-          method: 'saf0o_revokeEip7702Delegation',
+          method: delegate ? 'saf0o_upgradeEip7702Delegation' : 'saf0o_revokeEip7702Delegation',
           params: [admission.account.id, toRpcQuantity(BigInt(chainId))]
         },
+        ...(delegate ? { delegate: delegate.toLowerCase() } : {}),
         chainId: toRpcQuantity(BigInt(chainId)),
         evidence: admission.evidence,
         fees: { ...admission.fees },
@@ -1190,9 +1284,13 @@ export class Accounts extends EventEmitter {
     const signerMatch = this.eip7702Signer(account)
     if (!signerMatch) throw new Error('EIP-7702 revocation requires an unlocked Ring, Seed or Trezor signer')
 
-    const { preflight, evidence } = await this.eip7702Preflight(account, chainId)
+    const { preflight, evidence } = await this.eip7702Preflight(account, chainId, request.delegate)
     if (!this.activeEip7702Operation(account, request, operationVersion)) return
     assertEip7702RevokeEvidenceStable(request.evidence, evidence)
+    if (signerMatch.signer.type === 'trezor') {
+      request.notice = 'Confirm on your Trezor'
+      account.update()
+    }
 
     const input = {
       authority: account.id,
@@ -1202,18 +1300,18 @@ export class Accounts extends EventEmitter {
       maxFeePerGas: BigInt(request.fees.maxFeePerGas),
       maxPriorityFeePerGas: BigInt(request.fees.maxPriorityFeePerGas)
     }
-    const signingRequest = prepareSoftwareEip7702Revoke(
-      signerMatch.signer,
-      signerMatch.signerIndex,
-      input,
-      preflight
-    )
-    const signed = await signSoftwareEip7702Revoke(
-      signerMatch.signer,
-      signerMatch.signerIndex,
-      signingRequest,
-      preflight
-    )
+    const signed = request.delegate
+      ? await signTrezorEip7702Upgrade(
+          signerMatch.signer as unknown as TrezorEip7702UpgradeSigner,
+          signerMatch.signerIndex,
+          createEip7702UpgradeRequest({ ...input, delegate: request.delegate, data: '0x' })
+        )
+      : await signSoftwareEip7702Revoke(
+          signerMatch.signer,
+          signerMatch.signerIndex,
+          prepareSoftwareEip7702Revoke(signerMatch.signer, signerMatch.signerIndex, input, preflight),
+          preflight
+        )
     if (!this.activeEip7702Operation(account, request, operationVersion)) return
 
     request.status = RequestStatus.Sending
@@ -1399,7 +1497,7 @@ export class Accounts extends EventEmitter {
         return
       }
 
-      const result = await verifyEip7702RevocationResult(receipt, async () => authorityCode)
+      const result = await verifyEip7702RevocationResult(receipt, async () => authorityCode, request.delegate)
       if (!this.activeEip7702Operation(account, request, operationVersion) || !request.tx) return
       const confirmations = Number(blockNumber - receiptBlock + 1n)
       request.tx = { ...request.tx, receipt, confirmations }
@@ -1410,9 +1508,9 @@ export class Accounts extends EventEmitter {
         request.status = RequestStatus.Confirming
         request.notice =
           result.revocationStatus === 'cleared'
-            ? 'Delegation removed; confirming'
+            ? `${request.delegate ? 'Delegation set' : 'Delegation removed'}; confirming`
             : result.revocationStatus === 'skipped'
-              ? 'Delegation still present; rechecking'
+              ? `${request.delegate ? 'Delegation not set' : 'Delegation still present'}; rechecking`
               : 'Delegation state unavailable; rechecking'
         account.update()
         this.updateEip7702Lifecycle(request, 'confirming', receipt)
@@ -1423,9 +1521,13 @@ export class Accounts extends EventEmitter {
       request.status = result.revocationStatus === 'cleared' ? RequestStatus.Confirmed : RequestStatus.Error
       request.notice =
         result.revocationStatus === 'cleared'
-          ? 'Delegation removed'
+          ? request.delegate
+            ? 'Delegation set'
+            : 'Delegation removed'
           : result.revocationStatus === 'skipped'
-            ? 'Delegation remains'
+            ? request.delegate
+              ? 'Delegation not set'
+              : 'Delegation remains'
             : 'Could not verify delegation'
       account.update()
       this.updateEip7702Lifecycle(

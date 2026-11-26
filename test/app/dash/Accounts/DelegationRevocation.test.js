@@ -341,3 +341,63 @@ it('recovers with bounded copy when request admission fails', async () => {
   expect(screen.queryByRole('button', { name: 'Revoke delegation' })).toBeNull()
   expect(link.send).not.toHaveBeenCalled()
 })
+
+// wallet_sendCalls cannot upgrade a Trezor account (the firmware cannot sign upgrade plus batch),
+// so the dash is the upgrade path. A software account must not get this action.
+it('offers a codeless Trezor account the upgrade and queues it through main', async () => {
+  const ambire = '0x5a7fc11397e9a8ad41bf10bf13f22b0a63f96f6d'
+  const trezor = { id: 'trezor-signer', type: 'trezor' }
+  link.rpc.mockImplementation((method, ...args) => {
+    const callback = args.at(-1)
+    const base = { account, chainId: 1, source: 'eth_getCode' }
+    if (method === 'getAccountExecutionState') {
+      callback(null, { ...base, status: 'no-code', codeHash: `0x${'22'.repeat(32)}` })
+    } else if (method === 'getEip7702UpgradeEligibility') {
+      callback(null, { ...base, status: 'eligible', delegate: ambire, codeHash: `0x${'33'.repeat(32)}` })
+    } else if (method === 'requestEip7702Upgrade') {
+      callback(null, { type: 'eip7702Revoke', account, handlerId: 'upgrade-1' })
+    }
+  })
+
+  const { user } = render(
+    <DelegationRevocation
+      accounts={{ [account]: { ...accounts[account], signer: trezor.id, lastSignerType: 'trezor' } }}
+      currentAccount={account}
+      networks={networks}
+      signers={{ [trezor.id]: trezor }}
+    />
+  )
+
+  await user.click(await screen.findByRole('button', { name: 'Upgrade to smart account' }))
+  expect(link.rpc).toHaveBeenCalledWith('requestEip7702Upgrade', account, 1, expect.any(Function))
+  expect(link.send).toHaveBeenCalledWith('nav:forward', 'panel', {
+    view: 'requestView',
+    data: { step: 'confirm', accountId: account, requestId: 'upgrade-1' }
+  })
+})
+
+it('does not offer the upgrade to a codeless software account', async () => {
+  link.rpc.mockImplementation((method, ...args) => {
+    if (method === 'getAccountExecutionState') {
+      args.at(-1)(null, {
+        account,
+        chainId: 1,
+        source: 'eth_getCode',
+        status: 'no-code',
+        codeHash: `0x${'22'.repeat(32)}`
+      })
+    }
+  })
+
+  render(
+    <DelegationRevocation
+      accounts={accounts}
+      currentAccount={account}
+      networks={networks}
+      signers={{ [signer.id]: signer }}
+    />
+  )
+
+  expect(await screen.findByText(delegationRevocationCopy.none)).toBeTruthy()
+  expect(link.rpc).not.toHaveBeenCalledWith('getEip7702UpgradeEligibility', account, 1, expect.any(Function))
+})

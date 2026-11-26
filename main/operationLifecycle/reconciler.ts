@@ -1,6 +1,7 @@
 import { getCreateAddress } from 'ethers'
 
 import { parseAccountCode } from '../../resources/domain/account/code'
+import { eip7702TargetReached } from '../eip7702/upgrade'
 import { parseRpcQuantity, toRpcQuantity } from '../../resources/domain/transaction/quantity'
 import type { OperationLifecycle } from '../store/state/types/operationLifecycle'
 import type { OperationLifecycleLedger } from './ledger'
@@ -411,7 +412,9 @@ export class OperationLifecycleReconciler {
         operation,
         {
           ...withReceipt,
-          state: parsedCode.status === 'no-code' ? 'verified-clearance' : 'failed'
+          state: eip7702TargetReached(parsedCode, operation.eip7702Revoke?.delegate)
+            ? 'verified-clearance'
+            : 'failed'
         },
         now,
         { ...detail, pendingEvidence: false }

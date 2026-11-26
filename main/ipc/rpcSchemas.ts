@@ -219,6 +219,14 @@ const ambireKeyRpcSchemas = {
   requestAmbireKeysClear: {
     request: z.tuple([AddressSchema, ChainIdSchema]),
     response: result(TransactionRequestReferenceSchema)
+  },
+  getEip7702UpgradeEligibility: {
+    request: z.tuple([AddressSchema, ChainIdSchema]),
+    response: result(Eip7702EligibilitySchema)
+  },
+  requestEip7702Upgrade: {
+    request: z.tuple([AddressSchema, ChainIdSchema]),
+    response: result(Eip7702RequestReferenceSchema)
   }
 }
 

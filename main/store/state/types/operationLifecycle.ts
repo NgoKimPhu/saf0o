@@ -114,7 +114,10 @@ export const OperationLifecycleSchema = z
       .optional(),
     replacement: z.object({ operationId: z.uuid() }).strict().optional(),
     walletCalls: z.object({ batchOperationId: z.uuid() }).strict().optional(),
-    eip7702Revoke: z.object({ hash: HashSchema, expectedFinalNonce: QuantitySchema }).strict().optional(),
+    eip7702Revoke: z
+      .object({ hash: HashSchema, expectedFinalNonce: QuantitySchema, delegate: AddressSchema.optional() })
+      .strict()
+      .optional(),
     receipt: ReceiptEvidenceSchema.optional(),
     settlement: SettlementSchema.optional()
   })

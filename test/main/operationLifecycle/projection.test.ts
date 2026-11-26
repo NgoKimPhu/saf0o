@@ -256,6 +256,26 @@ test('records unverified EIP-7702 clearance without a misleading terminal notifi
   expect(ledger.listStored()).toEqual([])
 })
 
+// Activity labels an upgrade as "Delegation set", not "Delegation removed"; it needs the delegate.
+test('carries the upgrade delegate into the activity entry', () => {
+  const delegate = '0x5a7fc11397e9a8ad41bf10bf13f22b0a63f96f6d'
+  const current = operation({
+    kind: 'eip7702Revoke',
+    transaction: undefined,
+    eip7702Revoke: { hash: `0x${'b'.repeat(64)}`, expectedFinalNonce: '0x2', delegate },
+    state: 'verified-clearance',
+    createdAt: 0,
+    updatedAt: 20,
+    expiresAt: 20
+  })
+  const { projection } = fixture(current)
+  projection.project(current.id, 21)
+
+  expect(mocks.recordActivity).toHaveBeenCalledWith(
+    expect.objectContaining({ type: 'eip7702Revoke', outcome: 'verified-clearance', delegate })
+  )
+})
+
 test('periodic projection does not recreate cleared handled or unchanged pending history', () => {
   const handled = operation({
     state: 'confirmed',

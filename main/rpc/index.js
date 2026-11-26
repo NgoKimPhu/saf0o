@@ -4,6 +4,7 @@ const { randomBytes } = require('crypto')
 import { isAddress } from 'ethers'
 import { confirmSensitiveAction, openFileDialog } from '../windows/dialog'
 import { AmbireKeys } from '../eip7702/keys'
+import { confirmEip7702Upgrade } from '../eip7702/upgrade'
 import { routeWalletCallRequest } from './walletCalls'
 import { applyRequestUpdate } from './updateRequest'
 import { enforceRequestOriginAuthorization } from './requestAuthorization'
@@ -193,6 +194,20 @@ const rpc = {
     ambireKeys
       .assertRevocable(account, chainId, 'confirm')
       .then(() => accounts.requestEip7702Revocation(account, chainId))
+      .then(
+        (reference) => cb(null, reference),
+        (error) => cb(error)
+      )
+  },
+  getEip7702UpgradeEligibility(account, chainId, cb) {
+    accounts.getEip7702UpgradeEligibility(account, chainId).then(
+      (eligibility) => cb(null, eligibility),
+      (error) => cb(error)
+    )
+  },
+  requestEip7702Upgrade(account, chainId, cb) {
+    confirmEip7702Upgrade(chainId, confirmSensitiveAction)
+      .then(() => accounts.requestEip7702Upgrade(account, chainId))
       .then(
         (reference) => cb(null, reference),
         (error) => cb(error)

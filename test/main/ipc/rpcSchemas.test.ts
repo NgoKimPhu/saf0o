@@ -274,6 +274,15 @@ test('bounds wallet-owned EIP-7702 renderer requests', () => {
     data: { args: [address, 1] }
   })
   expect(parseRendererRpcRequest(wire(1, 'requestEip7702Revocation', address, 0)).success).toBe(false)
+  // The upgrade takes only account and chain; the delegate comes from main's allowlist, never the renderer.
+  expect(parseRendererRpcRequest(wire(1, 'requestEip7702Upgrade', address, 8453))).toMatchObject({
+    success: true,
+    data: { args: [address, 8453] }
+  })
+  expect(
+    parseRendererRpcRequest(wire(1, 'requestEip7702Upgrade', address, 8453, `0x${'9'.repeat(40)}`)).success
+  ).toBe(false)
+  expect(parseRendererRpcRequest(wire(1, 'getEip7702UpgradeEligibility', address, 1)).success).toBe(true)
   expect(
     parseRendererRpcRequest(wire(1, 'requestEip7702Revocation', address, 1, { authorizationList: [] }))
       .success

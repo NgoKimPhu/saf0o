@@ -66,7 +66,7 @@ it('presents review, queue, and signer states without overstating execution', ()
   expect(revokeLifecyclePresentation(request({ status: 'pending' }), true)).toEqual({
     kind: 'signing',
     title: 'Ready to sign',
-    detail: 'Confirm this revocation with your Saf0o software signer.'
+    detail: 'Confirm this revocation with your signer.'
   })
   expect(revokeLifecyclePresentation(request({ status: 'verifying', tx: { hash: '0x1' } }), true)).toEqual({
     kind: 'pending',
@@ -267,4 +267,26 @@ it('renders directly copyable evidence without authorization or signature materi
   await waitFor(() => expect(codeHashCopy.textContent).toContain('Copied'))
   expect(document.body.textContent.toLowerCase()).not.toContain('authorization signature')
   expect(document.body.textContent.toLowerCase()).not.toContain('raw transaction')
+})
+
+// A dash upgrade reuses this request. The user must not approve a screen labelled "Revoke" that
+// actually hands the account to a new delegate.
+it('presents a Trezor upgrade as an upgrade naming the new delegate', () => {
+  const ambire = '0x5a7fc11397e9a8ad41bf10bf13f22b0a63f96f6d'
+  const req = request({
+    chainId: 8453,
+    delegate: ambire,
+    evidence: { delegate: '0x0000000000000000000000000000000000000000', codeHash: `0x${'11'.repeat(32)}` },
+    fees: { gasLimit: '0xea60', maxFeePerGas: '0x3b9aca00', maxPriorityFeePerGas: '0x0' }
+  })
+  connectedReview(req)
+
+  expect(screen.getByRole('heading', { name: 'Upgrade to a smart account?' })).toBeTruthy()
+  expect(screen.getByText('The delegation stays until you revoke it.')).toBeTruthy()
+  expect(screen.getByText('New delegate')).toBeTruthy()
+  expect(screen.queryByText('Remove delegated access?')).toBeNull()
+  expect(revokeLifecyclePresentation(req)).toMatchObject({ title: 'Ready to upgrade' })
+  expect(
+    revokeLifecyclePresentation({ ...req, status: 'confirmed', result: { revocationStatus: 'cleared' } })
+  ).toMatchObject({ title: 'Delegation set' })
 })

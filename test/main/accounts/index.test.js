@@ -17,7 +17,7 @@ import { snapshotPreparedWalletCallExecutionInput } from '../../../main/provider
 import { SignerUserRejectedError } from '../../../main/signers/errors'
 import nav from '../../../main/windows/nav'
 import { computeAddress, getCreateAddress, keccak256, SigningKey, Transaction } from 'ethers'
-import { signEip7702RevokeRequest } from '../../../main/transaction/eip7702'
+import { signEip7702RevokeRequest, signEip7702UpgradeRequest } from '../../../main/transaction/eip7702'
 import { createAccountPermission } from '../../../main/provider/permissions'
 import { RequestStatus } from '../../../main/accounts/types'
 import operationLifecycleLedger from '../../../main/operationLifecycle'
@@ -269,6 +269,22 @@ it('does not log an account address when creating an account', () => {
   } finally {
     Accounts.remove(address)
     info.mockRestore()
+  }
+})
+
+// eth_getCode of the real Ambire delegate is large; this stand-in hashes to the allowlisted code hash.
+const AMBIRE_RUNTIME = '0x6001600155'
+jest.mock('../../../resources/domain/account/code', () => {
+  const actual = jest.requireActual('../../../resources/domain/account/code')
+  return {
+    ...actual,
+    parseAccountCode: (value) =>
+      value === '0x6001600155'
+        ? {
+            status: 'contract',
+            codeHash: '0x386e55cb86f9a31fdb7926ceab54847aa4542b7a0517216144a956982a21ade3'
+          }
+        : actual.parseAccountCode(value)
   }
 })
 
@@ -4381,6 +4397,63 @@ describe('wallet-owned EIP-7702 revocation', () => {
     } finally {
       signer.status = 'ok'
     }
+  })
+
+  // The dash upgrade reuses the revoke request. A codeless Trezor account delegates to Ambire with
+  // empty data; the device tx must match the request, and success means the account now delegates
+  // to Ambire. Reading success as "no code" (the revoke rule) would report every upgrade as failed.
+  it('upgrades a codeless Trezor account to Ambire through the revoke request flow', async () => {
+    const ambire = '0x5a7fc11397e9a8ad41bf10bf13f22b0a63f96f6d'
+    // Earlier suites leave real timers on; run alone (-t), the global fake clock would stall flush().
+    jest.useRealTimers()
+    signer.type = 'trezor'
+    signer.status = 'ready'
+    signer.signEip7702Authorization = jest.fn((_index, signingRequest, cb) =>
+      cb(null, signEip7702UpgradeRequest(privateKey, signingRequest))
+    )
+    Accounts.current().lastSignerType = 'trezor'
+    code = '0x'
+    receiptStatus = '0x1'
+    const normalSend = provider.connection.send.getMockImplementation()
+    provider.connection.send.mockImplementation((payload, callback, chain) => {
+      if (payload.method === 'eth_getCode' && payload.params[0].toLowerCase() === ambire) {
+        return callback({ result: AMBIRE_RUNTIME })
+      }
+      return normalSend(payload, callback, chain)
+    })
+    try {
+      await expect(Accounts.getEip7702UpgradeEligibility(authority, 1)).resolves.toMatchObject({
+        status: 'eligible',
+        delegate: ambire
+      })
+      const reference = await Accounts.requestEip7702Upgrade(authority, 1)
+      const upgrade = Accounts.current().getRequest(reference.handlerId)
+      expect(upgrade).toMatchObject({ type: 'eip7702Revoke', delegate: ambire, fees: { gasLimit: '0xea60' } })
+
+      Accounts.approveEip7702Revocation(authority, reference.handlerId)
+      code = `0xef0100${ambire.slice(2)}`
+      await flush()
+
+      const raw = provider.connection.send.mock.calls.find(
+        ([payload]) => payload.method === 'eth_sendRawTransaction'
+      )[0].params[0]
+      const sent = Transaction.from(raw)
+      expect(sent.type).toBe(4)
+      expect(sent.data).toBe('0x')
+      expect(sent.authorizationList[0].address.toLowerCase()).toBe(ambire)
+      expect(signer.signEip7702Revoke).not.toHaveBeenCalled()
+      expect(upgrade).toMatchObject({ status: 'confirmed', notice: 'Delegation set' })
+    } finally {
+      signer.status = 'ok'
+      delete signer.signEip7702Authorization
+    }
+  })
+
+  it('offers the dash upgrade only to a Trezor', async () => {
+    code = '0x'
+    await expect(Accounts.getEip7702UpgradeEligibility(authority, 1)).resolves.toMatchObject({
+      status: 'unsupported-signer'
+    })
   })
 
   it('exposes bounded eligibility and admits one safe FIFO request', async () => {

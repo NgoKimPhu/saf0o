@@ -50,6 +50,7 @@ const requestPreviewTitle = (request) => {
     transaction: 'Review transaction',
     walletCalls: 'Wallet calls batch'
   }
+  if (request?.type === 'eip7702Revoke' && request.delegate) return 'Upgrade account'
   return titles[request?.type] || 'Review request'
 }
 
@@ -442,7 +443,7 @@ export class Requests extends React.Component {
               const chainId = Number(req.chainId)
               const chainName = this.store('main.networks.ethereum', chainId, 'name') || `Chain ${chainId}`
               const metadata = this.store('main.networksMeta.ethereum', chainId) || {}
-              const delegate = req.evidence?.delegate || ''
+              const delegate = req.delegate || req.evidence?.delegate || ''
               return (
                 <RequestItem
                   key={req.handlerId}
@@ -452,7 +453,7 @@ export class Requests extends React.Component {
                   handlerId={req.handlerId}
                   i={this.requestIndexes.get(req.handlerId)}
                   actionRef={(element) => this.setRequestRef(req.handlerId, element)}
-                  title={`${chainName} delegation revocation`}
+                  title={`${chainName} ${req.delegate ? 'account upgrade' : 'delegation revocation'}`}
                   color={metadata.primaryColor ? `var(--${metadata.primaryColor})` : 'var(--outerspace)'}
                   img={metadata.icon}
                   svgName='accounts'
@@ -460,7 +461,7 @@ export class Requests extends React.Component {
                   <div className='eip7702RevokeRequestSummary'>
                     {delegate ? (
                       <>
-                        Current delegate{' '}
+                        {req.delegate ? 'New delegate' : 'Current delegate'}{' '}
                         <span>
                           {delegate.slice(0, 8)}…{delegate.slice(-6)}
                         </span>

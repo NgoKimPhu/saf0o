@@ -351,6 +351,8 @@ export interface WalletCallsRequest extends AccountRequest<'walletCalls'> {
 export interface Eip7702RevokeRequest extends AccountRequest<'eip7702Revoke'> {
   version: '1'
   chainId: string
+  // Set for a dash upgrade (delegate to this allowlisted contract); absent for a revoke.
+  delegate?: string
   evidence: Readonly<{
     source: 'eth_getCode'
     authority: string

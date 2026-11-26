@@ -1,6 +1,7 @@
 import { getAddress } from 'ethers'
 
 import { parseAccountCode } from '../../resources/domain/account/code'
+import { eip7702TargetReached } from './upgrade'
 import { parseRpcQuantity, toRpcQuantity } from '../../resources/domain/transaction/quantity'
 import {
   createEip7702RevokeRequest,
@@ -200,7 +201,8 @@ function parseReceiptStatus(receipt: unknown): 'success' | 'failed' | 'unavailab
 
 export async function verifyEip7702RevocationResult(
   receipt: unknown,
-  readAuthorityCode: () => Promise<unknown>
+  readAuthorityCode: () => Promise<unknown>,
+  delegate?: string
 ): Promise<Eip7702RevocationResult> {
   const receiptStatus = parseReceiptStatus(receipt)
   if (receiptStatus === 'unavailable') {
@@ -220,7 +222,7 @@ export async function verifyEip7702RevocationResult(
         reason: 'code-unavailable'
       })
     }
-    if (code.status === 'no-code') {
+    if (eip7702TargetReached(code, delegate)) {
       return Object.freeze({
         receiptStatus,
         revocationStatus: 'cleared',

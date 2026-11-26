@@ -79,15 +79,31 @@ const submittedPresentation = (entry) => {
   return null
 }
 
+// An eip7702Revoke entry with a delegate is a dash upgrade; the shared outcomes then mean "delegation set".
+const UPGRADE_OUTCOMES = Object.freeze({
+  'clearance-unverified': {
+    label: 'Delegation not verified',
+    detail: 'Transaction confirmed. Saf0o could not verify that the delegation is set.'
+  },
+  'verified-clearance': {
+    label: 'Delegation set',
+    detail: 'Saf0o verified this account delegates execution to the new delegate.'
+  }
+})
+
 const outcomePresentation = (entry) =>
-  submittedPresentation(entry) || {
+  submittedPresentation(entry) ||
+  (entry.delegate && UPGRADE_OUTCOMES[entry.outcome]) || {
     label: OUTCOME_LABELS[entry.outcome],
     detail: OUTCOME_DETAILS[entry.outcome]
   }
 
 export const activityTypeMeta = (type) => TYPE_META[type] || TYPE_META.transaction
 const activityEntryMeta = (entry) => {
-  const meta = activityTypeMeta(entry.type)
+  const meta =
+    entry.type === 'eip7702Revoke' && entry.delegate
+      ? { category: 'transactions', icon: 'add', label: 'Account upgrade' }
+      : activityTypeMeta(entry.type)
   return entry.observed ? { ...meta, label: observedActivityLabels[entry.observed.action] } : meta
 }
 

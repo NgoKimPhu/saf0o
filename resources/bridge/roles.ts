@@ -69,8 +69,14 @@ const dashboardOnlyRpcMethods = new Set([
   'discardGeneratedWallet'
 ])
 
-// Ambire account keys (EIP-7702): managed from the dash Accounts view only.
-const ambireKeyRpcMethods = new Set(['getAmbireKeys', 'requestAmbireKeyChange', 'requestAmbireKeysClear'])
+// Ambire account keys and the Trezor upgrade (EIP-7702): managed from the dash Accounts view only.
+const ambireKeyRpcMethods = new Set([
+  'getAmbireKeys',
+  'requestAmbireKeyChange',
+  'requestAmbireKeysClear',
+  'getEip7702UpgradeEligibility',
+  'requestEip7702Upgrade'
+])
 
 export const isRendererRole = (value: unknown): value is RendererRole =>
   typeof value === 'string' && rendererRoles.includes(value as RendererRole)

@@ -12,7 +12,10 @@ const COPY = {
   contract: 'Contract account. Revocation is unavailable.',
   empty: 'No accounts are available to observe.',
   unavailable: 'Execution state is unavailable.',
-  admissionFailed: 'Couldn’t prepare the revocation request. No request was sent.'
+  admissionFailed: 'Couldn’t prepare the revocation request. No request was sent.',
+  upgrade:
+    'Delegate this Trezor account to the Ambire smart account contract. The delegation stays until you revoke it.',
+  upgradeFailed: 'Upgrade cancelled or unavailable. No request was sent.'
 }
 
 // Signers that can sign an EIP-7702 delegation transaction (Trezor on firmware 2.12.5+).
@@ -131,27 +134,35 @@ export class DelegationRevocation extends React.Component {
         account === this.props.currentAccount &&
         signsDelegation(selected, this.props.signers)
 
+      // A codeless Trezor account can upgrade to Ambire from here (wallet_sendCalls cannot upgrade it).
+      const checksUpgrade =
+        result.status === 'no-code' &&
+        account === this.props.currentAccount &&
+        signerTypeOf(selected, this.props.signers) === 'trezor'
+
       this.setState({
-        checking: checksRevocation,
+        checking: checksRevocation || checksUpgrade,
         execution: result,
         eligibility: undefined,
         message: ''
       })
-      if (checksRevocation) {
-        this.checkEligibility(account, parsedChainId, sequence)
+      if (checksRevocation || checksUpgrade) {
+        this.checkEligibility(account, parsedChainId, sequence, checksUpgrade)
       }
     })
   }
 
-  checkEligibility(account, chainId, sequence = this.checkSequence) {
-    link.rpc('getEip7702RevocationEligibility', account, chainId, (error, result) => {
+  checkEligibility(account, chainId, sequence = this.checkSequence, upgrade = false) {
+    const onResult = (error, result) => {
       if (!this.mounted || sequence !== this.checkSequence) return
       if (error || !result || result.account !== account || Number(result.chainId) !== chainId) {
         this.setState({ checking: false, eligibility: undefined })
         return
       }
       this.setState({ checking: false, eligibility: result })
-    })
+    }
+    if (upgrade) link.rpc('getEip7702UpgradeEligibility', account, chainId, onResult)
+    else link.rpc('getEip7702RevocationEligibility', account, chainId, onResult)
   }
 
   selectAccountAndCheck(account, chainId) {
@@ -163,12 +174,12 @@ export class DelegationRevocation extends React.Component {
     this.checkExecution(account, chainId)
   }
 
-  requestRevocation() {
+  requestRevocation(upgrade = false) {
     const { account, chainId, eligibility, queueing } = this.state
     if (queueing || eligibility?.status !== 'eligible') return
 
     this.setState({ queueing: true, message: '' })
-    link.rpc('requestEip7702Revocation', account, Number(chainId), (error, request) => {
+    const onRequest = (error, request) => {
       if (!this.mounted) return
       if (
         error ||
@@ -177,7 +188,11 @@ export class DelegationRevocation extends React.Component {
         request.account !== account ||
         !request.handlerId
       ) {
-        this.setState({ queueing: false, eligibility: undefined, message: COPY.admissionFailed })
+        this.setState({
+          queueing: false,
+          eligibility: undefined,
+          message: upgrade ? COPY.upgradeFailed : COPY.admissionFailed
+        })
         return
       }
 
@@ -191,7 +206,9 @@ export class DelegationRevocation extends React.Component {
           requestId: request.handlerId
         }
       })
-    })
+    }
+    if (upgrade) link.rpc('requestEip7702Upgrade', account, Number(chainId), onRequest)
+    else link.rpc('requestEip7702Revocation', account, Number(chainId), onRequest)
   }
 
   render() {
@@ -289,6 +306,22 @@ export class DelegationRevocation extends React.Component {
                     {queueing ? 'Preparing revocation…' : 'Revoke delegation'}
                   </button>
                 ) : null}
+              </div>
+            ) : execution?.status === 'no-code' && eligibility?.status === 'eligible' ? (
+              <div className='delegationRevocationEligible'>
+                <div className='delegationRevocationIdentity'>
+                  <span>Ambire smart account delegate</span>
+                  <strong title={getAddress(eligibility.delegate)}>{getAddress(eligibility.delegate)}</strong>
+                  <small>{COPY.upgrade}</small>
+                </div>
+                <button
+                  type='button'
+                  className='saf0oControl saf0oControlPrimary'
+                  disabled={queueing || !selectedAccount}
+                  onClick={() => this.requestRevocation(true)}
+                >
+                  {queueing ? 'Preparing upgrade…' : 'Upgrade to smart account'}
+                </button>
               </div>
             ) : (
               <p className='delegationRevocationMessage' role='status'>

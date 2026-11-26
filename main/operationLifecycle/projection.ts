@@ -26,7 +26,8 @@ const activityEntry = (operation: OperationLifecycle): ActivityEntry => ({
     : {}),
   createdAt: operation.createdAt,
   completedAt: operation.updatedAt,
-  chainId: operation.chainId
+  chainId: operation.chainId,
+  ...(operation.eip7702Revoke?.delegate ? { delegate: operation.eip7702Revoke.delegate } : {})
 })
 
 const terminalNotification = (

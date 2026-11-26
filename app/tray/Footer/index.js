@@ -319,7 +319,7 @@ export class Footer extends React.Component {
                 }}
               >
                 <span className='requestSignButton _txButton'>
-                  <span>Revoke delegation</span>
+                  <span>{req.delegate ? 'Upgrade account' : 'Revoke delegation'}</span>
                 </span>
               </button>
             </>
