@@ -443,3 +443,54 @@ end of that file, plus one `isAllowedDelegate` import. Add a chain to the allowl
 on that chain.
 
 Upstream-PR candidate: no.
+
+## 28. Atomic wallet_sendCalls through the Ambire delegation
+
+Commits: `saf0o: atomic wallet_sendCalls through Ambire delegation`, `saf0o: show atomic batches in the approval and status
+views`.
+
+Intent: EIP-5792 batches ran only sequentially. `wallet_getCapabilities` now reports atomic `supported` for an account delegated
+to the allowlisted AmbireAccount7702 with a matching delegate code hash, and `ready` for a codeless Ring or Seed account on an
+allowlisted chain. A supported batch runs as one self-call to `executeBySender`. A ready batch asks for native consent, then
+sends one type-4 transaction that delegates and runs the batch. A declined required upgrade answers 5750. A contract creation
+or an unsupported account answers 5760 when atomicity is required, else runs sequentially. The review keeps the decoded calls,
+so risk checks, simulation and the approval list stay per call. The upgrade simulation and gas estimate apply the delegation as
+a state override, and the gas limit adds the 25000 authorization cost. Signing re-reads the account code and aborts if it changed.
+
+Files: `main/provider/walletCallAtomic.ts` (new), `main/provider/{index,walletCalls,walletCallAdmission,walletCallBatches,
+walletCallPreparedExecution,walletCallStatusView}.ts`, `main/accounts/{index,types}.ts`, `main/accounts/Account/index.ts`,
+`main/transaction/simulation.ts` (`stateOverrides`), `main/store/state/types/walletCallBatch.ts`, `main/windows/nav/breadcrumb.ts`,
+`app/tray/Footer/index.js`, `app/tray/Account/Requests/{index,WalletCallsRequest/index}.js`,
+`app/tray/Account/WalletCallsStatus/index.js`, and their tests.
+
+Rebase notes: `parseSendCalls` no longer throws 5760; the provider decides after reading the account code. The batch `atomic`
+field is `z.boolean()`, so stored rows with `false` still parse. An atomic batch records `callCount: 1`. `sendWalletCalls`
+and `getWalletCallCapabilities` are async, and the `await` edits in `test/main/provider/index.test.js` will conflict with
+upstream test changes. The code re-check sits in `revalidateBeforeCall`, because `assertBeforeSign` is synchronous.
+
+Upstream-PR candidate: no.
+
+## 29. Ambire account keys (EIP-7702)
+
+Commits: `saf0o: manage Ambire account keys`, `saf0o: clear Ambire keys before revoke`.
+
+Intent: Let an account delegated to the allowlisted AmbireAccount7702 add and remove extra keys. Each change is a self-call
+`setAddrPrivilege` (to = from = account) sent through the normal transaction approval with the internal origin. Adding a key
+first passes a native `confirmSensitiveAction` that says the key gets full control. Added keys use privilege `0x…01`
+(ambire-common `standardSigningOnlyPriv`); remove writes zero. Keys added in saf0o are stored in `main.ambireKeys[account][chainId]`
+(default on read, no migration); live status comes from `privileges(addr)`. Keys added by other wallets are not discovered.
+Because Ambire storage survives a revoke, main refuses `requestEip7702Revocation` while a known key reads nonzero, and the dash
+offers one transaction that zeroes all of them (`executeBySender` for several). The revoke request warns that keys added by
+any wallet return if the account delegates to the same contract again.
+
+Files: `main/eip7702/keys.ts`, `app/dash/Accounts/AmbireKeys.js` (new); `main/rpc/index.js`, `main/ipc/rpcSchemas.ts`,
+`resources/bridge/roles.ts`, `main/store/{state/index.ts,actions/index.js}`, `app/dash/Accounts/DelegationRevocation.js`,
+`app/dash/index.styl`, `app/tray/Account/Requests/Eip7702RevokeRequest/index.js`, `scripts/qualification/ui/{policy,state-fixture}.cjs`,
+and their tests.
+
+Rebase notes: In `main/rpc/index.js` the token-approval revocation deps moved into a shared `internalTransactions` object
+(same body and indentation), which `AmbireKeys` reuses; `requestEip7702Revocation` runs `ambireKeys.assertRevocable` before
+`accounts.requestEip7702Revocation`. RPC schemas sit in a separate `ambireKeyRpcSchemas` block spread at the top of `rpcSchemas`;
+roles in a separate dash-only `ambireKeyRpcMethods` set. `main/accounts/index.ts` is untouched.
+
+Upstream-PR candidate: no.
