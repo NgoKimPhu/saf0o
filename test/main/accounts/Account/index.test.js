@@ -3266,6 +3266,91 @@ describe('#signTransaction', () => {
     expect(callback).toHaveBeenCalledWith(null, '0xsigned')
   })
 
+  // The delegated atomic wrapper targets the account, while the review covered the inner calls.
+  // Comparing the two used to abort every batch whose first call did not target the account.
+  const atomicDelegatedRequest = () => {
+    const request = walletCallsRequest('atomic-delegated')
+    const other = '0x4444444444444444444444444444444444444444'
+    request.atomic = 'delegated'
+    request.calls = [
+      { to: tokenContract, value: '0x0', data: '0xabcd' },
+      { to: other, value: '0x1', data: '0x' }
+    ]
+    const reviewed = accountCodeEvidence()
+    reviewed.targets.push({ ...accountCodeEvidence(other).targets[0], callIndexes: [1] })
+    request.simulation = {
+      status: 'succeeded',
+      source: 'eth_simulateV1',
+      calls: [],
+      accountCodeEvidence: reviewed
+    }
+    request.preparation = {
+      status: 'succeeded',
+      calls: [
+        {
+          transaction: {
+            from: accountState.address.toLowerCase(),
+            to: accountState.address.toLowerCase(),
+            chainId: '0x1',
+            nonce: '0x5',
+            type: '0x2',
+            gasLimit: '0x5208',
+            data: '0x6171d1c9',
+            value: '0x0',
+            maxFeePerGas: '0x10',
+            maxPriorityFeePerGas: '0x1'
+          },
+          maxFee: '0x52080'
+        }
+      ],
+      maxFee: '0x52080'
+    }
+    request.locked = true
+    account.requests[request.handlerId] = request
+    inspectTransactionAccountCode.mockImplementation(async (call) => accountCodeEvidence(call.to))
+    return request
+  }
+
+  it('signs a delegated atomic batch whose inner calls target other contracts', async () => {
+    const callback = jest.fn()
+    const request = atomicDelegatedRequest()
+    const rawTx = { ...request.preparation.calls[0].transaction }
+    const signer = {
+      addresses: [accountState.address],
+      signTransaction: jest.fn((_index, _transaction, cb) => cb(null, '0xsigned'))
+    }
+    account.signer = 'signer-id'
+    signers.get.mockReturnValue(signer)
+
+    account.signTransaction(rawTx, callback)
+    await flushPromises()
+
+    expect(callback).toHaveBeenCalledWith(null, '0xsigned')
+    expect(inspectTransactionAccountCode.mock.calls.map(([call]) => call.to)).toEqual(
+      request.calls.map((call) => call.to)
+    )
+  })
+
+  it('aborts a delegated atomic batch when an inner target code changed since review', async () => {
+    const callback = jest.fn()
+    const request = atomicDelegatedRequest()
+    const changed = accountCodeEvidence('0x4444444444444444444444444444444444444444')
+    changed.targets[0].codeHash = `0x${'aa'.repeat(32)}`
+    changed.targets[0].status = 'contract'
+    inspectTransactionAccountCode.mockImplementation(async (call) =>
+      call.to === tokenContract ? accountCodeEvidence(call.to) : changed
+    )
+    const signer = { addresses: [accountState.address], signTransaction: jest.fn() }
+    account.signer = 'signer-id'
+    signers.get.mockReturnValue(signer)
+
+    account.signTransaction({ ...request.preparation.calls[0].transaction }, callback)
+    await flushPromises()
+
+    expect(callback).toHaveBeenCalledWith(expect.objectContaining({ code: 'account-code-evidence-changed' }))
+    expect(signer.signTransaction).not.toHaveBeenCalled()
+  })
+
   it('rejects wallet-call evidence that belongs only to another call index', async () => {
     const callback = jest.fn()
     const request = readyWalletCallsRequest('wrong-wallet-call-evidence-index')

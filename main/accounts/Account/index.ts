@@ -57,6 +57,7 @@ import {
 import { viaSimulationRpc } from '../../transaction/simulationRpc'
 import { snapshotWalletCalls } from '../../provider/walletCallExecution'
 import {
+  assertAtomicCallsCodeStable,
   isAllowedBatchSender,
   walletCallsExecutionCalls,
   walletCallsSimulationOverrides
@@ -2148,11 +2149,17 @@ class FrameAccount {
           'rechecking-safety'
         )
       }
-      inspectTransactionAccountCode(rawTx, {
-        send: (payload, callback, targetChain) => provider.connection.send(payload, callback, targetChain)
-      })
-        .then((actual) => {
-          assertAccountCodeEvidenceStable(reviewed?.evidence, actual, reviewed?.callIndex ?? 0)
+      const inspect = (transaction: Parameters<typeof inspectTransactionAccountCode>[0]) =>
+        inspectTransactionAccountCode(transaction, {
+          send: (payload, callback, targetChain) => provider.connection.send(payload, callback, targetChain)
+        })
+      const recheck = reviewed?.atomicCalls
+        ? assertAtomicCallsCodeStable(reviewed.atomicCalls, reviewed.evidence, inspect)
+        : inspect(rawTx).then((actual) =>
+            assertAccountCodeEvidenceStable(reviewed?.evidence, actual, reviewed?.callIndex ?? 0)
+          )
+      recheck
+        .then(() => {
           if (reviewed?.request?.status !== undefined && reviewed.request.status !== RequestStatus.Pending) {
             throw new SignerUserRejectedError('Transaction request was cancelled')
           }
@@ -2209,6 +2216,7 @@ class FrameAccount {
         evidence?: TransactionAccountCodeEvidence
         callIndex: number
         request?: TransactionRequest
+        atomicCalls?: WalletCallsRequest
       }>
     | undefined {
     const transactionRequest = Object.values(this.requests).find(
@@ -2248,7 +2256,8 @@ class FrameAccount {
           request.simulation.status === 'pending' ? undefined : request.simulation.accountCodeEvidence
         return Object.freeze({
           ...(evidence ? { evidence } : {}),
-          callIndex
+          callIndex,
+          ...(request.atomic ? { atomicCalls: request } : {})
         })
       }
     }

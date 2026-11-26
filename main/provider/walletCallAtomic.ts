@@ -1,6 +1,10 @@
 import { parseAccountCode } from '../../resources/domain/account/code'
 import type { TransactionData } from '../../resources/domain/transaction'
-import type { AccountCodeEvidence } from '../transaction/simulation'
+import {
+  assertAccountCodeEvidenceStable,
+  type AccountCodeEvidence,
+  type TransactionAccountCodeEvidence
+} from '../transaction/simulation'
 import {
   createEip7702UpgradeRequest,
   EIP7702_DELEGATES,
@@ -98,6 +102,23 @@ export function walletCallsExecutionCalls(
   if (!request.atomic) return request.calls.map((call) => ({ ...call }))
   assertNoSelfCalls(request.calls, request.account)
   return [{ to: request.account.toLowerCase(), data: executeBySenderData(request.calls), value: '0x0' }]
+}
+
+// The atomic wrapper targets only the account, so its own code check says nothing about the inner calls.
+// Recheck the sender and every inner target against the evidence reviewed over the inner calls.
+export async function assertAtomicCallsCodeStable(
+  request: Readonly<{ account: string; chainId: string; calls: readonly WalletCall[] }>,
+  reviewed: TransactionAccountCodeEvidence | undefined,
+  inspect: (
+    call: Readonly<WalletCall & { from: string; chainId: string }>
+  ) => Promise<TransactionAccountCodeEvidence>
+) {
+  await Promise.all(
+    request.calls.map(async (call, index) => {
+      const actual = await inspect({ ...call, from: request.account, chainId: request.chainId })
+      assertAccountCodeEvidenceStable(reviewed, actual, index)
+    })
+  )
 }
 
 // Builds the type-4 upgrade request for a prepared type-2 self-call wrapper.

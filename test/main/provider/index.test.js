@@ -1897,10 +1897,77 @@ describe('#wallet-call provider boundary', () => {
       )
     })
 
+    // Evidence the review recorded over the inner calls: no code at the account or either target.
+    const reviewUpgrade = (handlerId) => {
+      const noCode = (account, extra) => ({
+        status: 'no-code',
+        source: 'eth_getCode',
+        trust: 'configured-rpc',
+        account,
+        codeHash: keccak256('0x'),
+        ...extra
+      })
+      const request = accounts.getRequestForAccount(address, handlerId)
+      request.simulation = {
+        status: 'succeeded',
+        source: 'eth_simulateV1',
+        calls: [],
+        accountCodeEvidence: {
+          source: 'configured-rpc',
+          sender: noCode(address, { role: 'sender' }),
+          targets: twoCalls.map((call, index) => noCode(call.to, { role: 'target', callIndexes: [index] }))
+        }
+      }
+    }
+    const answerCode = (codes = {}) =>
+      connection.send.mockImplementation((request, callback) =>
+        callback({ id: request.id, jsonrpc: '2.0', result: codes[request.params[0]] ?? '0x' })
+      )
+    const upgradePrepared = {
+      from: address,
+      to: address,
+      chainId: '0x1',
+      nonce: '0x5',
+      type: '0x2',
+      gasLimit: '0x2ab98',
+      maxFeePerGas: '0x2',
+      maxPriorityFeePerGas: '0x1',
+      data: '0x',
+      value: '0x0'
+    }
+
+    // The upgrade path skips Account.signTransaction, so without its own recheck a target swapped
+    // to new code after review would run inside the signed batch.
+    it('aborts an upgrade batch when an inner target code changed since review', async () => {
+      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
+      confirmSensitiveAction.mockResolvedValueOnce(true)
+      const admitted = await provider.sendWalletCalls(payload({ calls: twoCalls }), jest.fn())
+      reviewUpgrade(admitted.handlerId)
+      answerCode({ [twoCalls[1].to]: '0x6000' })
+      accounts.signEip7702UpgradeForAccount = jest.fn().mockResolvedValue('0x04signed')
+      let failure
+      executeWalletCallRuntime.mockImplementationOnce(async (_input, dependencies) => {
+        failure = await new Promise((resolve) =>
+          dependencies.accounts.signTransactionForAccount(address, upgradePrepared, (error) => resolve(error))
+        )
+        return ['0xhash']
+      })
+
+      await provider.approveWalletCallsRequest(address, admitted.handlerId)
+
+      expect(failure).toMatchObject({
+        code: 'account-code-evidence-changed',
+        data: { account: twoCalls[1].to }
+      })
+      expect(accounts.signEip7702UpgradeForAccount).not.toHaveBeenCalled()
+    })
+
     it('signs an upgrade batch as a type-4 delegation through the software signer', async () => {
       provider.walletCallsAtomicStatus.mockResolvedValue('ready')
       confirmSensitiveAction.mockResolvedValueOnce(true)
       const admitted = await provider.sendWalletCalls(payload({ calls: twoCalls }), jest.fn())
+      reviewUpgrade(admitted.handlerId)
+      answerCode()
       accounts.signEip7702UpgradeForAccount = jest.fn().mockResolvedValue('0x04signed')
       const prepared = {
         from: address,

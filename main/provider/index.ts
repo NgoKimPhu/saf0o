@@ -85,6 +85,7 @@ import { executeWalletCallRuntime } from './walletCallRuntime'
 import walletCallEvidenceRuntime from './walletCallEvidenceRuntime'
 import { showWalletCallStatus } from './walletCallStatusView'
 import {
+  assertAtomicCallsCodeStable,
   batchDelegate,
   chooseWalletCallsAtomicMode,
   delegationCode,
@@ -101,7 +102,11 @@ import { confirmSensitiveAction } from '../windows/dialog'
 import { isUnsafeRpcForwardingMethod, unsupportedRawTransactionFamily } from './rpcForwarding'
 import { getRequestSignal, inheritRequestSignal } from './requestSignal'
 import { summarizeRpcError } from '../security/rpcLogging'
-import { isRecoverableAccountCodeEvidenceError, simulateWalletCalls } from '../transaction/simulation'
+import {
+  inspectTransactionAccountCode,
+  isRecoverableAccountCodeEvidenceError,
+  simulateWalletCalls
+} from '../transaction/simulation'
 import { viaSimulationRpc } from '../transaction/simulationRpc'
 import { assertDappGuardrailReviewStable, guardrailWarningData, reviewDappGuardrail } from './dappGuardrails'
 import {
@@ -1244,7 +1249,7 @@ export class Provider extends EventEmitter {
               atomic === 'upgrade'
                 ? {
                     signTransactionForAccount: (accountId, transaction, cb, beforeSign) => {
-                      Promise.resolve()
+                      this.assertUpgradeCallsCodeStable(accountId, handlerId)
                         .then(() =>
                           accounts.signEip7702UpgradeForAccount(
                             accountId,
@@ -1383,6 +1388,18 @@ export class Provider extends EventEmitter {
         'An app asks to run its calls as one atomic transaction. Saf0o signs an EIP-7702 delegation of this account to the Ambire account contract. The delegation stays until you revoke it in Accounts. You review every call next.',
         'Upgrade account'
       )
+    )
+  }
+
+  // The upgrade path skips Account.signTransaction, so recheck the reviewed sender and inner targets here.
+  private async assertUpgradeCallsCodeStable(accountId: string, handlerId: string) {
+    const request = accounts.getRequestForAccount<WalletCallsRequest>(accountId, handlerId)
+    const reviewed =
+      request.simulation.status === 'pending' ? undefined : request.simulation.accountCodeEvidence
+    await assertAtomicCallsCodeStable(request, reviewed, (call) =>
+      inspectTransactionAccountCode(call, {
+        send: (payload, callback, targetChain) => this.connection.send(payload, callback, targetChain)
+      })
     )
   }
 
