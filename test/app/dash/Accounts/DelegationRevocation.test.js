@@ -121,8 +121,8 @@ it('holds the revoke back while an Ambire key is active', async () => {
   expect(screen.queryByRole('button', { name: 'Revoke delegation' })).toBeNull()
 })
 
-// An incomplete key history cannot prove the account is clean, so the revoke stays hidden.
-it('holds the revoke back while the Ambire key history is incomplete', async () => {
+// An incomplete key history warns but keeps the revoke available: main asks for native confirmation.
+it('keeps the revoke available while the Ambire key history is incomplete', async () => {
   const evidence = { account, chainId: 1, source: 'eth_getCode', delegate, codeHash: `0x${'11'.repeat(32)}` }
   link.rpc.mockImplementation((method, ...args) => {
     const callback = args.at(-1)
@@ -143,7 +143,7 @@ it('holds the revoke back while the Ambire key history is incomplete', async () 
   )
 
   expect(await screen.findByRole('alert')).toBeTruthy()
-  expect(screen.queryByRole('button', { name: 'Revoke delegation' })).toBeNull()
+  expect(await screen.findByRole('button', { name: 'Revoke delegation' })).toBeTruthy()
 })
 
 it('observes a different account without changing Saf0o selection', async () => {

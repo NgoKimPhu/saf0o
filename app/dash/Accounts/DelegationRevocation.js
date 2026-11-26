@@ -303,9 +303,7 @@ export class DelegationRevocation extends React.Component {
                 key={`${account}:${chainId}:${delegate}`}
                 account={account}
                 chainId={Number(chainId)}
-                onActiveKeys={(active, incomplete) =>
-                  this.setState({ activeAmbireKeys: incomplete ? Math.max(active, 1) : active })
-                }
+                onActiveKeys={(active) => this.setState({ activeAmbireKeys: active })}
               />
             ) : null}
           </>

@@ -239,6 +239,33 @@ describe('Ambire account keys', () => {
     await expect(keys.assertRevocable(ACCOUNT, 1)).rejects.toThrow('full key history')
   })
 
+  // Revoking is protective, so an incomplete history must not lock the user out of it:
+  // queueing asks through the native dialog, approval (already confirmed) passes.
+  it('asks before revoking with an incomplete key history instead of blocking', async () => {
+    const incomplete = { known: [KEY], privilege: ZERO, getLogs: rangeError }
+    const accepted = setup(incomplete)
+    await expect(accepted.keys.assertRevocable(ACCOUNT, 1, 'confirm')).resolves.toBeUndefined()
+    expect(accepted.confirm).toHaveBeenCalledTimes(1)
+
+    const declined = setup({ ...incomplete, confirmed: false })
+    await expect(declined.keys.assertRevocable(ACCOUNT, 1, 'confirm')).rejects.toThrow('full key history')
+
+    const approval = setup(incomplete)
+    await expect(approval.keys.assertRevocable(ACCOUNT, 1, 'allow')).resolves.toBeUndefined()
+    expect(approval.confirm).not.toHaveBeenCalled()
+  })
+
+  it('never lets the confirmation bypass an active key', async () => {
+    const { keys, confirm } = setup({ known: [KEY], getLogs: rangeError })
+    await expect(keys.assertRevocable(ACCOUNT, 1, 'confirm')).rejects.toThrow(
+      'Clear the account keys before revoking'
+    )
+    await expect(keys.assertRevocable(ACCOUNT, 1, 'allow')).rejects.toThrow(
+      'Clear the account keys before revoking'
+    )
+    expect(confirm).not.toHaveBeenCalled()
+  })
+
   // A range-limited RPC never reaches block 0, but the recent keys it found are real and must
   // still be listed and cleared; the revoke stays refused.
   it('keeps keys found by a partial scan in the list and the clear transaction', async () => {

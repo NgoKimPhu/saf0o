@@ -191,7 +191,7 @@ const rpc = {
   },
   requestEip7702Revocation(account, chainId, cb) {
     ambireKeys
-      .assertRevocable(account, chainId)
+      .assertRevocable(account, chainId, 'confirm')
       .then(() => accounts.requestEip7702Revocation(account, chainId))
       .then(
         (reference) => cb(null, reference),
@@ -367,7 +367,7 @@ const rpc = {
       // Keys can change between queueing and approval, so the key gate runs again before signing.
       const { account, handlerId, chainId } = req
       ambireKeys
-        .assertRevocable(account, Number(BigInt(chainId)))
+        .assertRevocable(account, Number(BigInt(chainId)), 'allow')
         .then(() => accounts.approveEip7702Revocation(account, handlerId))
         .then(
           () => cb(null),

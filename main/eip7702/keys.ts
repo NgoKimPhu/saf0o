@@ -137,12 +137,28 @@ export class AmbireKeys {
 
   // Revoking leaves Ambire storage in place, so every key must read zero before a revoke, and an
   // unfinished scan cannot prove that.
-  async assertRevocable(account: string, chainId: number) {
+  // Revoking is itself protective, so an incomplete key history asks the user ('confirm') instead of blocking.
+  // Approval passes 'allow': the user already confirmed when the revoke was queued.
+  async assertRevocable(
+    account: string,
+    chainId: number,
+    incomplete: 'refuse' | 'confirm' | 'allow' = 'refuse'
+  ) {
     const list = await this.list(account, chainId)
     if (list.keys.some(({ privilege }) => privilege !== ZeroHash)) {
       throw new Error('Clear the account keys before revoking')
     }
-    if ('discovery' in list && list.discovery === 'incomplete') {
+    if ('discovery' in list && list.discovery === 'incomplete' && incomplete !== 'allow') {
+      if (
+        incomplete === 'confirm' &&
+        (await this.dependencies.confirm(
+          'Revoke without a full key history?',
+          'The configured RPC could not return this account’s full Ambire key history. Keys Saf0o could not find stay in the account’s storage and regain full control if this account delegates to Ambire again.',
+          'Revoke Anyway'
+        ))
+      ) {
+        return
+      }
       throw new Error(
         'The configured RPC could not return this account’s full key history, so Saf0o cannot confirm every Ambire key is cleared. Use an RPC that serves eth_getLogs over the full chain history, then try again.'
       )

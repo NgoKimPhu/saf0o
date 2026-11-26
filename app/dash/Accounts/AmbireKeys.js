@@ -64,8 +64,8 @@ export class AmbireKeys extends React.Component {
         {incomplete ? (
           <p role='alert'>
             The configured RPC could not return the account’s full key history, so this list can miss keys.
-            Saf0o refuses to revoke until the history loads. Use an RPC that serves eth_getLogs over the full
-            chain history.
+            Revoking asks you to confirm first. For a full list, use an RPC that serves eth_getLogs over the
+            full chain history.
           </p>
         ) : null}
         {keys.map(({ address, privilege, external }) => (
