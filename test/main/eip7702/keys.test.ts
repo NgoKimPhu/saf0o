@@ -20,14 +20,20 @@ jest.mock('../../../main/eip7702/delegates', () => {
 const ACCOUNT = '0x1111111111111111111111111111111111111111'
 const KEY = '0x2222222222222222222222222222222222222222'
 const OTHER = '0x3333333333333333333333333333333333333333'
-const ambire = new Interface(['function setAddrPrivilege(address addr, bytes32 priv)'])
+const INACTIVE_KEY = '0x4444444444444444444444444444444444444444'
+const ambire = new Interface([
+  'function setAddrPrivilege(address addr, bytes32 priv)',
+  'function executeBySender((address to, uint256 value, bytes data)[] calls)'
+])
+const ZERO = `0x${'00'.repeat(32)}`
 
 const setup = ({
   delegate = AMBIRE,
   delegateCode = FAKE_AMBIRE_CODE,
   confirmed = true,
   privilege = AMBIRE_KEY_PRIVILEGE,
-  known = [] as string[]
+  known = [] as string[],
+  privileges = {} as Record<string, string>
 } = {}) => {
   const queue = jest.fn(async (_transaction: unknown) => 'handler-1')
   const remember = jest.fn()
@@ -36,7 +42,10 @@ const setup = ({
     if (method === 'eth_getCode') {
       return params[0] === ACCOUNT ? `0xef0100${delegate.slice(2).toLowerCase()}` : delegateCode
     }
-    if (method === 'eth_call') return privilege
+    if (method === 'eth_call') {
+      const { data } = params[0] as { data: string }
+      return privileges[`0x${data.slice(-40)}`] ?? privilege
+    }
     throw new Error(method)
   })
   const keys = new AmbireKeys({
@@ -111,5 +120,37 @@ describe('Ambire account keys', () => {
       supported: false,
       keys: []
     })
+  })
+
+  // Ambire storage survives a revoke, so a key left active would regain control the next time the
+  // account delegates to Ambire. Revoke waits until every known key reads zero.
+  it('blocks a revoke while a known key is active, and allows it once every key reads zero', async () => {
+    await expect(setup({ known: [KEY, OTHER] }).keys.assertRevocable(ACCOUNT, 1)).rejects.toThrow(
+      'Clear the account keys before revoking'
+    )
+    await expect(
+      setup({ known: [KEY], privilege: ZERO }).keys.assertRevocable(ACCOUNT, 1)
+    ).resolves.toBeUndefined()
+  })
+
+  it('clears every active key in one self-call transaction', async () => {
+    const { keys, queue } = setup({ known: [KEY, OTHER, INACTIVE_KEY], privileges: { [INACTIVE_KEY]: ZERO } })
+
+    await keys.clear(ACCOUNT, 1)
+
+    expect(queue).toHaveBeenCalledTimes(1)
+    const { to, data } = queue.mock.calls[0]?.[0] as { to: string; data: string }
+    expect(to).toBe(ACCOUNT)
+    expect(data).toBe(
+      ambire.encodeFunctionData('executeBySender', [
+        [KEY, OTHER].map((key) => [ACCOUNT, 0n, ambire.encodeFunctionData('setAddrPrivilege', [key, ZERO])])
+      ])
+    )
+
+    const single = setup({ known: [KEY] })
+    await single.keys.clear(ACCOUNT, 1)
+    expect((single.queue.mock.calls[0]?.[0] as { data: string }).data).toBe(
+      ambire.encodeFunctionData('setAddrPrivilege', [KEY, ZERO])
+    )
   })
 })

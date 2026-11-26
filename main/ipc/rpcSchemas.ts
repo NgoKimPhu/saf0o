@@ -210,6 +210,10 @@ const ambireKeyRpcSchemas = {
   requestAmbireKeyChange: {
     request: z.tuple([AddressSchema, ChainIdSchema, AddressSchema, z.boolean()]),
     response: result(TransactionRequestReferenceSchema)
+  },
+  requestAmbireKeysClear: {
+    request: z.tuple([AddressSchema, ChainIdSchema]),
+    response: result(TransactionRequestReferenceSchema)
   }
 }
 

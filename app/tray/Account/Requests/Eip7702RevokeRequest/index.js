@@ -226,6 +226,10 @@ export class Eip7702RevokeRequest extends React.Component {
           <header className='eip7702RevokeSummary'>
             <h1>Remove delegated access?</h1>
             <p>This account will stop using the current delegate.</p>
+            <p>
+              The delegate’s storage stays. If the account delegates to the same contract again, such as
+              Ambire, keys added by any wallet regain control.
+            </p>
           </header>
 
           <section className='eip7702RevokeSection' aria-labelledby='revoke-identities-title'>

@@ -3890,11 +3890,12 @@ const scenarioMatrix = ({ includeReview = false } = {}) => {
         logicalHeight: FULL_SHELL_HEIGHT,
         action: { type: 'clickText', text: 'DELEGATION' },
         ready: '.delegationRevocationEligible',
-        requiredControls: ['Revoke delegation', 'Remove', 'Key address'],
+        requiredControls: ['Revoke delegation', 'Key address'],
         requiredText: [
           'RPC-reported delegation target',
           'Reported by configured RPC · eth_getCode',
-          'Ambire account keys'
+          'Ambire account keys',
+          'Inactive'
         ]
       },
       {

@@ -1,7 +1,7 @@
 import { getAddress, keccak256, ZeroAddress, ZeroHash } from 'ethers'
 
 import { parseAccountCode } from '../../resources/domain/account/code'
-import { decodePrivilege, encodePrivileges, encodeSetAddrPrivilege } from './ambire'
+import { decodePrivilege, encodeExecuteBySender, encodePrivileges, encodeSetAddrPrivilege } from './ambire'
 import { matchesDelegateCode } from './delegates'
 
 // standardSigningOnlyPriv in ambire-common v2 src/interfaces/keystore.ts ("regular access" in
@@ -76,6 +76,28 @@ export class AmbireKeys {
     const data = encodeSetAddrPrivilege(address, add ? AMBIRE_KEY_PRIVILEGE : ZeroHash)
     const handlerId = await this.queue(owner, chainId, data)
     if (add) this.dependencies.remember(owner, chainId, address.toLowerCase())
+    return { account: owner, handlerId, type: 'transaction' as const }
+  }
+
+  // Revoking leaves Ambire storage in place, so known keys must read zero before a revoke.
+  async assertRevocable(account: string, chainId: number) {
+    const { keys } = await this.list(account, chainId)
+    if (keys.some(({ privilege }) => privilege !== ZeroHash)) {
+      throw new Error('Clear the account keys before revoking')
+    }
+  }
+
+  // One transaction zeroes every active known key: executeBySender of self-calls for several.
+  async clear(account: string, chainId: number) {
+    const owner = account.toLowerCase()
+    if (!this.dependencies.canReview(owner)) throw new Error('Select an available signing account')
+    const { keys } = await this.list(owner, chainId)
+    const calls = keys
+      .filter(({ privilege }) => privilege !== ZeroHash)
+      .map(({ address }) => ({ to: owner, value: 0n, data: encodeSetAddrPrivilege(address, ZeroHash) }))
+    if (calls.length === 0) throw new Error('No active keys to clear')
+    const data = calls.length === 1 ? calls[0]!.data : encodeExecuteBySender(calls)
+    const handlerId = await this.queue(owner, chainId, data)
     return { account: owner, handlerId, type: 'transaction' as const }
   }
 

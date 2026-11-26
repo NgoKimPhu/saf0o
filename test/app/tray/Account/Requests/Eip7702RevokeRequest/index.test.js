@@ -238,6 +238,8 @@ it('renders directly copyable evidence without authorization or signature materi
 
   expect(screen.getByRole('heading', { name: 'Remove delegated access?' })).toBeTruthy()
   expect(screen.getByText('This account will stop using the current delegate.')).toBeTruthy()
+  // Revoking does not clear delegate storage, so keys added by other wallets come back on re-delegation.
+  expect(screen.getByText(/keys added by any wallet regain control/)).toBeTruthy()
   expect(screen.getByText('Delegate contract')).toBeTruthy()
   expect(screen.getByText('Address book · Saved contact')).toBeTruthy()
   const evidenceDisclosure = screen.getByRole('button', { name: /Delegation evidence/ })

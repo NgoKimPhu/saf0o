@@ -12,7 +12,9 @@ export class AmbireKeys extends React.Component {
   componentDidMount() {
     this.mounted = true
     link.rpc('getAmbireKeys', this.props.account, this.props.chainId, (error, result) => {
-      if (this.mounted && !error && result?.supported) this.setState({ keys: result.keys })
+      if (!this.mounted || error || !result?.supported) return
+      this.setState({ keys: result.keys })
+      this.props.onActiveKeys?.(result.keys.filter(({ privilege }) => privilege !== ZERO_PRIVILEGE).length)
     })
   }
 
@@ -20,26 +22,32 @@ export class AmbireKeys extends React.Component {
     this.mounted = false
   }
 
-  changeKey(key, add) {
-    if (this.state.busy) return
+  start() {
+    if (this.state.busy) return false
     this.setState({ busy: true, message: '' })
-    link.rpc(
-      'requestAmbireKeyChange',
-      this.props.account,
-      this.props.chainId,
-      key,
-      add,
-      (error, reference) => {
-        if (!this.mounted) return
-        if (error || !reference?.handlerId) return this.setState({ busy: false, message: FAILED })
-        this.setState({ busy: false, input: '' })
-        link.send('tray:action', 'closeDash')
-        link.send('nav:forward', 'panel', {
-          view: 'requestView',
-          data: { step: 'confirm', accountId: reference.account, requestId: reference.handlerId }
-        })
-      }
-    )
+    return true
+  }
+
+  openRequest = (error, reference) => {
+    if (!this.mounted) return
+    if (error || !reference?.handlerId) return this.setState({ busy: false, message: FAILED })
+    this.setState({ busy: false, input: '' })
+    link.send('tray:action', 'closeDash')
+    link.send('nav:forward', 'panel', {
+      view: 'requestView',
+      data: { step: 'confirm', accountId: reference.account, requestId: reference.handlerId }
+    })
+  }
+
+  changeKey(key, add) {
+    if (!this.start()) return
+    const { account, chainId } = this.props
+    link.rpc('requestAmbireKeyChange', account, chainId, key, add, this.openRequest)
+  }
+
+  clearKeys() {
+    if (!this.start()) return
+    link.rpc('requestAmbireKeysClear', this.props.account, this.props.chainId, this.openRequest)
   }
 
   render() {
@@ -86,6 +94,14 @@ export class AmbireKeys extends React.Component {
             Add key
           </button>
         </div>
+        {keys.some(({ privilege }) => privilege !== ZERO_PRIVILEGE) ? (
+          <div className='ambireKeysRow'>
+            <small>Clear the keys before you revoke. Ambire keys stay in the account after a revoke.</small>
+            <button type='button' className='saf0oControl' disabled={busy} onClick={() => this.clearKeys()}>
+              Clear all keys
+            </button>
+          </div>
+        ) : null}
         {message ? <p role='status'>{message}</p> : null}
       </div>
     )

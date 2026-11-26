@@ -70,7 +70,7 @@ const dashboardOnlyRpcMethods = new Set([
 ])
 
 // Ambire account keys (EIP-7702): managed from the dash Accounts view only.
-const ambireKeyRpcMethods = new Set(['getAmbireKeys', 'requestAmbireKeyChange'])
+const ambireKeyRpcMethods = new Set(['getAmbireKeys', 'requestAmbireKeyChange', 'requestAmbireKeysClear'])
 
 export const isRendererRole = (value: unknown): value is RendererRole =>
   typeof value === 'string' && rendererRoles.includes(value as RendererRole)

@@ -67,6 +67,23 @@ it('lists live keys and opens the approval for an add or a remove', async () => 
   })
 })
 
+// Ambire storage survives a revoke, so the dash reports active keys (to hold the revoke back)
+// and clears them all in one reviewed transaction.
+it('reports active keys and clears them in one request', async () => {
+  answer({
+    account,
+    chainId: 1,
+    supported: true,
+    keys: [{ address: activeKey, privilege: `0x${'0'.repeat(63)}1` }]
+  })
+  const onActiveKeys = jest.fn()
+  const { user } = render(<AmbireKeys account={account} chainId={1} onActiveKeys={onActiveKeys} />)
+
+  await user.click(await screen.findByRole('button', { name: 'Clear all keys' }))
+  expect(onActiveKeys).toHaveBeenCalledWith(1)
+  expect(link.rpc).toHaveBeenCalledWith('requestAmbireKeysClear', account, 1, expect.any(Function))
+})
+
 it('offers nothing when the account is not delegated to Ambire', () => {
   answer({ account, chainId: 1, supported: false, keys: [] })
   render(<AmbireKeys account={account} chainId={1} />)

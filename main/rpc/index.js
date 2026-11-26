@@ -130,6 +130,8 @@ const ambireKeys = new AmbireKeys({
   rpc: (chainId, method, params) =>
     new Promise((resolve, reject) => {
       const id = ++ambireKeyRpcId
+      // The revoke gate waits on this, so a stalled endpoint must fail like the revoke RPCs do.
+      setTimeout(() => reject(new Error(`Configured RPC timed out during ${method}`)), 30_000).unref?.()
       provider.connection.send(
         { id, jsonrpc: '2.0', method, params },
         (response) => {
@@ -188,10 +190,13 @@ const rpc = {
     )
   },
   requestEip7702Revocation(account, chainId, cb) {
-    accounts.requestEip7702Revocation(account, chainId).then(
-      (reference) => cb(null, reference),
-      (error) => cb(error)
-    )
+    ambireKeys
+      .assertRevocable(account, chainId)
+      .then(() => accounts.requestEip7702Revocation(account, chainId))
+      .then(
+        (reference) => cb(null, reference),
+        (error) => cb(error)
+      )
   },
   stopEip7702RevocationMonitoring(req, cb) {
     callbackWhenDone(() => accounts.stopEip7702RevocationMonitoring(req.account, req.handlerId), cb)
@@ -205,6 +210,12 @@ const rpc = {
   },
   requestAmbireKeyChange(account, chainId, key, add, cb) {
     ambireKeys.change(account, chainId, key, add).then(
+      (reference) => cb(null, reference),
+      (error) => cb(error)
+    )
+  },
+  requestAmbireKeysClear(account, chainId, cb) {
+    ambireKeys.clear(account, chainId).then(
       (reference) => cb(null, reference),
       (error) => cb(error)
     )

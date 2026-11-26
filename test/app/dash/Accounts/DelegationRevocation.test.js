@@ -91,6 +91,36 @@ it('checks the selected software account and queues only an eligible revocation'
   })
 })
 
+// A revoke leaves Ambire storage in place, so an active key would regain control on re-delegation.
+it('holds the revoke back while an Ambire key is active', async () => {
+  const evidence = { account, chainId: 1, source: 'eth_getCode', delegate, codeHash: `0x${'11'.repeat(32)}` }
+  link.rpc.mockImplementation((method, ...args) => {
+    const callback = args.at(-1)
+    if (method === 'getAccountExecutionState') callback(null, { status: 'delegated', ...evidence })
+    if (method === 'getEip7702RevocationEligibility') callback(null, { status: 'eligible', ...evidence })
+    if (method === 'getAmbireKeys') {
+      callback(null, {
+        account,
+        chainId: 1,
+        supported: true,
+        keys: [{ address: delegate, privilege: `0x${'0'.repeat(63)}1` }]
+      })
+    }
+  })
+
+  render(
+    <DelegationRevocation
+      accounts={accounts}
+      currentAccount={account}
+      networks={networks}
+      signers={{ [signer.id]: signer }}
+    />
+  )
+
+  expect(await screen.findByRole('button', { name: 'Clear all keys' })).toBeTruthy()
+  expect(screen.queryByRole('button', { name: 'Revoke delegation' })).toBeNull()
+})
+
 it('observes a different account without changing Saf0o selection', async () => {
   const current = '0x0000000000000000000000000000000000000003'
   const multipleAccounts = {

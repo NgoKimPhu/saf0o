@@ -50,7 +50,8 @@ export class DelegationRevocation extends React.Component {
       eligibility: undefined,
       checking: false,
       queueing: false,
-      message: ''
+      message: '',
+      activeAmbireKeys: 0
     }
     this.checkSequence = 0
     this.mounted = false
@@ -109,7 +110,13 @@ export class DelegationRevocation extends React.Component {
     }
 
     const sequence = ++this.checkSequence
-    this.setState({ checking: true, execution: undefined, eligibility: undefined, message: '' })
+    this.setState({
+      checking: true,
+      execution: undefined,
+      eligibility: undefined,
+      message: '',
+      activeAmbireKeys: 0
+    })
     link.rpc('getAccountExecutionState', account, parsedChainId, (error, result) => {
       if (!this.mounted || sequence !== this.checkSequence) return
       if (error || !result || result.account !== account || Number(result.chainId) !== parsedChainId) {
@@ -271,7 +278,7 @@ export class DelegationRevocation extends React.Component {
                   <small>Reported by configured RPC · eth_getCode</small>
                   {eligibility?.status !== 'eligible' ? <small>{COPY.hardware}</small> : null}
                 </div>
-                {eligibility?.status === 'eligible' ? (
+                {eligibility?.status === 'eligible' && !this.state.activeAmbireKeys ? (
                   <button
                     type='button'
                     className='saf0oControl saf0oControlPrimary'
@@ -296,6 +303,7 @@ export class DelegationRevocation extends React.Component {
                 key={`${account}:${chainId}:${delegate}`}
                 account={account}
                 chainId={Number(chainId)}
+                onActiveKeys={(activeAmbireKeys) => this.setState({ activeAmbireKeys })}
               />
             ) : null}
           </>
