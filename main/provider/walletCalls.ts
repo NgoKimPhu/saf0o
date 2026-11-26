@@ -24,7 +24,7 @@ export interface SendCallsRequest {
   id?: string
   from?: string
   chainId: string
-  atomicRequired: false
+  atomicRequired: boolean
   calls: WalletCall[]
 }
 
@@ -145,10 +145,6 @@ export function parseSendCalls(params: unknown): SendCallsRequest {
   if (BigInt(request.chainId) === 0n || BigInt(request.chainId) > MAX_SAFE_CHAIN_ID) {
     throw walletCallsError(5710, `Unsupported chain id: ${request.chainId}`)
   }
-  if (request.atomicRequired) {
-    throw walletCallsError(5760, 'Atomicity not supported')
-  }
-
   assertOptionalCapabilities(request.capabilities)
   request.calls.forEach((call) => assertOptionalCapabilities(call.capabilities))
 
@@ -167,7 +163,7 @@ export function parseSendCalls(params: unknown): SendCallsRequest {
     ...(request.id !== undefined ? { id: request.id } : {}),
     ...(request.from !== undefined ? { from: request.from } : {}),
     chainId: request.chainId,
-    atomicRequired: false,
+    atomicRequired: request.atomicRequired,
     calls
   }
 }

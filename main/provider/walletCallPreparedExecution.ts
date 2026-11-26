@@ -7,6 +7,8 @@ import chainConfig from '../chains/config'
 import { maxFee } from '../transaction'
 import { executeWalletCallBatch, hashSignedTransaction, snapshotWalletCalls } from './walletCallExecution'
 import type { PreparedWalletCallBatch } from './walletCallPreparation'
+import { inspectSignedEip7702UpgradeTransaction } from '../eip7702'
+import { walletCallsUpgradeRequest } from './walletCallAtomic'
 import type { WalletCall } from './walletCalls'
 
 const ADDRESS = /^0x[0-9a-fA-F]{40}$/
@@ -131,6 +133,15 @@ function accessListKey(accessList: unknown) {
 
 export function verifySignedTransaction(rawTransaction: unknown, expected: Readonly<TransactionData>) {
   hashSignedTransaction(rawTransaction)
+  // A type-4 signature is valid only as the account upgrade built from this prepared self-call.
+  if ((rawTransaction as string).startsWith('0x04')) {
+    try {
+      inspectSignedEip7702UpgradeTransaction(rawTransaction, walletCallsUpgradeRequest(expected))
+    } catch {
+      throw new Error('Signed wallet call transaction does not match prepared transaction')
+    }
+    return { rawTransaction: rawTransaction as string }
+  }
 
   try {
     const type = parseRpcQuantity(expected.type) as bigint

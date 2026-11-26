@@ -40,6 +40,7 @@ export interface CreateWalletCallBatch {
   account: string
   chainId: string
   callCount: number
+  atomic?: boolean
 }
 
 export interface WalletCallsStatus {
@@ -47,7 +48,7 @@ export interface WalletCallsStatus {
   id: string
   chainId: string
   status: 100 | 200 | 400 | 500 | 600
-  atomic: false
+  atomic: boolean
   receipts?: WalletCallReceipt[]
 }
 
@@ -145,7 +146,7 @@ function deriveStatus(batch: WalletCallBatch): WalletCallsStatus {
     id: batch.id,
     chainId: batch.chainId,
     status,
-    atomic: false,
+    atomic: batch.atomic,
     ...(receipts.length > 0 ? { receipts: clone(receipts) } : {})
   }
 }
@@ -284,7 +285,7 @@ export class WalletCallBatchLedger {
       origin: input.origin,
       account: input.account,
       chainId: input.chainId,
-      atomic: false,
+      atomic: input.atomic === true,
       callCount: input.callCount,
       execution: 'pending',
       transactions: [],

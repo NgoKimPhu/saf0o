@@ -2,6 +2,7 @@ import type { WalletCallsRequest } from '../accounts/types'
 import { WalletCallBatchSchema, type WalletCallBatch } from '../store/state/types/walletCallBatch'
 import { snapshotWalletCalls } from './walletCallExecution'
 import { parseSendCalls, type SendCallsRequest } from './walletCalls'
+import type { WalletCallsAtomicMode } from './walletCallAtomic'
 import { snapshotSweepEvidence, type SweepEvidence } from '../../resources/domain/sweep'
 
 export interface WalletCallAdmissionCapability {
@@ -17,6 +18,7 @@ export interface WalletCallAdmissionLedger {
     account: string
     chainId: string
     callCount: number
+    atomic?: boolean
   }): WalletCallAdmissionCapability
 }
 
@@ -31,6 +33,7 @@ export interface WalletCallAdmissionInput {
   account: string
   payload: JSONRPCRequestPayload
   managedSweep?: SweepEvidence
+  atomic?: WalletCallsAtomicMode
 }
 
 function admissionError(code: number, message: string): EVMError {
@@ -56,7 +59,7 @@ function canonicalPayload(payload: JSONRPCRequestPayload, parsed: SendCallsReque
         ...(parsed.id !== undefined ? { id: parsed.id } : {}),
         from: account,
         chainId: parsed.chainId,
-        atomicRequired: false,
+        atomicRequired: parsed.atomicRequired,
         calls: snapshotWalletCalls(parsed.calls)
       }
     ]
@@ -106,6 +109,8 @@ export function admitWalletCallBatch(
     throw admissionError(-32602, 'Managed sweep evidence does not match wallet calls')
   }
 
+  const atomic = managedSweep ? false : input.atomic || false
+  const transactionCount = atomic ? 1 : parsed.calls.length
   const create = dependencies.ledger.create.bind(dependencies.ledger)
   const addRequest = dependencies.addRequest.bind(dependencies)
   const admission = create({
@@ -113,7 +118,8 @@ export function admitWalletCallBatch(
     origin: input.origin,
     account,
     chainId: parsed.chainId,
-    callCount: parsed.calls.length
+    callCount: transactionCount,
+    ...(atomic ? { atomic: true } : {})
   })
 
   try {
@@ -131,7 +137,8 @@ export function admitWalletCallBatch(
       batch.data.origin !== input.origin ||
       batch.data.account !== account ||
       batch.data.chainId !== parsed.chainId ||
-      batch.data.callCount !== parsed.calls.length ||
+      batch.data.callCount !== transactionCount ||
+      batch.data.atomic !== Boolean(atomic) ||
       batch.data.execution !== 'pending' ||
       batch.data.transactions.length !== 0 ||
       !batch.data.operationId ||
@@ -151,7 +158,7 @@ export function admitWalletCallBatch(
       version: '2.0.0',
       batchId: batch.data.id,
       chainId: batch.data.chainId,
-      atomic: false,
+      atomic,
       calls: calls.map((call) => ({ ...call })),
       approvals: [],
       preparation: { status: 'pending' },

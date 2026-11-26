@@ -56,6 +56,11 @@ import {
 } from '../../transaction/simulation'
 import { viaSimulationRpc } from '../../transaction/simulationRpc'
 import { snapshotWalletCalls } from '../../provider/walletCallExecution'
+import {
+  isAllowedBatchSender,
+  walletCallsExecutionCalls,
+  walletCallsSimulationOverrides
+} from '../../provider/walletCallAtomic'
 import { prepareWalletCallBatch, type PreparedWalletCallBatch } from '../../provider/walletCallPreparation'
 import {
   snapshotWalletCallBatchAdjustment,
@@ -1046,7 +1051,11 @@ class FrameAccount {
 
   private syncDelegatedAccountRisk(req: TransactionRequest, simulation: TransactionSimulation) {
     const delegation = simulation.delegation
-    if (delegation?.status !== 'delegated' || !delegation.delegate) {
+    if (
+      delegation?.status !== 'delegated' ||
+      !delegation.delegate ||
+      isAllowedBatchSender(BigInt(req.data.chainId), simulation.accountCodeEvidence?.sender)
+    ) {
       this.removeApproval(req, ApprovalType.DelegatedAccountRisk)
       return
     }
@@ -1309,10 +1318,12 @@ class FrameAccount {
         chainId: req.chainId,
         from: req.account
       }))
+      const stateOverrides = walletCallsSimulationOverrides(req)
       simulateWalletCalls(calls, {
         send: viaSimulationRpc((payload, callback, targetChain) =>
           provider.connection.send(payload, callback, targetChain)
-        )
+        ),
+        ...(stateOverrides ? { stateOverrides } : {})
       })
         .then((simulation) => {
           const knownRequest = this.requests[req.handlerId]
@@ -1492,7 +1503,7 @@ class FrameAccount {
     }
 
     try {
-      const calls = snapshotWalletCalls(req.calls)
+      const calls = snapshotWalletCalls(walletCallsExecutionCalls(req))
       return (
         calls.length === snapshot.calls.length &&
         calls.every((call, index) => {
@@ -1522,7 +1533,7 @@ class FrameAccount {
       snapshot = Object.freeze({
         account: req.account,
         chainId: req.chainId,
-        calls: Object.freeze(snapshotWalletCalls(req.calls)),
+        calls: Object.freeze(snapshotWalletCalls(walletCallsExecutionCalls(req))),
         ...(req.adjustment
           ? {
               adjustment: Object.freeze({
@@ -1562,16 +1573,7 @@ class FrameAccount {
               pendingNonce,
               ...(snapshot.adjustment ? { adjustment: snapshot.adjustment } : {})
             },
-            {
-              fillTransaction: (transaction) =>
-                new Promise((resolve, reject) => {
-                  provider.fillTransaction({ ...transaction }, (error, metadata) => {
-                    if (error) reject(error)
-                    else if (!metadata) reject(new Error('Transaction preparation returned no metadata'))
-                    else resolve(metadata)
-                  })
-                })
-            }
+            { fillTransaction: (transaction) => provider.fillWalletCallTransaction(transaction, req.atomic) }
           )
         )
         .then((preparation) => {
@@ -1644,8 +1646,12 @@ class FrameAccount {
       throw new Error('Wallet-call simulation requires explicit acknowledgement')
     }
     if (
-      walletCalls.simulation.accountCodeEvidence?.sender.status === 'delegated' ||
-      walletCalls.simulation.delegation?.status === 'delegated'
+      (walletCalls.simulation.accountCodeEvidence?.sender.status === 'delegated' ||
+        walletCalls.simulation.delegation?.status === 'delegated') &&
+      !(
+        walletCalls.atomic === 'delegated' &&
+        isAllowedBatchSender(BigInt(walletCalls.chainId), walletCalls.simulation.accountCodeEvidence?.sender)
+      )
     ) {
       throw new Error('Wallet-call batches from delegated sending accounts are not supported.')
     }
@@ -1658,7 +1664,7 @@ class FrameAccount {
       origin: walletCalls.origin,
       account: walletCalls.account,
       chainId: walletCalls.chainId,
-      calls: walletCalls.calls,
+      calls: walletCallsExecutionCalls(walletCalls),
       preparation: walletCalls.preparation,
       ...(walletCalls.managedSweep ? { managedSweep: walletCalls.managedSweep } : {})
     })

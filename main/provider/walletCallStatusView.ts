@@ -37,7 +37,7 @@ export function createWalletCallStatusViewData({
       id: status.id,
       chainId: status.chainId,
       status: status.status,
-      atomic: false,
+      atomic: status.atomic,
       ...(Number.isInteger(callCount) &&
       (callCount as number) >= 1 &&
       (callCount as number) <= 16 &&

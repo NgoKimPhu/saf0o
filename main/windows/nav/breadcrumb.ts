@@ -24,13 +24,13 @@ export interface WalletCallStatusViewData {
     id: string
     chainId: string
     status: 100 | 200 | 400 | 500 | 600
-    atomic: false
+    atomic: boolean
     callCount?: number
     submittedCount?: number
     confirmedCount?: number
     receipts?: Array<{
       status: '0x0' | '0x1'
-      type?: '0x0' | '0x1' | '0x2'
+      type?: '0x0' | '0x1' | '0x2' | '0x4'
       blockNumber: string
       gasUsed: string
       effectiveGasPrice?: string

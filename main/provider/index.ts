@@ -66,7 +66,13 @@ import {
 import Erc20Contract from '../contracts/erc20'
 import { reconcileErc1046TokenData, resolveErc1046Metadata } from './erc1046'
 import { getOriginAccess, hasOriginCapability, requestOriginAccess } from '../api/origins'
-import { parseCallsStatus, parseGetCapabilities, parseSendCalls, parseShowCallsStatus } from './walletCalls'
+import {
+  parseCallsStatus,
+  parseGetCapabilities,
+  parseSendCalls,
+  parseShowCallsStatus,
+  type SendCallsRequest
+} from './walletCalls'
 import { WalletCallLifecycleController } from './walletCallLifecycle'
 import { prepareWalletCallBatch } from './walletCallPreparation'
 import {
@@ -77,6 +83,19 @@ import walletCallBatchLedger from './walletCallLedger'
 import { executeWalletCallRuntime } from './walletCallRuntime'
 import walletCallEvidenceRuntime from './walletCallEvidenceRuntime'
 import { showWalletCallStatus } from './walletCallStatusView'
+import {
+  batchDelegate,
+  chooseWalletCallsAtomicMode,
+  delegationCode,
+  EIP7702_AUTHORIZATION_GAS,
+  isAllowedBatchSender,
+  walletCallsAtomicStatus,
+  walletCallsExecutionCalls,
+  walletCallsSimulationOverrides,
+  walletCallsUpgradeRequest,
+  type WalletCallsAtomicMode
+} from './walletCallAtomic'
+import { confirmSensitiveAction } from '../windows/dialog'
 import { isUnsafeRpcForwardingMethod, unsupportedRawTransactionFamily } from './rpcForwarding'
 import { getRequestSignal, inheritRequestSignal } from './requestSignal'
 import { summarizeRpcError } from '../security/rpcLogging'
@@ -1202,6 +1221,7 @@ export class Provider extends EventEmitter {
       },
       execute: async (input, handlerId) => {
         const request = accounts.getRequestForAccount<WalletCallsRequest>(input.account, handlerId)
+        const atomic = request.atomic
         const recentRecipientCandidate =
           input.managedSweep && request.activityId
             ? Object.freeze({
@@ -1213,7 +1233,22 @@ export class Provider extends EventEmitter {
 
         try {
           return await executeWalletCallRuntime(input, {
-            accounts,
+            accounts:
+              atomic === 'upgrade'
+                ? {
+                    signTransactionForAccount: (accountId, transaction, cb, beforeSign) => {
+                      Promise.resolve()
+                        .then(() =>
+                          accounts.signEip7702UpgradeForAccount(
+                            accountId,
+                            walletCallsUpgradeRequest(transaction),
+                            beforeSign
+                          )
+                        )
+                        .then((rawTransaction) => cb(null, rawTransaction), cb)
+                    }
+                  }
+                : accounts,
             connection: this.connection,
             ledger: walletCallBatchLedger,
             recordSubmittedApproval: recordSubmittedTokenApproval,
@@ -1224,6 +1259,7 @@ export class Provider extends EventEmitter {
               this.assertDappGuardrailReview(request)
             },
             revalidateBeforeCall: async (transaction, index) => {
+              if (atomic) await this.assertWalletCallsAtomicCode(input.account, input.chainId, atomic)
               if (!input.managedSweep) return
               const request = accounts.getRequestForAccount<WalletCallsRequest>(input.account, handlerId)
               if (
@@ -1238,7 +1274,7 @@ export class Provider extends EventEmitter {
               try {
                 requireStoreAction('recordOutboundAddresses')(
                   store('main.instanceId'),
-                  [address],
+                  atomic ? request.calls.flatMap((call) => (call.to ? [call.to] : [])) : [address],
                   submittedAt
                 )
               } catch (error) {
@@ -1268,7 +1304,7 @@ export class Provider extends EventEmitter {
     })
   }
 
-  sendWalletCalls(payload: RPCRequestPayload, res: RPCRequestCallback) {
+  async sendWalletCalls(payload: RPCRequestPayload, res: RPCRequestCallback) {
     try {
       const access = getOriginAccess(payload)
       const currentAccount = accounts.current()
@@ -1289,18 +1325,98 @@ export class Provider extends EventEmitter {
         throw { code: 5710, message: `Unsupported chain id: ${request.chainId}` }
       }
 
+      let atomic: WalletCallsAtomicMode = false
+      if (batchDelegate(BigInt(chainId)) || request.atomicRequired) {
+        atomic = await this.walletCallsAtomicMode(currentAccount.id, request)
+        if (accounts.current()?.id !== currentAccount.id) {
+          throw { code: 4100, message: 'Wallet-call account is no longer selected' }
+        }
+      }
+
       return this.createWalletCallLifecycle().admit(
         {
           handlerId: uuid(),
           origin: payload._origin,
           account: currentAccount.id,
-          payload
+          payload,
+          ...(atomic ? { atomic } : {})
         },
         res
       )
     } catch (error) {
       return resError(error as EVMError, payload, res)
     }
+  }
+
+  private walletCallsRpc(chainId: number, method: string, params: unknown[]) {
+    return new Promise<unknown>((resolve, reject) => {
+      this.sendPreSignRpc(
+        { id: Date.now(), jsonrpc: '2.0', method, params },
+        (response) => (response.error ? reject(response.error) : resolve(response.result)),
+        { type: 'ethereum', id: chainId }
+      )
+    })
+  }
+
+  private walletCallsAtomicStatus(account: string, chainId: bigint) {
+    return walletCallsAtomicStatus(chainId, account, accounts.hasSoftwareSigner(account), (address) =>
+      this.walletCallsRpc(Number(chainId), 'eth_getCode', [address, 'latest'])
+    )
+  }
+
+  private async walletCallsAtomicMode(account: string, request: SendCallsRequest) {
+    const status = await this.walletCallsAtomicStatus(account, BigInt(request.chainId))
+    return chooseWalletCallsAtomicMode(request, status, () =>
+      confirmSensitiveAction(
+        'Upgrade this account to an Ambire smart account?',
+        'An app asks to run its calls as one atomic transaction. Saf0o signs an EIP-7702 delegation of this account to the Ambire account contract. The delegation stays until you revoke it in Accounts. You review every call next.',
+        'Upgrade account'
+      )
+    )
+  }
+
+  // Aborts signing when the account code no longer matches the reviewed atomic mode.
+  private async assertWalletCallsAtomicCode(account: string, chainId: string, atomic: WalletCallsAtomicMode) {
+    const status = await this.walletCallsAtomicStatus(account, BigInt(chainId))
+    if (status !== (atomic === 'delegated' ? 'supported' : 'ready')) {
+      throw new Error('Account code changed since review. Nothing was signed or sent.')
+    }
+  }
+
+  // The upgrade wrapper runs on a codeless account, so estimate it with the delegation as a state override.
+  // An RPC that ignores the override returns the plain intrinsic estimate, so the override must cost more.
+  private async estimateWalletCallsUpgradeGas(transaction: Readonly<RPC.SendTransaction.TxParams>) {
+    if (!transaction.from) throw new Error('Account upgrade needs a sender')
+    const chainId = Number(BigInt(transaction.chainId))
+    const override = { [transaction.from]: { code: delegationCode(BigInt(chainId)) } }
+    const call = { from: transaction.from, to: transaction.from, data: transaction.data, value: '0x0' }
+    const [withDelegation, without] = await Promise.all([
+      this.walletCallsRpc(chainId, 'eth_estimateGas', [call, 'latest', override]),
+      this.walletCallsRpc(chainId, 'eth_estimateGas', [call, 'latest'])
+    ])
+    const gas = parseRpcQuantity(withDelegation)
+    const plain = parseRpcQuantity(without)
+    if (gas === undefined || plain === undefined || gas <= plain) {
+      throw new Error('The configured RPC cannot estimate the account upgrade. Nothing was signed or sent.')
+    }
+    return toRpcQuantity((gas * 3n + 1n) / 2n + EIP7702_AUTHORIZATION_GAS)
+  }
+
+  async fillWalletCallTransaction(
+    transaction: Readonly<RPC.SendTransaction.TxParams>,
+    atomic: WalletCallsAtomicMode
+  ): Promise<TransactionMetadata> {
+    const gasLimit =
+      atomic === 'upgrade' && !transaction.gasLimit
+        ? await this.estimateWalletCallsUpgradeGas(transaction)
+        : undefined
+    return new Promise((resolve, reject) => {
+      this.fillTransaction({ ...transaction, ...(gasLimit ? { gasLimit } : {}) }, (error, metadata) => {
+        if (error) reject(error)
+        else if (!metadata) reject(new Error('Transaction preparation returned no metadata'))
+        else resolve(metadata)
+      })
+    })
   }
 
   private walletCallsRpcQuantity(
@@ -1546,24 +1662,16 @@ export class Provider extends EventEmitter {
       'eth_getTransactionCount',
       request.account
     )
+    const executionCalls = walletCallsExecutionCalls(request)
     const preparation = await prepareWalletCallBatch(
       {
         account: request.account,
         chainId: request.chainId,
         pendingNonce,
-        calls: request.calls,
+        calls: executionCalls,
         ...(request.adjustment ? { adjustment: request.adjustment } : {})
       },
-      {
-        fillTransaction: (transaction) =>
-          new Promise((resolve, reject) => {
-            this.fillTransaction({ ...transaction }, (error, metadata) => {
-              if (error) reject(error)
-              else if (!metadata) reject(new Error('Transaction preparation returned no metadata'))
-              else resolve(metadata)
-            })
-          })
-      }
+      { fillTransaction: (transaction) => this.fillWalletCallTransaction(transaction, request.atomic) }
     ).catch((error) => {
       if (isWalletCallFundingError(error)) throw error
       throw new WalletCallFundingError(
@@ -1572,22 +1680,27 @@ export class Provider extends EventEmitter {
       )
     })
     const transactions = preparation.calls.map((call) => call.transaction)
-    if (transactions.length !== request.calls.length || transactions.length === 0) {
+    if (transactions.length !== executionCalls.length || transactions.length === 0) {
       throw new WalletCallFundingError(
         WALLET_CALL_FUNDING_UNAVAILABLE,
         'The prepared wallet-call batch could not be verified. Nothing was signed or sent.'
       )
     }
 
+    // An atomic batch simulates its decoded calls, matching the review in Account.refreshWalletCallsSimulation.
+    const stateOverrides = walletCallsSimulationOverrides(request)
     const [available, l1Fees, simulation] = await Promise.all([
       this.walletCallsRpcQuantity(chainId, 'eth_getBalance', request.account),
       this.walletCallsL1Fees(chainId, transactions),
       simulateWalletCalls(
-        transactions.map((transaction) => ({ ...transaction })),
+        request.atomic
+          ? request.calls.map((call) => ({ ...call, chainId: request.chainId, from: request.account }))
+          : transactions.map((transaction) => ({ ...transaction })),
         {
           send: viaSimulationRpc((payload, callback, targetChain) =>
             this.connection.send(payload, callback, targetChain)
-          )
+          ),
+          ...(stateOverrides ? { stateOverrides } : {})
         }
       )
     ]).catch((error) => {
@@ -1615,7 +1728,10 @@ export class Provider extends EventEmitter {
         'Fresh wallet-call account-code evidence was unavailable. Nothing was signed or sent.'
       )
     }
-    if (senderEvidence.status === 'delegated' || simulation.delegation?.status === 'delegated') {
+    if (
+      (senderEvidence.status === 'delegated' || simulation.delegation?.status === 'delegated') &&
+      !(request.atomic === 'delegated' && isAllowedBatchSender(BigInt(chainId), senderEvidence))
+    ) {
       throw new Error('Wallet-call batches from delegated sending accounts are not supported.')
     }
     const execution = snapshotPreparedWalletCallExecutionInput({
@@ -1623,7 +1739,7 @@ export class Provider extends EventEmitter {
       origin: request.origin,
       account: request.account,
       chainId: request.chainId,
-      calls: request.calls,
+      calls: executionCalls,
       preparation,
       ...(request.managedSweep ? { managedSweep: request.managedSweep } : {})
     })
@@ -1636,7 +1752,13 @@ export class Provider extends EventEmitter {
       JSON.stringify(request.preparation) !== JSON.stringify({ status: 'succeeded', ...preparation }) ||
       JSON.stringify(request.simulation) !== simulationSnapshot
 
-    const funding = walletCallFundingEvidence(transactions, available, l1Fees)
+    // The wrapper carries value 0; the account pays the inner call values from its own balance.
+    const innerValue = request.calls.reduce((total, call) => total + BigInt(call.value), 0n)
+    const funding = walletCallFundingEvidence(
+      request.atomic ? transactions.map((tx) => ({ ...tx, value: toRpcQuantity(innerValue) })) : transactions,
+      available,
+      l1Fees
+    )
     await this.assertManagedSweepPreflight(request, available, funding.maximumFee, l1Fees)
 
     return Object.freeze({
@@ -1826,7 +1948,7 @@ export class Provider extends EventEmitter {
     }
   }
 
-  getWalletCallCapabilities(payload: RPCRequestPayload, res: RPCRequestCallback) {
+  async getWalletCallCapabilities(payload: RPCRequestPayload, res: RPCRequestCallback) {
     try {
       const request = parseGetCapabilities(payload.params)
       const access = getOriginAccess(payload)
@@ -1840,24 +1962,23 @@ export class Provider extends EventEmitter {
           .map(Number)
           .filter((id) => Number.isSafeInteger(id) && id > 0)
           .map((id) => intToHex(id))
-      const result = [...new Set(requestedChains)]
+      const chains = [...new Set(requestedChains)]
         .map((chainId) => ({ chainId, numericId: Number(BigInt(chainId)) }))
         .filter(({ chainId }) =>
           hasOriginCapability(payload, { method: payload.method, chainId, account: request.address })
         )
         .filter(({ numericId }) => this.walletCallChainAvailable(numericId))
         .sort((left, right) => left.numericId - right.numericId)
-        .reduce<Record<string, { atomic: { status: 'unsupported' }; assetDiscovery: { supported: true } }>>(
-          (capabilities, { numericId }) => {
-            capabilities[intToHex(numericId)] = {
-              atomic: { status: 'unsupported' },
-              assetDiscovery: { supported: true }
-            }
-            return capabilities
-          },
-          {}
-        )
 
+      const statuses = await Promise.all(
+        chains.map(({ numericId }) => this.walletCallsAtomicStatus(request.address, BigInt(numericId)))
+      )
+      const result = Object.fromEntries(
+        chains.map(({ numericId }, index) => [
+          intToHex(numericId),
+          { atomic: { status: statuses[index] }, assetDiscovery: { supported: true } }
+        ])
+      )
       return res({ id: payload.id, jsonrpc: payload.jsonrpc, result })
     } catch (error) {
       return resError(error as EVMError, payload, res)

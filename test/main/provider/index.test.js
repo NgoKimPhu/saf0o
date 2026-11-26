@@ -20,6 +20,7 @@ import walletCallBatchLedger from '../../../main/provider/walletCallLedger'
 import { executeWalletCallRuntime } from '../../../main/provider/walletCallRuntime'
 import walletCallEvidenceRuntime from '../../../main/provider/walletCallEvidenceRuntime'
 import { showWalletCallStatus } from '../../../main/provider/walletCallStatusView'
+import { confirmSensitiveAction } from '../../../main/windows/dialog'
 import { ApprovalType } from '../../../resources/constants'
 import { bindRequestSignal } from '../../../main/provider/requestSignal'
 import { createAccountPermission } from '../../../main/provider/permissions'
@@ -69,6 +70,7 @@ jest.mock('../../../main/provider/walletCallEvidenceRuntime', () => ({
   default: { wake: jest.fn() }
 }))
 jest.mock('../../../main/provider/walletCallStatusView', () => ({ showWalletCallStatus: jest.fn() }))
+jest.mock('../../../main/windows/dialog', () => ({ confirmSensitiveAction: jest.fn() }))
 // Simulation transport is covered in simulationRpc.test; here simulations use the mocked connection.
 jest.mock('../../../main/transaction/simulationRpc', () => ({ viaSimulationRpc: (send) => send }))
 // These tests use opaque fake signed bytes to exercise broadcast/lifecycle handling.
@@ -848,6 +850,99 @@ describe('#inspectWalletCallsPreflight', () => {
   })
 })
 
+describe('#inspectWalletCallsPreflight atomic upgrade', () => {
+  it('funds inner values, adds authorization gas, and simulates with the delegation applied', async () => {
+    const inspect = (request) =>
+      Object.getPrototypeOf(provider).inspectWalletCallsPreflight.call(provider, request)
+    const fill = jest.spyOn(provider, 'fillTransaction').mockImplementation((intent, callback) =>
+      callback(null, {
+        tx: {
+          ...intent,
+          type: '0x2',
+          gasLimit: intent.gasLimit || '0x5208',
+          maxFeePerGas: '0x2',
+          maxPriorityFeePerGas: '0x1',
+          gasFeesSource: 'Frame'
+        },
+        approvals: []
+      })
+    )
+    const sent = []
+    connection.send.mockImplementation((payload, callback) => {
+      sent.push(payload)
+      const results = {
+        eth_getTransactionCount: '0x5',
+        eth_getBalance: '0xfffffff',
+        eth_getCode: '0x',
+        // Only an RPC that applies the override sees the batch execute.
+        eth_estimateGas: payload.params?.[2] ? '0x186a0' : '0x5300',
+        eth_simulateV1: [
+          {
+            calls: [
+              { status: '0x1', gasUsed: '0x5208', returnData: '0x', logs: [] },
+              { status: '0x1', gasUsed: '0x5208', returnData: '0x', logs: [] }
+            ]
+          }
+        ]
+      }
+      callback({ id: payload.id, jsonrpc: '2.0', result: results[payload.method] })
+    })
+    const delegation = { [address]: { code: '0xef01005a7fc11397e9a8ad41bf10bf13f22b0a63f96f6d' } }
+
+    try {
+      const result = await inspect({
+        handlerId: 'atomic-preflight',
+        type: 'walletCalls',
+        account: address,
+        origin: defaultOriginId,
+        payload: { id: 1, jsonrpc: '2.0', method: 'wallet_sendCalls', params: [] },
+        version: '2.0.0',
+        batchId: 'atomic-preflight-batch',
+        chainId: '0x1',
+        atomic: 'upgrade',
+        calls: [
+          { to: '0x3333333333333333333333333333333333333333', data: '0x', value: '0x5' },
+          { to: '0x4444444444444444444444444444444444444444', data: '0xabcd', value: '0x7' }
+        ],
+        preparation: { status: 'succeeded', calls: [], maxFee: '0x0' },
+        simulation: { status: 'pending', calls: [] }
+      })
+
+      // The wrapper has value 0, yet the account pays 0x5 + 0x7 from its balance.
+      expect(result.funding.value).toBe('0xc')
+      // 0x186a0 padded by 1.5x, plus EIP-7702 PER_EMPTY_ACCOUNT_COST 25000.
+      expect(result.claimEvidence.execution.preparation.calls).toHaveLength(1)
+      expect(result.claimEvidence.execution.preparation.calls[0].transaction).toMatchObject({
+        to: address,
+        value: '0x0',
+        gasLimit: toRpcQuantity(150000n + 25000n)
+      })
+      const simulate = sent.find((payload) => payload.method === 'eth_simulateV1')
+      expect(simulate.params[0].blockStateCalls[0].stateOverrides).toEqual(delegation)
+      expect(simulate.params[0].blockStateCalls[0].calls).toHaveLength(2)
+      expect(sent.find((payload) => payload.method === 'eth_estimateGas').params[2]).toEqual(delegation)
+    } finally {
+      fill.mockRestore()
+    }
+  })
+})
+
+it('refuses an upgrade gas estimate when the RPC ignores the state override', async () => {
+  connection.send.mockImplementation((payload, callback) =>
+    callback({ id: payload.id, jsonrpc: '2.0', result: '0x5300' })
+  )
+  const fill = jest.spyOn(provider, 'fillTransaction')
+
+  await expect(
+    provider.fillWalletCallTransaction(
+      { from: address, to: address, chainId: '0x1', data: '0x', value: '0x0' },
+      'upgrade'
+    )
+  ).rejects.toThrow(/cannot estimate the account upgrade/)
+  expect(fill).not.toHaveBeenCalled()
+  fill.mockRestore()
+})
+
 describe('#approveSignTypedData', () => {
   it('refuses to sign generic typed data while risk consent is unconfirmed', (done) => {
     accounts.signTypedData = jest.fn()
@@ -1030,6 +1125,11 @@ describe('#wallet-call provider boundary', () => {
   })
 
   beforeEach(authorize)
+  // Atomic status reads account code; the cases below cover sequential batches.
+  beforeEach(() => {
+    jest.spyOn(provider, 'walletCallsAtomicStatus').mockResolvedValue('unsupported')
+  })
+  afterEach(() => jest.restoreAllMocks())
 
   it.each([
     ['wallet_sendCalls', 'sendWalletCalls'],
@@ -1048,10 +1148,10 @@ describe('#wallet-call provider boundary', () => {
     dispatch.mockRestore()
   })
 
-  it('admits an authorized request without allocating a global provider handler', () => {
+  it('admits an authorized request without allocating a global provider handler', async () => {
     const respond = jest.fn()
 
-    const admitted = provider.sendWalletCalls(payload(), respond)
+    const admitted = await provider.sendWalletCalls(payload(), respond)
 
     expect(admitted).toMatchObject({ origin: originId, account: address, chainId: '0x1' })
     expect(validateUUID(admitted.handlerId)).toBe(true)
@@ -1068,11 +1168,11 @@ describe('#wallet-call provider boundary', () => {
     expect(walletCallBatchLedger.getStatus(originId, address, admitted.id).status).toBe(100)
   })
 
-  it('rolls back admission when block mode rejects the wallet-call intent', () => {
+  it('rolls back admission when block mode rejects the wallet-call intent', async () => {
     store.set('main.dappGuardrails', guardrail())
     const respond = jest.fn()
 
-    expect(provider.sendWalletCalls(payload(), respond)).toBeUndefined()
+    expect(await provider.sendWalletCalls(payload(), respond)).toBeUndefined()
     expect(respond).toHaveBeenCalledWith(
       expect.objectContaining({ error: expect.objectContaining({ code: 4100 }) })
     )
@@ -1082,7 +1182,7 @@ describe('#wallet-call provider boundary', () => {
 
   it('requires a fingerprint-bound warning acknowledgement before wallet-call preflight', async () => {
     store.set('main.dappGuardrails', guardrail('warn'))
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const request = accounts.getRequestForAccount(address, admitted.handlerId)
     const warning = request.approvals.find((approval) => approval.type === ApprovalType.DappGuardrailWarning)
 
@@ -1098,7 +1198,7 @@ describe('#wallet-call provider boundary', () => {
 
   it('stops remaining wallet calls when policy changes before a later signature', async () => {
     store.set('main.dappGuardrails', guardrail('warn'))
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const request = accounts.getRequestForAccount(address, admitted.handlerId)
     request.approvals.find((approval) => approval.type === ApprovalType.DappGuardrailWarning).approve()
     executeWalletCallRuntime.mockImplementationOnce(async (_input, dependencies) => {
@@ -1119,7 +1219,7 @@ describe('#wallet-call provider boundary', () => {
   })
 
   it('stops later wallet-call signatures when the origin permission is revoked mid-batch', async () => {
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     executeWalletCallRuntime.mockImplementationOnce(async (_input, dependencies) => {
       dependencies.assertBeforeSign()
       store.set('main.permissions', address, {})
@@ -1139,7 +1239,7 @@ describe('#wallet-call provider boundary', () => {
   })
 
   it('rechecks managed Sweep account authorization at each signer boundary', async () => {
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const request = accounts.getRequestForAccount(address, admitted.handlerId)
     request.managedSweep = {}
     const authorized = jest
@@ -1168,7 +1268,7 @@ describe('#wallet-call provider boundary', () => {
 
   it('tracks the exact managed Sweep recipient against its durable operation before execution', async () => {
     const sweepRecipient = '0x1111111111111111111111111111111111111111'
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const request = accounts.getRequestForAccount(address, admitted.handlerId)
     request.managedSweep = { recipient: sweepRecipient }
     const track = jest.spyOn(recentRecipientsRuntime, 'track').mockReturnValue(true)
@@ -1186,7 +1286,7 @@ describe('#wallet-call provider boundary', () => {
 
   it('forgets a managed Sweep candidate when execution fails before any broadcast evidence', async () => {
     const sweepRecipient = '0x1111111111111111111111111111111111111111'
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const request = accounts.getRequestForAccount(address, admitted.handlerId)
     request.managedSweep = { recipient: sweepRecipient }
     const track = jest.spyOn(recentRecipientsRuntime, 'track').mockReturnValue(true)
@@ -1217,11 +1317,11 @@ describe('#wallet-call provider boundary', () => {
       payload(),
       5710
     ]
-  ])('rejects a request from an %s before admission', (_label, arrange, request, code) => {
+  ])('rejects a request from an %s before admission', async (_label, arrange, request, code) => {
     arrange()
     const respond = jest.fn()
 
-    expect(provider.sendWalletCalls(request, respond)).toBeUndefined()
+    expect(await provider.sendWalletCalls(request, respond)).toBeUndefined()
 
     expect(respond).toHaveBeenCalledWith(
       expect.objectContaining({ error: expect.objectContaining({ code }) })
@@ -1231,10 +1331,10 @@ describe('#wallet-call provider boundary', () => {
     expect(provider.handlers).toEqual({})
   })
 
-  it('rejects required atomicity before allocating review or persistent batch state', () => {
+  it('rejects required atomicity before allocating review or persistent batch state', async () => {
     const respond = jest.fn()
 
-    expect(provider.sendWalletCalls(payload({ atomicRequired: true }), respond)).toBeUndefined()
+    expect(await provider.sendWalletCalls(payload({ atomicRequired: true }), respond)).toBeUndefined()
 
     expect(respond).toHaveBeenCalledWith(
       expect.objectContaining({ error: expect.objectContaining({ code: 5760 }) })
@@ -1253,7 +1353,7 @@ describe('#wallet-call provider boundary', () => {
       dependencies.evidenceAvailable()
       return ['0xhash']
     })
-    const admitted = provider.sendWalletCalls(payload(), respond)
+    const admitted = await provider.sendWalletCalls(payload(), respond)
     currentAccount = { id: '0x3333333333333333333333333333333333333333' }
 
     await expect(provider.approveWalletCallsRequest(address, admitted.handlerId)).resolves.toEqual(['0xhash'])
@@ -1286,7 +1386,7 @@ describe('#wallet-call provider boundary', () => {
       dependencies.evidenceAvailable()
       throw failure
     })
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
 
     await expect(provider.approveWalletCallsRequest(address, admitted.handlerId)).rejects.toThrow(failure)
 
@@ -1296,7 +1396,7 @@ describe('#wallet-call provider boundary', () => {
 
   it('retains an aggregate funding shortfall before accepting or executing the batch', async () => {
     const respond = jest.fn()
-    const admitted = provider.sendWalletCalls(payload(), respond)
+    const admitted = await provider.sendWalletCalls(payload(), respond)
     const error = new WalletCallFundingError(WALLET_CALL_FUNDING_ERROR, 'More funds needed', {
       available: '0x1',
       required: '0x3',
@@ -1316,7 +1416,7 @@ describe('#wallet-call provider boundary', () => {
   })
 
   it('retains managed Sweep preflight drift as a Close-only visible error', async () => {
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const request = accounts.getRequestForAccount(address, admitted.handlerId)
     request.managedSweep = {}
     const authorized = jest.spyOn(provider, 'managedSweepOriginAuthorized').mockReturnValue(true)
@@ -1340,7 +1440,7 @@ describe('#wallet-call provider boundary', () => {
 
   it('rechecks exact origin permission after asynchronous preflight and before claim', async () => {
     const respond = jest.fn()
-    const admitted = provider.sendWalletCalls(payload(), respond)
+    const admitted = await provider.sendWalletCalls(payload(), respond)
     provider.inspectWalletCallsPreflight.mockImplementationOnce(async () => {
       store.set('main.permissions', {})
       return {
@@ -1370,7 +1470,7 @@ describe('#wallet-call provider boundary', () => {
   })
 
   it('rechecks aggregate funding without signing and retains refreshed shortfall evidence', async () => {
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const request = accounts.getRequestForAccount(address, admitted.handlerId)
     request.status = 'error'
     request.recoverableError = { code: WALLET_CALL_FUNDING_ERROR, message: 'More funds needed' }
@@ -1407,7 +1507,7 @@ describe('#wallet-call provider boundary', () => {
   })
 
   it('returns a funded recheck to normal review without claiming or signing', async () => {
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const request = accounts.getRequestForAccount(address, admitted.handlerId)
     request.status = 'error'
     request.recoverableError = { code: WALLET_CALL_FUNDING_ERROR, message: 'More funds needed' }
@@ -1427,7 +1527,7 @@ describe('#wallet-call provider boundary', () => {
 
   it('rechecks lookalike evidence at approval without blocking submission', async () => {
     executeWalletCallRuntime.mockResolvedValueOnce(['0xhash'])
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const stored = accounts.getRequestForAccount(address, admitted.handlerId)
     stored.addressSafety = {
       assessedAt: 1,
@@ -1439,9 +1539,9 @@ describe('#wallet-call provider boundary', () => {
     expect(accounts.refreshRequestAddressSafety).toHaveBeenCalledWith(address, admitted.handlerId)
   })
 
-  it('declines against the captured account and durably closes the batch', () => {
+  it('declines against the captured account and durably closes the batch', async () => {
     const respond = jest.fn()
-    const admitted = provider.sendWalletCalls(payload(), respond)
+    const admitted = await provider.sendWalletCalls(payload(), respond)
     const request = accounts.getRequestForAccount(address, admitted.handlerId)
     request.responsePending = true
     currentAccount = { id: '0x3333333333333333333333333333333333333333' }
@@ -1477,7 +1577,7 @@ describe('#wallet-call provider boundary', () => {
     ]
   ])('rejects approval after %s without executing', async (_label, arrange, code) => {
     const respond = jest.fn()
-    const admitted = provider.sendWalletCalls(payload(), respond)
+    const admitted = await provider.sendWalletCalls(payload(), respond)
     arrange()
 
     await expect(provider.approveWalletCallsRequest(address, admitted.handlerId)).rejects.toMatchObject({
@@ -1493,8 +1593,8 @@ describe('#wallet-call provider boundary', () => {
     expect(executeWalletCallRuntime).not.toHaveBeenCalled()
   })
 
-  it('returns status only within the authorized origin and account scope', () => {
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+  it('returns status only within the authorized origin and account scope', async () => {
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const respond = jest.fn()
 
     provider.getWalletCallsStatus(
@@ -1521,8 +1621,8 @@ describe('#wallet-call provider boundary', () => {
     })
   })
 
-  it('does not reveal a known batch to another authorized origin', () => {
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+  it('does not reveal a known batch to another authorized origin', async () => {
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const otherOrigin = '4db938a0-9935-520b-991d-0a02b8601f36'
     store.set('main.origins', otherOrigin, {
       chain: { id: 1, type: 'ethereum' },
@@ -1570,8 +1670,8 @@ describe('#wallet-call provider boundary', () => {
     expect(respond.mock.calls[0][0].error.code).toBe(4100)
   })
 
-  it('shows a known batch and returns no value', () => {
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+  it('shows a known batch and returns no value', async () => {
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const respond = jest.fn()
 
     provider.showWalletCallsStatus(
@@ -1627,8 +1727,8 @@ describe('#wallet-call provider boundary', () => {
     })
   })
 
-  it('does not show a known batch to another authorized origin', () => {
-    const admitted = provider.sendWalletCalls(payload(), jest.fn())
+  it('does not show a known batch to another authorized origin', async () => {
+    const admitted = await provider.sendWalletCalls(payload(), jest.fn())
     const otherOrigin = '4db938a0-9935-520b-991d-0a02b8601f36'
     store.set('main.origins', otherOrigin, {
       chain: { id: 1, type: 'ethereum' },
@@ -1659,11 +1759,11 @@ describe('#wallet-call provider boundary', () => {
     })
   })
 
-  it('reports only conservative capabilities on requested available chains', () => {
+  it('reports only conservative capabilities on requested available chains', async () => {
     store.set('main.networks.ethereum', 5, { id: 5, on: true })
     const respond = jest.fn()
 
-    provider.getWalletCallCapabilities(
+    await provider.getWalletCallCapabilities(
       {
         id: 75,
         jsonrpc: '2.0',
@@ -1684,11 +1784,126 @@ describe('#wallet-call provider boundary', () => {
     })
   })
 
-  it('derives omitted capability chains and excludes disabled connections', () => {
+  it('reports the account atomic status from its code on each chain', async () => {
+    provider.walletCallsAtomicStatus.mockImplementation(async (account, chainId) =>
+      account === address && chainId === 1n ? 'supported' : 'unsupported'
+    )
+    const respond = jest.fn()
+
+    await provider.getWalletCallCapabilities(
+      {
+        id: 76,
+        jsonrpc: '2.0',
+        method: 'wallet_getCapabilities',
+        _origin: originId,
+        params: [address, ['0x1']]
+      },
+      respond
+    )
+
+    expect(respond.mock.calls[0][0].result['0x1'].atomic).toEqual({ status: 'supported' })
+  })
+
+  describe('atomic batches', () => {
+    const twoCalls = [
+      { to: '0x3333333333333333333333333333333333333333', data: '0x', value: '0x1' },
+      { to: '0x4444444444444444444444444444444444444444', data: '0xabcd', value: '0x0' }
+    ]
+
+    it('answers 5750 when the user declines a required upgrade, before any review state exists', async () => {
+      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
+      confirmSensitiveAction.mockResolvedValueOnce(false)
+      const respond = jest.fn()
+
+      await provider.sendWalletCalls(payload({ atomicRequired: true, calls: twoCalls }), respond)
+
+      expect(respond).toHaveBeenCalledWith(
+        expect.objectContaining({ error: expect.objectContaining({ code: 5750 }) })
+      )
+      expect(accountRequests).toHaveLength(0)
+    })
+
+    it('runs a declined optional upgrade as a sequential batch', async () => {
+      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
+      confirmSensitiveAction.mockResolvedValueOnce(false)
+
+      const admitted = await provider.sendWalletCalls(payload({ calls: twoCalls }), jest.fn())
+
+      expect(accountRequests[0]).toMatchObject({ atomic: false, calls: twoCalls })
+      expect(walletCallBatchLedger.get(originId, address, admitted.id)).toMatchObject({
+        atomic: false,
+        callCount: 2
+      })
+    })
+
+    it('reviews every call but records one transaction for an accepted upgrade', async () => {
+      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
+      confirmSensitiveAction.mockResolvedValueOnce(true)
+
+      const admitted = await provider.sendWalletCalls(payload({ calls: twoCalls }), jest.fn())
+
+      expect(accountRequests[0]).toMatchObject({ atomic: 'upgrade', calls: twoCalls })
+      expect(walletCallBatchLedger.get(originId, address, admitted.id)).toMatchObject({
+        atomic: true,
+        callCount: 1
+      })
+    })
+
+    it('aborts before signing when the account code changed since review', async () => {
+      provider.walletCallsAtomicStatus.mockResolvedValue('supported')
+      const admitted = await provider.sendWalletCalls(payload({ calls: twoCalls }), jest.fn())
+      provider.walletCallsAtomicStatus.mockResolvedValue('unsupported')
+      executeWalletCallRuntime.mockImplementationOnce(async (_input, dependencies) => {
+        await dependencies.revalidateBeforeCall({}, 0)
+        return ['unreachable']
+      })
+
+      await expect(provider.approveWalletCallsRequest(address, admitted.handlerId)).rejects.toThrow(
+        /Account code changed since review/
+      )
+    })
+
+    it('signs an upgrade batch as a type-4 delegation through the software signer', async () => {
+      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
+      confirmSensitiveAction.mockResolvedValueOnce(true)
+      const admitted = await provider.sendWalletCalls(payload({ calls: twoCalls }), jest.fn())
+      accounts.signEip7702UpgradeForAccount = jest.fn().mockResolvedValue('0x04signed')
+      const prepared = {
+        from: address,
+        to: address,
+        chainId: '0x1',
+        nonce: '0x5',
+        type: '0x2',
+        gasLimit: '0x2ab98',
+        maxFeePerGas: '0x2',
+        maxPriorityFeePerGas: '0x1',
+        data: '0x',
+        value: '0x0'
+      }
+      let signed
+      executeWalletCallRuntime.mockImplementationOnce(async (_input, dependencies) => {
+        signed = await new Promise((resolve) =>
+          dependencies.accounts.signTransactionForAccount(address, prepared, (_error, raw) => resolve(raw))
+        )
+        return ['0xhash']
+      })
+
+      await provider.approveWalletCallsRequest(address, admitted.handlerId)
+
+      expect(signed).toBe('0x04signed')
+      expect(accounts.signEip7702UpgradeForAccount).toHaveBeenCalledWith(
+        address,
+        expect.objectContaining({ kind: 'eip7702-upgrade-v1', nonce: '0x5', gasLimit: '0x2ab98' }),
+        undefined
+      )
+    })
+  })
+
+  it('derives omitted capability chains and excludes disabled connections', async () => {
     store.set('main.networks.ethereum', 5, { id: 5, on: false })
     const respond = jest.fn()
 
-    provider.getWalletCallCapabilities(
+    await provider.getWalletCallCapabilities(
       {
         id: 76,
         jsonrpc: '2.0',
@@ -1704,10 +1919,10 @@ describe('#wallet-call provider boundary', () => {
     })
   })
 
-  it('does not disclose capabilities for another account', () => {
+  it('does not disclose capabilities for another account', async () => {
     const respond = jest.fn()
 
-    provider.getWalletCallCapabilities(
+    await provider.getWalletCallCapabilities(
       {
         id: 77,
         jsonrpc: '2.0',

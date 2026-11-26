@@ -39,7 +39,7 @@ export const WalletCallReceiptSchema = z
   .object({
     logs: z.array(WalletCallLogSchema).max(2048),
     status: z.enum(['0x0', '0x1']),
-    type: z.enum(['0x0', '0x1', '0x2']).optional(),
+    type: z.enum(['0x0', '0x1', '0x2', '0x4']).optional(),
     blockHash: HashSchema,
     blockNumber: QuantitySchema,
     gasUsed: QuantitySchema,
@@ -71,7 +71,8 @@ export const WalletCallBatchSchema = z
     origin: z.string().min(1).max(256),
     account: AddressSchema,
     chainId: QuantitySchema,
-    atomic: z.literal(false),
+    // Persisted rows predate atomic batches and hold false. An atomic batch holds one transaction.
+    atomic: z.boolean(),
     callCount: z.number().int().min(1).max(16),
     execution: z.enum(['pending', 'complete', 'failed']),
     transactions: z.array(WalletCallTransactionSchema).max(16),

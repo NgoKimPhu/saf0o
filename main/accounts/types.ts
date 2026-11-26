@@ -313,7 +313,8 @@ export interface WalletCallsRequest extends AccountRequest<'walletCalls'> {
   version: '2.0.0'
   batchId: string
   chainId: string
-  atomic: false
+  // false: one transaction per call. Otherwise one self-call runs every call through the Ambire delegate.
+  atomic: false | 'delegated' | 'upgrade'
   calls: Array<{
     to?: string
     data: string

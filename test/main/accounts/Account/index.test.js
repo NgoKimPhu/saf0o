@@ -47,6 +47,14 @@ jest.mock('../../../../main/provider', () => ({
   off: jest.fn(),
   getNonce: jest.fn(),
   fillTransaction: jest.fn(),
+  // Sequential batches fill each call through fillTransaction.
+  fillWalletCallTransaction: jest.fn(function (transaction) {
+    return new Promise((resolve, reject) =>
+      this.fillTransaction({ ...transaction }, (error, metadata) =>
+        error ? reject(error) : resolve(metadata)
+      )
+    )
+  }),
   accountsChanged: jest.fn()
 }))
 jest.mock('../../../../main/accounts', () => ({
@@ -1937,6 +1945,43 @@ describe('#addRequest', () => {
     const approval = request.approvals[0]
     expect(approval.data.message).toBe(
       'Saf0o could not determine whether this transaction will execute successfully. token invalid at [url]'
+    )
+  })
+
+  it('treats a delegation to the allowlisted Ambire account as known, not a risk', async () => {
+    const selectedAccount = accountState.address.toLowerCase()
+    const ambire = '0x5a7fc11397e9a8ad41bf10bf13f22b0a63f96f6d'
+    simulateTransaction.mockResolvedValueOnce({
+      status: 'succeeded',
+      source: 'eth_call',
+      delegation: { status: 'delegated', source: 'eth_getCode', account: selectedAccount, delegate: ambire },
+      accountCodeEvidence: {
+        sender: {
+          role: 'sender',
+          status: 'delegated',
+          account: selectedAccount,
+          delegate: ambire,
+          delegateCodeStatus: 'contract',
+          delegateCodeHash: '0x386e55cb86f9a31fdb7926ceab54847aa4542b7a0517216144a956982a21ade3'
+        },
+        targets: []
+      }
+    })
+    const request = {
+      handlerId: 'ambire-account',
+      type: 'transaction',
+      account: selectedAccount,
+      data: { chainId: '0x1', from: selectedAccount, gasLimit: '0x5208' },
+      approvals: [],
+      simulation: { status: 'pending' }
+    }
+
+    account.addRequest(request)
+    jest.advanceTimersByTime(1)
+    await jest.advanceTimersByTimeAsync(0)
+
+    expect(request.approvals.map((approval) => approval.type)).not.toContain(
+      ApprovalType.DelegatedAccountRisk
     )
   })
 

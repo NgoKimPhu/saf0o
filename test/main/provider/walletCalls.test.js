@@ -93,8 +93,9 @@ it.each([
   expectRpcError(() => parseSendCalls(request({ calls: [call] })), -32602, message)
 })
 
-it('rejects atomic execution with the EIP-5792 policy code', () => {
-  expectRpcError(() => parseSendCalls(request({ atomicRequired: true })), 5760, /Atomicity not supported/)
+// The provider answers 5760 or 5750 once it knows the account's atomic status.
+it('keeps atomicRequired for the provider to decide', () => {
+  expect(parseSendCalls(request({ atomicRequired: true })).atomicRequired).toBe(true)
 })
 
 it('rejects too many calls and too much calldata with the bundle-size code', () => {

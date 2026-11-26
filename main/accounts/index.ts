@@ -70,6 +70,8 @@ import {
   type SoftwareEip7702RevokeSigner
 } from '../eip7702'
 import { EIP7702_REVOKE_INTRINSIC_GAS } from '../transaction/eip7702'
+import { signSoftwareEip7702Authorization, type SoftwareEip7702AuthorizationSigner } from '../eip7702'
+import type { Eip7702UpgradeRequest } from '../eip7702'
 import { isRecoverableAccountCodeEvidenceError } from '../transaction/simulation'
 import { parseAccountCode, type ParsedAccountCode } from '../../resources/domain/account/code'
 import { recordRequestActivity } from '../activity'
@@ -3795,6 +3797,26 @@ export class Accounts extends EventEmitter {
     } else {
       log.error('Trying to lock request ' + handlerId + ' but there is no current account')
     }
+  }
+
+  // EIP-7702 batching: an atomic batch can upgrade only a Ring or Seed account.
+  hasSoftwareSigner(accountId: string) {
+    const type = this.accounts[accountId.toLowerCase()]?.lastSignerType
+    return type === 'ring' || type === 'seed'
+  }
+
+  async signEip7702UpgradeForAccount(
+    accountId: string,
+    request: Eip7702UpgradeRequest,
+    beforeSign?: () => void
+  ) {
+    const account = this.accounts[accountId.toLowerCase()]
+    const signer = account?.getSigner() as (Signer & SoftwareEip7702AuthorizationSigner) | undefined
+    const index = signer?.addresses.findIndex((address) => address.toLowerCase() === account?.id) ?? -1
+    if (!account || !signer || index < 0) throw new Error('EIP-7702 upgrade requires the account signer')
+    beforeSign?.()
+    const { rawTransaction } = await signSoftwareEip7702Authorization(signer, index, request)
+    return rawTransaction
   }
 
   // removeAllAccounts () {

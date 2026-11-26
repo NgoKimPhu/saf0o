@@ -354,6 +354,7 @@ type ChainSend = (payload: JSONRPCRequestPayload, callback: RPCRequestCallback, 
 
 interface SimulationDependencies {
   send: ChainSend
+  stateOverrides?: Record<string, { code: string }>
   timeoutMs?: number
   onCoreResult?: (simulation: TransactionSimulation) => void
 }
@@ -1849,7 +1850,12 @@ export async function simulateWalletCalls(
     method: 'eth_simulateV1',
     params: [
       {
-        blockStateCalls: [{ calls: transactions.map(buildSimulationCall) }],
+        blockStateCalls: [
+          {
+            ...(dependencies.stateOverrides ? { stateOverrides: dependencies.stateOverrides } : {}),
+            calls: transactions.map(buildSimulationCall)
+          }
+        ],
         validation: false
       },
       'latest'
