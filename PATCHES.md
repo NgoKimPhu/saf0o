@@ -494,3 +494,21 @@ Rebase notes: In `main/rpc/index.js` the token-approval revocation deps moved in
 roles in a separate dash-only `ambireKeyRpcMethods` set. `main/accounts/index.ts` is untouched.
 
 Upstream-PR candidate: no.
+
+## 30. EIP-7702 batching follow-ups
+
+Commits: `saf0o: open the signer panel before a wallet-call batch signs`, `saf0o: record token approvals inside atomic
+batches`, `saf0o: price the EIP-7702 upgrade's OP-stack L1 fee as type 4`.
+
+Intent: Three fixes to entries 27-29. Wallet-call approval now runs `signerCompatibility` first, like transactions do, so
+a locked signer opens its panel instead of failing the batch. Approval observation records each inner call of an atomic
+batch under the wrapper's hash (`submittedApprovalTransactions`). On OP-stack chains the upgrade batch is priced as the
+type-4 transaction it signs: `estimateL1GasCost` takes an `authorizationDelegate` and adds one authorization with an
+incompressible placeholder signature, so the GasPriceOracle (Fjord FastLZ) sees the real size.
+
+Files: `app/tray/Footer/index.js`, `main/provider/{index,walletCallAtomic}.ts`, `main/chains/optimism.ts`, and their tests.
+
+Rebase notes: `Footer.approve` gates only `walletCalls` requests. `walletCallsL1Fees` takes the atomic mode as a third
+argument; only the preflight call passes it.
+
+Upstream-PR candidate: the signer check and the L1 fee change, no; they depend on the batching patches.
