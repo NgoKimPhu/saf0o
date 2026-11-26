@@ -13,8 +13,10 @@ export class AmbireKeys extends React.Component {
     this.mounted = true
     link.rpc('getAmbireKeys', this.props.account, this.props.chainId, (error, result) => {
       if (!this.mounted || error || !result?.supported) return
-      this.setState({ keys: result.keys })
-      this.props.onActiveKeys?.(result.keys.filter(({ privilege }) => privilege !== ZERO_PRIVILEGE).length)
+      const incomplete = result.discovery !== 'complete'
+      this.setState({ keys: result.keys, incomplete })
+      const active = result.keys.filter(({ privilege }) => privilege !== ZERO_PRIVILEGE).length
+      this.props.onActiveKeys?.(active, incomplete)
     })
   }
 
@@ -51,17 +53,25 @@ export class AmbireKeys extends React.Component {
   }
 
   render() {
-    const { keys, input, busy, message } = this.state
+    const { keys, incomplete, input, busy, message } = this.state
     if (!keys) return null
     const candidate = input.trim()
 
     return (
       <div className='ambireKeys'>
         <span>Ambire account keys</span>
-        <small>Keys added in Saf0o on this network. Keys added by other wallets are not listed.</small>
-        {keys.map(({ address, privilege }) => (
+        <small>Keys on this network, from Saf0o and from the account’s on-chain history.</small>
+        {incomplete ? (
+          <p role='alert'>
+            The configured RPC could not return the account’s full key history, so this list can miss keys.
+            Saf0o refuses to revoke until the history loads. Use an RPC that serves eth_getLogs over the full
+            chain history.
+          </p>
+        ) : null}
+        {keys.map(({ address, privilege, external }) => (
           <div key={address} className='ambireKeysRow'>
             <code title={address}>{address}</code>
+            {external ? <small>Added outside Saf0o</small> : null}
             {privilege === ZERO_PRIVILEGE ? (
               <small>Inactive</small>
             ) : (

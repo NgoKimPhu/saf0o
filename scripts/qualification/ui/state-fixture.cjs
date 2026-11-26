@@ -2763,7 +2763,8 @@ const rpcReplyFor = (scenario, method) => {
       account: QUALIFICATION_ACCOUNT,
       chainId: 10,
       supported: true,
-      keys: [{ address: QUALIFICATION_DELEGATE, privilege: `0x${'0'.repeat(64)}` }]
+      discovery: 'complete',
+      keys: [{ address: QUALIFICATION_DELEGATE, privilege: `0x${'0'.repeat(64)}`, external: false }]
     }
   }
   if (scenario.state === 'delegation' && method === 'getEip7702RevocationEligibility') {

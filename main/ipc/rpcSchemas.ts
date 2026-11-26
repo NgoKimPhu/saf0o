@@ -202,7 +202,12 @@ const ambireKeyRpcSchemas = {
           account: AddressSchema,
           chainId: ChainIdSchema,
           supported: z.boolean(),
-          keys: z.array(z.object({ address: AddressSchema, privilege: Bytes32Schema }).strict()).max(256)
+          discovery: z.enum(['complete', 'incomplete']).optional(),
+          keys: z
+            .array(
+              z.object({ address: AddressSchema, privilege: Bytes32Schema, external: z.boolean() }).strict()
+            )
+            .max(256)
         })
         .strict()
     )

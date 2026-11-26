@@ -364,12 +364,15 @@ const rpc = {
       req = currentAccount.getRequest(req.handlerId)
     }
     if (req.type === 'eip7702Revoke') {
-      try {
-        accounts.approveEip7702Revocation(req.account, req.handlerId)
-        cb(null)
-      } catch (error) {
-        cb(error)
-      }
+      // Keys can change between queueing and approval, so the key gate runs again before signing.
+      const { account, handlerId, chainId } = req
+      ambireKeys
+        .assertRevocable(account, Number(BigInt(chainId)))
+        .then(() => accounts.approveEip7702Revocation(account, handlerId))
+        .then(
+          () => cb(null),
+          (error) => cb(error)
+        )
       return
     }
     if (req.type === 'switchChain') {

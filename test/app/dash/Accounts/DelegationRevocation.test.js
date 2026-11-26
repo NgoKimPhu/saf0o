@@ -121,6 +121,31 @@ it('holds the revoke back while an Ambire key is active', async () => {
   expect(screen.queryByRole('button', { name: 'Revoke delegation' })).toBeNull()
 })
 
+// An incomplete key history cannot prove the account is clean, so the revoke stays hidden.
+it('holds the revoke back while the Ambire key history is incomplete', async () => {
+  const evidence = { account, chainId: 1, source: 'eth_getCode', delegate, codeHash: `0x${'11'.repeat(32)}` }
+  link.rpc.mockImplementation((method, ...args) => {
+    const callback = args.at(-1)
+    if (method === 'getAccountExecutionState') callback(null, { status: 'delegated', ...evidence })
+    if (method === 'getEip7702RevocationEligibility') callback(null, { status: 'eligible', ...evidence })
+    if (method === 'getAmbireKeys') {
+      callback(null, { account, chainId: 1, supported: true, discovery: 'incomplete', keys: [] })
+    }
+  })
+
+  render(
+    <DelegationRevocation
+      accounts={accounts}
+      currentAccount={account}
+      networks={networks}
+      signers={{ [signer.id]: signer }}
+    />
+  )
+
+  expect(await screen.findByRole('alert')).toBeTruthy()
+  expect(screen.queryByRole('button', { name: 'Revoke delegation' })).toBeNull()
+})
+
 it('observes a different account without changing Saf0o selection', async () => {
   const current = '0x0000000000000000000000000000000000000003'
   const multipleAccounts = {

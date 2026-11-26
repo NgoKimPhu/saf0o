@@ -74,13 +74,14 @@ it('reports active keys and clears them in one request', async () => {
     account,
     chainId: 1,
     supported: true,
+    discovery: 'complete',
     keys: [{ address: activeKey, privilege: `0x${'0'.repeat(63)}1` }]
   })
   const onActiveKeys = jest.fn()
   const { user } = render(<AmbireKeys account={account} chainId={1} onActiveKeys={onActiveKeys} />)
 
   await user.click(await screen.findByRole('button', { name: 'Clear all keys' }))
-  expect(onActiveKeys).toHaveBeenCalledWith(1)
+  expect(onActiveKeys).toHaveBeenCalledWith(1, false)
   expect(link.rpc).toHaveBeenCalledWith('requestAmbireKeysClear', account, 1, expect.any(Function))
 })
 
@@ -89,4 +90,26 @@ it('offers nothing when the account is not delegated to Ambire', () => {
   render(<AmbireKeys account={account} chainId={1} />)
 
   expect(screen.queryByRole('button', { name: 'Add key' })).toBeNull()
+})
+
+// Keys from other wallets come from the account's on-chain history. The user must see which keys
+// Saf0o did not add, and that a partial history can miss keys and holds the revoke back.
+it('marks keys added outside Saf0o and warns when the key history is incomplete', async () => {
+  answer({
+    account,
+    chainId: 1,
+    supported: true,
+    discovery: 'incomplete',
+    keys: [
+      { address: activeKey, privilege: `0x${'0'.repeat(63)}1`, external: true },
+      { address: inactiveKey, privilege: `0x${'0'.repeat(64)}`, external: false }
+    ]
+  })
+  const onActiveKeys = jest.fn()
+  render(<AmbireKeys account={account} chainId={1} onActiveKeys={onActiveKeys} />)
+
+  expect(await screen.findByText(activeKey)).toBeTruthy()
+  expect(screen.getAllByText('Added outside Saf0o')).toHaveLength(1)
+  expect(screen.getByRole('alert').textContent).toContain('could not return the account’s full key history')
+  expect(onActiveKeys).toHaveBeenCalledWith(1, true)
 })

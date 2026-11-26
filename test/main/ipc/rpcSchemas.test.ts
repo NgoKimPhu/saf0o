@@ -492,7 +492,13 @@ test('bounds Ambire key requests to an address and an explicit add or remove', (
   expect(
     parseRendererRpcResponse('getAmbireKeys', [
       null,
-      { account, chainId: 1, supported: true, keys: [{ address: key, privilege: `0x${'0'.repeat(63)}1` }] }
+      {
+        account,
+        chainId: 1,
+        supported: true,
+        discovery: 'incomplete',
+        keys: [{ address: key, privilege: `0x${'0'.repeat(63)}1`, external: true }]
+      }
     ]).success
   ).toBe(true)
 })
