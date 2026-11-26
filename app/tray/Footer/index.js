@@ -13,7 +13,11 @@ import {
   subscribeToTransactionFeeDraftSafety
 } from '../../../resources/domain/request'
 
-import RequestCommand, { accountCodeEvidenceReady, getRequiredRequestApproval } from './RequestCommand'
+import RequestCommand, {
+  accountCodeEvidenceReady,
+  getRequiredRequestApproval,
+  isNoSignerError
+} from './RequestCommand'
 import SigningDecisionSummary from './SigningDecisionSummary'
 import { parseWalletCallsDraft } from '../Account/Requests/WalletCallsRequest/adjustment'
 import { revokeLifecyclePresentation } from '../Account/Requests/Eip7702RevokeRequest'
@@ -155,8 +159,17 @@ export class Footer extends React.Component {
     const onResult = (error) => {
       if (error && this.mounted) this.setState({ walletCallsActionId: undefined })
     }
-    if (options) link.rpc('approveRequest', req, options, onResult)
-    else link.rpc('approveRequest', req, onResult) // Move to link.send
+    const send = () => {
+      if (options) link.rpc('approveRequest', req, options, onResult)
+      else link.rpc('approveRequest', req, onResult) // Move to link.send
+    }
+    if (req.type !== 'walletCalls') return send()
+    // A locked signer would fail the batch in main. signerCompatibility opens the signer panel instead.
+    link.rpc('signerCompatibility', req.account, req.handlerId, (error) => {
+      if (!error) return send()
+      if (isNoSignerError(error)) this.store.notify('noSignerWarning', { req })
+      onResult(error)
+    })
   }
   decline(reqId, req) {
     link.rpc('declineRequest', req, () => {}) // Move to link.send

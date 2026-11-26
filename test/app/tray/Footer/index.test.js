@@ -14,8 +14,13 @@ jest.mock('../../../../resources/link', () => ({
   send: jest.fn()
 }))
 
+const compatibleSigner = (method, ...args) => {
+  if (method === 'signerCompatibility') args[args.length - 1](null, { compatible: true })
+}
+
 beforeEach(() => {
   link.rpc.mockReset()
+  link.rpc.mockImplementation(compatibleSigner)
   link.send.mockReset()
   link.invoke.mockReset()
   clearTransactionFeeDraftSafety('revoke-1')
@@ -377,6 +382,26 @@ it('submits a lookalike wallet-call batch through the standard review actions', 
   expect(link.rpc).toHaveBeenCalledWith('approveRequest', req, expect.any(Function))
 })
 
+it('checks the signer before a wallet-call batch so a locked signer opens its panel instead of failing the batch', async () => {
+  // Main answers 'Signer unavailable' and navigates to the signer panel; the batch must not be submitted.
+  link.rpc.mockImplementation((method, ...args) => {
+    if (method === 'signerCompatibility') args[args.length - 1]('Signer unavailable')
+  })
+  const req = request({ account: '0x0000000000000000000000000000000000000001' })
+  const { user } = renderRequestFooter(req)
+
+  await user.click(screen.getByRole('button', { name: 'Submit batch' }))
+
+  expect(link.rpc).toHaveBeenCalledWith(
+    'signerCompatibility',
+    req.account,
+    req.handlerId,
+    expect.any(Function)
+  )
+  expect(link.rpc).not.toHaveBeenCalledWith('approveRequest', req, expect.any(Function))
+  expect(screen.getByRole('button', { name: 'Submit batch' }).disabled).toBe(false)
+})
+
 it('allows a delegated sender only for an atomic batch through its Ambire delegation', () => {
   const simulation = {
     status: 'succeeded',
@@ -570,7 +595,7 @@ it.each([
   expect(proceed.disabled).toBe(false)
   await user.click(proceed)
 
-  expect(link.rpc).toHaveBeenCalledTimes(1)
+  expect(link.rpc.mock.calls.filter(([method]) => method === 'approveRequest')).toHaveLength(1)
   expect(link.rpc).toHaveBeenCalledWith(
     'approveRequest',
     req,
