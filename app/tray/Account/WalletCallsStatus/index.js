@@ -200,13 +200,19 @@ export function WalletCallsStatus({
             </div>
             <div>
               <span>Execution</span>
-              <strong className='walletCallsStatusNonAtomic'>Non-atomic</strong>
+              {status.atomic ? (
+                <strong>Atomic</strong>
+              ) : (
+                <strong className='walletCallsStatusNonAtomic'>Non-atomic</strong>
+              )}
             </div>
           </div>
-          <div className='walletCallsStatusAtomic'>
-            <Icon name='alert' size={16} />
-            <span>Non-atomic: an earlier transaction can remain confirmed if a later one fails.</span>
-          </div>
+          {status.atomic ? null : (
+            <div className='walletCallsStatusAtomic'>
+              <Icon name='alert' size={16} />
+              <span>Non-atomic: an earlier transaction can remain confirmed if a later one fails.</span>
+            </div>
+          )}
         </section>
 
         <section className='walletCallsStatusSection walletCallsStatusEvidence'>

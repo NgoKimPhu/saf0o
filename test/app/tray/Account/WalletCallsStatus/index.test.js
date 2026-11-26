@@ -212,3 +212,18 @@ it('does not present an unknown status as pending and only rereads it on refresh
   await user.click(screen.getByRole('button', { name: 'Close' }))
   expect(link.send).toHaveBeenCalledWith('nav:back', 'panel')
 })
+
+it('drops the partial-execution warning for an atomic batch', () => {
+  render(
+    <WalletCallsStatus
+      accountId={account}
+      chainName='Ethereum'
+      nativeCurrency={{ symbol: 'ETH', decimals: 18 }}
+      originName='example.test'
+      status={status({ atomic: true })}
+    />
+  )
+
+  expect(screen.getByText('Atomic')).toBeTruthy()
+  expect(screen.queryByText(/Non-atomic/i)).toBeNull()
+})

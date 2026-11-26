@@ -54,7 +54,8 @@ const canDecideWalletCalls = (req, actionRequestId, accountSignerType) =>
   req.simulation !== undefined &&
   req.simulation?.status !== 'pending' &&
   accountCodeEvidenceReady(req.simulation) &&
-  req.simulation?.delegation?.status !== 'delegated' &&
+  // Main verifies the Ambire delegate code before it admits a delegated atomic batch.
+  (req.simulation?.delegation?.status !== 'delegated' || req.atomic === 'delegated') &&
   req.preparation?.status === 'succeeded'
 
 export const canApproveWalletCalls = (

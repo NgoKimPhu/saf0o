@@ -77,6 +77,19 @@ export const preparationData = (req) => {
   const preparation = req.preparation
   if (!preparation || preparation.status === 'pending') return { status: 'pending' }
   if (preparation.status === 'failed') return { status: 'failed', reason: preparation.reason }
+  // An atomic batch prepares one self-call to the account; main verifies its calldata.
+  if (req.atomic) {
+    const tx =
+      Array.isArray(preparation.calls) && preparation.calls.length === 1 && preparation.calls[0].transaction
+    const total = quantity(preparation.maxFee)
+    const self = (address) =>
+      typeof address === 'string' && address.toLowerCase() === req.account?.toLowerCase()
+    if (!tx || !self(tx.from) || !self(tx.to) || tx.value !== '0x0' || tx.chainId !== req.chainId) {
+      return { status: 'failed', reason: 'Prepared transactions no longer match this batch.' }
+    }
+    if (total === undefined) return { status: 'failed', reason: 'Prepared fee evidence is invalid.' }
+    return { status: 'succeeded', total, calls: [] }
+  }
   if (!Array.isArray(preparation.calls) || preparation.calls.length !== req.calls.length) {
     return { status: 'failed', reason: 'Prepared transactions no longer match this batch.' }
   }
@@ -307,9 +320,17 @@ export class WalletCallsRequest extends React.Component {
             <h2>
               {req.calls.length} {req.calls.length === 1 ? 'transaction' : 'transactions'}
             </h2>
-            <p>Sequential execution</p>
+            <p>{req.atomic ? 'Atomic execution in one transaction' : 'Sequential execution'}</p>
           </div>
-          {req.calls.length > 1 ? (
+          {req.atomic === 'upgrade' ? (
+            <div className='walletCallsAtomicWarning walletCallsUpgradeNotice' role='status'>
+              <strong>
+                <Icon name='alert' size={17} /> Upgrades account to Ambire smart account
+              </strong>
+              <span>This transaction delegates the account to Ambire until you revoke it in Accounts.</span>
+            </div>
+          ) : null}
+          {req.calls.length > 1 && !req.atomic ? (
             <div className='walletCallsAtomicWarning'>
               <strong>
                 <Icon name='alert' size={17} /> Partial execution possible
@@ -344,7 +365,9 @@ export class WalletCallsRequest extends React.Component {
               const targetDelegation = targetDelegationCopy(targetEvidence)
               const maximum = preparation.status === 'succeeded' ? preparation.calls[index] : undefined
               const preparedTransaction =
-                preparation.status === 'succeeded' ? req.preparation.calls[index]?.transaction : undefined
+                preparation.status === 'succeeded' && !req.atomic
+                  ? req.preparation.calls[index]?.transaction
+                  : undefined
               const expanded = this.state.expandedCall === index
               return (
                 <div className='walletCall' key={`${index}:${call.to || 'deployment'}`}>
@@ -491,7 +514,7 @@ export class WalletCallsRequest extends React.Component {
           </div>
         </section>
 
-        {req.simulation?.delegation?.status === 'delegated' && (
+        {req.simulation?.delegation?.status === 'delegated' && req.atomic !== 'delegated' && (
           <div className='walletCallsEvidenceWarning walletCallsEvidenceWarning-danger' role='alert'>
             <Icon name='alert' size={17} />
             <span>Wallet-call batches from delegated sending accounts are not supported.</span>

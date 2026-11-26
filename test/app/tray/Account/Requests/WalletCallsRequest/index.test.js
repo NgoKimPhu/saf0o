@@ -246,6 +246,25 @@ it('warns about non-atomic partial execution only when there is more than one tr
   expect(screen.queryByText('Partial execution possible')).toBeNull()
 })
 
+it('lists every call of an upgrade batch, announces the upgrade, and accepts its one self-call', () => {
+  const req = preparedRequest()
+  const wrapper = { ...req.preparation.calls[0].transaction, to: account, value: '0x0', data: '0x6171d1c9' }
+  req.atomic = 'upgrade'
+  req.preparation = {
+    status: 'succeeded',
+    maxFee: req.preparation.calls[0].maxFee,
+    calls: [{ transaction: wrapper, maxFee: req.preparation.calls[0].maxFee }]
+  }
+
+  render(<WalletCallsRequest originName='example.test' chainData={{ chainName: 'Ethereum' }} req={req} />)
+
+  expect(screen.getByText('Upgrades account to Ambire smart account')).toBeTruthy()
+  expect(screen.getByText('Atomic execution in one transaction')).toBeTruthy()
+  expect(screen.getAllByText(/^0[12]$/)).toHaveLength(2)
+  expect(screen.queryByText('Partial execution possible')).toBeNull()
+  expect(screen.queryByText(/no longer match this batch/)).toBeNull()
+})
+
 it('blocks delegated-account submission and reports unavailable delegation checks', () => {
   const delegated = preparedRequest()
   delegated.simulation.delegation = {

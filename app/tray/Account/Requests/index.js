@@ -537,7 +537,8 @@ export class Requests extends React.Component {
                   img={metadata.icon}
                 >
                   <div className='walletCallsRequestSummary'>
-                    {req.calls.length} ordered {req.calls.length === 1 ? 'call' : 'calls'} - non-atomic
+                    {req.calls.length} ordered {req.calls.length === 1 ? 'call' : 'calls'} -{' '}
+                    {req.atomic ? 'atomic' : 'non-atomic'}
                   </div>
                 </RequestItem>
               )

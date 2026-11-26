@@ -377,6 +377,17 @@ it('submits a lookalike wallet-call batch through the standard review actions', 
   expect(link.rpc).toHaveBeenCalledWith('approveRequest', req, expect.any(Function))
 })
 
+it('allows a delegated sender only for an atomic batch through its Ambire delegation', () => {
+  const simulation = {
+    status: 'succeeded',
+    accountCodeEvidence: readyAccountCodeEvidence,
+    delegation: { status: 'delegated', delegate: '0x5a7fc11397e9a8ad41bf10bf13f22b0a63f96f6d' }
+  }
+
+  expect(canApproveWalletCalls(request({ simulation, atomic: false }), undefined, 'ledger')).toBe(false)
+  expect(canApproveWalletCalls(request({ simulation, atomic: 'delegated' }), undefined, 'ledger')).toBe(true)
+})
+
 it('blocks wallet-call submission for watch-only or unknown account types', () => {
   expect(canApproveWalletCalls(request(), undefined, 'address')).toBe(false)
   expect(canApproveWalletCalls(request(), undefined, 'Address')).toBe(false)
