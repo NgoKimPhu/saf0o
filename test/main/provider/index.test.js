@@ -1857,6 +1857,55 @@ describe('#wallet-call provider boundary', () => {
       expect(accountRequests).toHaveLength(0)
     })
 
+    it('names the requesting app in the upgrade dialog', async () => {
+      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
+      confirmSensitiveAction.mockResolvedValueOnce(false)
+
+      await provider.sendWalletCalls(payload({ calls: twoCalls }), jest.fn())
+
+      expect(confirmSensitiveAction).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.stringMatching(/^example\.test asks/),
+        'Upgrade account'
+      )
+    })
+
+    // An app must not stack upgrade dialogs to wear the user down into one click.
+    it('answers 5750 to a second upgrade request from the same app while its dialog is open', async () => {
+      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
+      let accept
+      confirmSensitiveAction.mockImplementationOnce(() => new Promise((resolve) => (accept = resolve)))
+      const first = provider.sendWalletCalls(payload({ atomicRequired: true, calls: twoCalls }), jest.fn())
+      while (!accept) await Promise.resolve()
+      const respond = jest.fn()
+
+      await provider.sendWalletCalls(payload({ atomicRequired: true, calls: twoCalls }), respond)
+      accept(true)
+      await first
+
+      expect(respond).toHaveBeenCalledWith(
+        expect.objectContaining({ error: expect.objectContaining({ code: 5750 }) })
+      )
+      expect(confirmSensitiveAction).toHaveBeenCalledTimes(1)
+      expect(accountRequests).toHaveLength(1)
+    })
+
+    it('answers 4100 when the app loses account permission while the upgrade dialog is open', async () => {
+      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
+      confirmSensitiveAction.mockImplementationOnce(async () => {
+        store.set('main.permissions', address, {})
+        return true
+      })
+      const respond = jest.fn()
+
+      await provider.sendWalletCalls(payload({ calls: twoCalls }), respond)
+
+      expect(respond).toHaveBeenCalledWith(
+        expect.objectContaining({ error: expect.objectContaining({ code: 4100 }) })
+      )
+      expect(accountRequests).toHaveLength(0)
+    })
+
     it('runs a declined optional upgrade as a sequential batch', async () => {
       provider.walletCallsAtomicStatus.mockResolvedValue('ready')
       confirmSensitiveAction.mockResolvedValueOnce(false)

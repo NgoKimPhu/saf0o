@@ -151,6 +151,7 @@ import {
   FRAME_SEND_ORIGIN,
   SAF0O_DEPLOY_ORIGIN,
   SAF0O_INTERNAL_ORIGIN,
+  getOriginDisplayName,
   originIdForName
 } from '../../resources/domain/origin'
 import {
@@ -301,6 +302,7 @@ export class Provider extends EventEmitter {
   connected = false
   connection = Chains
   private pendingAssetSuggestions = new Set<string>()
+  private pendingUpgradeOrigins = new Set<string>()
   private pendingErc1046Suggestions = new Map<string, Promise<Token>>()
   private managedSweepQuotes = new ManagedSweepQuoteStore(uuid)
   private nativeMaxRevalidator?: (
@@ -1343,9 +1345,12 @@ export class Provider extends EventEmitter {
 
       let atomic: WalletCallsAtomicMode = false
       if (batchDelegate(BigInt(chainId)) || request.atomicRequired) {
-        atomic = await this.walletCallsAtomicMode(currentAccount.id, request)
+        atomic = await this.walletCallsAtomicMode(currentAccount.id, request, payload._origin, access.origin)
         if (accounts.current()?.id !== currentAccount.id) {
           throw { code: 4100, message: 'Wallet-call account is no longer selected' }
+        }
+        if (!hasOriginCapability(payload, { method: payload.method, chainId: request.chainId })) {
+          throw { code: 4100, message: 'Origin is not authorized for wallet calls' }
         }
       }
 
@@ -1380,15 +1385,27 @@ export class Provider extends EventEmitter {
     )
   }
 
-  private async walletCallsAtomicMode(account: string, request: SendCallsRequest) {
+  private async walletCallsAtomicMode(
+    account: string,
+    request: SendCallsRequest,
+    originId: string,
+    originName: string
+  ) {
     const status = await this.walletCallsAtomicStatus(account, BigInt(request.chainId))
-    return chooseWalletCallsAtomicMode(request, status, () =>
-      confirmSensitiveAction(
-        'Upgrade this account to an Ambire smart account?',
-        'An app asks to run its calls as one atomic transaction. Saf0o signs an EIP-7702 delegation of this account to the Ambire account contract. The delegation stays until you revoke it in Accounts. You review every call next.',
-        'Upgrade account'
-      )
-    )
+    return chooseWalletCallsAtomicMode(request, status, async () => {
+      // One upgrade dialog per app at a time. A concurrent request from the same app counts as declined.
+      if (this.pendingUpgradeOrigins.has(originId)) return false
+      this.pendingUpgradeOrigins.add(originId)
+      try {
+        return await confirmSensitiveAction(
+          'Upgrade this account to an Ambire smart account?',
+          `${getOriginDisplayName(originName)} asks to run its calls as one atomic transaction. Saf0o signs an EIP-7702 delegation of this account to the Ambire account contract. The delegation stays until you revoke it in Accounts. You review every call next.`,
+          'Upgrade account'
+        )
+      } finally {
+        this.pendingUpgradeOrigins.delete(originId)
+      }
+    })
   }
 
   // The upgrade path skips Account.signTransaction, so recheck the reviewed sender and inner targets here.
