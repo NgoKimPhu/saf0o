@@ -472,16 +472,24 @@ Upstream-PR candidate: no.
 
 ## 29. Ambire account keys (EIP-7702)
 
-Commits: `saf0o: manage Ambire account keys`, `saf0o: clear Ambire keys before revoke`.
+Commits: `saf0o: manage Ambire account keys`, `saf0o: clear Ambire keys before revoke`, `saf0o: discover Ambire keys on chain
+before revoke`, `saf0o: confirm, not refuse, a revoke with an incomplete key history`.
 
 Intent: Let an account delegated to the allowlisted AmbireAccount7702 add and remove extra keys. Each change is a self-call
 `setAddrPrivilege` (to = from = account) sent through the normal transaction approval with the internal origin. Adding a key
 first passes a native `confirmSensitiveAction` that says the key gets full control. Added keys use privilege `0x…01`
 (ambire-common `standardSigningOnlyPriv`); remove writes zero. Keys added in saf0o are stored in `main.ambireKeys[account][chainId]`
-(default on read, no migration); live status comes from `privileges(addr)`. Keys added by other wallets are not discovered.
-Because Ambire storage survives a revoke, main refuses `requestEip7702Revocation` while a known key reads nonzero, and the dash
-offers one transaction that zeroes all of them (`executeBySender` for several). The revoke request warns that keys added by
-any wallet return if the account delegates to the same contract again.
+(default on read, no migration). Keys added by any wallet are discovered from the account's own
+`LogPrivilegeChanged(address indexed addr, bytes32 priv)` logs (under EIP-7702 the account emits them): `eth_getLogs` over the
+full range first; on any failure, a chunked scan from the newest block down (2,000-block chunks, at most 100). `getAmbireKeys`
+returns `discovery: 'complete' | 'incomplete'` and marks each key `external` when saf0o did not add it; the dash labels those
+"Added outside Saf0o" and warns on an incomplete history. The owner and the 4337 entry point are skipped, because
+`AmbireAccount7702.privileges` hardcodes both. Live status comes from `privileges(addr)`. Because Ambire storage survives a
+revoke, main refuses the revoke while any stored or discovered key reads nonzero, when queued and again on approval. An
+incomplete history asks through the native dialog when the revoke is queued, rather than refusing: range-limited public RPCs
+never return the full history, and revoking is itself protective. The dash offers one transaction that zeroes all active keys
+(`executeBySender` for several). The revoke request warns that keys added by any wallet return if the account delegates to
+the same contract again.
 
 Files: `main/eip7702/keys.ts`, `app/dash/Accounts/AmbireKeys.js` (new); `main/rpc/index.js`, `main/ipc/rpcSchemas.ts`,
 `resources/bridge/roles.ts`, `main/store/{state/index.ts,actions/index.js}`, `app/dash/Accounts/DelegationRevocation.js`,
@@ -489,9 +497,11 @@ Files: `main/eip7702/keys.ts`, `app/dash/Accounts/AmbireKeys.js` (new); `main/rp
 and their tests.
 
 Rebase notes: In `main/rpc/index.js` the token-approval revocation deps moved into a shared `internalTransactions` object
-(same body and indentation), which `AmbireKeys` reuses; `requestEip7702Revocation` runs `ambireKeys.assertRevocable` before
-`accounts.requestEip7702Revocation`. RPC schemas sit in a separate `ambireKeyRpcSchemas` block spread at the top of `rpcSchemas`;
-roles in a separate dash-only `ambireKeyRpcMethods` set. `main/accounts/index.ts` is untouched.
+(same body and indentation), which `AmbireKeys` reuses. `requestEip7702Revocation` runs `ambireKeys.assertRevocable(…, 'confirm')`
+first; the `eip7702Revoke` branch of `approveRequest` is async and runs `assertRevocable(…, 'allow')` before
+`accounts.approveEip7702Revocation`. RPC schemas sit in a separate `ambireKeyRpcSchemas` block (the `getAmbireKeys` result
+carries `discovery` and per-key `external`); roles in a separate dash-only `ambireKeyRpcMethods` set. `main/accounts/index.ts`
+is untouched.
 
 Upstream-PR candidate: no.
 
@@ -512,3 +522,31 @@ Rebase notes: `Footer.approve` gates only `walletCalls` requests. `walletCallsL1
 argument; only the preflight call passes it.
 
 Upstream-PR candidate: the signer check and the L1 fee change, no; they depend on the batching patches.
+
+## 31. EIP-7702 batching security fixes
+
+Commits: `saf0o: reject wallet_sendCalls calls to the sending account`, `saf0o: reject app self-calls with data in
+eth_sendTransaction`, `saf0o: recheck inner call code before signing an atomic batch`, `saf0o: run zero-address calls outside
+the atomic wrapper`, `saf0o: name the app and limit the account upgrade dialog`.
+
+Intent: AmbireAccount7702 `setAddrPrivilege` only requires msg.sender == the account, and any call from the account to itself
+meets that. A dapp could plant a full-control key through an inner call to the account in `wallet_sendCalls`, or through a plain
+`eth_sendTransaction` to self, and nested self-calls (`executeBySelf`, `executeBySender`, `tryCatch`) hide calls from review.
+`wallet_sendCalls` now answers -32602 for any call to the sending account in both modes, and the atomic wrapper encoder checks
+again. `eth_sendTransaction` answers -32602 for an app transaction to `from` with non-empty data, for every account; only the
+internal origin is exempt, because entry 29's key changes and revoke-clear use it. Atomic signing rechecks the sender and every
+inner target against the evidence reviewed over the inner calls, in delegated mode (before, every batch whose call 0 did not
+target the account aborted with "Delegation changed") and in upgrade mode (before, nothing was rechecked). A zero-address call
+is not wrappable, because `executeBatch` skips it: 5760 when atomicity is required, else sequential. The upgrade dialog names
+the app, allows one open dialog per origin (a concurrent request counts as declined), and rechecks the origin's account
+permission after the dialog.
+
+Files: `main/provider/{walletCalls,walletCallAtomic,index}.ts`, `main/accounts/Account/index.ts`, and their tests.
+
+Rebase notes: `assertNoSelfCalls` runs in `sendWalletCalls` and in the atomic branch of `walletCallsExecutionCalls` only; the
+sequential branch stays open for managed sweep's native leg. The `eth_sendTransaction` guard sits just before `fillTransaction`,
+after the managed-origin checks; it exempts only `originIdForName(SAF0O_INTERNAL_ORIGIN)`. `Account.signTransaction` branches on
+`reviewed.atomicCalls`; the upgrade recheck sits in the provider's `signTransactionForAccount` override. New provider state:
+`pendingUpgradeOrigins`. The wallet-call boundary fixture in `test/main/provider/index.test.js` targets `0x5555…`, not the account.
+
+Upstream-PR candidate: no.
