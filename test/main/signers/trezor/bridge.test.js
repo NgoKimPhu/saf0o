@@ -341,6 +341,24 @@ describe('requests', () => {
     expect(signature).toEqual({ v: 1, r: 2, s: 3 })
   })
 
+  // Connect refuses authorizationList unless the top-level payload opts in with __experimental.
+  it('signs an EIP-7702 transaction with the experimental flag and returns the serialized tx', async () => {
+    const tx = { chainId: 1, authorizationList: [{ address: '0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d' }] }
+    TrezorConnect.ethereumSignTransaction.mockImplementation(async (params) => {
+      expect(params).toEqual({
+        device: { path: '11' },
+        path: "m/44'/60'/0'/0/0",
+        transaction: tx,
+        __experimental: true
+      })
+      return { id: 1, success: true, payload: { v: '0x1', r: '0x2', s: '0x3', serializedTx: '0x04aa' } }
+    })
+
+    await expect(TrezorBridge.signEip7702Transaction({ path: '11' }, "m/44'/60'/0'/0/0", tx)).resolves.toBe(
+      '0x04aa'
+    )
+  })
+
   it('reports transaction dispatch only when the serialized device request actually starts', async () => {
     let resolveFeatures
     TrezorConnect.getFeatures.mockReturnValueOnce(

@@ -227,6 +227,19 @@ class TrezorBridge extends EventEmitter {
     return { v, r, s }
   }
 
+  // Connect gates authorizationList behind __experimental and returns the signed type-4 tx.
+  async signEip7702Transaction(device: DeviceReference, path: string, tx: unknown) {
+    const result = await this.makeRequest(() =>
+      TrezorConnect.ethereumSignTransaction({
+        device: deviceSelector(device),
+        path,
+        transaction: tx as TrezorTransaction,
+        __experimental: true
+      } as Parameters<typeof TrezorConnect.ethereumSignTransaction>[0])
+    )
+    return result.serializedTx
+  }
+
   pinEntered(deviceId: string, pin: string, authenticationRequestId: string) {
     log.debug('pin entered for device', deviceId)
 

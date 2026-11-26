@@ -14,6 +14,17 @@ import TrezorBridge, { DeviceError } from '../bridge'
 import type { TypedMessage } from '../../../accounts/types'
 import { normalizeTrezorTransaction } from '../transaction'
 import { SignerUserRejectedError } from '../../errors'
+import {
+  inspectSignedEip7702RevokeTransaction,
+  inspectSignedEip7702UpgradeTransaction,
+  parseEip7702RevokeRequest,
+  parseEip7702UpgradeRequest
+} from '../../../transaction/eip7702'
+import {
+  TREZOR_EIP7702_EXPERIMENTAL_OFF,
+  trezorEip7702ErrorMessage,
+  trezorEip7702Transaction
+} from '../eip7702'
 
 const defaultTrezorTVersion = { major_version: 2, minor_version: 3, patch_version: 0 }
 const defaultTrezorOneVersion = { major_version: 1, minor_version: 9, patch_version: 2 }
@@ -502,6 +513,58 @@ export default class Trezor extends Signer {
     } finally {
       if (this.transactionSigning === signing) delete this.transactionSigning
       this.activeSigningOperations.delete(signing)
+    }
+  }
+
+  // EIP-7702 delegation (revoke or upgrade to an allowlisted delegate), same callback shape as the hot signer.
+  signEip7702Revoke(index: number, request: unknown, cb: Callback<string>) {
+    return this.signEip7702(
+      index,
+      () => parseEip7702RevokeRequest(request),
+      inspectSignedEip7702RevokeTransaction,
+      cb
+    )
+  }
+
+  signEip7702Authorization(index: number, request: unknown, cb: Callback<string>) {
+    return this.signEip7702(
+      index,
+      () => parseEip7702UpgradeRequest(request),
+      inspectSignedEip7702UpgradeTransaction,
+      cb
+    )
+  }
+
+  private async signEip7702<R extends Parameters<typeof trezorEip7702Transaction>[0]>(
+    index: number,
+    parse: () => R,
+    inspect: (rawTransaction: unknown, request: R) => unknown,
+    cb: Callback<string>
+  ) {
+    const done = this.trackCallback(cb)
+    const signingOperation = {}
+    this.activeSigningOperations.add(signingOperation)
+
+    try {
+      const device = this.device
+      if (!device) throw new Error('Trezor is not connected')
+      const request = parse()
+      const tx = trezorEip7702Transaction(request)
+      if (device.features?.experimental_features === false) throw new Error(TREZOR_EIP7702_EXPERIMENTAL_OFF)
+
+      const rawTransaction = await this.runDeviceRequest(
+        () => TrezorBridge.signEip7702Transaction(device, this.getPath(index), tx),
+        this.lifecycleGeneration,
+        this.status
+      )
+      // The device builds the tx; accept it only if it matches the reviewed request exactly.
+      inspect(rawTransaction, request)
+      done(null, rawTransaction)
+    } catch (e: unknown) {
+      const err = e as DeviceError
+      done(isUserRejection(err) ? new SignerUserRejectedError() : new Error(trezorEip7702ErrorMessage(err)))
+    } finally {
+      this.activeSigningOperations.delete(signingOperation)
     }
   }
 

@@ -9,7 +9,9 @@ export const EIP7702_DELEGATES = Object.freeze([
     name: 'Ambire',
     address: '0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d',
     codeHash: '0x386e55cb86f9a31fdb7926ceab54847aa4542b7a0517216144a956982a21ade3',
-    chains: Object.freeze([1n, 10n, 56n, 100n, 8453n, 42161n])
+    chains: Object.freeze([1n, 10n, 56n, 100n, 8453n, 42161n]),
+    // Chains where Trezor firmware whitelists this delegate (trezor-firmware sc_constants.py.mako).
+    trezorChains: Object.freeze([1n, 100n, 8453n, 42161n])
   })
 ])
 
@@ -25,6 +27,13 @@ export function findAllowedDelegate(chainId: bigint, address: string) {
 
 export function isAllowedDelegate(chainId: bigint, address: string): boolean {
   return findAllowedDelegate(chainId, address) !== undefined
+}
+
+// Trezor signs a revoke (zero delegate) on any chain, and an upgrade only where its firmware lists the delegate.
+export function isTrezorDelegate(chainId: bigint, address: string): boolean {
+  if (chainId === 0n) return false
+  if (address === '0x0000000000000000000000000000000000000000') return true
+  return findAllowedDelegate(chainId, address)?.trezorChains.includes(chainId) === true
 }
 
 // accountCode is the EOA's code (the 0xef0100 indicator). delegateCodeHash must hash eth_getCode of
