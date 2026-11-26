@@ -15,6 +15,8 @@ export type {
   SoftwareEip7702RevokeSigner
 } from './revoke'
 export { EIP7702_DELEGATES, findAllowedDelegate, isAllowedDelegate, matchesDelegateCode } from './delegates'
+export { decodePrivilege, encodeExecuteBySender, encodePrivileges, encodeSetAddrPrivilege } from './ambire'
+export type { AmbireCall } from './ambire'
 export { signSoftwareEip7702Authorization } from './authorization'
 export type { SignedEip7702Upgrade, SoftwareEip7702AuthorizationSigner } from './authorization'
 export {
