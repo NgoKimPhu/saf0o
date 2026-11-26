@@ -25,7 +25,13 @@ import { encodeSetAddrPrivilege } from '../../../main/eip7702'
 import { ApprovalType } from '../../../resources/constants'
 import { bindRequestSignal } from '../../../main/provider/requestSignal'
 import { createAccountPermission } from '../../../main/provider/permissions'
-import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN, originIdForInvoker } from '../../../resources/domain/origin'
+import {
+  FRAME_SEND_ORIGIN,
+  SAF0O_DEPLOY_ORIGIN,
+  SAF0O_INTERNAL_ORIGIN,
+  originIdForInvoker,
+  originIdForName
+} from '../../../resources/domain/origin'
 import { GasFeesSource } from '../../../resources/domain/transaction'
 import recentRecipientsRuntime from '../../../main/recentRecipients/runtime'
 import { generatePeerAuthKeyPair, peerAuthClientBundleFingerprint } from '../../../main/api/peerAuth'
@@ -3994,6 +4000,49 @@ describe('#send', () => {
           }
         }
       )
+    })
+
+    // A self-call with data runs as the account: on an Ambire delegation, setAddrPrivilege would plant a key.
+    const plantKey = () => encodeSetAddrPrivilege(`0x${'66'.repeat(20)}`, `0x${'00'.repeat(31)}01`)
+
+    it('rejects an app transaction that calls the sending account with data', (done) => {
+      tx.data = plantKey()
+
+      sendTransaction((response) => {
+        try {
+          expect(response.error).toMatchObject({
+            code: -32602,
+            message: expect.stringMatching(/sending account/)
+          })
+          expect(accountRequests).toHaveLength(0)
+          done()
+        } catch (e) {
+          done(e)
+        }
+      })
+    })
+
+    it('still admits a saf0o internal self-call, which Ambire key changes rely on', () => {
+      tx.data = plantKey()
+      const fill = jest.spyOn(provider, 'fillTransaction').mockImplementation(() => {})
+      const respond = jest.fn()
+
+      provider.sendTransaction(
+        {
+          jsonrpc: '2.0',
+          id: 81,
+          method: 'eth_sendTransaction',
+          params: [tx],
+          _origin: originIdForName(SAF0O_INTERNAL_ORIGIN)
+        },
+        respond,
+        { type: 'ethereum', id: 1 }
+      )
+
+      const filled = fill.mock.calls.map(([intent]) => intent)
+      fill.mockRestore()
+      expect(respond).not.toHaveBeenCalled()
+      expect(filled).toEqual([expect.objectContaining({ to: tx.to, data: tx.data })])
     })
 
     it('admits, approves, signs, and broadcasts a managed Send transaction once', (done) => {

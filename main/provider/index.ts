@@ -142,7 +142,12 @@ import { parseMessageRequest } from '../signatures/message'
 import { hasAddress } from '../../resources/domain/account'
 import { isLegacyRequestEnvelope, normalizeTransactionChainId } from '../requests'
 import { chainUsesOptimismFees } from '../../resources/utils/chains'
-import { FRAME_SEND_ORIGIN, SAF0O_DEPLOY_ORIGIN, originIdForName } from '../../resources/domain/origin'
+import {
+  FRAME_SEND_ORIGIN,
+  SAF0O_DEPLOY_ORIGIN,
+  SAF0O_INTERNAL_ORIGIN,
+  originIdForName
+} from '../../resources/domain/origin'
 import {
   buildSweepBalanceCall,
   createSweepEvidence,
@@ -2456,6 +2461,25 @@ export class Provider extends EventEmitter {
         } catch {
           return resError('Deployment transaction does not match its prepared evidence', payload, res)
         }
+      }
+
+      // A self-call with data runs as the account and can change who controls a delegated account.
+      // Only saf0o's own internal requests (for example Ambire key changes) may send one.
+      if (
+        payload._origin !== originIdForName(SAF0O_INTERNAL_ORIGIN) &&
+        typeof tx.to === 'string' &&
+        tx.to.toLowerCase() === from.toLowerCase() &&
+        tx.data &&
+        tx.data !== '0x'
+      ) {
+        return resError(
+          {
+            message: 'Invalid params: a transaction from an app must not call the sending account with data',
+            code: -32602
+          },
+          payload,
+          res
+        )
       }
 
       this.fillTransaction({ ...tx, from }, (err, transactionMetadata) => {
