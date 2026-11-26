@@ -423,3 +423,23 @@ Files: `main/api/origins.ts`, `main/accounts/Account/index.ts`, `main/accounts/i
 Rebase notes: A block applies only when no existing grant covers the request. A manual block does not revoke an existing grant.
 
 Upstream-PR candidate: no.
+
+## 27. EIP-7702 batching foundation (Ambire delegate)
+
+Commits: `saf0o: allowlist EIP-7702 batching delegates`, `saf0o: generalize EIP-7702 authorization signing`,
+`saf0o: encode Ambire account calls`.
+
+Intent: Lay the ground for atomic batches and extra account keys through an EIP-7702 delegation to AmbireAccount7702
+(`0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d`). `main/eip7702/delegates.ts` allowlists that delegate and its runtime code hash
+on chains 1, 10, 56, 100, 8453 and 42161. A new `eip7702-upgrade-v1` request signs a self-sent type-4 tx that delegates to an
+allowlisted contract and carries call data. The hot signer worker signs it through `signEip7702Authorization` and re-checks the
+allowlist itself. `main/eip7702/ambire.ts` encodes `executeBySender`, `setAddrPrivilege` and `privileges`.
+
+Files: `main/eip7702/{delegates,authorization,ambire,index}.ts`, `main/transaction/eip7702.ts` (appended upgrade functions),
+`main/signers/hot/{HotSigner/index,HotSigner/worker,RingSigner/worker,SeedSigner/worker}.js`, and their tests.
+
+Rebase notes: The revoke code in `main/transaction/eip7702.ts` is upstream's and stays untouched. The upgrade code sits at the
+end of that file, plus one `isAllowedDelegate` import. Add a chain to the allowlist only after checking the delegate's code hash
+on that chain.
+
+Upstream-PR candidate: no.
