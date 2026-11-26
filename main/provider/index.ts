@@ -89,6 +89,7 @@ import {
   delegationCode,
   EIP7702_AUTHORIZATION_GAS,
   isAllowedBatchSender,
+  submittedApprovalTransactions,
   walletCallsAtomicStatus,
   walletCallsExecutionCalls,
   walletCallsSimulationOverrides,
@@ -1251,7 +1252,10 @@ export class Provider extends EventEmitter {
                 : accounts,
             connection: this.connection,
             ledger: walletCallBatchLedger,
-            recordSubmittedApproval: recordSubmittedTokenApproval,
+            recordSubmittedApproval: (transaction, hash) =>
+              submittedApprovalTransactions(transaction, atomic, request.calls).forEach((observed) =>
+                recordSubmittedTokenApproval(observed, hash)
+              ),
             evidenceAvailable: () => walletCallEvidenceRuntime.wake(),
             assertBeforeSign: () => {
               const request = accounts.getRequestForAccount<WalletCallsRequest>(input.account, handlerId)

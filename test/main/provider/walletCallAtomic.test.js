@@ -3,6 +3,7 @@ import { Interface, Wallet } from 'ethers'
 import {
   chooseWalletCallsAtomicMode,
   isAllowedBatchSender,
+  submittedApprovalTransactions,
   walletCallsAtomicStatus,
   walletCallsExecutionCalls,
   walletCallsSimulationOverrides,
@@ -238,5 +239,33 @@ describe('atomic ledger', () => {
       atomic: true,
       receipts: [{ type: '0x4', transactionHash: hash }]
     })
+  })
+})
+
+describe('approval observation in atomic batches', () => {
+  const account = '0x00000000000000000000000000000000000a11ce'
+  const token = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+  const spender = '0x000000000000000000000000000000000000beef'
+  const approve = new Interface(['function approve(address,uint256)']).encodeFunctionData('approve', [
+    spender,
+    1
+  ])
+  const wrapper = { from: account, to: account, chainId: '0x1', data: '0xabc5345e', value: '0x0' }
+  const calls = [
+    { to: token, data: approve, value: '0x0' },
+    { to: spender, data: '0x', value: '0x1' }
+  ]
+
+  it('observes each inner call so an approve inside the batch reaches the approvals list', () => {
+    // The wrapper's to/data is a self-call; observing only it would never decode the approve.
+    const observed = submittedApprovalTransactions(wrapper, 'delegated', calls)
+    expect(observed.map(({ from, to, data, chainId }) => ({ from, to, data, chainId }))).toEqual([
+      { from: account, to: token, data: approve, chainId: '0x1' },
+      { from: account, to: spender, data: '0x', chainId: '0x1' }
+    ])
+  })
+
+  it('observes a sequential call as signed', () => {
+    expect(submittedApprovalTransactions(wrapper, false, calls)).toEqual([wrapper])
   })
 })

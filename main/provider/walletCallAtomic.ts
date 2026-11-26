@@ -120,3 +120,16 @@ export function walletCallsUpgradeRequest(transaction: Readonly<TransactionData>
     data: transaction.data
   })
 }
+
+// Approval observation decodes one transaction's to/data. An atomic batch signs a single self-call,
+// so each inner call is observed under the wrapper's hash instead.
+export function submittedApprovalTransactions(
+  transaction: Readonly<TransactionData>,
+  atomic: WalletCallsAtomicMode,
+  calls: readonly WalletCall[]
+): Readonly<TransactionData>[] {
+  if (!atomic) return [transaction]
+  return calls.flatMap((call) =>
+    call.to ? [{ ...transaction, to: call.to, data: call.data, value: call.value }] : []
+  )
+}
