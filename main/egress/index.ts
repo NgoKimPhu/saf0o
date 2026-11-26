@@ -17,6 +17,8 @@ const staticHosts = new Set([
   'api.geckoterminal.com',
   'api.github.com',
   'coins.llama.fi',
+  // Signed Ethereum network definitions; Trezor firmware refuses EIP-7702 on a network it does not know.
+  'data.trezor.io',
   'extension.blocksec.com',
   'ipfs.io',
   'lb.drpc.org',

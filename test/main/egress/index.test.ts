@@ -53,6 +53,15 @@ test('enforce mode passes loopback, listed services and runtime RPC hosts', () =
   expect(reached).toHaveBeenCalledTimes(7)
 })
 
+// Trezor Connect fetches signed network definitions from data.trezor.io for chains other than 1.
+// Without them the firmware refuses an EIP-7702 delegation on a chain it lacks built in (Gnosis).
+test('enforce mode passes the Trezor network definitions host', () => {
+  installNodeGuard('enforce')
+  new net.Socket().connect({ host: 'data.trezor.io', port: 443 })
+
+  expect(reached).toHaveBeenCalledTimes(1)
+})
+
 // The guard must block without any setup; log-only is an explicit opt-out.
 test('enforce is the default mode', () => {
   const env = process.env['SAF0O_EGRESS']
