@@ -60,13 +60,15 @@ export function assertSoftwareEip7702RevokeSigner(
   index: number,
   authority: string
 ) {
-  if (signer.type !== 'ring' && signer.type !== 'seed') {
-    throw new Error('EIP-7702 revocation requires a Ring or Seed signer')
+  // Trezor signs the same revoke tx on the device (firmware 2.12.5+); its ready status is 'ready'.
+  const trezor = signer.type === 'trezor'
+  if (signer.type !== 'ring' && signer.type !== 'seed' && !trezor) {
+    throw new Error('EIP-7702 revocation requires a Ring, Seed or Trezor signer')
   }
   if (typeof signer.signEip7702Revoke !== 'function') {
     throw new Error('Software signer cannot sign EIP-7702 revocation')
   }
-  if (signer.status !== 'ok') throw new Error('Software signer must be unlocked')
+  if (signer.status !== (trezor ? 'ready' : 'ok')) throw new Error('Software signer must be unlocked')
   if (!Number.isSafeInteger(index) || index < 0 || !Array.isArray(signer.addresses)) {
     throw new Error('Invalid software signer address index')
   }

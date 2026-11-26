@@ -66,8 +66,20 @@ describe('software EIP-7702 revocation', () => {
     expect(request.expectedFinalNonce).toBe('0x5')
   })
 
+  // Trezor firmware signs the revoke shape on the device; it reports ready as 'ready', not 'ok'.
+  it('prepares the fixed request for a ready Trezor', () => {
+    const request = prepareSoftwareEip7702Revoke(
+      createSigner({ type: 'trezor', status: 'ready' }),
+      0,
+      input,
+      preflight
+    )
+    expect(request.delegate).toBe('0x0000000000000000000000000000000000000000')
+  })
+
   it.each([
     ['hardware signer', { type: 'ledger' }],
+    ['Trezor that is not ready', { type: 'trezor', status: 'locked' }],
     ['locked signer', { status: 'locked' }],
     ['wrong address', { addresses: ['0x1111111111111111111111111111111111111111'] }]
   ])('rejects a %s', (_label, overrides) => {

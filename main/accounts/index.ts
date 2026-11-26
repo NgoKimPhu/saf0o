@@ -860,7 +860,7 @@ export class Accounts extends EventEmitter {
     const signer = account.getSigner() as (Signer & Partial<SoftwareEip7702RevokeSigner>) | undefined
     if (
       !signer ||
-      (signer.type !== 'ring' && signer.type !== 'seed') ||
+      (signer.type !== 'ring' && signer.type !== 'seed' && signer.type !== 'trezor') ||
       !isSignerReady(signer) ||
       typeof signer.signEip7702Revoke !== 'function'
     ) {
@@ -918,7 +918,7 @@ export class Accounts extends EventEmitter {
     if (!signerMatch) {
       throw new Eip7702EligibilityError(
         'unsupported-signer',
-        'EIP-7702 revocation requires an unlocked Ring or Seed signer'
+        'EIP-7702 revocation requires an unlocked Ring, Seed or Trezor signer'
       )
     }
     if (!this.eip7702ChainConnected(chainId)) {
@@ -958,7 +958,7 @@ export class Accounts extends EventEmitter {
     if (!signerMatch) {
       throw new Eip7702EligibilityError(
         'unsupported-signer',
-        'EIP-7702 revocation requires an unlocked Ring or Seed signer'
+        'EIP-7702 revocation requires an unlocked Ring, Seed or Trezor signer'
       )
     }
     if (!this.eip7702ChainConnected(chainId)) {
@@ -1138,7 +1138,7 @@ export class Accounts extends EventEmitter {
     if (request.status !== undefined || request.locked)
       throw new Error('Request is already pending or complete')
     if (!this.eip7702Signer(account)) {
-      throw new Error('EIP-7702 revocation requires an unlocked Ring or Seed signer')
+      throw new Error('EIP-7702 revocation requires an unlocked Ring, Seed or Trezor signer')
     }
 
     request.locked = true
@@ -1188,7 +1188,7 @@ export class Accounts extends EventEmitter {
     const chainId = Number(BigInt(request.chainId))
     if (!this.eip7702ChainConnected(chainId)) throw new Error(`Chain ${chainId} is disconnected`)
     const signerMatch = this.eip7702Signer(account)
-    if (!signerMatch) throw new Error('EIP-7702 revocation requires an unlocked Ring or Seed signer')
+    if (!signerMatch) throw new Error('EIP-7702 revocation requires an unlocked Ring, Seed or Trezor signer')
 
     const { preflight, evidence } = await this.eip7702Preflight(account, chainId)
     if (!this.activeEip7702Operation(account, request, operationVersion)) return

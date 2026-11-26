@@ -7,7 +7,7 @@ import { AmbireKeys } from './AmbireKeys'
 
 const COPY = {
   available: 'Check account delegation on a network.',
-  hardware: 'Revocation requires selecting a software wallet account.',
+  hardware: 'Revocation requires a Ring, Seed or Trezor account.',
   none: 'No delegation or contract code found.',
   contract: 'Contract account. Revocation is unavailable.',
   empty: 'No accounts are available to observe.',
@@ -15,12 +15,13 @@ const COPY = {
   admissionFailed: 'Couldn’t prepare the revocation request. No request was sent.'
 }
 
-const softwareSignerTypes = new Set(['ring', 'seed'])
+// Signers that can sign an EIP-7702 delegation transaction (Trezor on firmware 2.12.5+).
+const delegationSignerTypes = new Set(['ring', 'seed', 'trezor'])
 
-export const isSoftwareAccount = (account, signers = {}) => {
-  const signerType = account?.signer ? signers[account.signer]?.type : undefined
-  return softwareSignerTypes.has(signerType || account?.lastSignerType)
-}
+const signerTypeOf = (account, signers = {}) =>
+  (account?.signer ? signers[account.signer]?.type : undefined) || account?.lastSignerType
+
+export const signsDelegation = (account, signers) => delegationSignerTypes.has(signerTypeOf(account, signers))
 
 export const connectedNetworks = (networks = {}) =>
   Object.entries(networks)
@@ -128,7 +129,7 @@ export class DelegationRevocation extends React.Component {
       const checksRevocation =
         result.status === 'delegated' &&
         account === this.props.currentAccount &&
-        isSoftwareAccount(selected, this.props.signers)
+        signsDelegation(selected, this.props.signers)
 
       this.setState({
         checking: checksRevocation,

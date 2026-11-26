@@ -5,7 +5,7 @@ import {
   connectedNetworks,
   DelegationRevocation,
   delegationRevocationCopy,
-  isSoftwareAccount
+  signsDelegation
 } from '../../../../app/dash/Accounts/DelegationRevocation'
 import link from '../../../../resources/link'
 
@@ -37,9 +37,11 @@ beforeEach(() => {
   link.send.mockReset()
 })
 
-it('recognizes only local software accounts and connected enabled networks', () => {
-  expect(isSoftwareAccount(accounts[account], { [signer.id]: signer })).toBe(true)
-  expect(isSoftwareAccount({ ...accounts[account], lastSignerType: 'ledger', signer: undefined })).toBe(false)
+// Trezor firmware 2.12.5+ signs the revoke tx, so Trezor accounts get the revoke action too.
+it('recognizes accounts whose signer can sign a delegation, and connected enabled networks', () => {
+  expect(signsDelegation(accounts[account], { [signer.id]: signer })).toBe(true)
+  expect(signsDelegation({ ...accounts[account], lastSignerType: 'trezor', signer: undefined })).toBe(true)
+  expect(signsDelegation({ ...accounts[account], lastSignerType: 'ledger', signer: undefined })).toBe(false)
   expect(connectedNetworks(networks)).toEqual([{ id: 1, name: 'Ethereum' }])
 })
 

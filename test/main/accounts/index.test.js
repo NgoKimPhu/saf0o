@@ -4366,6 +4366,23 @@ describe('wallet-owned EIP-7702 revocation', () => {
     signers.get.mockReset()
   })
 
+  // Trezor firmware 2.12.5+ signs the revoke tx, so a ready Trezor is eligible. It must still not
+  // count as a software signer: wallet_sendCalls would then offer a combined upgrade+batch tx,
+  // which the firmware cannot sign.
+  it('admits a ready Trezor for revocation without treating it as a software signer', async () => {
+    signer.type = 'trezor'
+    signer.status = 'ready'
+    Accounts.current().lastSignerType = 'trezor'
+    try {
+      await expect(Accounts.getEip7702RevocationEligibility(authority, 1)).resolves.toMatchObject({
+        status: 'eligible'
+      })
+      expect(Accounts.hasSoftwareSigner(authority)).toBe(false)
+    } finally {
+      signer.status = 'ok'
+    }
+  })
+
   it('exposes bounded eligibility and admits one safe FIFO request', async () => {
     await expect(Accounts.getEip7702RevocationEligibility(authority, 1)).resolves.toMatchObject({
       status: 'eligible',
@@ -4495,7 +4512,7 @@ describe('wallet-owned EIP-7702 revocation', () => {
     const admission = Accounts.requestEip7702Revocation(authority, 1)
     signer.status = 'locked'
     releaseCode()
-    await expect(admission).rejects.toThrow(/unlocked Ring or Seed signer/)
+    await expect(admission).rejects.toThrow(/unlocked Ring, Seed or Trezor signer/)
     signer.status = 'ok'
     expect(Object.values(Accounts.current().requests)).not.toEqual(
       expect.arrayContaining([expect.objectContaining({ type: 'eip7702Revoke' })])
