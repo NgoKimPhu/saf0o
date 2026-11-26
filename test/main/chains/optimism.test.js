@@ -1,4 +1,4 @@
-import { AbiCoder } from 'ethers'
+import { AbiCoder, Transaction } from 'ethers'
 
 import { createRpcProvider, estimateL1GasCost, GAS_PRICE_ORACLE_ADDRESS } from '../../../main/chains/optimism'
 
@@ -166,5 +166,46 @@ describe('OP Stack L1 fee estimation', () => {
     provider.call.mockRejectedValue(new Error('oracle unavailable'))
 
     await expect(estimateL1GasCost(provider, { chainId: 10, type: 2 })).rejects.toThrow('oracle unavailable')
+  })
+})
+
+describe('EIP-7702 upgrade pricing', () => {
+  const tx = {
+    chainId: 10,
+    type: 2,
+    nonce: 4,
+    to: '0x1111111111111111111111111111111111111111',
+    gasLimit: 100000,
+    maxFeePerGas: 3000000,
+    maxPriorityFeePerGas: 1000000,
+    value: 0,
+    data: '0xabc5345e'
+  }
+  const delegate = '0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d'
+  const pricedBytes = async (request) => {
+    const provider = createProvider()
+    await estimateL1GasCost(provider, request)
+    const [encoded] = provider.call.mock.calls[0]
+    return AbiCoder.defaultAbiCoder().decode(['bytes'], '0x' + encoded.data.slice(10))[0]
+  }
+
+  it('prices the upgrade as the type-4 transaction it signs, authorization included', async () => {
+    // A type-2 shape omits the authorization tuple, so the OP-stack L1 fee came out low.
+    const plain = await pricedBytes(tx)
+    const upgrade = await pricedBytes({ ...tx, authorizationDelegate: delegate })
+    const parsed = Transaction.from(upgrade)
+
+    expect(parsed.type).toBe(4)
+    expect(parsed.authorizationList).toHaveLength(1)
+    expect(parsed.authorizationList[0].address).toBe(delegate)
+    expect(parsed.authorizationList[0].nonce).toBe(5n)
+    expect(parsed.authorizationList[0].chainId).toBe(10n)
+    expect((upgrade.length - plain.length) / 2).toBeGreaterThanOrEqual(85)
+  })
+
+  it('refuses an authorization on a non-1559 fee shape', async () => {
+    await expect(
+      estimateL1GasCost(createProvider(), { ...tx, type: 0, gasPrice: 1, authorizationDelegate: delegate })
+    ).rejects.toThrow('type-2 fee shape')
   })
 })

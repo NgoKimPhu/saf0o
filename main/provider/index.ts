@@ -1479,7 +1479,11 @@ export class Provider extends EventEmitter {
     )
   }
 
-  private async walletCallsL1Fees(chainId: number, transactions: readonly TransactionData[]) {
+  private async walletCallsL1Fees(
+    chainId: number,
+    transactions: readonly TransactionData[],
+    atomic: WalletCallsAtomicMode = false
+  ) {
     if (!chainUsesOptimismFees(chainId)) return transactions.map(() => '0x0')
 
     const connection = this.connection.connections['ethereum'][chainId]
@@ -1492,6 +1496,9 @@ export class Provider extends EventEmitter {
       )
     }
 
+    const authorizationDelegate = atomic === 'upgrade' ? batchDelegate(BigInt(chainId))?.address : undefined
+    if (atomic === 'upgrade' && !authorizationDelegate) throw new Error('No batch delegate on this chain')
+
     try {
       const rpcProvider = createRpcProvider(connectedProvider)
       return await Promise.all(
@@ -1500,7 +1507,8 @@ export class Provider extends EventEmitter {
             await estimateL1GasCost(rpcProvider, {
               ...transaction,
               type: parseInt(type, 16),
-              chainId
+              chainId,
+              ...(authorizationDelegate ? { authorizationDelegate } : {})
             })
           )
         )
@@ -1695,7 +1703,7 @@ export class Provider extends EventEmitter {
     const stateOverrides = walletCallsSimulationOverrides(request)
     const [available, l1Fees, simulation] = await Promise.all([
       this.walletCallsRpcQuantity(chainId, 'eth_getBalance', request.account),
-      this.walletCallsL1Fees(chainId, transactions),
+      this.walletCallsL1Fees(chainId, transactions, request.atomic),
       simulateWalletCalls(
         request.atomic
           ? request.calls.map((call) => ({ ...call, chainId: request.chainId, from: request.account }))

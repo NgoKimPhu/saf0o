@@ -1,4 +1,4 @@
-import { Interface, Transaction, getNumber } from 'ethers'
+import { Interface, Signature, Transaction, getNumber } from 'ethers'
 
 import type { AccessListish, BigNumberish, TransactionLike } from 'ethers'
 
@@ -24,7 +24,16 @@ export interface OptimismTransactionRequest {
   accessList?: AccessListish
   maxFeePerGas?: BigNumberish
   maxPriorityFeePerGas?: BigNumberish
+  // EIP-7702: price the transaction as type 4 carrying one authorization to this delegate.
+  authorizationDelegate?: string
 }
+
+// Incompressible stand-in for the authorization signature, so FastLZ in getL1Fee doesn't undercount it.
+const AUTHORIZATION_SIGNATURE_PLACEHOLDER = Signature.from({
+  r: '0x9c1d3a7e5b2f48c6a0e1d7b3f5c9a2e4d6b8f0a1c3e5d7b9f2a4c6e8d0b1f3a5',
+  s: '0x3e7a1c5d9b2f4e6a8c0d2b4f6e8a1c3d5b7f9e2a4c6d8b0f1e3a5c7d9b2e4f6a',
+  yParity: 1
+})
 
 export interface CallbackProvider {
   sendAsync: (
@@ -67,11 +76,12 @@ export async function estimateL1GasCost(
   if (type !== 0 && type !== 1 && type !== 2) {
     throw new Error(`Unsupported OP Stack transaction type: ${type}`)
   }
-
-  const transaction: TransactionLike = {
-    nonce: await getNonce(provider, tx),
-    type
+  if (tx.authorizationDelegate !== undefined && type !== 2) {
+    throw new Error('An EIP-7702 authorization needs a type-2 fee shape')
   }
+
+  const nonce = await getNonce(provider, tx)
+  const transaction: TransactionLike = { nonce, type }
 
   if (tx.to != null) transaction.to = tx.to
   if (tx.gasLimit !== undefined) transaction.gasLimit = tx.gasLimit
@@ -86,6 +96,18 @@ export async function estimateL1GasCost(
     if (tx.maxPriorityFeePerGas !== undefined) {
       transaction.maxPriorityFeePerGas = tx.maxPriorityFeePerGas
     }
+  }
+
+  if (tx.authorizationDelegate !== undefined) {
+    transaction.type = 4
+    transaction.authorizationList = [
+      {
+        address: tx.authorizationDelegate,
+        nonce: BigInt(nonce) + 1n,
+        chainId: BigInt(tx.chainId ?? 0),
+        signature: AUTHORIZATION_SIGNATURE_PLACEHOLDER
+      }
+    ]
   }
 
   const serialized = Transaction.from(transaction).unsignedSerialized
