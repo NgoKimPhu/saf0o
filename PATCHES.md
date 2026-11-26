@@ -550,3 +550,27 @@ after the managed-origin checks; it exempts only `originIdForName(SAF0O_INTERNAL
 `pendingUpgradeOrigins`. The wallet-call boundary fixture in `test/main/provider/index.test.js` targets `0x5555…`, not the account.
 
 Upstream-PR candidate: no.
+
+## 32. EIP-7702 on Trezor
+
+Commits: `saf0o: sign EIP-7702 delegations with Trezor`, `saf0o: allow Trezor network definitions host`, `saf0o: revoke
+EIP-7702 delegation from a Trezor account`, `saf0o: upgrade a Trezor account to Ambire from the dash`.
+
+Intent: Trezor firmware 2.12.5+ signs a self-sent type-4 tx with empty data, zero value and one authorization. The Trezor
+signer gains `signEip7702Revoke` and `signEip7702Authorization` and re-inspects the returned tx. The revoke flow accepts a
+ready Trezor. The dash offers Upgrade to smart account for a codeless Trezor account on chains where the firmware whitelists
+Ambire (1, 100, 8453, 42161); the request reuses the `eip7702Revoke` flow with a `delegate` field. `hasSoftwareSigner` stays
+Ring/Seed only, so `wallet_sendCalls` keeps codeless Trezor accounts unsupported. The egress guard allows `data.trezor.io`
+so Connect can fetch signed network definitions (Gnosis is not built in). Privacy cost: Connect also fetches `token-<to>.dat`
+for every Trezor transaction with data. Drop that commit to keep destinations private; Gnosis then fails.
+
+Files: `main/signers/trezor/{eip7702,bridge}.ts`, `main/signers/trezor/Trezor/index.ts`, `main/eip7702/{upgrade,revoke,delegates}.ts`,
+`main/accounts/{index,types}.ts`, `main/egress/index.ts`, `main/rpc/index.js`, `main/ipc/rpcSchemas.ts`,
+`main/operationLifecycle/{projection,reconciler}.ts`, `main/activity/index.ts`, `main/store/state/types/{activity,operationLifecycle}.ts`,
+`resources/bridge/roles.ts`, `app/dash/Accounts/DelegationRevocation.js`, `app/tray/Account/{Account.js,Activity/index.js,Requests/index.js,Requests/Eip7702RevokeRequest/index.js}`,
+`app/tray/Footer/index.js`, and their tests.
+
+Rebase notes: `getEip7702UpgradeEligibility` and `requestEip7702Upgrade` sit in the `ambireKeyRpcMethods` set (dash only).
+The Trezor Ambire chain list sits next to the delegate allowlist in `main/eip7702/delegates.ts`.
+
+Upstream-PR candidate: the Trezor revoke, yes; the rest depends on the batching patches.
