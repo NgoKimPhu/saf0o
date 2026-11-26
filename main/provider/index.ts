@@ -67,6 +67,7 @@ import Erc20Contract from '../contracts/erc20'
 import { reconcileErc1046TokenData, resolveErc1046Metadata } from './erc1046'
 import { getOriginAccess, hasOriginCapability, requestOriginAccess } from '../api/origins'
 import {
+  assertNoSelfCalls,
   parseCallsStatus,
   parseGetCapabilities,
   parseSendCalls,
@@ -1320,6 +1321,7 @@ export class Provider extends EventEmitter {
       if (request.from && request.from !== currentAccount.id.toLowerCase()) {
         throw { code: 4100, message: 'Wallet-call sender is not the selected account' }
       }
+      assertNoSelfCalls(request.calls, currentAccount.id)
 
       const chainId = Number(BigInt(request.chainId))
       if (!hasOriginCapability(payload, { method: payload.method, chainId: request.chainId })) {

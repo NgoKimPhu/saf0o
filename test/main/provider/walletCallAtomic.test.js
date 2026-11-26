@@ -142,6 +142,13 @@ describe('atomic execution shape', () => {
     expect(walletCallsExecutionCalls({ atomic: false, account, calls })).toEqual(calls)
   })
 
+  it('refuses to encode an inner call to the account itself, which would run as the account', () => {
+    const calls = [{ to: account, data: '0xabcd', value: '0x0' }]
+    expect(() => walletCallsExecutionCalls({ atomic: 'delegated', account, calls })).toThrow(
+      expect.objectContaining({ code: -32602 })
+    )
+  })
+
   it('simulates an upgrade with the delegation indicator as the account code', () => {
     expect(walletCallsSimulationOverrides({ atomic: 'upgrade', account, chainId: '0x1' })).toEqual({
       [account]: { code: indicator }

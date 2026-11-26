@@ -168,6 +168,14 @@ export function parseSendCalls(params: unknown): SendCallsRequest {
   }
 }
 
+// A call to the sending account runs with msg.sender == the account. On an Ambire delegation that call
+// can grant a new key full control, and nested self-calls hide calls from review.
+export function assertNoSelfCalls(calls: readonly Pick<WalletCall, 'to'>[], account: string) {
+  if (calls.some((call) => call.to?.toLowerCase() === account.toLowerCase())) {
+    throw invalidParams('a call must not target the sending account, because it could change who controls it')
+  }
+}
+
 export function parseCallsStatus(params: unknown) {
   const [id] = parseSchema(batchIdParamsSchema, params)
   assertBoundedId(id)

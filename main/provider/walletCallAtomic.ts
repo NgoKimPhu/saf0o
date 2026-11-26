@@ -7,7 +7,12 @@ import {
   encodeExecuteBySender,
   matchesDelegateCode
 } from '../eip7702'
-import { MAX_WALLET_CALL_DATA_BYTES, type SendCallsRequest, type WalletCall } from './walletCalls'
+import {
+  assertNoSelfCalls,
+  MAX_WALLET_CALL_DATA_BYTES,
+  type SendCallsRequest,
+  type WalletCall
+} from './walletCalls'
 
 // EIP-5792 atomic status. supported: already delegated to an allowlisted batch delegate.
 // ready: no code and a software signer, so saf0o can upgrade it after user consent.
@@ -91,6 +96,7 @@ export function walletCallsExecutionCalls(
   request: Readonly<{ atomic?: WalletCallsAtomicMode; account: string; calls: readonly WalletCall[] }>
 ): WalletCall[] {
   if (!request.atomic) return request.calls.map((call) => ({ ...call }))
+  assertNoSelfCalls(request.calls, request.account)
   return [{ to: request.account.toLowerCase(), data: executeBySenderData(request.calls), value: '0x0' }]
 }
 

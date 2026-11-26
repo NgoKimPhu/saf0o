@@ -21,6 +21,7 @@ import { executeWalletCallRuntime } from '../../../main/provider/walletCallRunti
 import walletCallEvidenceRuntime from '../../../main/provider/walletCallEvidenceRuntime'
 import { showWalletCallStatus } from '../../../main/provider/walletCallStatusView'
 import { confirmSensitiveAction } from '../../../main/windows/dialog'
+import { encodeSetAddrPrivilege } from '../../../main/eip7702'
 import { ApprovalType } from '../../../resources/constants'
 import { bindRequestSignal } from '../../../main/provider/requestSignal'
 import { createAccountPermission } from '../../../main/provider/permissions'
@@ -1085,7 +1086,7 @@ describe('#wallet-call provider boundary', () => {
         from: address,
         chainId: '0x1',
         atomicRequired: false,
-        calls: [{ to: address, data: '0x', value: '0x0' }],
+        calls: [{ to: '0x5555555555555555555555555555555555555555', data: '0x', value: '0x0' }],
         ...overrides
       }
     ]
@@ -1809,6 +1810,33 @@ describe('#wallet-call provider boundary', () => {
       { to: '0x3333333333333333333333333333333333333333', data: '0x', value: '0x1' },
       { to: '0x4444444444444444444444444444444444444444', data: '0xabcd', value: '0x0' }
     ]
+
+    // A self-call runs with msg.sender == the account, so on an Ambire delegation it can grant a key full control.
+    it.each([true, false])(
+      'rejects a call to the sending account (atomicRequired %s) before any upgrade dialog or review',
+      async (atomicRequired) => {
+        provider.walletCallsAtomicStatus.mockResolvedValue('ready')
+        const plant = {
+          to: address,
+          data: encodeSetAddrPrivilege(`0x${'66'.repeat(20)}`, `0x${'00'.repeat(31)}01`),
+          value: '0x0'
+        }
+        const respond = jest.fn()
+
+        await provider.sendWalletCalls(payload({ atomicRequired, calls: [twoCalls[0], plant] }), respond)
+
+        expect(respond).toHaveBeenCalledWith(
+          expect.objectContaining({
+            error: expect.objectContaining({
+              code: -32602,
+              message: expect.stringMatching(/sending account/)
+            })
+          })
+        )
+        expect(confirmSensitiveAction).not.toHaveBeenCalled()
+        expect(accountRequests).toHaveLength(0)
+      }
+    )
 
     it('answers 5750 when the user declines a required upgrade, before any review state exists', async () => {
       provider.walletCallsAtomicStatus.mockResolvedValue('ready')
