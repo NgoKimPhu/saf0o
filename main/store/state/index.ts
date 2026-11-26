@@ -241,6 +241,7 @@ const mainState = {
   contractVerificationJobs: main('contractVerificationJobs', []),
   outboundAddressMemory: pruneOutboundAddressMemory(main('outboundAddressMemory', {})),
   recentRecipientUses: pruneRecentRecipientUses(main('recentRecipientUses', [])),
+  ambireKeys: main('ambireKeys', {}),
   observedTokenApprovals: pruneObservedTokenApprovals(main('observedTokenApprovals', [])).filter((entry) =>
     Object.keys(pendingRemovalState.accounts).some((account) => account.toLowerCase() === entry.account)
   ),

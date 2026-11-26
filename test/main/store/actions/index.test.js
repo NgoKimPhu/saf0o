@@ -2238,3 +2238,18 @@ describe('#blockApp', () => {
     expect(blocked[owner]).toEqual({ 'origin-b': { origin: 'b.test' } })
   })
 })
+
+// The key list and revoke gate read these keys, so each added key is stored once per account and chain.
+describe('Ambire account keys', () => {
+  it('remembers a key once under its account and chain', () => {
+    const key = '0x2222222222222222222222222222222222222222'
+    let keys
+    const update = (...args) => {
+      expect(args.slice(0, 3)).toEqual(['main.ambireKeys', '0xaccount', '10'])
+      keys = args[3](keys)
+    }
+    storeActions.rememberAmbireKey(update, '0xaccount', 10, key)
+    storeActions.rememberAmbireKey(update, '0xaccount', 10, key)
+    expect(keys).toEqual([key])
+  })
+})

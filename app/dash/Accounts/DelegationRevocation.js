@@ -3,6 +3,7 @@ import React from 'react'
 import link from '../../../resources/link'
 import { getAddress } from '../../../resources/utils'
 import { isNetworkConnected } from '../../../resources/utils/chains'
+import { AmbireKeys } from './AmbireKeys'
 
 const COPY = {
   available: 'Check account delegation on a network.',
@@ -290,6 +291,13 @@ export class DelegationRevocation extends React.Component {
                     : COPY.unavailable}
               </p>
             )}
+            {execution?.status === 'delegated' && !message && account === this.props.currentAccount ? (
+              <AmbireKeys
+                key={`${account}:${chainId}:${delegate}`}
+                account={account}
+                chainId={Number(chainId)}
+              />
+            ) : null}
           </>
         )}
       </section>

@@ -191,7 +191,30 @@ const ActionIdSchema = z
   ])
   .nullable()
 
+// Ambire account keys (EIP-7702)
+const Bytes32Schema = z.string().regex(/^0x[0-9a-fA-F]{64}$/)
+const ambireKeyRpcSchemas = {
+  getAmbireKeys: {
+    request: z.tuple([AddressSchema, ChainIdSchema]),
+    response: result(
+      z
+        .object({
+          account: AddressSchema,
+          chainId: ChainIdSchema,
+          supported: z.boolean(),
+          keys: z.array(z.object({ address: AddressSchema, privilege: Bytes32Schema }).strict()).max(256)
+        })
+        .strict()
+    )
+  },
+  requestAmbireKeyChange: {
+    request: z.tuple([AddressSchema, ChainIdSchema, AddressSchema, z.boolean()]),
+    response: result(TransactionRequestReferenceSchema)
+  }
+}
+
 const rpcSchemas = {
+  ...ambireKeyRpcSchemas,
   getTokenApprovals: {
     request: z.tuple([AddressSchema]),
     response: result(z.array(TokenApprovalViewSchema).max(MAX_OBSERVED_TOKEN_APPROVALS))

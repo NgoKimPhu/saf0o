@@ -2,7 +2,8 @@ const fs = require('fs')
 const log = require('electron-log')
 const { randomBytes } = require('crypto')
 import { isAddress } from 'ethers'
-import { openFileDialog } from '../windows/dialog'
+import { confirmSensitiveAction, openFileDialog } from '../windows/dialog'
+import { AmbireKeys } from '../eip7702/keys'
 import { routeWalletCallRequest } from './walletCalls'
 import { applyRequestUpdate } from './updateRequest'
 import { enforceRequestOriginAuthorization } from './requestAuthorization'
@@ -70,8 +71,7 @@ const revokeNativeAccess = (fingerprint) => {
 }
 
 let approvalRpcId = 0
-const approvalRevocations = new TokenApprovalRevocations({
-  service: tokenApprovals,
+const internalTransactions = {
   canReview: (account) => {
     const current = accounts.current()
     return (
@@ -122,6 +122,28 @@ const approvalRevocations = new TokenApprovalRevocations({
         }
       )
     })
+}
+const approvalRevocations = new TokenApprovalRevocations({ service: tokenApprovals, ...internalTransactions })
+
+let ambireKeyRpcId = 0
+const ambireKeys = new AmbireKeys({
+  rpc: (chainId, method, params) =>
+    new Promise((resolve, reject) => {
+      const id = ++ambireKeyRpcId
+      provider.connection.send(
+        { id, jsonrpc: '2.0', method, params },
+        (response) => {
+          if (response?.error || !Object.prototype.hasOwnProperty.call(response || {}, 'result')) {
+            reject(new Error(`Configured RPC ${method} failed`))
+          } else resolve(response.result)
+        },
+        { type: 'ethereum', id: chainId }
+      )
+    }),
+  known: (account, chainId) => store('main.ambireKeys', account, String(chainId)) || [],
+  remember: (account, chainId, key) => requireStoreAction('rememberAmbireKey')(account, chainId, key),
+  confirm: confirmSensitiveAction,
+  ...internalTransactions
 })
 
 const rpc = {
@@ -173,6 +195,19 @@ const rpc = {
   },
   stopEip7702RevocationMonitoring(req, cb) {
     callbackWhenDone(() => accounts.stopEip7702RevocationMonitoring(req.account, req.handlerId), cb)
+  },
+  // Ambire account keys (EIP-7702)
+  getAmbireKeys(account, chainId, cb) {
+    ambireKeys.list(account, chainId).then(
+      (keys) => cb(null, keys),
+      (error) => cb(error)
+    )
+  },
+  requestAmbireKeyChange(account, chainId, key, add, cb) {
+    ambireKeys.change(account, chainId, key, add).then(
+      (reference) => cb(null, reference),
+      (error) => cb(error)
+    )
   },
   getFrameId(window, cb) {
     if (window.frameId) {

@@ -470,3 +470,29 @@ test.each([
   expect(parseRendererRpcRequest(wire(1, method, ...args, 'x'.repeat(257))).success).toBe(false)
   expect(parseRendererRpcRequest(wire(1, method, ...args, 123)).success).toBe(false)
 })
+
+// A renderer may only name the account, chain, key and direction; main builds the calldata.
+test('bounds Ambire key requests to an address and an explicit add or remove', () => {
+  const account = `0x${'1'.repeat(40)}`
+  const key = `0x${'2'.repeat(40)}`
+  expect(parseRendererRpcRequest(wire(1, 'requestAmbireKeyChange', account, 1, key, true))).toMatchObject({
+    success: true,
+    data: { args: [account, 1, key, true] }
+  })
+  expect(parseRendererRpcRequest(wire(1, 'requestAmbireKeyChange', account, 1, key, 'yes')).success).toBe(
+    false
+  )
+  expect(parseRendererRpcRequest(wire(1, 'requestAmbireKeyChange', account, 1, '0x12', true)).success).toBe(
+    false
+  )
+  expect(
+    parseRendererRpcRequest(wire(1, 'requestAmbireKeyChange', account, 1, key, true, `0x${'0'.repeat(64)}`))
+      .success
+  ).toBe(false)
+  expect(
+    parseRendererRpcResponse('getAmbireKeys', [
+      null,
+      { account, chainId: 1, supported: true, keys: [{ address: key, privilege: `0x${'0'.repeat(63)}1` }] }
+    ]).success
+  ).toBe(true)
+})

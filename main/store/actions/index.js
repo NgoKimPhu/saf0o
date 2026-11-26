@@ -358,6 +358,11 @@ module.exports = {
   clearRecentRecipients: (u) => {
     u('main.recentRecipientUses', () => [])
   },
+  rememberAmbireKey: (u, account, chainId, key) => {
+    u('main.ambireKeys', account, String(chainId), (keys = []) =>
+      keys.includes(key) ? keys : [...keys, key]
+    )
+  },
   setObservedTokenApprovals: (u, entries) => {
     u('main.observedTokenApprovals', () => pruneObservedTokenApprovals(entries))
   },

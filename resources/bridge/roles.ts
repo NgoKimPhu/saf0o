@@ -69,6 +69,9 @@ const dashboardOnlyRpcMethods = new Set([
   'discardGeneratedWallet'
 ])
 
+// Ambire account keys (EIP-7702): managed from the dash Accounts view only.
+const ambireKeyRpcMethods = new Set(['getAmbireKeys', 'requestAmbireKeyChange'])
+
 export const isRendererRole = (value: unknown): value is RendererRole =>
   typeof value === 'string' && rendererRoles.includes(value as RendererRole)
 
@@ -109,6 +112,9 @@ export const hasRendererCapability = (
     return rendererRole === 'dash'
   }
   if (method === 'rpc' && typeof channel === 'string' && dashboardOnlyRpcMethods.has(channel)) {
+    return rendererRole === 'dash'
+  }
+  if (method === 'rpc' && typeof channel === 'string' && ambireKeyRpcMethods.has(channel)) {
     return rendererRole === 'dash'
   }
   if (rendererRole === 'dash' || rendererRole === 'tray') return true

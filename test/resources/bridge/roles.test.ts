@@ -56,6 +56,15 @@ test('limits generated-wallet secret lifecycle RPCs to the dashboard role', () =
   }
 })
 
+// Key changes give an address full control of the account, so only the dash Accounts view may ask.
+test('limits Ambire account key management to the dashboard role', () => {
+  for (const method of ['getAmbireKeys', 'requestAmbireKeyChange']) {
+    expect(hasRendererCapability('dash', 'rpc', [method])).toBe(true)
+    expect(hasRendererCapability('tray', 'rpc', [method])).toBe(false)
+    expect(hasRendererCapability('dapp', 'rpc', [method])).toBe(false)
+  }
+})
+
 test('limits signer removal to the dashboard role', () => {
   expect(hasRendererCapability('dash', 'rpc', ['removeSigner'])).toBe(true)
   expect(hasRendererCapability('tray', 'rpc', ['removeSigner'])).toBe(false)

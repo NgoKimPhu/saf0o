@@ -2758,6 +2758,14 @@ const rpcReplyFor = (scenario, method) => {
       codeHash: QUALIFICATION_CODE_HASH
     }
   }
+  if (scenario.state === 'delegation' && method === 'getAmbireKeys') {
+    return {
+      account: QUALIFICATION_ACCOUNT,
+      chainId: 10,
+      supported: true,
+      keys: [{ address: QUALIFICATION_DELEGATE, privilege: `0x${'0'.repeat(63)}1` }]
+    }
+  }
   if (scenario.state === 'delegation' && method === 'getEip7702RevocationEligibility') {
     return {
       status: 'eligible',
