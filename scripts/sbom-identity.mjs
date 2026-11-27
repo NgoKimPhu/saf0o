@@ -3,7 +3,8 @@ import { createHash } from 'node:crypto'
 export function releaseSbomSerial({ name, version, sourceCommit, packageLock }) {
   const serialBytes = createHash('sha256')
     .update(`${name}\0${version}\0${sourceCommit}\0`)
-    .update(JSON.stringify(packageLock))
+    // A Windows checkout has a CRLF lockfile; every platform must hash the same text.
+    .update(JSON.stringify(packageLock.replace(/\r\n/g, '\n')))
     .digest()
     .subarray(0, 16)
   serialBytes[6] = (serialBytes[6] & 0x0f) | 0x50

@@ -729,8 +729,11 @@ Parcel main bundle itself, so a bundler-only bug still passes.
 
 The Windows job also exposed that `parsePnpmLock` split on `\n` only. Windows CI checks the lockfile out with CRLF, so every
 locked version read `undefined`. It now splits on `\r?\n`.
+The release job then failed the same way: `releaseSbomSerial` hashed the raw lockfile text, so the Windows SBOM serial
+differed from the Linux one. It now hashes the text with CRLF normalized to LF.
 
-Files: `scripts/package-runtime-smoke-bundled.cjs` (new), `scripts/package-verification.mjs`, `scripts/pnpm-lock.mjs`.
+Files: `scripts/package-runtime-smoke-bundled.cjs` (new), `scripts/package-verification.mjs`, `scripts/pnpm-lock.mjs`,
+`scripts/sbom-identity.mjs`.
 Guarded by `test/scripts/package-verification.test.mjs` and `test/scripts/pnpm-lock.test.mjs`.
 
 Upstream-PR candidate: no.

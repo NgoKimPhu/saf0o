@@ -9,6 +9,7 @@ import {
   productionGraph,
   readPnpmLock
 } from '../../scripts/pnpm-lock.mjs'
+import { releaseSbomSerial } from '../../scripts/sbom-identity.mjs'
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'))
 const lock = readPnpmLock('.')
@@ -54,4 +55,12 @@ test('a CRLF lockfile parses like the LF one', () => {
     lockedVersion(crlf, 'usb', '@trezor/transport'),
     lockedVersion(lock, 'usb', '@trezor/transport')
   )
+})
+
+// The release job requires byte-identical SBOMs from every platform; a CRLF serial failed the 0.1.13 draft.
+test('a CRLF lockfile gives the same SBOM serial as the LF one', () => {
+  const lf = readFileSync('pnpm-lock.yaml', 'utf8')
+  const serial = (packageLock) =>
+    releaseSbomSerial({ name: 'saf0o', version: '0.1.13', sourceCommit: 'a'.repeat(40), packageLock })
+  assert.equal(serial(lf.replace(/\n/g, '\r\n')), serial(lf))
 })
