@@ -21,7 +21,7 @@ The latest release is [**0.1.12**](release-notes/v0.1.12.md).
 ## Highlights
 
 - Clear reviews for transactions, approvals, permits, messages, EIP-712, SIWE,
-  EIP-7702 revocation, and sequential EIP-5792 calls.
+  EIP-7702 revocation, and EIP-5792 calls (atomic through an Ambire delegation, sequential otherwise).
 - Previews of expected asset changes from configured-RPC simulation, with calldata
   and trace details available when supported.
 - Adjustable token allowances with a **Use balance** shortcut, editable fees and
@@ -32,6 +32,27 @@ The latest release is [**0.1.12**](release-notes/v0.1.12.md).
 
 See [supported standards](SUPPORTED_EIPS.md),
 [execution boundaries](EXECUTION_BOUNDARIES.md) for exact behavior.
+
+## Saf0o additions
+
+Saf0o is a fork of [jorphex/wren](https://github.com/jorphex/wren). On top of it, Saf0o adds:
+
+- **Atomic batches (EIP-7702):** upgrade an account to the AmbireAccount7702 delegate inside the batch review, then run
+  `wallet_sendCalls` batches atomically, on more chains, and from Trezor (firmware 2.12.5+). A delegated account can add
+  and remove extra keys.
+- **Batch review:** each call shows an action card with its own token, ETH and USD balance changes. ETH a batch pays out
+  shows in the preview.
+- **Native balance preview:** simulation runs through dRPC with your imported keys when the configured RPC lacks
+  `debug_traceCall`. The preview nets the gas fee out of the native balance change.
+- **Signing safety:** Saf0o compares the signed bytes with the reviewed transaction before broadcast. Spoofed tokens are
+  hidden. Sensitive settings ask for a native confirmation.
+- **Outbound allowlist:** the main process connects only to listed services, RPC presets and your custom endpoints.
+- **Token import from Alchemy:** discover an account's ERC-20 holdings and add the ones you tick.
+- **Networks and contacts:** look up a network on chainlist.org by chain ID. Save a contract to Contacts from the review.
+  Copy an address from the account list without switching.
+- **App access:** after an account switch, Saf0o asks whether a connected app may use the new account. A declined app
+  stays declined for that account.
+- **Fees:** chains without a fee market use a gas price predictor. Arbitrum uses EIP-1559 fees.
 
 ## Account activity
 
@@ -155,6 +176,9 @@ Saf0o has no hosted wallet backend. Common network requests use these services:
 | Token artwork           | Reviewed CoinGecko host  | Recognized artwork requests only                                            |
 | Contract names and ABIs | Sourcify; Etherscan      | IP address, network and contract address                                    |
 | Trezor definitions      | Trezor SDK service       | IP address, network, target/token address and sometimes a function selector |
+| Simulation (optional)   | dRPC, with your key      | IP address and the pending request, including the sending account           |
+| Token import (optional) | Alchemy, with your key   | IP address and the account address                                          |
+| Network lookup          | chainlist.org            | IP address                                                                  |
 
 GeckoTerminal supplies Robinhood Chain prices and fills missing quotes on supported
 networks. Lookups run from the desktop and resume after rate limits. Previous
