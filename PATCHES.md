@@ -574,3 +574,21 @@ Rebase notes: `getEip7702UpgradeEligibility` and `requestEip7702Upgrade` sit in 
 The Trezor Ambire chain list sits next to the delegate allowlist in `main/eip7702/delegates.ts`.
 
 Upstream-PR candidate: the Trezor revoke, yes; the rest depends on the batching patches.
+
+## 33. EIP-7702 batching on more chains, EIP-1559 fees on Arbitrum
+
+Commit: `saf0o: enable EIP-7702 batching on every verified chain`.
+
+Intent: upstream kept Arbitrum (42161) on legacy fees because it charges no priority fee. Its txs were then type 0, so the
+Ambire upgrade (type 4, which needs EIP-1559 fees) failed before signing. Arbitrum now samples fee history like other
+chains. The delegate allowlist adds Polygon (137), Monad (143), Robinhood Chain (4663) and Base Sepolia (84532). On
+2026-11-27, `eth_getCode` showed the pinned Ambire code hash on each. A type-4 tx from an unfunded key got "insufficient
+funds" on 143, 4663, 84532 and 42161, so those nodes parse type 4. The Polygon type-4 probe hit DNS failures in the
+sandbox; Polygon enabled EIP-7702 in its Bhilai hardfork. Fantom (250) rejects type 4 and stays legacy. Sepolia stays off
+because it was not probed.
+
+Files: `main/chains/policy.ts`, `main/eip7702/delegates.ts`, and their tests.
+
+Rebase notes: if upstream edits `LEGACY_FEE_CHAIN_IDS`, keep 42161 out of it.
+
+Upstream-PR candidate: the Arbitrum fee change, yes.

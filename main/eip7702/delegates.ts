@@ -9,7 +9,7 @@ export const EIP7702_DELEGATES = Object.freeze([
     name: 'Ambire',
     address: '0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d',
     codeHash: '0x386e55cb86f9a31fdb7926ceab54847aa4542b7a0517216144a956982a21ade3',
-    chains: Object.freeze([1n, 10n, 56n, 100n, 8453n, 42161n]),
+    chains: Object.freeze([1n, 10n, 56n, 100n, 137n, 143n, 4663n, 8453n, 42161n, 84532n]),
     // Chains where Trezor firmware whitelists this delegate (trezor-firmware sc_constants.py.mako).
     trezorChains: Object.freeze([1n, 100n, 8453n, 42161n])
   })

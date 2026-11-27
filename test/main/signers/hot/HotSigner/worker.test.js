@@ -182,7 +182,7 @@ describe('#signEip7702Authorization', () => {
 
   it.each([
     ['a non-allowlisted delegate', { delegate: '0x1111111111111111111111111111111111111111' }],
-    ['a chain outside the allowlist', { chainId: '0x89' }],
+    ['a chain outside the allowlist', { chainId: '0xfa' }],
     ['the wildcard chain', { chainId: '0x0' }]
   ])('refuses %s', async (_label, change) => {
     const { err, raw } = await sign(change)

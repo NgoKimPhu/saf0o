@@ -59,7 +59,7 @@ describe('walletCallsAtomicStatus', () => {
 
   it('reads no code on a chain outside the allowlist', async () => {
     const getCode = codeReader({})
-    await expect(walletCallsAtomicStatus(137n, account, true, getCode)).resolves.toBe('unsupported')
+    await expect(walletCallsAtomicStatus(250n, account, true, getCode)).resolves.toBe('unsupported')
     expect(getCode).not.toHaveBeenCalled()
   })
 
@@ -175,7 +175,7 @@ describe('atomic execution shape', () => {
     }
     expect(isAllowedBatchSender(1n, sender)).toBe(true)
     expect(isAllowedBatchSender(1n, { ...sender, delegateCodeHash: `0x${'00'.repeat(32)}` })).toBe(false)
-    expect(isAllowedBatchSender(137n, sender)).toBe(false)
+    expect(isAllowedBatchSender(250n, sender)).toBe(false)
   })
 })
 

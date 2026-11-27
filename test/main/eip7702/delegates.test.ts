@@ -9,13 +9,17 @@ const delegatedTo = (address: string) => parseAccountCode(`0xef0100${address.sli
 // An authorization hands the account to its delegate. Only the verified Ambire deployment,
 // on the chains where its code was checked, may pass.
 describe('EIP-7702 delegate allowlist', () => {
-  it.each([1n, 10n, 56n, 100n, 8453n, 42161n])('allows Ambire on chain %s', (chainId) => {
-    expect(isAllowedDelegate(chainId, AMBIRE)).toBe(true)
-    expect(isAllowedDelegate(chainId, AMBIRE.toLowerCase())).toBe(true)
-  })
+  it.each([1n, 10n, 56n, 100n, 137n, 143n, 4663n, 8453n, 42161n, 84532n])(
+    'allows Ambire on chain %s',
+    (chainId) => {
+      expect(isAllowedDelegate(chainId, AMBIRE)).toBe(true)
+      expect(isAllowedDelegate(chainId, AMBIRE.toLowerCase())).toBe(true)
+    }
+  )
 
   it.each([
-    ['an unverified chain', 137n, AMBIRE],
+    ['an unverified chain', 11155111n, AMBIRE],
+    ['a chain without EIP-7702', 250n, AMBIRE],
     ['the wildcard chain', 0n, AMBIRE],
     ['the zero address', 1n, '0x0000000000000000000000000000000000000000'],
     ['another contract', 1n, OTHER],
@@ -30,7 +34,7 @@ describe('EIP-7702 delegate allowlist', () => {
       true
     )
     expect(matchesDelegateCode(1n, delegatedTo(AMBIRE), `0x${'00'.repeat(32)}`)).toBe(false)
-    expect(matchesDelegateCode(137n, delegatedTo(AMBIRE), AMBIRE_CODE_HASH)).toBe(false)
+    expect(matchesDelegateCode(250n, delegatedTo(AMBIRE), AMBIRE_CODE_HASH)).toBe(false)
     expect(matchesDelegateCode(1n, delegatedTo(OTHER), AMBIRE_CODE_HASH)).toBe(false)
     expect(matchesDelegateCode(1n, parseAccountCode('0x'), AMBIRE_CODE_HASH)).toBe(false)
     expect(matchesDelegateCode(1n, parseAccountCode('0x6000'), AMBIRE_CODE_HASH)).toBe(false)

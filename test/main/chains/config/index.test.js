@@ -16,8 +16,13 @@ describe('polygon', () => {
 })
 
 describe('chain execution policy', () => {
-  it.each([250, 4002, 42161])('keeps chain %s on legacy fee sampling', (chainId) => {
+  it.each([250, 4002])('keeps chain %s on legacy fee sampling', (chainId) => {
     expect(supportsFeeHistory(chainId)).toBe(false)
+  })
+
+  // A legacy-fee chain builds type-0 txs, so the EIP-7702 upgrade (type 4) cannot be built there.
+  it('samples EIP-1559 fees on Arbitrum so account upgrades can be built', () => {
+    expect(supportsFeeHistory(42161)).toBe(true)
   })
 
   it.each([

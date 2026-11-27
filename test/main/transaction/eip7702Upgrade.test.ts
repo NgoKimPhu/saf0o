@@ -48,7 +48,7 @@ describe('EIP-7702 upgrade request', () => {
   it.each([
     ['a delegate outside the allowlist', { delegate: OTHER }],
     ['the zero delegate', { delegate: '0x0000000000000000000000000000000000000000' }],
-    ['an unverified chain', { chainId: '0x89' }],
+    ['an unverified chain', { chainId: '0xfa' }],
     ['the wildcard chain', { chainId: '0x0' }],
     ['another destination', { to: OTHER }],
     ['a value transfer', { value: '0x1' }],

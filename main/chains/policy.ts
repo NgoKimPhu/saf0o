@@ -1,6 +1,8 @@
 import { chainUsesOptimismFees } from '../../resources/utils/chains'
 
-const LEGACY_FEE_CHAIN_IDS = new Set([250, 4002, 42161])
+// Arbitrum left this list: its zero priority fee no longer needs legacy txs, and an EIP-7702
+// upgrade (type 4) needs EIP-1559 fees.
+const LEGACY_FEE_CHAIN_IDS = new Set([250, 4002])
 
 export type FeeHistoryPolicy = 'default' | 'polygon' | 'op-stack'
 
