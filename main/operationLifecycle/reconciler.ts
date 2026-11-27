@@ -210,6 +210,31 @@ export class OperationLifecycleReconciler {
     return undefined
   }
 
+  // Keyless publicnode (Arbitrum, OP) refuses eth_getTransactionReceipt as an "archive request" yet
+  // serves eth_getBlockReceipts. parseReceipt still checks the hash of whatever this returns.
+  private async rawReceipt(chainId: number, hash: string) {
+    try {
+      return await this.rpc(chainId, 'eth_getTransactionReceipt', [hash])
+    } catch (refusal) {
+      const transaction = await this.rpc(chainId, 'eth_getTransactionByHash', [hash])
+      if (transaction === null) return null
+      if (!isRecord(transaction)) throw refusal
+      if (String(transaction['hash']).toLowerCase() !== hash.toLowerCase()) throw refusal
+      const blockHash = transaction['blockHash']
+      if (blockHash === null || blockHash === undefined) return null
+      if (typeof blockHash !== 'string' || !HASH.test(blockHash)) throw refusal
+      const receipts = await this.rpc(chainId, 'eth_getBlockReceipts', [blockHash.toLowerCase()])
+      const match = Array.isArray(receipts)
+        ? receipts.find(
+            (entry) =>
+              isRecord(entry) && String(entry['transactionHash']).toLowerCase() === hash.toLowerCase()
+          )
+        : undefined
+      if (!match) throw refusal
+      return match
+    }
+  }
+
   private async canonicalEvidence(operation: OperationLifecycle) {
     const hash = operationHash(operation)
     if (!hash) throw new Error('Operation is missing a transaction hash')
@@ -220,7 +245,7 @@ export class OperationLifecycleReconciler {
       deploymentNonce !== undefined
         ? getCreateAddress({ from: operation.account, nonce: deploymentNonce }).toLowerCase()
         : undefined
-    const rawReceipt = await this.rpc(operation.chainId, 'eth_getTransactionReceipt', [hash])
+    const rawReceipt = await this.rawReceipt(operation.chainId, hash)
     const observedReceipt = parseReceipt(rawReceipt, hash, expectedContractAddress)
     if (!observedReceipt) return
     const receipt =

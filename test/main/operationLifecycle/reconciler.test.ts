@@ -93,6 +93,30 @@ test('ordinary transactions resolve on their first canonical receipt and keep mo
   })
 })
 
+// Keyless publicnode Arbitrum/OP refuse eth_getTransactionReceipt; without the block-receipts
+// fallback a mined transaction stays "submitted" forever.
+test('falls back to block receipts when the RPC refuses the receipt lookup', async () => {
+  const receipt = canonical('0x1', '0x5')[`eth_getTransactionReceipt:${hash}`]
+  const refused = fixture(operation(), {
+    ...canonical('0x1', '0x5'),
+    [`eth_getTransactionReceipt:${hash}`]: new Error('Archive requests require a personal token'),
+    [`eth_getTransactionByHash:${hash}`]: { hash, blockHash, blockNumber: '0x5' },
+    [`eth_getBlockReceipts:${blockHash}`]: [{ ...receipt, transactionHash: latestHash }, receipt]
+  })
+  await expect(refused.reconciler.reconcile(operation().id, 20)).resolves.toMatchObject({
+    state: 'confirmed',
+    receipt: { blockHash, status: '0x1' }
+  })
+
+  const pending = fixture(operation(), {
+    [`eth_getTransactionReceipt:${hash}`]: new Error('Archive requests require a personal token'),
+    [`eth_getTransactionByHash:${hash}`]: { hash, blockHash: null }
+  })
+  await expect(pending.reconciler.reconcile(operation().id, 20)).resolves.toMatchObject({
+    state: 'submitted'
+  })
+})
+
 test('persists the canonical CREATE address only for an exact managed deployment receipt', async () => {
   const contractAddress = getCreateAddress({ from: account, nonce: 1 }).toLowerCase()
   const deployment = {
