@@ -7,7 +7,6 @@
 <p align="center">A desktop EVM wallet for reviewing and signing requests from browsers and native apps.</p>
 
 <p align="center">
-  <a href="https://getwren.xyz">Website</a> ·
   <a href="https://github.com/NgoKimPhu/saf0o/releases">Download</a> ·
   <a href="https://github.com/NgoKimPhu/saf0o-companion/releases">Companion</a> ·
   <a href="release-notes/v0.1.12.md">What’s new</a> ·

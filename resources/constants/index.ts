@@ -16,7 +16,7 @@ export const SAF0O_REPOSITORY_URL = 'https://github.com/NgoKimPhu/saf0o'
 export const SAF0O_LICENSE_URL = `${SAF0O_REPOSITORY_URL}/blob/main/LICENSE`
 export const SAF0O_SUPPORT_URL = `${SAF0O_REPOSITORY_URL}/issues`
 export const SAF0O_COMPANION_RELEASES_URL = 'https://github.com/NgoKimPhu/saf0o-companion/releases'
-// Saf0o Companion is not in the stores; the upstream Wren listings speak a different protocol.
+// Saf0o Companion is not in the stores; the jorphex/wren listings speak a different protocol.
 export const SAF0O_COMPANION_CHROME_WEB_STORE_URL = SAF0O_COMPANION_RELEASES_URL
 export const SAF0O_COMPANION_FIREFOX_ADDONS_URL = SAF0O_COMPANION_RELEASES_URL
 export const LEDGER_SHOP_URL = 'https://shop.ledger.com/'

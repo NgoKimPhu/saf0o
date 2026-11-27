@@ -708,3 +708,12 @@ Files: `app/tray/Account/Requests/TransactionRequest/TxMainNew/overview.js`, `ap
 Guarded by `test/app/tray/Account/Requests/TransactionRequest/index.test.js`.
 
 Upstream-PR candidate: no.
+
+## saf0o: drop leftover upstream branding
+
+The README "Website" link pointed at upstream's getwren.xyz. The link is gone. A hand-written "upstream Wren" comment in
+`resources/constants/index.ts` now reads `jorphex/wren`, so a rebase re-run of the rebrand script leaves it intact.
+
+Files: `README.md`, `resources/constants/index.ts`.
+
+Upstream-PR candidate: no.
