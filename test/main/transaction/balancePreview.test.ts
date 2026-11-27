@@ -277,3 +277,47 @@ it('flags that native changes are missing when the trace is unavailable', () => 
   setup().run(traced)
   expect(traced.balancePreview.nativeNote).toBeUndefined()
 })
+
+// A swap call inside a batch must show its own token and $ changes, like the same swap sent alone.
+// The token moves inside call 2 and returns in call 3, so it nets to zero for the batch yet still gets a price.
+it('prices each wallet call on its own, including a token that nets to zero over the batch', async () => {
+  const { run } = setup()
+  const req: any = {
+    type: 'walletCalls',
+    handlerId: 'w3',
+    account,
+    chainId: '0x1',
+    calls: [
+      { to: other, data: '0x', value: '0x0' },
+      { to: other, data: '0x', value: '0x0' },
+      { to: other, data: '0x', value: '0x0' }
+    ],
+    simulation: {
+      status: 'succeeded',
+      source: 'eth_simulateV1',
+      calls: [
+        { status: 'succeeded' },
+        {
+          status: 'succeeded',
+          effects: [transfer(other, account, '2000000')],
+          nativeTransfers: [{ from: account, to: other, amount: '1000000000000000' }]
+        },
+        { status: 'succeeded', effects: [transfer(account, other, '2000000')] }
+      ]
+    }
+  }
+  run(req)
+  expect(req.balancePreview.calls).toEqual([
+    [],
+    [
+      { asset: 'native', standard: 'native', delta: '-1000000000000000' },
+      { asset: usdc, standard: 'erc20', delta: '2000000' }
+    ],
+    [{ asset: usdc, standard: 'erc20', delta: '-2000000' }]
+  ])
+  await settle()
+  expect(req.balancePreview.calls[1]).toEqual([
+    { asset: 'native', standard: 'native', delta: '-1000000000000000', usd: -3 },
+    { asset: usdc, standard: 'erc20', delta: '2000000', usd: 2 }
+  ])
+})

@@ -508,6 +508,13 @@ export class WalletCallsRequest extends React.Component {
                         {callSimulation.reason ? ` · ${callSimulation.reason}` : ''}
                       </div>
                     )}
+                    {req.balancePreview?.calls?.[index]?.length ? (
+                      <BalancePreview
+                        preview={{ ...req.balancePreview, changes: req.balancePreview.calls[index] }}
+                        symbol={symbol}
+                        compact
+                      />
+                    ) : null}
                     {call.to
                       ? (req.callActions?.[index] || []).map((action, actionIndex) => (
                           <TxAction

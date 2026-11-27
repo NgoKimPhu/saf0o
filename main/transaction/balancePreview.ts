@@ -29,6 +29,8 @@ export type BalancePreview = Readonly<{
   enriched: boolean
   // Why native (ETH) changes are missing, when the trace behind them did not run.
   nativeNote?: string | undefined
+  // Wallet-call batches: net changes of each call on its own, priced like the batch total.
+  calls?: readonly (readonly BalancePreviewChange[])[]
 }>
 
 export interface Deps {
@@ -106,7 +108,20 @@ const nativeIn = (req: TransactionRequest | WalletCallsRequest) => {
     nativeChange: traced && nativeChange !== 0n ? nativeChange.toString() : undefined,
     fallbackNativeOut: !traced && value ? value.toString() : undefined,
     nativeNote: undefined,
-    chainId: req.chainId
+    chainId: req.chainId,
+    calls: simulation.calls.map((call, index) => {
+      const callNative = (call.nativeTransfers || []).reduce(
+        (sum, t) =>
+          sum + (t.to === account ? BigInt(t.amount) : 0n) - (t.from === account ? BigInt(t.amount) : 0n),
+        0n
+      )
+      const callValue = parseRpcQuantity(req.calls[index]?.value) ?? 0n
+      return {
+        effects: (call.effects || []) as EffectLike[],
+        nativeChange: traced && callNative !== 0n ? callNative.toString() : undefined,
+        fallbackNativeOut: !traced && callValue ? callValue.toString() : undefined
+      }
+    })
   }
 }
 
@@ -144,7 +159,8 @@ export function syncBalancePreview(
         effects: evidence.effects,
         native: evidence.nativeChange,
         fallback: evidence.fallbackNativeOut,
-        note: evidence.nativeNote
+        note: evidence.nativeNote,
+        calls: 'calls' in evidence ? evidence.calls : undefined
       })
     )
     .digest('hex')
@@ -158,11 +174,28 @@ export function syncBalancePreview(
       tokens[address] = { symbol: balance.symbol, decimals: balance.decimals, known: true }
   }
   const note = evidence.nativeNote ? { nativeNote: evidence.nativeNote } : {}
-  const raw: BalancePreview = { key, assessedAt: deps.now(), changes, tokens, enriched: false, ...note }
+  const callChanges =
+    'calls' in evidence
+      ? evidence.calls.map((call) => netBalanceChanges({ account: req.account, ...call }))
+      : undefined
+  const perCall = callChanges ? { calls: callChanges } : {}
+  const raw: BalancePreview = {
+    key,
+    assessedAt: deps.now(),
+    changes,
+    tokens,
+    enriched: false,
+    ...note,
+    ...perCall
+  }
   req.balancePreview = raw
 
-  const erc20 = changes.filter((c) => c.standard === 'erc20')
-  const native = changes.find((c) => c.standard === 'native')
+  // A token can net to zero over the batch yet move inside one call, so price every asset any call moves.
+  const allChanges = [...changes, ...(callChanges || []).flat()]
+  const erc20 = [
+    ...new Map(allChanges.filter((c) => c.standard === 'erc20').map((c) => [c.asset, c])).values()
+  ]
+  const native = allChanges.find((c) => c.standard === 'native')
   if (!erc20.length && !native) return
 
   const enrich = async (): Promise<BalancePreview> => {
@@ -191,7 +224,7 @@ export function syncBalancePreview(
         known: false
       }
     const idOf: Record<string, string> = Object.fromEntries(priced.map((p) => [p.asset, p.id]))
-    const enriched = changes.map((c): BalancePreviewChange => {
+    const priceChange = (c: BalancePreviewChange): BalancePreviewChange => {
       if (c.standard === 'native') return nativePrice ? { ...c, usd: usdOf(c.delta, 18, nativePrice) } : c
       const decimals = merged[c.asset]?.decimals
       const id = idOf[c.asset]
@@ -199,8 +232,17 @@ export function syncBalancePreview(
       return c.standard === 'erc20' && decimals !== undefined && price
         ? { ...c, usd: usdOf(c.delta, decimals, price.price) }
         : c
-    })
-    return { key, assessedAt: deps.now(), changes: enriched, tokens: merged, enriched: true, ...note }
+    }
+    const enrichedCalls = callChanges ? { calls: callChanges.map((call) => call.map(priceChange)) } : {}
+    return {
+      key,
+      assessedAt: deps.now(),
+      changes: changes.map(priceChange),
+      tokens: merged,
+      enriched: true,
+      ...note,
+      ...enrichedCalls
+    }
   }
 
   let timer: ReturnType<typeof setTimeout> | undefined

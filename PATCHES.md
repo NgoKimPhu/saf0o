@@ -643,3 +643,17 @@ Files: `main/provider/{index,walletCallAtomic,walletCallBatches}.ts`, `main/acco
 Rebase notes: `ApprovalType.AccountUpgrade` extends the upstream enum and the RPC schema enum.
 
 Upstream-PR candidate: no, it depends on the Ambire patches.
+
+## 37. Per-call balance changes in the batch review
+
+Commit: `saf0o: show each batch call its own balance changes`.
+
+Intent: a swap call inside a batch showed no token or $ rows of its own; only the batch total did. `syncBalancePreview`
+now also nets each call (its token effects and traced ETH moves) into `balancePreview.calls`, priced with the same DefiLlama
+quotes. It prices every asset any call moves, including a token that nets to zero over the batch. `BalancePreview` gains a
+`compact` mode (rows only, group label "Call balance changes"), rendered under each call.
+
+Files: `main/transaction/balancePreview.ts`, `resources/Components/BalancePreview/index.jsx`,
+`app/tray/Account/Requests/WalletCallsRequest/index.js`, and their tests.
+
+Upstream-PR candidate: yes, with the batch preview.

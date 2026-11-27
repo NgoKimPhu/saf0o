@@ -445,3 +445,20 @@ it('offers separate transactions on an upgrade batch only when the app does not 
   render(<WalletCallsRequest originName='example.test' req={req} />)
   expect(screen.queryByRole('button', { name: 'Run as separate transactions instead' })).toBeNull()
 })
+
+// The per-call rows sit under the call that moves the assets, so a swap call shows what it sends and receives.
+it('shows each call its own balance changes under that call', () => {
+  const req = preparedRequest()
+  req.balancePreview = {
+    key: 'k',
+    assessedAt: 1,
+    enriched: true,
+    tokens: { [target]: { symbol: 'TKN', decimals: 0, known: true } },
+    changes: [{ asset: target, standard: 'erc20', delta: '5', usd: 1 }],
+    calls: [[], [{ asset: target, standard: 'erc20', delta: '5', usd: 1 }]]
+  }
+  render(<WalletCallsRequest originName='example.test' req={req} />)
+  const [, second] = document.querySelectorAll('.walletCall')
+  expect(screen.getAllByRole('group', { name: 'Call balance changes' })).toHaveLength(1)
+  expect(second.querySelector('[aria-label="Call balance changes"]').textContent).toContain('TKN')
+})

@@ -55,7 +55,8 @@ const Change = ({ change, token, symbol }) => {
 }
 
 // Net per-asset changes from the simulation. Informational only; it never gates signing.
-const BalancePreview = ({ preview, symbol }) => {
+// compact: the rows only, for one call inside a batch whose full preview sits above.
+const BalancePreview = ({ preview, symbol, compact = false }) => {
   const { totalUsd, swapLoss } = summarizeBalancePreview(preview.changes)
   const changes = [...preview.changes].sort(
     (a, b) => Number(!a.delta.startsWith('-')) - Number(!b.delta.startsWith('-'))
@@ -65,31 +66,35 @@ const BalancePreview = ({ preview, symbol }) => {
     <div
       className='transactionReviewAssetChangesInner balancePreview'
       role='group'
-      aria-label='Net balance changes'
+      aria-label={compact ? 'Call balance changes' : 'Net balance changes'}
     >
-      <div className='transactionReviewAssetChangesHeader'>
-        <strong>Estimated changes</strong>
-      </div>
+      {!compact && (
+        <div className='transactionReviewAssetChangesHeader'>
+          <strong>Estimated changes</strong>
+        </div>
+      )}
       {changes.map((change) => (
         <Change key={change.asset} change={change} token={preview.tokens[change.asset]} symbol={symbol} />
       ))}
-      {totalUsd !== undefined && (
-        <div className='balancePreviewTotal'>
-          <span>Total</span>
-          <Usd value={totalUsd} />
-        </div>
-      )}
-      {preview.nativeNote && (
+      {compact
+        ? null
+        : totalUsd !== undefined && (
+            <div className='balancePreviewTotal'>
+              <span>Total</span>
+              <Usd value={totalUsd} />
+            </div>
+          )}
+      {!compact && preview.nativeNote && (
         <div className='balancePreviewFooter balancePreviewNativeNote' role='note'>
           {`${symbol} changes not shown: ${preview.nativeNote}`}
         </div>
       )}
-      {swapLoss && (
+      {!compact && swapLoss && (
         <div className='balancePreviewLoss' role='alert'>
           {`Receives about ${Math.round(swapLoss.lossPct)}% less than it sends (USD, trusted prices)`}
         </div>
       )}
-      {preview.changes.some((change) => change.usd !== undefined) && (
+      {!compact && preview.changes.some((change) => change.usd !== undefined) && (
         <div className='balancePreviewFooter'>Prices: DefiLlama, confidence ≥ 0.9; may be wrong</div>
       )}
     </div>
