@@ -224,6 +224,41 @@ it('flattens effects across wallet calls and falls back to call values for nativ
   ])
 })
 
+// A swap that pays out ETH (the router unwraps WETH) showed only the token sent. With traced ETH moves the
+// preview shows the ETH received, and call values are not subtracted twice since the trace already holds them.
+it('nets traced ETH moves for a wallet-call batch instead of call values', () => {
+  const { run } = setup()
+  const req: any = {
+    type: 'walletCalls',
+    handlerId: 'w2',
+    account,
+    chainId: '0x1',
+    calls: [
+      { to: other, data: '0x', value: '0x0' },
+      { to: other, data: '0x', value: '0x64' }
+    ],
+    simulation: {
+      status: 'succeeded',
+      source: 'eth_simulateV1',
+      calls: [
+        { status: 'succeeded', effects: [transfer(account, other, '3')] },
+        {
+          status: 'succeeded',
+          nativeTransfers: [
+            { from: account, to: other, amount: '100' },
+            { from: other, to: account, amount: '500' }
+          ]
+        }
+      ]
+    }
+  }
+  run(req)
+  expect(req.balancePreview.changes).toEqual([
+    { asset: 'native', standard: 'native', delta: '400' },
+    { asset: usdc, standard: 'erc20', delta: '-3' }
+  ])
+})
+
 // A missing trace used to look the same as "no ETH moves". The preview must say the number is absent.
 it('flags that native changes are missing when the trace is unavailable', () => {
   const req = makeTx(

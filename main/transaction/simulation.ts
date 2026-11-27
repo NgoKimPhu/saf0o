@@ -302,6 +302,12 @@ export type ProxyImplementationCheck = ProxyImplementationCheckBase &
       }
   )
 
+export interface NativeTransfer {
+  from: string
+  to: string
+  amount: string
+}
+
 export interface TransactionSimulation {
   status: SimulationStatus
   source?: SimulationSource
@@ -316,6 +322,8 @@ export interface TransactionSimulation {
   delegation?: AccountDelegationCheck
   accountCodeEvidence?: TransactionAccountCodeEvidence
   nativeBalanceChanges?: NativeBalanceChanges
+  // ETH moves reported by eth_simulateV1 traceTransfers. Absent when the RPC did not trace them.
+  nativeTransfers?: NativeTransfer[]
   callTrace?: CallTraceEvidence
   proxyImplementationCheck?: ProxyImplementationCheck
   advancedChecks?: {
@@ -1527,6 +1535,27 @@ function legacyDelegationCheck(evidence: SenderAccountCodeEvidence): AccountDele
   return { status: 'undelegated', source: 'eth_getCode', account: evidence.account }
 }
 
+// traceTransfers reports ETH moves as ERC-20 Transfer logs from this ERC-7528 address.
+const NATIVE_TRANSFER_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+const MAX_NATIVE_TRANSFERS = 64
+
+const isNativeTransferLog = (log: unknown) =>
+  isRecord(log) &&
+  typeof log['address'] === 'string' &&
+  log['address'].toLowerCase() === NATIVE_TRANSFER_ADDRESS
+
+function parseNativeTransfer(log: Record<string, unknown>): NativeTransfer | undefined {
+  const topics = log['topics']
+  if (!Array.isArray(topics) || topics.length !== 3 || String(topics[0]).toLowerCase() !== TRANSFER_TOPIC)
+    return
+  const [, from = '', to = ''] = topics.map((topic) => (typeof topic === 'string' ? topic.toLowerCase() : ''))
+  const data = log['data']
+  if (!/^0x0{24}[0-9a-f]{40}$/.test(from) || !/^0x0{24}[0-9a-f]{40}$/.test(to)) return
+  if (typeof data !== 'string' || !/^0x[0-9a-fA-F]{64}$/.test(data)) return
+  return { from: `0x${from.slice(26)}`, to: `0x${to.slice(26)}`, amount: BigInt(data).toString() }
+}
+
 function parseSimulatedCall(call: unknown): TransactionSimulation | undefined {
   if (!isRecord(call)) return
   const gasUsed = parseGasUsed(call.gasUsed)
@@ -1535,7 +1564,16 @@ function parseSimulatedCall(call: unknown): TransactionSimulation | undefined {
 
   if (call.status === '0x1') {
     if (!Array.isArray(call.logs)) return
-    const { effects, truncated } = parseSimulationEffects(call.logs)
+    const nativeLogs = call.logs.filter(isNativeTransferLog) as Record<string, unknown>[]
+    const { effects, truncated } = parseSimulationEffects(
+      call.logs.filter((log) => !isNativeTransferLog(log))
+    )
+    const nativeTransfers = nativeLogs.map(parseNativeTransfer)
+    // A malformed or oversized native trace is dropped whole: a partial sum would misstate the ETH change.
+    const nativeTraced =
+      nativeLogs.length > 0 &&
+      nativeLogs.length <= MAX_NATIVE_TRANSFERS &&
+      nativeTransfers.every((transfer) => transfer !== undefined)
     const returnData = rawReturnData.toLowerCase()
     const returnDataKind =
       returnData === '0x'
@@ -1551,7 +1589,8 @@ function parseSimulatedCall(call: unknown): TransactionSimulation | undefined {
       gasUsed,
       ...(returnDataKind ? { returnDataKind } : {}),
       ...(effects.length ? { effects } : {}),
-      ...(truncated ? { effectsTruncated: true } : {})
+      ...(truncated ? { effectsTruncated: true } : {}),
+      ...(nativeTraced ? { nativeTransfers: nativeTransfers as NativeTransfer[] } : {})
     }
   }
 
@@ -1844,7 +1883,7 @@ export async function simulateWalletCalls(
       reason: 'Wallet call simulation requires between 1 and 16 calls'
     }
   }
-  const payload: JSONRPCRequestPayload = {
+  const payload = (traceTransfers: boolean): JSONRPCRequestPayload => ({
     id: 1,
     jsonrpc: '2.0',
     method: 'eth_simulateV1',
@@ -1856,14 +1895,23 @@ export async function simulateWalletCalls(
             calls: transactions.map(buildSimulationCall)
           }
         ],
+        ...(traceTransfers ? { traceTransfers: true } : {}),
         validation: false
       },
       'latest'
     ]
+  })
+  // traceTransfers lets the preview show ETH received. An RPC that rejects the field gets one plain retry.
+  const simulate = async () => {
+    const traced = await requestRpc(dependencies.send, payload(true), targetChain, timeoutMs)
+    const error = 'timedOut' in traced || !isRecord(traced.response) ? undefined : traced.response.error
+    return isRecord(error) && error.code === -32602
+      ? requestRpc(dependencies.send, payload(false), targetChain, timeoutMs)
+      : traced
   }
 
   const [outcome, firstAllowance, accountCodeEvidence] = await Promise.all([
-    requestRpc(dependencies.send, payload, targetChain, timeoutMs),
+    simulate(),
     readTokenAllowance(firstTransaction, dependencies.send, targetChain, timeoutMs),
     inspectAccountCodeEvidence(transactions, dependencies.send, targetChain, timeoutMs)
   ])

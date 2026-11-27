@@ -592,3 +592,18 @@ Files: `main/chains/policy.ts`, `main/eip7702/delegates.ts`, and their tests.
 Rebase notes: if upstream edits `LEGACY_FEE_CHAIN_IDS`, keep 42161 out of it.
 
 Upstream-PR candidate: the Arbitrum fee change, yes.
+
+## 34. ETH received in the batch preview
+
+Commit: `saf0o: show ETH moves in the wallet-call batch preview`.
+
+Intent: a batch swap that pays out native ETH (the router unwraps WETH) showed only the token sent. The batch
+`eth_simulateV1` now sets `traceTransfers: true`. The node reports ETH moves as Transfer logs from the ERC-7528 address
+`0xeeee…eeee`. `parseSimulatedCall` moves these logs into `nativeTransfers`, keeping them out of token effects.
+`balancePreview` nets them for the account. A batch without traced moves still falls back to the call values. An RPC that
+answers -32602 gets one retry without the field. Probed 2026-11-27: publicnode Ethereum, OP, BSC, Gnosis, Base, Arbitrum
+and Robinhood trace ETH moves; rpc.monad.xyz has no `eth_simulateV1`.
+
+Files: `main/transaction/{simulation,balancePreview}.ts`, and their tests.
+
+Upstream-PR candidate: yes, depends on the wallet-call batch preview.

@@ -92,11 +92,19 @@ const nativeIn = (req: TransactionRequest | WalletCallsRequest) => {
   const simulation = req.simulation
   const effects = simulation.calls.flatMap((call) => (call.effects || []) as EffectLike[])
   const value = req.calls.reduce((sum, call) => sum + (parseRpcQuantity(call.value) ?? 0n), 0n)
+  // A traced batch reports every ETH move, call values included. Untraced, the call values are the only evidence.
+  const transfers = simulation.calls.flatMap((call) => call.nativeTransfers || [])
+  const traced = simulation.calls.some((call) => call.nativeTransfers)
+  const nativeChange = transfers.reduce(
+    (sum, t) =>
+      sum + (t.to === account ? BigInt(t.amount) : 0n) - (t.from === account ? BigInt(t.amount) : 0n),
+    0n
+  )
   return {
     status: simulation.status,
     effects,
-    nativeChange: undefined,
-    fallbackNativeOut: value ? value.toString() : undefined,
+    nativeChange: traced && nativeChange !== 0n ? nativeChange.toString() : undefined,
+    fallbackNativeOut: !traced && value ? value.toString() : undefined,
     nativeNote: undefined,
     chainId: req.chainId
   }

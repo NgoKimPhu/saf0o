@@ -1337,6 +1337,7 @@ describe('wallet call batches', () => {
             blockStateCalls: [
               { calls: [buildSimulationCall(transaction), buildSimulationCall(secondTransaction)] }
             ],
+            traceTransfers: true,
             validation: false
           },
           'latest'
@@ -1345,6 +1346,57 @@ describe('wallet call batches', () => {
       expect.any(Function),
       { type: 'ethereum', id: 1 }
     )
+  })
+
+  // The batch preview shows ETH received only if the node traces native moves. Those synthetic logs
+  // must not also appear as an unknown ERC-20, or the review lists a fake token.
+  it('reads traced ETH moves apart from token effects', async () => {
+    const word = (address) => `0x${address.slice(2).padStart(64, '0')}`
+    const nativeLog = {
+      address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+      topics: [
+        '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+        word(secondTransaction.to),
+        word(transaction.from)
+      ],
+      data: `0x${7n.toString(16).padStart(64, '0')}`
+    }
+    const result = [
+      { calls: [simulateSuccess[0].calls[0], { ...simulateSuccess[0].calls[0], logs: [nativeLog] }] }
+    ]
+    const send = jest.fn((payload, callback) => callback({ id: 1, jsonrpc: '2.0', result }))
+
+    const simulation = await simulateWalletCalls([transaction, secondTransaction], {
+      send: withAccountCode(send)
+    })
+    expect(simulation.calls[0].nativeTransfers).toBeUndefined()
+    expect(simulation.calls[1].nativeTransfers).toEqual([
+      { from: secondTransaction.to, to: transaction.from, amount: '7' }
+    ])
+    expect(simulation.calls[1].effects).toBeUndefined()
+  })
+
+  // An RPC that rejects the traceTransfers field must still simulate the batch, as it did before.
+  it('retries once without traceTransfers when the RPC rejects the field', async () => {
+    const send = jest.fn((payload, callback) =>
+      payload.params[0].traceTransfers
+        ? callback({
+            id: 1,
+            jsonrpc: '2.0',
+            error: { code: -32602, message: 'unknown field traceTransfers' }
+          })
+        : callback({
+            id: 1,
+            jsonrpc: '2.0',
+            result: [{ calls: [simulateSuccess[0].calls[0], simulateSuccess[0].calls[0]] }]
+          })
+    )
+
+    const simulation = await simulateWalletCalls([transaction, secondTransaction], {
+      send: withAccountCode(send)
+    })
+    expect(simulation.status).toBe('succeeded')
+    expect(send).toHaveBeenCalledTimes(2)
   })
 
   it('reports an ordered mixed batch as reverted', async () => {
