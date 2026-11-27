@@ -682,6 +682,22 @@ it('renders neutral terminal feedback after declining a wallet call', async () =
   expect(link.send).toHaveBeenCalledWith('nav:back', 'panel')
 })
 
+// A settled batch outside the decision shelf left the dead Decline/Submit pair overflowing the panel.
+it.each([
+  [{ status: 'success', notice: 'Batch Submitted', mode: 'monitor', locked: true }, 'Batch submitted'],
+  [{ status: 'error', notice: 'execution reverted', mode: 'monitor', locked: true }, 'Batch failed']
+])('replaces the decision buttons with a terminal card once a batch settles', async (state, title) => {
+  const { user } = renderRequestFooter(request(state))
+
+  expect(screen.getByText(title)).toBeTruthy()
+  expect(screen.queryByRole('button', { name: 'Submit batch' })).toBeNull()
+  expect(screen.queryByRole('button', { name: 'Decline' })).toBeNull()
+  if (state.status === 'error') expect(screen.getByText('execution reverted')).toBeTruthy()
+
+  await user.click(screen.getByRole('button', { name: 'Close' }))
+  expect(link.send).toHaveBeenCalledWith('nav:back', 'panel')
+})
+
 it('does not attribute an automatic wallet-call route cancellation to the user', () => {
   renderRequestFooter(request({ status: 'declined', notice: 'Network changed before signing' }))
 

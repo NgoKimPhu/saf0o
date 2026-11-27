@@ -2498,15 +2498,20 @@ const fixtureFor = (scenario) => {
   if (
     scenario.state === 'wallet-calls-funding' ||
     scenario.state === 'wallet-calls-review' ||
+    scenario.state === 'wallet-calls-success' ||
     scenario.state === 'wallet-calls-adjustment'
   ) {
     const request = walletCallsFundingRequest()
     const adjustment = scenario.state === 'wallet-calls-adjustment'
     const review = scenario.state === 'wallet-calls-review'
-    if (adjustment || review) {
+    const success = scenario.state === 'wallet-calls-success'
+    if (adjustment || review || success) {
       delete request.status
       delete request.notice
       delete request.recoverableError
+    }
+    if (success) {
+      Object.assign(request, { status: 'success', notice: 'Batch Submitted', mode: 'monitor', locked: true })
     }
     prepareSelectedAccount(state, request)
     const { metadata, networks } = accountHomeNetworks()

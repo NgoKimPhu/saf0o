@@ -665,4 +665,9 @@ Fix (`saf0o: one-column batch call rows in the review hierarchy`): `saf0o-review
 to `28px minmax(0, 1fr)`, so the body landed in the 28px track. The badge rule is scoped under `.walletCallsDestination`
 to outrank its `span { display block }`. Guarded by `test/scripts/wallet-calls-layout.test.mjs`.
 
+Fix (`saf0o: settled batch footer shows a terminal card`): after a batch settles (`success`, or `error` without a
+recoverable error), the footer drops the decision shelf, but the walletCalls branch still rendered Decline/Submit. That
+pair overflowed the panel and clipped the button. The footer now shows "Batch submitted" or "Batch failed" with Close.
+Guarded by `test/app/tray/Footer/index.test.js` and the `tray-wallet-calls-success-full-1` UI scenario.
+
 Upstream-PR candidate: yes, with the batch preview.

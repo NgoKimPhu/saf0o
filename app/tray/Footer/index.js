@@ -588,6 +588,35 @@ export class Footer extends React.Component {
             )
           }
 
+          // Settled batches have no decision left; the Decline/Submit pair overflowed the shelf here.
+          if (req.status === 'success' || (req.status === 'error' && !req.recoverableError)) {
+            const success = req.status === 'success'
+            return (
+              <div className='requestApprove requestApproveLightweight walletCallsTerminalActions'>
+                <div className='requestActionContext' role={success ? 'status' : 'alert'}>
+                  <span className='requestActionContextIcon'>
+                    <Icon name={success ? 'check' : 'alert'} size={19} />
+                  </span>
+                  <span className='requestActionContextCopy'>
+                    <strong>{success ? 'Batch submitted' : 'Batch failed'}</strong>
+                    <span>{success ? 'Track its progress in Activity.' : req.notice}</span>
+                  </span>
+                </div>
+                <div className='requestActionButtons'>
+                  <button
+                    type='button'
+                    className='requestSign'
+                    onClick={() => link.send('nav:back', 'panel')}
+                  >
+                    <span className='requestSignButton _txButton'>
+                      <span>Close</span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            )
+          }
+
           if (req.status === 'error' && req.recoverableError) {
             if (req.recoverableError.code === 'managed-sweep-changed') {
               return (

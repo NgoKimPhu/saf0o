@@ -859,6 +859,23 @@ const reviewScenarios = () => [
     layoutExpectations: [...WALLET_VIEW_CHROME, ...FOCUSED_WINDOW_SURFACE]
   })),
   {
+    id: 'tray-wallet-calls-success-full-1',
+    renderer: 'tray',
+    state: 'wallet-calls-success',
+    scale: 1,
+    logicalWidth: 620,
+    logicalHeight: FULL_SHELL_HEIGHT,
+    ready: '.walletCallsTerminalActions',
+    requiredControls: ['Close'],
+    requiredText: ['Batch submitted', 'Track its progress in Activity.'],
+    layoutExpectations: [
+      ...WALLET_VIEW_CHROME,
+      ...FOCUSED_WINDOW_SURFACE,
+      { kind: 'text-unclipped', selector: '.walletCallsTerminalActions .requestActionContextCopy' },
+      { kind: 'viewport-bottom', selector: '.walletCallsTerminalActions' }
+    ]
+  },
+  {
     id: 'tray-wallet-calls-adjustment-full-1',
     renderer: 'tray',
     state: 'wallet-calls-adjustment',
