@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
@@ -44,4 +44,17 @@ test('rejects missing, unexpected, repeated, and modified checksum entries', asy
     await writeFile(path.join(dist, 'Saf0o-0.1.3.AppImage'), 'modified')
     await assert.rejects(verifyReleaseChecksums(options), /Checksum mismatch/)
   })
+})
+
+// The npm-to-pnpm switch left the draft-release job calling pnpm without installing it, so 0.1.13 failed at the last step.
+test('every workflow job that runs pnpm installs it first', async () => {
+  const dir = '.github/workflows'
+  for (const file of (await readdir(dir)).filter((name) => name.endsWith('.yml'))) {
+    const jobs = (await readFile(path.join(dir, file), 'utf8')).split(/\n(?= {2}[\w-]+:\n)/).slice(1)
+    for (const job of jobs) {
+      if (/^\s+(- )?(run: )?.*\bpnpm (run|install|exec)\b/m.test(job)) {
+        assert.match(job, /uses: pnpm\/action-setup@/, `${file}: ${job.slice(0, job.indexOf(':'))}`)
+      }
+    }
+  }
 })

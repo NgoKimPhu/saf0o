@@ -19,6 +19,8 @@ Rebase notes:
 - Never merge `pnpm-lock.yaml` or `package-lock.json`. On conflict, take our `package.json` merge, delete `package-lock.json` if upstream touched it, then run `pnpm install --lockfile-only` to regenerate.
 - `scripts/pnpm-lock.mjs` is a lockfile reader for SBOM tooling. It is not a converter.
 - Upstream edits to scripts or workflows that call `npm` need the same pnpm port. Drop the literal `--` in `pnpm run x -- args`.
+- A workflow job that calls `pnpm` needs `pnpm/action-setup` first; `npm` came with setup-node, `pnpm` does not. The
+  0.1.13 draft-release job lacked it. `test/scripts/release-manifest.test.mjs` checks every job.
 
 Upstream-PR candidate: no.
 
