@@ -1447,6 +1447,7 @@ describe('simulation review', () => {
     expect(screen.getByText('configured RPC · eth_getCode')).toBeTruthy()
   })
 
+  // A delegated sender is the user's own upgrade (e.g. Ambire 7702), not a risk: show it as info, not danger.
   it('describes a delegated sender without claiming outbound execution uses the delegate', () => {
     const delegate = '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
     const simulation = {
@@ -1459,7 +1460,7 @@ describe('simulation review', () => {
     }
 
     expect(getDelegationPresentation(simulation)).toEqual({
-      className: '_txMainTagBad',
+      className: '_txMainTagInfo',
       label: `Sending account delegated to ${delegate}`
     })
     render(<SimulationDelegation simulation={simulation} />)

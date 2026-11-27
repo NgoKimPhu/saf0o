@@ -466,7 +466,7 @@ export function getDelegationPresentation(simulation) {
   }
   if (sender?.status === 'delegated' && sender.delegate) {
     return {
-      className: '_txMainTagBad',
+      className: '_txMainTagInfo',
       label: `Sending account delegated to ${sender.delegate}`
     }
   }

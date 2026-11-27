@@ -687,3 +687,24 @@ Files: `main/provider/walletCallLifecycleReconciliation.ts`, `main/provider/wall
 atomic (200) and sequential (200, 500, 600) batches.
 
 Upstream-PR candidate: yes.
+
+## saf0o: transaction receipts through eth_getBlockReceipts
+
+Same publicnode refusal as the wallet-call patch above, on the ordinary transaction path. `OperationLifecycleReconciler`
+read receipts only through `eth_getTransactionReceipt`, so a mined Arbitrum swap stayed "Submitted" with 0 confirmations
+while the dapp showed success. On a refused receipt call it now reads the transaction's block hash and takes the receipt
+from `eth_getBlockReceipts`. A `null` transaction or block hash still means "not mined"; any other gap rethrows the refusal.
+
+Files: `main/operationLifecycle/reconciler.ts`. Guarded by `test/main/operationLifecycle/reconciler.test.ts`.
+
+Upstream-PR candidate: yes.
+
+## saf0o: sender delegation tag is informational
+
+"Sending account delegated to …" used the danger tag. A delegated sender is the owner's own 7702 upgrade (Ambire), not a
+risk, so the tag now uses `_txMainTagInfo` (secondary text color) and ranks below every warning in the review status.
+
+Files: `app/tray/Account/Requests/TransactionRequest/TxMainNew/overview.js`, `app/tray/Account/Requests/style/saf0o-signing.styl`.
+Guarded by `test/app/tray/Account/Requests/TransactionRequest/index.test.js`.
+
+Upstream-PR candidate: no.
