@@ -184,14 +184,45 @@ export class WalletCallLifecycleReconciler {
     return undefined
   }
 
+  // Keyless publicnode (Arbitrum, OP) refuses eth_getTransactionReceipt as an "archive request" yet
+  // serves the same receipt through eth_getBlockReceipts, so fall back to the block's receipts.
+  private async receipt(chainId: number, hash: string) {
+    let refusal: unknown
+    try {
+      return parseReceipt(await this.rpc(chainId, 'eth_getTransactionReceipt', [hash]), hash)
+    } catch (error) {
+      if (error instanceof Error && error.message.startsWith('Wallet-call receipt is malformed')) throw error
+      refusal = error
+    }
+    try {
+      const transaction = await this.rpc(chainId, 'eth_getTransactionByHash', [hash])
+      if (transaction === null || transaction === undefined) return
+      if (!transactionMatches(transaction, hash)) {
+        throw new Error('transaction response does not match its hash')
+      }
+      const blockHash = (transaction as Record<string, unknown>)['blockHash']
+      if (blockHash === null || blockHash === undefined) return
+      if (typeof blockHash !== 'string' || !HASH.test(blockHash))
+        throw new Error('invalid transaction block hash')
+      const receipts = await this.rpc(chainId, 'eth_getBlockReceipts', [blockHash.toLowerCase()])
+      const match = Array.isArray(receipts)
+        ? receipts.find((entry) => isRecord(entry) && String(entry['transactionHash']).toLowerCase() === hash)
+        : undefined
+      if (!match) throw new Error('block receipts do not include the transaction')
+      return parseReceipt(match, hash)
+    } catch (error) {
+      throw new Error(
+        `Chain ${chainId} RPC refused the receipt lookup (${errorMessage(refusal)}) and the block-receipt ` +
+          `fallback failed (${errorMessage(error)}). Add an RPC that serves transaction receipts.`
+      )
+    }
+  }
+
   private async reconcileSignedReservation(batch: WalletCallBatchWithOperationId, now: number) {
     const signed = batch.transactions[batch.transactions.length - 1]
     if (!signed || signed.state !== 'signed') return batch
 
-    const rawReceipt = await this.rpc(Number(BigInt(batch.chainId)), 'eth_getTransactionReceipt', [
-      signed.hash
-    ])
-    const receipt = parseReceipt(rawReceipt, signed.hash)
+    const receipt = await this.receipt(Number(BigInt(batch.chainId)), signed.hash)
     if (receipt) {
       this.batches.markTransactionSubmitted(batch.origin, batch.account, batch.id, signed.hash, now)
       return this.batches.getByOperationId(batch.operationId, now) || batch
@@ -219,10 +250,7 @@ export class WalletCallLifecycleReconciler {
 
     return Promise.all(
       submitted.map(async (transaction) => {
-        const receipt = parseReceipt(
-          await this.rpc(chainId, 'eth_getTransactionReceipt', [transaction.hash]),
-          transaction.hash
-        )
+        const receipt = await this.receipt(chainId, transaction.hash)
         if (!receipt) return { transaction, status: 'missing' as const }
         const block = parseBlock(
           await this.rpc(chainId, 'eth_getBlockByNumber', [receipt.blockNumber, false])

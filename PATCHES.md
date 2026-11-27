@@ -671,3 +671,19 @@ pair overflowed the panel and clipped the button. The footer now shows "Batch su
 Guarded by `test/app/tray/Footer/index.test.js` and the `tray-wallet-calls-success-full-1` UI scenario.
 
 Upstream-PR candidate: yes, with the batch preview.
+
+## saf0o: wallet-call receipts through eth_getBlockReceipts
+
+Keyless publicnode on Arbitrum and Optimism refuses every `eth_getTransactionReceipt` with "Archive requests require a
+personal token", even for blocks seconds old (probed 2026-11-27). The wallet-call evidence poll failed on every pass, so
+a mined batch stayed at `wallet_getCallsStatus` 100 and viem's `waitForCallsStatus` timed out. The same endpoint serves
+`eth_getTransactionByHash` and `eth_getBlockReceipts`. When the receipt call fails, `WalletCallLifecycleReconciler`
+now reads the transaction's block hash and takes its receipt from that block's receipts. If both fail, the evidence log
+names the RPC refusal and asks for an RPC that serves receipts. `walletCallEvidenceRPC` allows `eth_getBlockReceipts`
+by block hash.
+
+Files: `main/provider/walletCallLifecycleReconciliation.ts`, `main/provider/walletCallEvidenceRPC.ts`. Guarded by
+`test/main/provider/walletCallAtomicStatus.test.js`: it runs the real evidence runtime against a publicnode-like chain for
+atomic (200) and sequential (200, 500, 600) batches.
+
+Upstream-PR candidate: yes.

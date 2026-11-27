@@ -129,7 +129,12 @@ export function createWalletCallEvidenceRPC(
         typeof params[0] === 'string' &&
         (params[0] === 'latest' || params[0] === 'finalized' || QUANTITY.test(params[0])) &&
         params[1] === false
-      return transactionMethod || blockMethod
+      const blockReceiptsMethod =
+        method === 'eth_getBlockReceipts' &&
+        params.length === 1 &&
+        typeof params[0] === 'string' &&
+        HASH.test(params[0])
+      return transactionMethod || blockMethod || blockReceiptsMethod
         ? request(chainId, method, params)
         : Promise.reject(new Error('Invalid wallet-call evidence RPC request'))
     }
