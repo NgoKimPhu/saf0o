@@ -661,4 +661,8 @@ Layout follow-up (`saf0o: tighten the batch call rows`): the call row is one col
 the name. Before, a 42px number column and an unused 142px column squeezed the body and wrapped "Details ›". The method name
 (`approve`, `swap`) is a chip, apart from the word "call".
 
+Fix (`saf0o: one-column batch call rows in the review hierarchy`): `saf0o-review-hierarchy.styl` still set `.walletCall`
+to `28px minmax(0, 1fr)`, so the body landed in the 28px track. The badge rule is scoped under `.walletCallsDestination`
+to outrank its `span { display block }`. Guarded by `test/scripts/wallet-calls-layout.test.mjs`.
+
 Upstream-PR candidate: yes, with the batch preview.

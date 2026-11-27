@@ -181,6 +181,7 @@
   font-family var(--saf0o-font-utility)
   font-size var(--saf0o-type-caption)
   flex-wrap wrap
+  align-items center
   gap var(--saf0o-space-2) var(--saf0o-space-3)
 
   button
@@ -326,9 +327,10 @@
   background var(--saf0o-surface-inset)
   font-weight 620
 
-.walletCallsCallNumber
+// Beats `.walletCallsDestination span`, which would make the badge a block on its own line.
+.walletCallsDestination .walletCallsCallNumber
   display inline-flex
-  margin-right var(--saf0o-space-2)
+  margin 0 var(--saf0o-space-2) 0 0
   vertical-align middle
   width 24px
   height 24px
