@@ -5,7 +5,7 @@ import { WalletCallsRequest } from '../../../../../../app/tray/Account/Requests/
 import { createWalletCallsDraft } from '../../../../../../app/tray/Account/Requests/WalletCallsRequest/adjustment'
 import link from '../../../../../../resources/link'
 
-jest.mock('../../../../../../resources/link', () => ({ send: jest.fn(), invoke: jest.fn() }))
+jest.mock('../../../../../../resources/link', () => ({ send: jest.fn(), invoke: jest.fn(), rpc: jest.fn() }))
 jest.mock('../../../../../../app/tray/Account/Requests/TransactionRequest/TxAction', () => ({
   __esModule: true,
   default: ({ action, req, readOnly }) => (
@@ -429,4 +429,19 @@ it('edits the batch nonce and transaction fee fields only in the draft', async (
     expect.objectContaining({ data: expect.objectContaining({ walletCallsAdjustmentError: '' }) }),
     false
   )
+})
+
+// An app that allows non-atomic execution lets the user keep the account as is and run the calls one by one.
+it('offers separate transactions on an upgrade batch only when the app does not require atomicity', async () => {
+  const req = preparedRequest()
+  req.atomic = 'upgrade'
+  req.payload = { params: [{ atomicRequired: false }] }
+  const { user, unmount } = render(<WalletCallsRequest originName='example.test' req={req} />)
+  await user.click(screen.getByRole('button', { name: 'Run as separate transactions instead' }))
+  expect(link.rpc).toHaveBeenCalledWith('runWalletCallsSeparately', req, expect.any(Function))
+  unmount()
+
+  req.payload = { params: [{ atomicRequired: true }] }
+  render(<WalletCallsRequest originName='example.test' req={req} />)
+  expect(screen.queryByRole('button', { name: 'Run as separate transactions instead' })).toBeNull()
 })

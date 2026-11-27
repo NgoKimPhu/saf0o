@@ -2293,6 +2293,14 @@ export class Accounts extends EventEmitter {
     return account.adjustWalletCalls(handlerId, adjustment)
   }
 
+  runWalletCallsSeparately(accountId: string, handlerId: string) {
+    const account = this.accounts[accountId.toLowerCase()]
+    if (!account || !account.getActiveReviewRequest(handlerId)) {
+      throw new Error('Wallet-call request is waiting for review')
+    }
+    account.runWalletCallsSeparately(handlerId)
+  }
+
   applyWalletCallsPreflightEvidence(
     accountId: string,
     handlerId: string,

@@ -541,3 +541,18 @@ it('bounds aggregate persisted receipt data per batch', () => {
     ledger.recordReceipt(origin, account, 'app-id', receipt(hashes[5], '0x1', { logs: [largeLog] }), 1020)
   ).toThrow(/batch exceeds persistence limit/)
 })
+
+// Once a transaction is reserved the batch shape is fixed: switching then would misreport status.
+it('switches an atomic batch to separate transactions only before any reservation', () => {
+  const { ledger } = createLedger()
+  ledger.create(batch({ atomic: true }), 1000).commit()
+
+  ledger.runSeparately(origin, account, 'app-id', 2, 1001)
+  expect(ledger.get(origin, account, 'app-id', 1002)).toMatchObject({ atomic: false, callCount: 2 })
+  expect(() => ledger.runSeparately(origin, account, 'app-id', 2, 1003)).toThrow(/no longer/)
+
+  const { ledger: reserved } = createLedger()
+  reserved.create(batch({ atomic: true }), 1000).commit()
+  reserved.reserveTransaction(origin, account, 'app-id', hash('a'), 1001)
+  expect(() => reserved.runSeparately(origin, account, 'app-id', 2, 1002)).toThrow(/no longer/)
+})

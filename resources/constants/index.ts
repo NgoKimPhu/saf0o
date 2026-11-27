@@ -8,7 +8,8 @@ export enum ApprovalType {
   ProxyImplementationChangeRisk = 'approveProxyImplementationChange',
   TokenPermitRisk = 'approveUnlimitedTokenPermit',
   SignatureRisk = 'approveDangerousSignature',
-  DappGuardrailWarning = 'approveDappGuardrailWarning'
+  DappGuardrailWarning = 'approveDappGuardrailWarning',
+  AccountUpgrade = 'approveAccountUpgrade'
 }
 
 export const SAF0O_REPOSITORY_URL = 'https://github.com/NgoKimPhu/saf0o'

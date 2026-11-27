@@ -98,7 +98,6 @@ import {
   walletCallsUpgradeRequest,
   type WalletCallsAtomicMode
 } from './walletCallAtomic'
-import { confirmSensitiveAction } from '../windows/dialog'
 import { isUnsafeRpcForwardingMethod, unsupportedRawTransactionFamily } from './rpcForwarding'
 import { getRequestSignal, inheritRequestSignal } from './requestSignal'
 import { summarizeRpcError } from '../security/rpcLogging'
@@ -151,7 +150,6 @@ import {
   FRAME_SEND_ORIGIN,
   SAF0O_DEPLOY_ORIGIN,
   SAF0O_INTERNAL_ORIGIN,
-  getOriginDisplayName,
   originIdForName
 } from '../../resources/domain/origin'
 import {
@@ -302,7 +300,6 @@ export class Provider extends EventEmitter {
   connected = false
   connection = Chains
   private pendingAssetSuggestions = new Set<string>()
-  private pendingUpgradeOrigins = new Set<string>()
   private pendingErc1046Suggestions = new Map<string, Promise<Token>>()
   private managedSweepQuotes = new ManagedSweepQuoteStore(uuid)
   private nativeMaxRevalidator?: (
@@ -1345,7 +1342,7 @@ export class Provider extends EventEmitter {
 
       let atomic: WalletCallsAtomicMode = false
       if (batchDelegate(BigInt(chainId)) || request.atomicRequired) {
-        atomic = await this.walletCallsAtomicMode(currentAccount.id, request, payload._origin, access.origin)
+        atomic = await this.walletCallsAtomicMode(currentAccount.id, request)
         if (accounts.current()?.id !== currentAccount.id) {
           throw { code: 4100, message: 'Wallet-call account is no longer selected' }
         }
@@ -1385,27 +1382,9 @@ export class Provider extends EventEmitter {
     )
   }
 
-  private async walletCallsAtomicMode(
-    account: string,
-    request: SendCallsRequest,
-    originId: string,
-    originName: string
-  ) {
+  private async walletCallsAtomicMode(account: string, request: SendCallsRequest) {
     const status = await this.walletCallsAtomicStatus(account, BigInt(request.chainId))
-    return chooseWalletCallsAtomicMode(request, status, async () => {
-      // One upgrade dialog per app at a time. A concurrent request from the same app counts as declined.
-      if (this.pendingUpgradeOrigins.has(originId)) return false
-      this.pendingUpgradeOrigins.add(originId)
-      try {
-        return await confirmSensitiveAction(
-          'Upgrade this account to an Ambire smart account?',
-          `${getOriginDisplayName(originName)} asks to run its calls as one atomic transaction. Saf0o signs an EIP-7702 delegation of this account to the Ambire account contract. The delegation stays until you revoke it in Accounts. You review every call next.`,
-          'Upgrade account'
-        )
-      } finally {
-        this.pendingUpgradeOrigins.delete(originId)
-      }
-    })
+    return chooseWalletCallsAtomicMode(request, status)
   }
 
   // The upgrade path skips Account.signTransaction, so recheck the reviewed sender and inner targets here.
@@ -1896,6 +1875,24 @@ export class Provider extends EventEmitter {
       }
       throw error
     }
+  }
+
+  // Leaves an offered upgrade: the batch record and the review both switch to one transaction per call.
+  runWalletCallsSeparately(accountId: string, handlerId: string) {
+    const request = accounts.getRequestForAccount<WalletCallsRequest>(accountId, handlerId)
+    const params = (request.payload.params as unknown[] | undefined)?.[0] as
+      { atomicRequired?: unknown } | undefined
+    if (request.type !== 'walletCalls' || request.atomic !== 'upgrade' || params?.atomicRequired !== false) {
+      throw new Error('This batch cannot run as separate transactions')
+    }
+    this.requireWalletCallsReviewAuthorization(accountId, handlerId, request)
+    walletCallBatchLedger.runSeparately(
+      request.origin,
+      request.account,
+      request.batchId,
+      request.calls.length
+    )
+    accounts.runWalletCallsSeparately(accountId, handlerId)
   }
 
   async retryWalletCallsRequest(accountId: string, handlerId: string) {

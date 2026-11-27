@@ -329,6 +329,18 @@ export class WalletCallsRequest extends React.Component {
                 <Icon name='alert' size={17} /> Upgrades account to Ambire smart account
               </strong>
               <span>This transaction delegates the account to Ambire until you revoke it in Accounts.</span>
+              {req.payload?.params?.[0]?.atomicRequired === false &&
+              !this.props.readOnly &&
+              req.status === undefined &&
+              !req.locked ? (
+                <button
+                  type='button'
+                  className='saf0oControl saf0oControlSecondary'
+                  onClick={() => link.rpc('runWalletCallsSeparately', req, () => {})}
+                >
+                  Run as separate transactions instead
+                </button>
+              ) : null}
             </div>
           ) : null}
           {req.calls.length > 1 && !req.atomic ? (

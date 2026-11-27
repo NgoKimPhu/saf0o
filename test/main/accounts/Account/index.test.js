@@ -2587,6 +2587,55 @@ describe('#addRequest', () => {
     expect(account.claimWalletCallsRequest(request.handlerId, true).calls[0].data).toBe(request.calls[0].data)
   })
 
+  // The account upgrade is opt-in inside the batch review: Approve stays blocked until the user accepts it.
+  it('blocks an upgrade batch until the account upgrade is accepted', () => {
+    const request = readyWalletCallsRequest('upgrade-consent')
+    request.atomic = 'upgrade'
+    const preparation = request.preparation
+    account.addRequest(request)
+    request.preparation = preparation
+
+    const upgrade = request.approvals.find(({ type }) => type === ApprovalType.AccountUpgrade)
+    expect(upgrade).toMatchObject({ approved: false, data: { confirmLabel: 'Upgrade account' } })
+    expect(upgrade.data.message).toContain('0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d')
+    expect(() => account.claimWalletCallsRequest(request.handlerId)).toThrow(
+      'Wallet-call request approvals are incomplete'
+    )
+
+    upgrade.approve()
+    let claimError
+    try {
+      account.claimWalletCallsRequest(request.handlerId)
+    } catch (error) {
+      claimError = error
+    }
+    expect(claimError?.message).not.toBe('Wallet-call request approvals are incomplete')
+  })
+
+  it('runs an optional upgrade batch as separate transactions and drops the upgrade consent', () => {
+    const request = readyWalletCallsRequest('upgrade-switch')
+    request.atomic = 'upgrade'
+    request.payload.params = [{ atomicRequired: false }]
+    account.addRequest(request)
+
+    account.runWalletCallsSeparately(request.handlerId)
+
+    expect(request.atomic).toBe(false)
+    expect(request.approvals.some(({ type }) => type === ApprovalType.AccountUpgrade)).toBe(false)
+  })
+
+  it('keeps a required-atomic upgrade batch atomic', () => {
+    const request = readyWalletCallsRequest('upgrade-required')
+    request.atomic = 'upgrade'
+    request.payload.params = [{ atomicRequired: true }]
+    account.addRequest(request)
+
+    expect(() => account.runWalletCallsSeparately(request.handlerId)).toThrow(
+      'This batch cannot run as separate transactions'
+    )
+    expect(request.atomic).toBe('upgrade')
+  })
+
   it('does not let a changed batch reuse consent for an equally broad operator approval', () => {
     const request = readyWalletCallsRequest('changed-batch-authority')
     request.calls[0].data = tokenInterface.encodeFunctionData('setApprovalForAll', [delegate, true])

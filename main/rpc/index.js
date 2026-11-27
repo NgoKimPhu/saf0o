@@ -481,6 +481,12 @@ const rpc = {
     }
     callbackWhenDone(() => accounts.closeFailedTransaction(req.handlerId, req.account), cb)
   },
+  runWalletCallsSeparately(req, cb) {
+    callbackWhenDone(() => {
+      if (req.type !== 'walletCalls') throw new Error('Wallet-call request is no longer available')
+      return provider.runWalletCallsSeparately(req.account, req.handlerId)
+    }, cb)
+  },
   closeFailedWalletCallsRequest(req, cb) {
     callbackWhenDone(() => {
       const request = accounts.getRequestForAccount(req.account, req.handlerId)

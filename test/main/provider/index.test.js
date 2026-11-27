@@ -1819,7 +1819,7 @@ describe('#wallet-call provider boundary', () => {
 
     // A self-call runs with msg.sender == the account, so on an Ambire delegation it can grant a key full control.
     it.each([true, false])(
-      'rejects a call to the sending account (atomicRequired %s) before any upgrade dialog or review',
+      'rejects a call to the sending account (atomicRequired %s) before any review',
       async (atomicRequired) => {
         provider.walletCallsAtomicStatus.mockResolvedValue('ready')
         const plant = {
@@ -1844,57 +1844,27 @@ describe('#wallet-call provider boundary', () => {
       }
     )
 
-    it('answers 5750 when the user declines a required upgrade, before any review state exists', async () => {
+    // The upgrade is offered inside the batch review, not by a native dialog before it.
+    it('admits a ready account as an upgrade batch without a dialog', async () => {
       provider.walletCallsAtomicStatus.mockResolvedValue('ready')
-      confirmSensitiveAction.mockResolvedValueOnce(false)
-      const respond = jest.fn()
 
-      await provider.sendWalletCalls(payload({ atomicRequired: true, calls: twoCalls }), respond)
-
-      expect(respond).toHaveBeenCalledWith(
-        expect.objectContaining({ error: expect.objectContaining({ code: 5750 }) })
+      const admitted = await provider.sendWalletCalls(
+        payload({ atomicRequired: true, calls: twoCalls }),
+        jest.fn()
       )
-      expect(accountRequests).toHaveLength(0)
+
+      expect(confirmSensitiveAction).not.toHaveBeenCalled()
+      expect(accountRequests[0]).toMatchObject({ atomic: 'upgrade', calls: twoCalls })
+      expect(walletCallBatchLedger.get(originId, address, admitted.id)).toMatchObject({
+        atomic: true,
+        callCount: 1
+      })
     })
 
-    it('names the requesting app in the upgrade dialog', async () => {
-      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
-      confirmSensitiveAction.mockResolvedValueOnce(false)
-
-      await provider.sendWalletCalls(payload({ calls: twoCalls }), jest.fn())
-
-      expect(confirmSensitiveAction).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.stringMatching(/^example\.test asks/),
-        'Upgrade account'
-      )
-    })
-
-    // An app must not stack upgrade dialogs to wear the user down into one click.
-    it('answers 5750 to a second upgrade request from the same app while its dialog is open', async () => {
-      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
-      let accept
-      confirmSensitiveAction.mockImplementationOnce(() => new Promise((resolve) => (accept = resolve)))
-      const first = provider.sendWalletCalls(payload({ atomicRequired: true, calls: twoCalls }), jest.fn())
-      while (!accept) await Promise.resolve()
-      const respond = jest.fn()
-
-      await provider.sendWalletCalls(payload({ atomicRequired: true, calls: twoCalls }), respond)
-      accept(true)
-      await first
-
-      expect(respond).toHaveBeenCalledWith(
-        expect.objectContaining({ error: expect.objectContaining({ code: 5750 }) })
-      )
-      expect(confirmSensitiveAction).toHaveBeenCalledTimes(1)
-      expect(accountRequests).toHaveLength(1)
-    })
-
-    it('answers 4100 when the app loses account permission while the upgrade dialog is open', async () => {
-      provider.walletCallsAtomicStatus.mockResolvedValue('ready')
-      confirmSensitiveAction.mockImplementationOnce(async () => {
+    it('answers 4100 when the app loses account permission during the atomic check', async () => {
+      provider.walletCallsAtomicStatus.mockImplementation(async () => {
         store.set('main.permissions', address, {})
-        return true
+        return 'ready'
       })
       const respond = jest.fn()
 
@@ -1906,26 +1876,36 @@ describe('#wallet-call provider boundary', () => {
       expect(accountRequests).toHaveLength(0)
     })
 
-    it('runs a declined optional upgrade as a sequential batch', async () => {
+    // Leaving the upgrade must also fix the batch record, or wallet_getCallsStatus reports one atomic transaction.
+    it('switches an optional upgrade to separate transactions in the review and the batch record', async () => {
       provider.walletCallsAtomicStatus.mockResolvedValue('ready')
-      confirmSensitiveAction.mockResolvedValueOnce(false)
-
+      accounts.runWalletCallsSeparately = jest.fn((accountId, handlerId) => {
+        accounts.getRequestForAccount(accountId, handlerId).atomic = false
+      })
       const admitted = await provider.sendWalletCalls(payload({ calls: twoCalls }), jest.fn())
 
-      expect(accountRequests[0]).toMatchObject({ atomic: false, calls: twoCalls })
+      provider.runWalletCallsSeparately(address, admitted.handlerId)
+
+      expect(accounts.runWalletCallsSeparately).toHaveBeenCalledWith(address, admitted.handlerId)
+      expect(accountRequests[0]).toMatchObject({ atomic: false })
       expect(walletCallBatchLedger.get(originId, address, admitted.id)).toMatchObject({
         atomic: false,
         callCount: 2
       })
     })
 
-    it('reviews every call but records one transaction for an accepted upgrade', async () => {
+    it('keeps a required-atomic upgrade batch atomic', async () => {
       provider.walletCallsAtomicStatus.mockResolvedValue('ready')
-      confirmSensitiveAction.mockResolvedValueOnce(true)
+      accounts.runWalletCallsSeparately = jest.fn()
+      const admitted = await provider.sendWalletCalls(
+        payload({ atomicRequired: true, calls: twoCalls }),
+        jest.fn()
+      )
 
-      const admitted = await provider.sendWalletCalls(payload({ calls: twoCalls }), jest.fn())
-
-      expect(accountRequests[0]).toMatchObject({ atomic: 'upgrade', calls: twoCalls })
+      expect(() => provider.runWalletCallsSeparately(address, admitted.handlerId)).toThrow(
+        /cannot run as separate transactions/
+      )
+      expect(accounts.runWalletCallsSeparately).not.toHaveBeenCalled()
       expect(walletCallBatchLedger.get(originId, address, admitted.id)).toMatchObject({
         atomic: true,
         callCount: 1

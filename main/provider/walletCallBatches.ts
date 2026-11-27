@@ -550,6 +550,21 @@ export class WalletCallBatchLedger {
     this.writeBatch(batches, key, { ...batch, transactions, updatedAt: Math.max(now, batch.updatedAt) })
   }
 
+  // The review switched an upgrade batch to one transaction per call, before any transaction was reserved.
+  runSeparately(origin: string, account: string, id: string, callCount: number, now = Date.now()) {
+    const batches = this.read(now)
+    const [key, batch] = this.require(batches, origin, account, id)
+    if (batch.execution !== 'pending' || !batch.atomic || batch.transactions.length > 0) {
+      throw new Error('Batch can no longer run as separate transactions')
+    }
+    this.writeBatch(batches, key, {
+      ...batch,
+      atomic: false,
+      callCount,
+      updatedAt: Math.max(now, batch.updatedAt)
+    })
+  }
+
   complete(origin: string, account: string, id: string, now = Date.now()) {
     const batches = this.read(now)
     const [key, batch] = this.require(batches, origin, account, id)

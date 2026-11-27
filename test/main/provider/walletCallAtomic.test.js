@@ -112,18 +112,14 @@ describe('chooseWalletCallsAtomicMode', () => {
     expect(confirm).not.toHaveBeenCalled()
   })
 
-  it('answers 5750 when the user declines a required upgrade, else falls back to sequential', async () => {
-    const decline = jest.fn().mockResolvedValue(false)
+  // The upgrade is offered inside the batch review, not by a dialog before it, so admission never asks.
+  it('offers the upgrade for a ready account without asking first', async () => {
+    const confirm = jest.fn()
     await expect(
-      chooseWalletCallsAtomicMode(request({ atomicRequired: true }), 'ready', decline)
-    ).rejects.toEqual({
-      code: 5750,
-      message: 'Atomic-ready wallet rejected upgrade'
-    })
-    await expect(chooseWalletCallsAtomicMode(request(), 'ready', decline)).resolves.toBe(false)
-    await expect(
-      chooseWalletCallsAtomicMode(request(), 'ready', jest.fn().mockResolvedValue(true))
+      chooseWalletCallsAtomicMode(request({ atomicRequired: true }), 'ready', confirm)
     ).resolves.toBe('upgrade')
+    await expect(chooseWalletCallsAtomicMode(request(), 'ready', confirm)).resolves.toBe('upgrade')
+    expect(confirm).not.toHaveBeenCalled()
   })
 
   it('does not offer an upgrade for a single optional call', async () => {

@@ -620,3 +620,26 @@ calldata. The raw allowance and token-effect blocks move under the call's Detail
 Files: `main/accounts/{types,Account/index}.ts`, `app/tray/Account/Requests/WalletCallsRequest/index.js`, and their tests.
 
 Upstream-PR candidate: yes.
+
+## 36. Account upgrade inside the batch review
+
+Commit: `saf0o: ask for the Ambire upgrade inside the batch review`.
+
+Intent: the upgrade asked through a native OS dialog before the review, which the owner found out of place. This patch is
+an owner-approved exception to the AGENTS.md rule that rare actions use the native dialog.
+
+- A ready account's batch is admitted as `atomic: 'upgrade'` without asking.
+- The review adds a managed approval `approveAccountUpgrade` naming the delegate address. Claim refuses until it is accepted.
+- An app that sets `atomicRequired: false` also gets "Run as separate transactions instead" (`runWalletCallsSeparately`).
+  The provider switches the ledger record to `atomic: false` with one transaction per call, which works only before any
+  transaction is reserved. The Account then drops the approval and re-prepares and re-simulates without the delegation
+  override. Claim evidence binds the prepared transactions, so a stale screen cannot approve the other mode.
+- A declined review answers 4001; the dialog-era 5750 is gone. `pendingUpgradeOrigins` is removed with the dialog.
+
+Files: `main/provider/{index,walletCallAtomic,walletCallBatches}.ts`, `main/accounts/{index,Account/index}.ts`,
+`main/rpc/index.js`, `main/ipc/rpcSchemas.ts`, `resources/constants/index.ts`,
+`app/tray/Account/Requests/WalletCallsRequest/index.js`, and their tests.
+
+Rebase notes: `ApprovalType.AccountUpgrade` extends the upstream enum and the RPC schema enum.
+
+Upstream-PR candidate: no, it depends on the Ambire patches.

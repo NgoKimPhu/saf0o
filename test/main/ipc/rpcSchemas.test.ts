@@ -55,7 +55,7 @@ test.each(['retryTransactionRequest', 'closeFailedTransactionRequest'])(
   }
 )
 
-test.each(['retryWalletCallsRequest', 'closeFailedWalletCallsRequest'])(
+test.each(['retryWalletCallsRequest', 'closeFailedWalletCallsRequest', 'runWalletCallsSeparately'])(
   'bounds %s to an account-owned wallet-call request reference',
   (method) => {
     const request = { handlerId, account: address, type: 'walletCalls', calls: [{ data: 'private' }] }

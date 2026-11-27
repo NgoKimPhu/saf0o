@@ -176,7 +176,8 @@ const ApprovalTypeSchema = z.enum([
   'approveProxyImplementationChange',
   'approveUnlimitedTokenPermit',
   'approveDangerousSignature',
-  'approveDappGuardrailWarning'
+  'approveDappGuardrailWarning',
+  'approveAccountUpgrade'
 ])
 const ActionIdSchema = z
   .enum([
@@ -275,6 +276,10 @@ const rpcSchemas = {
     response: actionResult
   },
   closeFailedWalletCallsRequest: {
+    request: z.tuple([WalletCallsRequestReferenceSchema]),
+    response: actionResult
+  },
+  runWalletCallsSeparately: {
     request: z.tuple([WalletCallsRequestReferenceSchema]),
     response: actionResult
   },

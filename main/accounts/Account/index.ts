@@ -58,6 +58,7 @@ import { viaSimulationRpc } from '../../transaction/simulationRpc'
 import { snapshotWalletCalls } from '../../provider/walletCallExecution'
 import {
   assertAtomicCallsCodeStable,
+  batchDelegate,
   isAllowedBatchSender,
   walletCallsExecutionCalls,
   walletCallsSimulationOverrides
@@ -1436,6 +1437,54 @@ class FrameAccount {
     this.update()
   }
 
+  // The EIP-7702 upgrade is an explicit opt-in inside the batch review: Approve stays blocked until it is accepted.
+  private syncAccountUpgradeApproval(req: WalletCallsRequest) {
+    const delegate = req.atomic === 'upgrade' ? batchDelegate(BigInt(req.chainId)) : undefined
+    this.syncManagedApproval(
+      req,
+      ApprovalType.AccountUpgrade,
+      delegate && {
+        title: 'Upgrade to Ambire smart account',
+        message: `Runs these calls as one atomic transaction. Saf0o signs an EIP-7702 delegation of this account to the ${delegate.name} account contract (${delegate.address}). The delegation stays until you revoke it in Accounts.`,
+        confirmLabel: 'Upgrade account',
+        consentFingerprint: createHash('sha256')
+          .update(
+            JSON.stringify({
+              account: req.account.toLowerCase(),
+              handlerId: req.handlerId,
+              chainId: req.chainId,
+              delegate: delegate.address.toLowerCase()
+            })
+          )
+          .digest('hex')
+      }
+    )
+  }
+
+  // Leaves the upgrade: the calls run as separate transactions. Only when the app did not require atomicity.
+  runWalletCallsSeparately(handlerId: string) {
+    const request = this.requests[handlerId]
+    if (!request || request.type !== 'walletCalls') {
+      throw new Error('Wallet-call request is no longer available')
+    }
+    const walletCalls = request as WalletCallsRequest
+    if (walletCalls.locked || walletCalls.status !== undefined) {
+      throw new Error('Wallet-call request can no longer be adjusted')
+    }
+    const params = (walletCalls.payload.params as unknown[] | undefined)?.[0] as
+      { atomicRequired?: unknown } | undefined
+    if (walletCalls.atomic !== 'upgrade' || params?.atomicRequired !== false) {
+      throw new Error('This batch cannot run as separate transactions')
+    }
+
+    walletCalls.atomic = false
+    delete walletCalls.adjustment
+    this.syncAccountUpgradeApproval(walletCalls)
+    this.refreshWalletCallsSimulation(walletCalls, false)
+    this.refreshWalletCallsPreparation(walletCalls, false)
+    this.update()
+  }
+
   adjustWalletCalls(handlerId: string, adjustment: unknown) {
     const request = this.requests[handlerId]
     if (!request || request.type !== 'walletCalls') {
@@ -1649,6 +1698,7 @@ class FrameAccount {
       throw new Error('Wallet-call request has already been claimed')
     }
     this.syncTokenApprovalRisk(walletCalls)
+    this.syncAccountUpgradeApproval(walletCalls)
     if ((walletCalls.approvals || []).some((approval) => !approval.approved)) {
       this.update()
       throw new Error('Wallet-call request approvals are incomplete')
@@ -1987,7 +2037,10 @@ class FrameAccount {
     this.requests[req.handlerId] = req
 
     if (req.type === 'transaction' || req.type === 'walletCalls') this.syncAddressSafety(req)
-    if (req.type === 'walletCalls') this.syncTokenApprovalRisk(req)
+    if (req.type === 'walletCalls') {
+      this.syncTokenApprovalRisk(req)
+      this.syncAccountUpgradeApproval(req)
+    }
 
     if (signal) {
       const abort = () => {

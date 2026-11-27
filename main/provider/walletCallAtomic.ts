@@ -78,10 +78,10 @@ function executeBySenderData(calls: readonly WalletCall[]) {
 }
 
 // Chooses how wallet_sendCalls runs. Throws the EIP-5792 error when atomicity is required but unavailable.
+// A ready account gets 'upgrade'; the batch review then asks for the upgrade before Approve.
 export async function chooseWalletCallsAtomicMode(
   request: Pick<SendCallsRequest, 'atomicRequired' | 'calls'>,
-  status: WalletCallsAtomicStatus,
-  confirmUpgrade: () => Promise<boolean>
+  status: WalletCallsAtomicStatus
 ): Promise<WalletCallsAtomicMode> {
   // executeBatch skips a call to the zero address, so it would silently do nothing inside the batch.
   const wrappable =
@@ -93,9 +93,7 @@ export async function chooseWalletCallsAtomicMode(
   }
   if (status === 'supported') return 'delegated'
   if (!request.atomicRequired && request.calls.length < 2) return false
-  if (await confirmUpgrade()) return 'upgrade'
-  if (request.atomicRequired) throw { code: 5750, message: 'Atomic-ready wallet rejected upgrade' }
-  return false
+  return 'upgrade'
 }
 
 // The calls saf0o signs: the reviewed calls, or one self-call that runs them through executeBySender.
