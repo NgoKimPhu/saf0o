@@ -1,6 +1,6 @@
 {
   "name": "saf0o",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "desktopName": "saf0o.desktop",
   "packageManager": "pnpm@10.23.0",
   "description": "Desktop EVM wallet and system-wide provider",

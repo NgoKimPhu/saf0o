@@ -9,14 +9,14 @@
 <p align="center">
   <a href="https://github.com/NgoKimPhu/saf0o/releases">Download</a> ·
   <a href="https://github.com/NgoKimPhu/saf0o-companion/releases">Companion</a> ·
-  <a href="release-notes/v0.1.12.md">What’s new</a> ·
+  <a href="release-notes/v0.1.13.md">What’s new</a> ·
   <a href="SECURITY.md">Security</a> ·
   <a href="RPC_COMPATIBILITY.md">Developer reference</a>
 </p>
 
 Review app requests in Saf0o. Each app has its own account permission and network route.
 
-The latest release is [**0.1.12**](release-notes/v0.1.12.md).
+The latest release is [**0.1.13**](release-notes/v0.1.13.md).
 
 ## Highlights
 
@@ -80,8 +80,8 @@ up to a year, with a limit of 500. They are excluded from profile backups.
 
 ## Support
 
-Saf0o 0.1.12 works with Companion 0.1.3 over pairing protocol 3.
-Companion 0.1.2 also works; 0.1.3 adds connection retry fixes.
+Saf0o 0.1.13 works with Companion 0.1.4 over pairing protocol 3.
+Companion builds from jorphex/wren do not pair with Saf0o: the auth domain carries the brand.
 Linux x64 is the main release target. Windows and macOS are unqualified previews.
 Linux arm64 has automated package checks only. Read
 [Signer and platform support](HARDWARE_SUPPORT.md) for tested platforms, signers, and limits.
@@ -102,14 +102,14 @@ sha256sum --check --ignore-missing SHA256SUMS
 Run the AppImage:
 
 ```bash
-chmod +x Saf0o-0.1.12.AppImage
-./Saf0o-0.1.12.AppImage
+chmod +x Saf0o-0.1.13.AppImage
+./Saf0o-0.1.13.AppImage
 ```
 
 Or install the deb:
 
 ```bash
-sudo apt install ./saf0o_0.1.12_amd64.deb
+sudo apt install ./saf0o_0.1.13_amd64.deb
 ```
 
 Linux packages are unsigned. Checksums and GitHub attestations verify their
@@ -139,7 +139,7 @@ Saf0o does not read Frame’s live profile. To import a private copy:
 3. Run this command before Saf0o creates its profile:
 
 ```bash
-./Saf0o-0.1.12.AppImage --import-frame-profile
+./Saf0o-0.1.13.AppImage --import-frame-profile
 ```
 
 The import copies only the supported configuration and encrypted signer files.
