@@ -1122,6 +1122,12 @@ describe('#addRequest', () => {
     const tokenData = jest
       .spyOn(Erc20Contract.prototype, 'getTokenData')
       .mockResolvedValueOnce({ name: 'USD Coin', symbol: 'USDC', decimals: 6 })
+    // The batch review shows the same action cards as a single tx, so each call is recognized on its own target.
+    const transfer = { id: 'erc20:transfer', data: { symbol: 'USDC' } }
+    reveal.recog.mockReset()
+    reveal.recog.mockImplementation(async (_data, context) =>
+      context.contractAddress === tokenContract ? [transfer] : []
+    )
 
     account.addRequest(request)
     await flushPromises()
@@ -1130,6 +1136,7 @@ describe('#addRequest', () => {
       { label: 'USD Coin (USDC)', source: 'ERC-20 token metadata', method: 'transfer' },
       { label: '1inch Router', source: 'Sourcify', method: 'swap' }
     ])
+    expect(request.callActions).toEqual([[transfer], []])
     tokenData.mockRestore()
   })
 

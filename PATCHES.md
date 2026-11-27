@@ -607,3 +607,16 @@ and Robinhood trace ETH moves; rpc.monad.xyz has no `eth_simulateV1`.
 Files: `main/transaction/{simulation,balancePreview}.ts`, and their tests.
 
 Upstream-PR candidate: yes, depends on the wallet-call batch preview.
+
+## 35. Action cards in the wallet-call batch review
+
+Commit: `saf0o: show recognized actions per call in the batch review`.
+
+Intent: batch calls showed the View data blocks inline (a 78-digit approval amount, hex boxes). `revealWalletCallDetails`
+now also runs `reveal.recog` per call into `req.callActions`, under the same staleness check as `callDetails`. The batch
+review renders each action with the single-tx `TxAction` card, read-only, because editing an approval would change reviewed
+calldata. The raw allowance and token-effect blocks move under the call's Details.
+
+Files: `main/accounts/{types,Account/index}.ts`, `app/tray/Account/Requests/WalletCallsRequest/index.js`, and their tests.
+
+Upstream-PR candidate: yes.

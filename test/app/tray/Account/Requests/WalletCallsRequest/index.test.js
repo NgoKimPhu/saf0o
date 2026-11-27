@@ -6,6 +6,12 @@ import { createWalletCallsDraft } from '../../../../../../app/tray/Account/Reque
 import link from '../../../../../../resources/link'
 
 jest.mock('../../../../../../resources/link', () => ({ send: jest.fn(), invoke: jest.fn() }))
+jest.mock('../../../../../../app/tray/Account/Requests/TransactionRequest/TxAction', () => ({
+  __esModule: true,
+  default: ({ action, req, readOnly }) => (
+    <div data-testid='tx-action'>{`${action.id} on ${req.data.to}${readOnly ? ' read-only' : ''}`}</div>
+  )
+}))
 
 const account = '0x1111111111111111111111111111111111111111'
 const target = '0x2222222222222222222222222222222222222222'
@@ -346,7 +352,7 @@ it('qualifies empty delegate bytecode instead of implying that execution is impo
   expect(screen.getByText(/precompiles can execute without bytecode/i)).toBeTruthy()
 })
 
-it('keeps compact reverting-call evidence and qualified token effects', () => {
+it('keeps compact reverting-call evidence and puts raw token effects behind Details', async () => {
   const req = preparedRequest()
   req.simulation = {
     status: 'reverted',
@@ -368,9 +374,23 @@ it('keeps compact reverting-call evidence and qualified token effects', () => {
     ]
   }
 
-  render(<WalletCallsRequest originName='example.test' req={req} />)
+  const { user } = render(<WalletCallsRequest originName='example.test' req={req} />)
   expect(screen.getByText(/Simulation: reverted · gas used 21,000 · execution reverted: denied/)).toBeTruthy()
+  // Raw log evidence is technical detail; the review summary comes from the balance preview and action cards.
+  expect(screen.queryByText('ERC-20 Send')).toBeNull()
+  await user.click(screen.getByRole('button', { name: 'Call 1 details' }))
   expect(screen.getByText('ERC-20 Send')).toBeTruthy()
+})
+
+// A batch approve must read like the single-tx review (spend limit, spender), not as raw calldata.
+// The card is read-only: editing the amount would change calldata the batch was reviewed with.
+it('shows recognized actions per call as read-only cards for that call', () => {
+  const req = preparedRequest()
+  req.callActions = [[], [{ id: 'erc20:approve', data: {} }]]
+  render(<WalletCallsRequest originName='example.test' req={req} />)
+  expect(screen.getAllByTestId('tx-action').map((node) => node.textContent)).toEqual([
+    `erc20:approve on ${target} read-only`
+  ])
 })
 
 it('edits the batch nonce and transaction fee fields only in the draft', async () => {

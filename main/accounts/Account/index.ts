@@ -1399,6 +1399,22 @@ class FrameAccount {
       })
     )
 
+    const actions = await Promise.all(
+      calls.map(async (call) => {
+        if (!call.to || call.data === '0x') return []
+        try {
+          return await reveal.recog(call.data, {
+            contractAddress: call.to,
+            chainId,
+            account: this.address,
+            value: call.value
+          })
+        } catch {
+          return []
+        }
+      })
+    )
+
     const knownRequest = this.requests[req.handlerId]
     if (knownRequest !== req) return
     try {
@@ -1416,6 +1432,7 @@ class FrameAccount {
       return
     }
     req.callDetails = Object.freeze(details.map((detail) => (detail ? Object.freeze(detail) : null)))
+    req.callActions = Object.freeze(actions.map((callActions) => Object.freeze(callActions)))
     this.update()
   }
 

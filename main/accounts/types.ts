@@ -326,6 +326,8 @@ export interface WalletCallsRequest extends AccountRequest<'walletCalls'> {
     source: string
     method?: string
   } | null>[]
+  // Recognized actions per call (ERC-20 approve or transfer), for the same cards the single-tx review shows.
+  callActions?: readonly (readonly Action<unknown>[])[]
   locked?: boolean
   adjustment?: Readonly<WalletCallBatchAdjustment>
   preparation: WalletCallsPreparation

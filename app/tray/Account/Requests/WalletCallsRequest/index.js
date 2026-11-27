@@ -12,6 +12,7 @@ import BalancePreview from '../../../../../resources/Components/BalancePreview'
 import { ReviewContext } from '../../../../../resources/Components/SigningReview'
 import ReviewAcknowledgements from '../ReviewAcknowledgements'
 import { SimulationAllowance, SimulationEffects } from '../TransactionRequest/ViewData/effects'
+import TxAction from '../TransactionRequest/TxAction'
 import { formatNativeMaximum, parseWalletCallsDraft, walletCallMaximum } from './adjustment'
 
 const QUANTITY = /^0x(?:0|[1-9a-fA-F][0-9a-fA-F]*)$/
@@ -495,7 +496,19 @@ export class WalletCallsRequest extends React.Component {
                         {callSimulation.reason ? ` · ${callSimulation.reason}` : ''}
                       </div>
                     )}
-                    {callSimulation && (
+                    {call.to
+                      ? (req.callActions?.[index] || []).map((action, actionIndex) => (
+                          <TxAction
+                            key={`${index}:${action.id}:${actionIndex}`}
+                            req={{ ...req, data: { to: call.to, chainId: req.chainId, value: call.value } }}
+                            chain={{ type: 'ethereum', id: parseInt(req.chainId, 16) }}
+                            action={action}
+                            readOnly
+                            compact
+                          />
+                        ))
+                      : null}
+                    {expanded && callSimulation && (
                       <>
                         <SimulationAllowance simulation={callSimulation} />
                         {(callSimulation.effects?.length || callSimulation.effectsTruncated) && (
