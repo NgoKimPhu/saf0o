@@ -717,3 +717,17 @@ The README "Website" link pointed at upstream's getwren.xyz. The link is gone. A
 Files: `README.md`, `resources/constants/index.ts`.
 
 Upstream-PR candidate: no.
+
+## saf0o: Windows package smoke probes the bundled layout
+
+Since `saf0o: bundle the main process with Parcel and package the Windows build from it`, the Windows package ships only
+`compiled-bundle` plus the `EXTERNAL` packages. The upstream probe loads `@trezor/connect`, `ethers` and `compiled/main/**`
+files by path, so the Windows smoke always failed and blocked the release workflow. The `windows-x64` target now runs
+`scripts/package-runtime-smoke-bundled.cjs`. It loads the native externals and checks that every `EXTERNAL` package and
+bundle `ENTRIES` file is packaged. Module behavior stays covered by the Linux and macOS probes. Gap: nothing runs the
+Parcel main bundle itself, so a bundler-only bug still passes.
+
+Files: `scripts/package-runtime-smoke-bundled.cjs` (new), `scripts/package-verification.mjs`. Guarded by
+`test/scripts/package-verification.test.mjs`.
+
+Upstream-PR candidate: no.

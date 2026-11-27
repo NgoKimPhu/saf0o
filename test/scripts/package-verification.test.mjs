@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {
+  assertBundledProbe,
   assertNativeHost,
   assertSafeArchiveEntries,
   getPackageTarget,
@@ -59,4 +60,22 @@ test('rejects archive entries that could escape their disposable extraction root
   assert.throws(() => assertSafeArchiveEntries(['C:\\Windows\\system.ini']), /Drive-qualified/)
   assert.throws(() => assertSafeArchiveEntries(['Saf0o/../../outside']), /escapes extraction root/)
   assert.throws(() => assertSafeArchiveEntries(['Saf0o/evil\0name']), /null byte/)
+})
+
+// Windows ships the Parcel main bundle: the full probe loads packages it no longer ships and always failed.
+test('probes the Windows package for its bundled layout and rejects a missing external', () => {
+  assert.equal(getPackageTarget('windows-x64').bundledMain, true)
+  assert.equal(getPackageTarget('linux-x64').bundledMain, undefined)
+  const packageJson = {
+    dependencies: { 'node-hid': '3.0.0', '@ledgerhq/hw-transport-node-hid-noevents': '6.0.0' }
+  }
+  const lock = { importers: {}, packages: {}, snapshots: {} }
+  assert.throws(
+    () => assertBundledProbe({ missingExternals: ['secp256k1'], missingEntries: [] }, packageJson, lock),
+    /EXTERNAL packages missing/
+  )
+  assert.throws(
+    () => assertBundledProbe({ missingExternals: [], missingEntries: ['index.js'] }, packageJson, lock),
+    /main bundle entries missing/
+  )
 })

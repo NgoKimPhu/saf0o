@@ -3,6 +3,7 @@ import { execFileSync, spawnSync } from 'node:child_process'
 import { lstat, mkdir, mkdtemp, readFile, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
+import { ENTRIES, EXTERNAL } from './bundle-main.mjs'
 import { assertReleaseBuildIdentity } from './build-identity.mjs'
 import { lockedVersion, readPnpmLock } from './pnpm-lock.mjs'
 import { readSourceIdentity } from './source-identity.mjs'
@@ -79,6 +80,8 @@ export const packageTargets = Object.freeze({
     platform: 'win32',
     arch: 'x64',
     nsisPayload: 'app-64.7z',
+    // Ships the Parcel main bundle (scripts/bundle-main.mjs), so it needs the bundled-layout probe.
+    bundledMain: true,
     unpackedDirectory: 'win-unpacked',
     executable: ['Saf0o.exe'],
     artifacts: [
@@ -147,11 +150,16 @@ function readArchiveEntries(command, args, artifact) {
   assertSafeArchiveEntries(entries)
 }
 
-function runPackagedProbe(executable, root) {
-  const probe = spawnSync(executable, [path.join(root, 'scripts', 'package-runtime-smoke.cjs')], {
+function runPackagedProbe(executable, root, target) {
+  const script = target.bundledMain ? 'package-runtime-smoke-bundled.cjs' : 'package-runtime-smoke.cjs'
+  const bundle = JSON.stringify({
+    externals: EXTERNAL.filter((name) => name !== 'electron'),
+    entries: ENTRIES
+  })
+  const probe = spawnSync(executable, [path.join(root, 'scripts', script)], {
     cwd: root,
     encoding: 'utf8',
-    env: { ...process.env, ELECTRON_RUN_AS_NODE: 'true' },
+    env: { ...process.env, ELECTRON_RUN_AS_NODE: 'true', SAF0O_PACKAGE_BUNDLE: bundle },
     timeout: 30_000
   })
   assert.equal(probe.status, 0, `Packaged runtime smoke failed:\n${probe.error || probe.stderr}`)
@@ -233,7 +241,7 @@ async function probeArtifact(artifact, kind, target, root, temporaryRoot, verify
     }
     const executable = await findPackagedExecutable(extraction, target)
     if (verifyExecutable) await verifyExecutable(executable)
-    return runPackagedProbe(executable, root)
+    return runPackagedProbe(executable, root, target)
   } finally {
     if (mounted) execFileSync('hdiutil', ['detach', extraction], { stdio: 'ignore' })
   }
@@ -264,7 +272,7 @@ export async function verifyNativePackage(targetName, options = {}) {
   assert.ok(executableStats.isFile() && !executableStats.isSymbolicLink(), 'Invalid packaged executable')
   if (options.verifyExecutable) await options.verifyExecutable(executable)
 
-  const result = runPackagedProbe(executable, root)
+  const result = runPackagedProbe(executable, root, target)
 
   assert.equal(result.platform, target.platform)
   assert.equal(result.arch, target.arch)
@@ -275,6 +283,11 @@ export async function verifyNativePackage(targetName, options = {}) {
   assertReleaseBuildIdentity(result.buildIdentity, sourceIdentity, packageJson.version)
   assertReleaseBuildIdentity(result.rendererBuildIdentity, sourceIdentity, packageJson.version)
   assert.equal(result.rendererBundleNoncesValid, true)
+  if (target.bundledMain) {
+    assertBundledProbe(result, packageJson, lock)
+    await verifyArtifactPayloads(artifacts, target, root, targetName, dist, result, options.verifyExecutable)
+    return { artifacts, result, target }
+  }
   assert.equal(result.noSandboxRejected, true)
   assert.deepEqual(result.nativeModules, {
     nodeHid: 'function',
@@ -320,6 +333,29 @@ export async function verifyNativePackage(targetName, options = {}) {
   })
   assert.ok(result.runtime.esmModuleExports.every((exports) => exports > 0))
 
+  await verifyArtifactPayloads(artifacts, target, root, targetName, dist, result, options.verifyExecutable)
+  return { artifacts, result, target }
+}
+
+// The bundled layout ships only EXTERNAL packages and the bundle ENTRIES; a missing one breaks startup.
+export function assertBundledProbe(result, packageJson, lock) {
+  assert.deepEqual(result.missingExternals, [], 'EXTERNAL packages missing from the package')
+  assert.deepEqual(result.missingEntries, [], 'main bundle entries missing from the package')
+  assert.deepEqual(result.nativeModules, {
+    nodeHid: 'function',
+    usb: 'function',
+    ledgerNodeHid: 'function',
+    secp256k1: 'function',
+    keccak: 'function'
+  })
+  assert.deepEqual(result.versions, {
+    nodeHid: packageJson.dependencies['node-hid'],
+    usb: lockedVersion(lock, 'usb', '@trezor/transport'),
+    ledgerNodeHid: packageJson.dependencies['@ledgerhq/hw-transport-node-hid-noevents']
+  })
+}
+
+async function verifyArtifactPayloads(artifacts, target, root, targetName, dist, result, verifyExecutable) {
   const temporaryRoot = await mkdtemp(path.join(tmpdir(), `saf0o-${targetName}-`))
   try {
     for (const [index, artifact] of artifacts.entries()) {
@@ -329,13 +365,11 @@ export async function verifyNativePackage(targetName, options = {}) {
         target,
         root,
         temporaryRoot,
-        options.verifyExecutable
+        verifyExecutable
       )
       assert.deepEqual(artifactResult, result, `${artifact} payload differs from unpacked package output`)
     }
   } finally {
     await removeTemporaryPackageRoot(temporaryRoot)
   }
-
-  return { artifacts, result, target }
 }
