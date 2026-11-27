@@ -23,7 +23,7 @@ export function parsePnpmLock(text, root = process.cwd()) {
   let group = ''
   let entry = ''
   let snapshot = null
-  for (const line of text.split('\n')) {
+  for (const line of text.split(/\r?\n/)) {
     if (/^\S/.test(line)) {
       section = line.replace(/:.*/, '')
       inRootImporter = false

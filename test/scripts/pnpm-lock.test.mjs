@@ -2,7 +2,13 @@ import assert from 'node:assert/strict'
 import { Buffer } from 'node:buffer'
 import { readFileSync } from 'node:fs'
 import test from 'node:test'
-import { componentFor, lockedVersion, productionGraph, readPnpmLock } from '../../scripts/pnpm-lock.mjs'
+import {
+  componentFor,
+  lockedVersion,
+  parsePnpmLock,
+  productionGraph,
+  readPnpmLock
+} from '../../scripts/pnpm-lock.mjs'
 
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'))
 const lock = readPnpmLock('.')
@@ -39,4 +45,13 @@ test('local file dependency uses its package version and scoped names split into
 
 test('a transitive parent resolves its own dependency version', () => {
   assert.match(lockedVersion(lock, 'usb', '@trezor/transport'), /^\d+\.\d+\.\d+$/)
+})
+
+// Windows CI checks the lockfile out with CRLF; the '\r' hid the root importer and every version read undefined.
+test('a CRLF lockfile parses like the LF one', () => {
+  const crlf = parsePnpmLock(readFileSync('pnpm-lock.yaml', 'utf8').replace(/\n/g, '\r\n'))
+  assert.equal(
+    lockedVersion(crlf, 'usb', '@trezor/transport'),
+    lockedVersion(lock, 'usb', '@trezor/transport')
+  )
 })

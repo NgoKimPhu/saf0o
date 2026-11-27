@@ -727,7 +727,10 @@ files by path, so the Windows smoke always failed and blocked the release workfl
 bundle `ENTRIES` file is packaged. Module behavior stays covered by the Linux and macOS probes. Gap: nothing runs the
 Parcel main bundle itself, so a bundler-only bug still passes.
 
-Files: `scripts/package-runtime-smoke-bundled.cjs` (new), `scripts/package-verification.mjs`. Guarded by
-`test/scripts/package-verification.test.mjs`.
+The Windows job also exposed that `parsePnpmLock` split on `\n` only. Windows CI checks the lockfile out with CRLF, so every
+locked version read `undefined`. It now splits on `\r?\n`.
+
+Files: `scripts/package-runtime-smoke-bundled.cjs` (new), `scripts/package-verification.mjs`, `scripts/pnpm-lock.mjs`.
+Guarded by `test/scripts/package-verification.test.mjs` and `test/scripts/pnpm-lock.test.mjs`.
 
 Upstream-PR candidate: no.
