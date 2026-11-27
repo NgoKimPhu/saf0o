@@ -634,6 +634,7 @@ an owner-approved exception to the AGENTS.md rule that rare actions use the nati
   The provider switches the ledger record to `atomic: false` with one transaction per call, which works only before any
   transaction is reserved. The Account then drops the approval and re-prepares and re-simulates without the delegation
   override. Claim evidence binds the prepared transactions, so a stale screen cannot approve the other mode.
+- `ReviewAcknowledgements` lists the upgrade approval first, next to the upgrade notice; risk approvals follow.
 - A declined review answers 4001; the dialog-era 5750 is gone. `pendingUpgradeOrigins` is removed with the dialog.
 
 Files: `main/provider/{index,walletCallAtomic,walletCallBatches}.ts`, `main/accounts/{index,Account/index}.ts`,

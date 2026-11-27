@@ -462,3 +462,19 @@ it('shows each call its own balance changes under that call', () => {
   expect(screen.getAllByRole('group', { name: 'Call balance changes' })).toHaveLength(1)
   expect(second.querySelector('[aria-label="Call balance changes"]').textContent).toContain('TKN')
 })
+
+// Both Ambire boxes belong together: the upgrade approval comes right after the upgrade notice,
+// before any token-risk approval.
+it('lists the account upgrade approval before token-risk approvals', () => {
+  const req = preparedRequest()
+  req.atomic = 'upgrade'
+  req.approvals = [
+    { type: 'approveBroadTokenAuthority', approved: false, data: { title: 'Broad Token Approvals' } },
+    { type: 'approveAccountUpgrade', approved: false, data: { title: 'Upgrade to Ambire smart account' } }
+  ]
+  render(<WalletCallsRequest originName='example.test' req={req} />)
+  const titles = [...document.querySelectorAll('.approveTransactionWarningTitle')].map(
+    (node) => node.textContent
+  )
+  expect(titles).toEqual(['Upgrade to Ambire smart account', 'Broad Token Approvals'])
+})
