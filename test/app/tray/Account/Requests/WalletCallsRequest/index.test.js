@@ -83,7 +83,9 @@ it('shows the approved hierarchy, ordered call identities, values, and disclosed
   expect(screen.getByText('Ethereum')).toBeTruthy()
   expect(screen.queryByText('Main account')).toBeNull()
   expect(screen.getByText('USD Coin (USDC)')).toBeTruthy()
-  expect(screen.getByText('transfer call')).toBeTruthy()
+  // The method name is styled apart from the word "call", so the action reads first.
+  expect(screen.getByText('transfer').className).toBe('walletCallsMethod')
+  expect(screen.getByText('transfer').parentElement.textContent).toBe('transfer call')
   expect(screen.getByText('Contract call')).toBeTruthy()
   expect(screen.getByText('Value · 0 ETH')).toBeTruthy()
   expect(screen.getByText('Value · <0.000001 ETH')).toBeTruthy()

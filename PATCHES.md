@@ -657,4 +657,8 @@ quotes. It prices every asset any call moves, including a token that nets to zer
 Files: `main/transaction/balancePreview.ts`, `resources/Components/BalancePreview/index.jsx`,
 `app/tray/Account/Requests/WalletCallsRequest/index.js`, and their tests.
 
+Layout follow-up (`saf0o: tighten the batch call rows`): the call row is one column, with the call number inline before
+the name. Before, a 42px number column and an unused 142px column squeezed the body and wrapped "Details ›". The method name
+(`approve`, `swap`) is a chip, apart from the word "call".
+
 Upstream-PR candidate: yes, with the batch preview.

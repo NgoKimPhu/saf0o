@@ -115,7 +115,7 @@
   box-sizing border-box
   background transparent
   box-shadow none
-  grid-template-columns 42px minmax(0, 1fr) 142px
+  grid-template-columns minmax(0, 1fr)
   gap var(--saf0o-space-3)
   align-items start
 
@@ -319,8 +319,17 @@
   grid-template-columns 30px minmax(0, 1fr)
   gap var(--saf0o-space-3)
 
+.walletCallsMethod
+  padding 1px var(--saf0o-space-1)
+  border-radius 4px
+  color var(--saf0o-text-primary)
+  background var(--saf0o-surface-inset)
+  font-weight 620
+
 .walletCallsCallNumber
-  display flex
+  display inline-flex
+  margin-right var(--saf0o-space-2)
+  vertical-align middle
   width 24px
   height 24px
   border 1px solid var(--saf0o-border-subtle)

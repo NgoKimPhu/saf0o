@@ -384,7 +384,6 @@ export class WalletCallsRequest extends React.Component {
               const expanded = this.state.expandedCall === index
               return (
                 <div className='walletCall' key={`${index}:${call.to || 'deployment'}`}>
-                  <span className='walletCallsCallNumber'>{String(index + 1).padStart(2, '0')}</span>
                   <div className='walletCallsCallBody'>
                     <button
                       type='button'
@@ -392,7 +391,10 @@ export class WalletCallsRequest extends React.Component {
                       disabled={!call.to}
                       onClick={() => this.copyCallAddress(index, call.to)}
                     >
-                      <strong>{identity.label}</strong>
+                      <strong>
+                        <span className='walletCallsCallNumber'>{String(index + 1).padStart(2, '0')}</span>
+                        {identity.label}
+                      </strong>
                       {call.to ? (
                         <div className='walletCallsDestinationAddress'>
                           <AddressIdentity
@@ -420,7 +422,15 @@ export class WalletCallsRequest extends React.Component {
                       </>
                     ) : null}
                     <div className='walletCallsCallEvidence'>
-                      <span>{identity.method ? `${identity.method} call` : 'Contract call'}</span>
+                      <span>
+                        {identity.method ? (
+                          <>
+                            <span className='walletCallsMethod'>{identity.method}</span> call
+                          </>
+                        ) : (
+                          'Contract call'
+                        )}
+                      </span>
                       <span>Value · {formatNative(call.value, decimals, symbol)}</span>
                       <button
                         type='button'
